@@ -75,6 +75,7 @@
 
     /* Header colours */
     .site-header { background: {{ settings.header_bg | default: '#080808' }}; }
+    .site-header.is-scrolled { background: {{ settings.header_scrolled_bg | default: '#080808' }}; }
     .header-nav__link, .header-btn, .header-logo { color: {{ settings.header_text | default: '#f0ebe0' }}; }
 
     /* Base font size */
@@ -84,7 +85,7 @@
     {%- unless hscale == 100 -%}
     .section-title { font-size: calc(clamp(28px, 4.5vw, 60px) * {{ hscale | times: 0.01 }}); }
     .hero__title   { font-size: calc(clamp(44px, 7.5vw, 110px) * {{ hscale | times: 0.01 }}); }
-    .brand-statement__text { font-size: calc(clamp(28px, 4.5vw, 68px) * {{ hscale | times: 0.01 }}); }
+    .brand-statement__quote { font-size: calc(clamp(28px, 4.5vw, 68px) * {{ hscale | times: 0.01 }}); }
     {%- endunless -%}
 
     /* CSS transition speed from settings (images + buttons only; GSAP owns [data-animate]) */

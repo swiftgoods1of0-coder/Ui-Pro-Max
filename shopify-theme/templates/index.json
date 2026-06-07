@@ -118,7 +118,7 @@
           }
         }
       },
-      "blocks_order": ["feature-1", "feature-2", "feature-3", "divider-1", "stat-1"]
+      "block_order": ["feature-1", "feature-2", "feature-3", "divider-1", "stat-1"]
     },
     "brand-story": {
       "type": "brand-story",
@@ -158,7 +158,7 @@
         "photo-5": { "type": "photo", "settings": {} },
         "photo-6": { "type": "photo", "settings": {} }
       },
-      "blocks_order": ["photo-1", "photo-2", "photo-3", "photo-4", "photo-5", "photo-6"]
+      "block_order": ["photo-1", "photo-2", "photo-3", "photo-4", "photo-5", "photo-6"]
     },
     "newsletter": {
       "type": "newsletter",

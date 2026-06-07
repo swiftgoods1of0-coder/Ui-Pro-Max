@@ -1,6 +1,6 @@
 <style>
   #brand-statement-{{ section.id }} .section-eyebrow { color: {{ section.settings.color_eyebrow | default: '#c9a84c' }}; }
-  #brand-statement-{{ section.id }} .brand-statement__text { font-size: clamp(24px, 4vw, {{ section.settings.statement_size | default: 48 }}px); }
+  #brand-statement-{{ section.id }} .brand-statement__quote { font-size: clamp(24px, 4vw, {{ section.settings.statement_size | default: 48 }}px); }
 </style>
 <section
   class="brand-statement brand-statement--{{ section.settings.text_alignment }}"

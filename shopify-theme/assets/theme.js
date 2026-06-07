@@ -73,7 +73,10 @@ function toggleMobileMenu(open) {
 
   State.mobileMenuOpen = open;
   mobileMenu.classList.toggle('is-open', open);
-  hamburger && hamburger.classList.toggle('is-open', open);
+  if (hamburger) {
+    hamburger.classList.toggle('is-open', open);
+    hamburger.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
   document.body.style.overflow = open ? 'hidden' : '';
 
   // Focus trap
@@ -224,6 +227,7 @@ async function addToCart(variantId, quantity = 1) {
 window.SwiftGoods = window.SwiftGoods || {};
 window.SwiftGoods.addToCart = addToCart;
 window.SwiftGoods.openCart = openCart;
+window.SwiftGoods.updateCartUI = updateCartUI;
 
 /* ── Scroll Animations (CSS fallback — GSAP takes over when loaded) ─ */
 function initScrollAnimationsFallback() {

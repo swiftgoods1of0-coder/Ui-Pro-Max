@@ -1,6 +1,5 @@
 {%- liquid
   assign current_variant = product.selected_or_first_available_variant
-  assign featured_media   = product.featured_media
   assign product_url      = product.url | within: collection
 -%}
 
@@ -426,7 +425,7 @@
 </script>
 
 <!-- Product Form JS -->
-{{ 'product-form.js' | asset_url | script_tag }}
+<script src="{{ 'product-form.js' | asset_url }}" defer></script>
 
 <style>
   /* ── Product Layout ── */
