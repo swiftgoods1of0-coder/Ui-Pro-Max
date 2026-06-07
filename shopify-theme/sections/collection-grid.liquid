@@ -1,0 +1,397 @@
+{%- liquid
+  assign cols = section.settings.columns | default: 3
+-%}
+
+<section
+  class="collection-grid-section"
+  id="collection-grid-{{ section.id }}"
+  style="
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    background-color: {{ section.settings.bg_color }};
+  "
+>
+  <div class="container">
+
+    {%- if section.settings.heading != blank or section.settings.eyebrow != blank -%}
+      <div class="section-header" data-animate style="margin-bottom:clamp(40px,6vw,72px);">
+        {%- if section.settings.eyebrow != blank -%}
+          <span class="section-eyebrow">{{ section.settings.eyebrow }}</span>
+        {%- endif -%}
+        <h2 class="section-title">{{ section.settings.heading }}</h2>
+        {%- if section.settings.subtext != blank -%}
+          <p style="font-size:15px;color:var(--text-muted);max-width:56ch;margin-top:8px;line-height:1.7;">{{ section.settings.subtext }}</p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="collection-grid" style="--cols:{{ cols }};">
+
+        {%- for block in section.blocks -%}
+          {%- assign coll = collections[block.settings.collection] -%}
+          {%- if coll == blank -%}{%- continue -%}{%- endif -%}
+
+          <div
+            class="collection-grid__card"
+            {{ block.shopify_attributes }}
+            data-animate
+            data-animate-delay="{{ forloop.index }}"
+          >
+            <a href="{{ coll.url }}" class="collection-grid__link" aria-label="{{ coll.title }}">
+
+              <div class="collection-grid__media">
+                {%- if block.settings.image != blank -%}
+                  {{
+                    block.settings.image
+                    | image_url: width: 800
+                    | image_tag:
+                      loading: 'lazy',
+                      width: 800,
+                      alt: block.settings.image.alt | default: coll.title
+                  }}
+                {%- elsif coll.image != blank -%}
+                  {{
+                    coll.image
+                    | image_url: width: 800
+                    | image_tag:
+                      loading: 'lazy',
+                      width: 800,
+                      alt: coll.image.alt | default: coll.title
+                  }}
+                {%- elsif coll.products.first.featured_image != blank -%}
+                  {{
+                    coll.products.first.featured_image
+                    | image_url: width: 800
+                    | image_tag:
+                      loading: 'lazy',
+                      width: 800,
+                      alt: coll.title
+                  }}
+                {%- else -%}
+                  <div class="collection-grid__placeholder" aria-hidden="true"></div>
+                {%- endif -%}
+
+                <div class="collection-grid__overlay" style="opacity:{{ block.settings.overlay_opacity | times: 0.01 }};"></div>
+
+                {%- if block.settings.badge != blank -%}
+                  <span class="collection-grid__badge">{{ block.settings.badge }}</span>
+                {%- endif -%}
+              </div>
+
+              <div class="collection-grid__info">
+                <h3 class="collection-grid__title">
+                  {{ block.settings.label | default: coll.title }}
+                </h3>
+                {%- if section.settings.show_count -%}
+                  <span class="collection-grid__count">{{ coll.products_count }} pieces</span>
+                {%- endif -%}
+                <span class="collection-grid__arrow" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="18" height="18">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                  </svg>
+                </span>
+              </div>
+
+            </a>
+          </div>
+        {%- endfor -%}
+
+      </div>
+    {%- else -%}
+      <p style="color:var(--text-dim);font-size:14px;letter-spacing:0.1em;">Add collection blocks in the Customizer.</p>
+    {%- endif -%}
+
+    {%- if section.settings.cta_label != blank and section.settings.cta_url != blank -%}
+      <div style="text-align:center;margin-top:clamp(40px,6vw,72px);" data-animate>
+        <a href="{{ section.settings.cta_url }}" class="btn btn--secondary btn--lg">
+          {{ section.settings.cta_label }}
+        </a>
+      </div>
+    {%- endif -%}
+
+  </div>
+</section>
+
+<style>
+  .collection-grid {
+    display: grid;
+    grid-template-columns: repeat(var(--cols, 3), 1fr);
+    gap: clamp(12px, 2vw, 24px);
+  }
+
+  .collection-grid__card {
+    position: relative;
+  }
+
+  .collection-grid__link {
+    display: block;
+    text-decoration: none;
+  }
+
+  .collection-grid__media {
+    position: relative;
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+    background: var(--bg-card);
+    margin-bottom: 16px;
+  }
+
+  .collection-grid__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    display: block;
+  }
+
+  .collection-grid__card:hover .collection-grid__media img {
+    transform: scale(1.05);
+  }
+
+  .collection-grid__overlay {
+    position: absolute;
+    inset: 0;
+    background: #080808;
+    pointer-events: none;
+  }
+
+  .collection-grid__placeholder {
+    width: 100%;
+    height: 100%;
+    background: var(--bg-card);
+  }
+
+  .collection-grid__badge {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    background: var(--accent);
+    color: var(--bg);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 6px 10px;
+    border-radius: 2px;
+  }
+
+  .collection-grid__info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .collection-grid__title {
+    font-family: var(--font-display);
+    font-size: clamp(16px, 1.5vw, 22px);
+    font-weight: 400;
+    color: var(--text);
+    flex: 1;
+    transition: color 0.3s ease;
+  }
+
+  .collection-grid__card:hover .collection-grid__title {
+    color: var(--accent);
+  }
+
+  .collection-grid__count {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+
+  .collection-grid__arrow {
+    display: flex;
+    align-items: center;
+    color: var(--accent);
+    opacity: 0;
+    transform: translateX(-6px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    flex-shrink: 0;
+  }
+
+  .collection-grid__arrow svg {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .collection-grid__card:hover .collection-grid__arrow {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  /* Featured first item spans full width if enabled */
+  .collection-grid--feature-first .collection-grid__card:first-child {
+    grid-column: 1 / -1;
+  }
+
+  .collection-grid--feature-first .collection-grid__card:first-child .collection-grid__media {
+    aspect-ratio: 16 / 7;
+  }
+
+  @media (max-width: 900px) {
+    .collection-grid { --cols: 2 !important; }
+    .collection-grid--feature-first .collection-grid__card:first-child .collection-grid__media {
+      aspect-ratio: 4 / 3;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .collection-grid { --cols: 1 !important; }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Collection Grid",
+  "tag": "section",
+  "class": "section-collection-grid",
+  "blocks": [
+    {
+      "type": "collection_card",
+      "name": "Collection",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Override label",
+          "info": "Defaults to collection title if blank"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Override image",
+          "info": "Defaults to collection image or first product image"
+        },
+        {
+          "type": "text",
+          "id": "badge",
+          "label": "Badge text",
+          "info": "e.g. New, Sale, Exclusive"
+        },
+        {
+          "type": "range",
+          "id": "overlay_opacity",
+          "label": "Image overlay opacity",
+          "min": 0,
+          "max": 60,
+          "step": 5,
+          "default": 20,
+          "unit": "%"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow label",
+      "default": "Shop By Category"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section heading",
+      "default": "Collections"
+    },
+    {
+      "type": "textarea",
+      "id": "subtext",
+      "label": "Supporting text"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "CTA button label"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "CTA button URL"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "columns",
+      "label": "Columns",
+      "options": [
+        { "value": "2", "label": "2" },
+        { "value": "3", "label": "3" },
+        { "value": "4", "label": "4" }
+      ],
+      "default": "3"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_count",
+      "label": "Show product count",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background color",
+      "default": "#080808"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 40,
+      "max": 200,
+      "step": 8,
+      "default": 120,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 40,
+      "max": 200,
+      "step": 8,
+      "default": 120,
+      "unit": "px"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection Grid",
+      "settings": {
+        "eyebrow": "Shop By Category",
+        "heading": "Collections",
+        "columns": "3",
+        "show_count": true
+      },
+      "blocks": [
+        { "type": "collection_card" },
+        { "type": "collection_card" },
+        { "type": "collection_card" }
+      ]
+    }
+  ]
+}
+{% endschema %}

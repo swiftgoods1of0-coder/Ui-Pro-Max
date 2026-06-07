@@ -82,7 +82,10 @@
                       }}
                     {%- endif -%}
                     {%- if section.settings.show_quick_add -%}
-                      <button class="product-card__quick-add" data-add-to-cart="{{ product.selected_or_first_available_variant.id }}">Quick Add</button>
+                      {%- assign _variant = product.selected_or_first_available_variant -%}
+                      {%- if _variant != blank -%}
+                        <button class="product-card__quick-add" data-add-to-cart="{{ _variant.id }}">Quick Add</button>
+                      {%- endif -%}
                     {%- endif -%}
                   </div>
                   <div class="product-card__info">
@@ -122,7 +125,10 @@
                     }}
                   {%- endif -%}
                   {%- if section.settings.show_quick_add -%}
-                    <button class="product-card__quick-add" data-add-to-cart="{{ product.selected_or_first_available_variant.id }}">Quick Add</button>
+                    {%- assign _variant = product.selected_or_first_available_variant -%}
+                    {%- if _variant != blank -%}
+                      <button class="product-card__quick-add" data-add-to-cart="{{ _variant.id }}">Quick Add</button>
+                    {%- endif -%}
                   {%- endif -%}
                 </div>
                 <div class="product-card__info">

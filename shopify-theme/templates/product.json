@@ -1,0 +1,43 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "settings": {
+        "show_vendor": true,
+        "show_sku": false,
+        "show_share_buttons": true,
+        "enable_sticky_info": true,
+        "media_size": "large",
+        "media_position": "left",
+        "hide_variants": false,
+        "enable_video_looping": false
+      },
+      "blocks": {
+        "description": {
+          "type": "description",
+          "settings": {
+            "heading": "Description"
+          }
+        },
+        "shipping": {
+          "type": "shipping",
+          "settings": {
+            "heading": "Shipping & Returns"
+          }
+        },
+        "trust_badges": {
+          "type": "trust_badges",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "description",
+        "shipping",
+        "trust_badges"
+      ]
+    }
+  },
+  "order": [
+    "main"
+  ]
+}
