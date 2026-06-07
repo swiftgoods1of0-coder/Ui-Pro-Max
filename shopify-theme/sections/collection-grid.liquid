@@ -47,7 +47,10 @@
                     | image_url: width: 800
                     | image_tag:
                       loading: 'lazy',
-                      width: 800,
+                      widths: '300,500,700,800',
+                      sizes: '(max-width: 480px) 100vw, (max-width: 900px) 50vw, 33vw',
+                      width: block.settings.image.width,
+                      height: block.settings.image.height,
                       alt: block.settings.image.alt | default: coll.title
                   }}
                 {%- elsif coll.image != blank -%}
@@ -56,7 +59,10 @@
                     | image_url: width: 800
                     | image_tag:
                       loading: 'lazy',
-                      width: 800,
+                      widths: '300,500,700,800',
+                      sizes: '(max-width: 480px) 100vw, (max-width: 900px) 50vw, 33vw',
+                      width: coll.image.width,
+                      height: coll.image.height,
                       alt: coll.image.alt | default: coll.title
                   }}
                 {%- elsif coll.products.first.featured_image != blank -%}
@@ -65,7 +71,10 @@
                     | image_url: width: 800
                     | image_tag:
                       loading: 'lazy',
-                      width: 800,
+                      widths: '300,500,700,800',
+                      sizes: '(max-width: 480px) 100vw, (max-width: 900px) 50vw, 33vw',
+                      width: coll.products.first.featured_image.width,
+                      height: coll.products.first.featured_image.height,
                       alt: coll.title
                   }}
                 {%- else -%}

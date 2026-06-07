@@ -16,7 +16,10 @@
         | image_url: width: 2000
         | image_tag:
           loading: 'lazy',
-          width: 2000,
+          widths: '600,900,1200,1600,2000',
+          sizes: '100vw',
+          width: section.settings.image.width,
+          height: section.settings.image.height,
           alt: section.settings.image.alt | default: shop.name
       }}
     </div>

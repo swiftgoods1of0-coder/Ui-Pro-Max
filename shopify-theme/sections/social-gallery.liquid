@@ -54,7 +54,10 @@
                 | image_url: width: 600
                 | image_tag:
                   loading: 'lazy',
-                  width: 600,
+                  widths: '150,300,450,600',
+                  sizes: '(max-width: 480px) 50vw, (max-width: 900px) 33vw, 20vw',
+                  width: block.settings.image.width,
+                  height: block.settings.image.height,
                   alt: block.settings.caption | default: 'Swift Goods on Instagram'
               }}
 

@@ -17,12 +17,17 @@
     <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32 }}">
   {%- endif -%}
 
-  <!-- Preconnect -->
+  <!-- Preconnect / DNS prefetch -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
 
-  <!-- Google Fonts: Cormorant Garamond + Inter -->
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <!-- Google Fonts: async non-blocking load (reduced to essential weights) -->
+  <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'"
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&display=swap">
+  <noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&display=swap">
+  </noscript>
 
   <!-- Theme CSS -->
   {{ 'theme.css' | asset_url | stylesheet_tag }}
@@ -82,10 +87,9 @@
     .brand-statement__text { font-size: calc(clamp(28px, 4.5vw, 68px) * {{ hscale | times: 0.01 }}); }
     {%- endunless -%}
 
-    /* CSS transition speed from settings */
+    /* CSS transition speed from settings (images + buttons only; GSAP owns [data-animate]) */
     .product-card__img--hover,
     .product-card__img--primary,
-    [data-animate],
     .btn { transition-duration: var(--anim-speed); }
 
     /* Button colours from Customizer */

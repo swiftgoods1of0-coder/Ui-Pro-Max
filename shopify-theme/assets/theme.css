@@ -862,6 +862,7 @@ ul, ol { list-style: none; }
   flex-direction: column;
   position: relative;
   cursor: pointer;
+  contain: layout style; /* prevents layout thrashing across cards */
 }
 
 /* ── Media wrapper ── */
@@ -1830,13 +1831,25 @@ a, button, [role="button"],
 .best-sellers { position: relative; }
 
 /* ── Craftsmanship ───────────────────────────────────────────── */
-.craftsmanship { position: relative; }
+.craftsmanship {
+  position: relative;
+  content-visibility: auto;
+  contain-intrinsic-size: auto 600px;
+}
 
 /* ── Brand Story ─────────────────────────────────────────────── */
-.brand-story { position: relative; }
+.brand-story {
+  position: relative;
+  content-visibility: auto;
+  contain-intrinsic-size: auto 600px;
+}
 
 /* ── Social Gallery ──────────────────────────────────────────── */
-.social-gallery-section { position: relative; }
+.social-gallery-section {
+  position: relative;
+  content-visibility: auto;
+  contain-intrinsic-size: auto 500px;
+}
 
 /* ── Rich Text / Page Sections ───────────────────────────────── */
 .rich-text {

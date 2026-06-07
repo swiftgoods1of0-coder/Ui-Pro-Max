@@ -22,7 +22,10 @@
             | image_tag:
               loading: 'eager',
               fetchpriority: 'high',
-              width: 2000,
+              widths: '600,900,1200,1600,2000',
+              sizes: '100vw',
+              width: collection.image.width,
+              height: collection.image.height,
               alt: collection.image.alt | default: collection.title
           }}
           <div class="collection-header__overlay" style="opacity: {{ section.settings.header_overlay | divided_by: 100.0 }};"></div>
@@ -131,7 +134,10 @@
                     | image_url: width: 800
                     | image_tag:
                       loading: 'lazy',
-                      width: 800,
+                      widths: '200,400,600,800,1000',
+                      sizes: '(max-width: 480px) 50vw, (max-width: 900px) 50vw, 33vw',
+                      width: product.featured_image.width,
+                      height: product.featured_image.height,
                       alt: product.featured_image.alt | default: product.title,
                       class: 'product-card__img--primary'
                   }}
@@ -148,7 +154,10 @@
                     | image_url: width: 800
                     | image_tag:
                       loading: 'lazy',
-                      width: 800,
+                      widths: '200,400,600,800,1000',
+                      sizes: '(max-width: 480px) 50vw, (max-width: 900px) 50vw, 33vw',
+                      width: hover_image.width,
+                      height: hover_image.height,
                       alt: hover_image.alt | default: product.title,
                       class: 'product-card__img--hover'
                   }}

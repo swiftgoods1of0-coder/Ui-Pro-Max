@@ -16,20 +16,19 @@
   <div class="hero__media" id="hero-media-{{ section.id }}">
 
     {%- if use_3d and spline_url != blank -%}
-      <!-- Spline 3D embed -->
+      <!-- Spline 3D embed: src set by JS only on non-touch devices -->
       <div class="hero__spline" id="hero-spline-{{ section.id }}" aria-hidden="true">
         <iframe
-          src="{{ spline_url }}"
+          data-src="{{ spline_url }}"
           frameborder="0"
           width="100%"
           height="100%"
-          loading="lazy"
           title="3D brand experience"
           style="position:absolute;inset:0;width:100%;height:100%;border:none;"
         ></iframe>
       </div>
 
-      <!-- Spline fallback: shown until iframe loads -->
+      <!-- Spline fallback: always visible until Spline resolves -->
       {%- if section.settings.fallback_image != blank -%}
         <div class="hero__spline-fallback" id="hero-spline-fallback-{{ section.id }}">
           {{
@@ -38,7 +37,10 @@
             | image_tag:
               loading: 'eager',
               fetchpriority: 'high',
-              width: 1920,
+              widths: '800,1200,1600,1920',
+              sizes: '100vw',
+              width: section.settings.fallback_image.width,
+              height: section.settings.fallback_image.height,
               alt: section.settings.fallback_image.alt | default: shop.name
           }}
         </div>
@@ -68,7 +70,10 @@
         | image_tag:
           loading: 'eager',
           fetchpriority: 'high',
-          width: 1920,
+          widths: '800,1200,1600,1920',
+          sizes: '100vw',
+          width: section.settings.fallback_image.width,
+          height: section.settings.fallback_image.height,
           alt: section.settings.fallback_image.alt | default: shop.name
       }}
 
@@ -197,14 +202,19 @@
 
     if (!splineEnabled || !splineEl) return;
 
-    /* Hide fallback once Spline iframe fires load event */
+    /* Never load Spline on touch devices — WebGL is heavy and CSS hides it anyway */
+    if (window.matchMedia('(pointer: coarse)').matches) return;
+
     var iframe = splineEl.querySelector('iframe');
-    if (iframe && fallbackEl) {
+    if (!iframe) return;
+
+    /* Set src from data-src so the request only fires on capable devices */
+    iframe.src = iframe.dataset.src;
+
+    /* Hide fallback once Spline's WebGL scene initialises */
+    if (fallbackEl) {
       iframe.addEventListener('load', function () {
-        /* Small delay to let Spline's WebGL scene init */
-        setTimeout(function () {
-          fallbackEl.classList.add('is-hidden');
-        }, 800);
+        setTimeout(function () { fallbackEl.classList.add('is-hidden'); }, 800);
       });
     }
   })();

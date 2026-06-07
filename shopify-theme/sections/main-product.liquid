@@ -29,7 +29,10 @@
               | image_url: width: 200
               | image_tag:
                 loading: 'lazy',
-                width: 200,
+                widths: '100,150,200',
+                sizes: '(max-width: 900px) 60px, 80px',
+                width: image.width,
+                height: image.height,
                 alt: image.alt | default: product.title
             }}
           </button>
@@ -45,13 +48,23 @@
           data-gallery-slide
           data-image-id="{{ image.id }}"
         >
+          {%- if forloop.first -%}
+            {%- assign img_loading = 'eager' -%}
+            {%- assign img_priority = 'high' -%}
+          {%- else -%}
+            {%- assign img_loading = 'lazy' -%}
+            {%- assign img_priority = 'auto' -%}
+          {%- endif -%}
           {{
             image
             | image_url: width: 1200
             | image_tag:
-              loading: forloop.first | if_blank: 'eager' | default: 'lazy',
-              fetchpriority: forloop.first | if_blank: 'high' | default: 'auto',
-              width: 1200,
+              loading: img_loading,
+              fetchpriority: img_priority,
+              widths: '600,800,1000,1200',
+              sizes: '(max-width: 900px) 100vw, 55vw',
+              width: image.width,
+              height: image.height,
               alt: image.alt | default: product.title,
               class: 'product-gallery__img'
           }}

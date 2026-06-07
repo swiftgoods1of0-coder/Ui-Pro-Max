@@ -97,7 +97,10 @@
                     | image_url: width: 800
                     | image_tag:
                       loading: 'lazy',
-                      width: 800,
+                      widths: '200,400,600,800,1000',
+                      sizes: '(max-width: 480px) 50vw, (max-width: 900px) 50vw, 25vw',
+                      width: product.featured_image.width,
+                      height: product.featured_image.height,
                       alt: product.featured_image.alt | default: product.title,
                       class: 'product-card__img--primary'
                   }}
@@ -114,7 +117,10 @@
                     | image_url: width: 800
                     | image_tag:
                       loading: 'lazy',
-                      width: 800,
+                      widths: '200,400,600,800,1000',
+                      sizes: '(max-width: 480px) 50vw, (max-width: 900px) 50vw, 25vw',
+                      width: hover_image.width,
+                      height: hover_image.height,
                       alt: hover_image.alt | default: product.title,
                       class: 'product-card__img--hover'
                   }}
