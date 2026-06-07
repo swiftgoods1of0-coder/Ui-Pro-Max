@@ -1,0 +1,155 @@
+'use client'
+
+import { motion } from 'framer-motion'
+import {
+  Wrench,
+  ClipboardCheck,
+  Calendar,
+  Truck,
+  Box,
+  BarChart2,
+  Zap,
+  Snowflake,
+  ArrowRight,
+} from 'lucide-react'
+
+interface Service {
+  icon: React.ElementType
+  name: string
+  description: string
+}
+
+const services: Service[] = [
+  {
+    icon: Wrench,
+    name: 'Light, Medium & Heavy-Duty Repairs',
+    description:
+      'From oil changes to engine diagnostics, suspension work, diesel repairs, gas repairs, and equipment service. We handle it all with expert technicians and fast turnarounds.',
+  },
+  {
+    icon: ClipboardCheck,
+    name: 'DOT Inspections & Compliance',
+    description:
+      'Certified DOT inspections and compliance repairs to keep fleets road-legal and audit-ready. Stay ahead of regulations with trusted, thorough inspection services.',
+  },
+  {
+    icon: Calendar,
+    name: 'Preventative Maintenance Programs',
+    description:
+      'PM tracking by mileage, engine hours, or date to keep fleets proactive and avoid expensive breakdowns. Structured programs tailored to your fleet\'s schedule.',
+  },
+  {
+    icon: Truck,
+    name: 'Mobile Service Units',
+    description:
+      'Fully equipped mobile service trucks for on-site repairs and maintenance across Central PA. When your fleet can\'t come to us, we come to you.',
+  },
+  {
+    icon: Box,
+    name: 'Trailer Repairs & Service',
+    description:
+      'Brake jobs, lighting, suspension, welding, fabrication, refurb work, and custom upfits. Complete trailer support from our specialized Keystone Trailers division.',
+  },
+  {
+    icon: BarChart2,
+    name: 'Fleet Reporting & Records',
+    description:
+      'Digital service history through Fullbay with transparent access to records and maintenance history. Know what\'s been done, what\'s due, and what\'s coming.',
+  },
+  {
+    icon: Zap,
+    name: 'Emergency & Priority Scheduling',
+    description:
+      'Fast turnarounds and priority scheduling for commercial fleet customers. When downtime costs money, OTC gets you back on the road faster.',
+  },
+  {
+    icon: Snowflake,
+    name: 'Snow Equipment Sales & Service',
+    description:
+      'Fisher snow plows in stock, installation, service, repairs, and seasonal prep. Keep your snow equipment ready for whatever winter brings.',
+  },
+]
+
+const FadeUp = ({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 40 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true, margin: '-50px' }}
+    transition={{ duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] }}
+  >
+    {children}
+  </motion.div>
+)
+
+export default function Services() {
+  return (
+    <section id="services" className="py-24 bg-navy-950" aria-label="Our services">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header */}
+        <FadeUp>
+          <div className="text-center mb-16">
+            <div className="section-eyebrow mb-3">What We Do</div>
+            <div className="orange-line-lg mx-auto mb-6" />
+            <h2 className="text-4xl lg:text-5xl font-bold text-white tracking-tight mb-5">
+              Complete Fleet Services
+            </h2>
+            <p className="text-slate-400 text-lg max-w-2xl mx-auto leading-relaxed">
+              Everything your fleet needs under one roof — or at your door. OTC Fleet Services is
+              built to keep commercial fleets running efficiently across Central Pennsylvania.
+            </p>
+          </div>
+        </FadeUp>
+
+        {/* Service Cards Grid */}
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {services.map((service, i) => {
+            const Icon = service.icon
+            return (
+              <motion.div
+                key={service.name}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-30px' }}
+                transition={{ duration: 0.5, delay: i * 0.07, ease: [0.22, 1, 0.36, 1] }}
+                className="group relative bg-navy-800 border border-navy-700 rounded-xl p-6 cursor-default
+                  transition-all duration-300
+                  hover:border-orange-500/50 hover:shadow-[0_20px_60px_rgba(0,0,0,0.4)]
+                  hover:-translate-y-1 hover:bg-navy-800/90"
+              >
+                {/* Orange left border accent on hover */}
+                <div className="absolute left-0 top-0 bottom-0 w-0.5 rounded-l-xl bg-orange-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+                {/* Icon */}
+                <div className="w-12 h-12 rounded-lg bg-orange-500/10 border border-orange-500/20 flex items-center justify-center mb-4 group-hover:bg-orange-500/20 group-hover:border-orange-500/40 transition-all duration-300">
+                  <Icon className="w-6 h-6 text-orange-400 group-hover:text-orange-300 transition-colors" />
+                </div>
+
+                {/* Content */}
+                <h3 className="text-white font-bold text-base mb-2 leading-tight group-hover:text-white transition-colors">
+                  {service.name}
+                </h3>
+                <p className="text-slate-400 text-sm leading-relaxed group-hover:text-slate-300 transition-colors">
+                  {service.description}
+                </p>
+              </motion.div>
+            )
+          })}
+        </div>
+
+        {/* Bottom CTA */}
+        <FadeUp delay={0.3}>
+          <div className="text-center mt-12">
+            <a
+              href="#contact"
+              onClick={(e) => { e.preventDefault(); document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' }) }}
+              className="btn-orange inline-flex"
+            >
+              View All Services
+              <ArrowRight className="w-4 h-4" />
+            </a>
+          </div>
+        </FadeUp>
+      </div>
+    </section>
+  )
+}
