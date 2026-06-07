@@ -106,7 +106,7 @@ export default function FleetGraphix() {
                     <span className="text-slate-300 text-sm font-medium group-hover:text-white transition-colors">
                       {label}
                     </span>
-                    <CheckCircle className="w-3.5 h-3.5 text-orange-500/50 ml-auto flex-shrink-0" />
+                    <CheckCircle className="w-3.5 h-3.5 text-orange-400/50 ml-auto flex-shrink-0" />
                   </div>
                 ))}
               </div>

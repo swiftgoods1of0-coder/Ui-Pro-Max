@@ -5,18 +5,17 @@
 @tailwind utilities;
 
 /* ============================================
-   CSS VARIABLES
+   BASE STYLES
    ============================================ */
 
 :root {
-  --charcoal-950: #0a0a0a;
-  --charcoal-900: #111111;
-  --charcoal-800: #1a1a1a;
-  --charcoal-700: #222222;
-  --charcoal-600: #2d2d2d;
-  --brand: #FFD400;
-  --brand-dark: #e6bf00;
-  --brand-light: #ffe066;
+  --navy-950: #040d1a;
+  --navy-900: #0a1628;
+  --navy-800: #0d1f3c;
+  --navy-700: #112244;
+  --navy-600: #1a3366;
+  --orange: #f97316;
+  --orange-dark: #ea580c;
   --steel: #1e293b;
 }
 
@@ -27,7 +26,7 @@ html {
 }
 
 body {
-  background-color: var(--charcoal-900);
+  background-color: var(--navy-950);
   color: #f8fafc;
   font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
   overflow-x: hidden;
@@ -43,21 +42,21 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--charcoal-800);
+  background: var(--navy-900);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--charcoal-600);
+  background: var(--navy-600);
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--brand);
+  background: var(--orange);
 }
 
 * {
   scrollbar-width: thin;
-  scrollbar-color: var(--charcoal-600) var(--charcoal-800);
+  scrollbar-color: var(--navy-600) var(--navy-900);
 }
 
 /* ============================================
@@ -66,7 +65,7 @@ body {
 
 @layer utilities {
   .glass {
-    background: rgba(17, 17, 17, 0.75);
+    background: rgba(10, 22, 40, 0.7);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.08);
@@ -79,11 +78,11 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.1);
   }
 
-  .glass-brand {
-    background: rgba(255, 212, 0, 0.08);
+  .glass-orange {
+    background: rgba(249, 115, 22, 0.1);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
-    border: 1px solid rgba(255, 212, 0, 0.2);
+    border: 1px solid rgba(249, 115, 22, 0.2);
   }
 
   /* ============================================
@@ -91,7 +90,7 @@ body {
      ============================================ */
 
   .gradient-text {
-    background: linear-gradient(135deg, #FFD400 0%, #ffe066 50%, #fff3b3 100%);
+    background: linear-gradient(135deg, #f97316 0%, #fb923c 50%, #fdba74 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -111,8 +110,8 @@ body {
   .diamond-plate {
     background-image: repeating-linear-gradient(
       45deg,
-      rgba(255, 212, 0, 0.04) 0,
-      rgba(255, 212, 0, 0.04) 1px,
+      rgba(249, 115, 22, 0.04) 0,
+      rgba(249, 115, 22, 0.04) 1px,
       transparent 0,
       transparent 50%
     );
@@ -131,8 +130,7 @@ body {
      ============================================ */
 
   .section-eyebrow {
-    @apply text-xs font-bold tracking-[0.2em] uppercase;
-    color: #FFD400;
+    @apply text-orange-400 text-xs font-bold tracking-[0.2em] uppercase;
   }
 
   .section-title {
@@ -148,36 +146,19 @@ body {
      ============================================ */
 
   .card-base {
-    @apply bg-charcoal-800 border border-charcoal-700 rounded-xl p-6 transition-all duration-300;
+    @apply bg-navy-800 border border-navy-700 rounded-xl p-6 transition-all duration-300;
   }
 
   .card-hover {
-    @apply hover:border-brand/40 hover:shadow-[0_20px_60px_rgba(0,0,0,0.4)] hover:-translate-y-1;
+    @apply hover:border-orange-500/40 hover:shadow-[0_20px_60px_rgba(0,0,0,0.4)] hover:-translate-y-1;
   }
 
   /* ============================================
      BUTTON UTILITIES
      ============================================ */
 
-  .btn-brand {
-    @apply font-semibold px-6 py-3 rounded-lg transition-all duration-200 inline-flex items-center gap-2 shadow-lg hover:-translate-y-0.5 active:translate-y-0;
-    background-color: #FFD400;
-    color: #111111;
-  }
-  .btn-brand:hover {
-    background-color: #e6bf00;
-    box-shadow: 0 8px 24px rgba(255,212,0,0.25);
-  }
-
-  /* Legacy alias — keep existing components working */
   .btn-orange {
-    @apply font-semibold px-6 py-3 rounded-lg transition-all duration-200 inline-flex items-center gap-2 shadow-lg hover:-translate-y-0.5 active:translate-y-0;
-    background-color: #FFD400;
-    color: #111111;
-  }
-  .btn-orange:hover {
-    background-color: #e6bf00;
-    box-shadow: 0 8px 24px rgba(255,212,0,0.25);
+    @apply bg-orange-500 hover:bg-orange-600 text-white font-semibold px-6 py-3 rounded-lg transition-all duration-200 inline-flex items-center gap-2 shadow-lg hover:shadow-orange-500/30 hover:-translate-y-0.5 active:translate-y-0;
   }
 
   .btn-outline-white {
@@ -189,28 +170,15 @@ body {
   }
 
   /* ============================================
-     BRAND ACCENT LINE
+     ORANGE ACCENT LINE
      ============================================ */
 
-  .brand-line {
-    @apply w-12 h-1 rounded-full;
-    background-color: #FFD400;
-  }
-
-  .brand-line-lg {
-    @apply w-20 h-1 rounded-full;
-    background-color: #FFD400;
-  }
-
-  /* Legacy aliases */
   .orange-line {
-    @apply w-12 h-1 rounded-full;
-    background-color: #FFD400;
+    @apply w-12 h-1 bg-orange-500 rounded-full;
   }
 
   .orange-line-lg {
-    @apply w-20 h-1 rounded-full;
-    background-color: #FFD400;
+    @apply w-20 h-1 bg-orange-500 rounded-full;
   }
 }
 
@@ -271,10 +239,10 @@ body {
 
 @keyframes pulse-border {
   0%, 100% {
-    border-color: rgba(255, 212, 0, 0.3);
+    border-color: rgba(249, 115, 22, 0.3);
   }
   50% {
-    border-color: rgba(255, 212, 0, 0.8);
+    border-color: rgba(249, 115, 22, 0.8);
   }
 }
 
@@ -283,12 +251,7 @@ body {
    ============================================ */
 
 .form-input {
-  @apply w-full bg-charcoal-900 border border-charcoal-600 text-white placeholder-slate-500 rounded-lg px-4 py-3 transition-all duration-200;
-  outline: none;
-}
-.form-input:focus {
-  border-color: rgba(255, 212, 0, 0.5);
-  box-shadow: 0 0 0 2px rgba(255, 212, 0, 0.15);
+  @apply w-full bg-navy-900 border border-navy-600 text-white placeholder-slate-500 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500/50 transition-all duration-200;
 }
 
 .form-label {
@@ -300,27 +263,24 @@ body {
    ============================================ */
 
 ::selection {
-  background-color: rgba(255, 212, 0, 0.3);
-  color: #111111;
+  background-color: rgba(249, 115, 22, 0.3);
+  color: #ffffff;
 }
 
 /* ============================================
-   LINK HOVER
+   LINK HOVER UNDERLINE
    ============================================ */
 
 .link-hover {
-  @apply text-slate-400 transition-colors duration-200;
-}
-.link-hover:hover {
-  color: #FFD400;
+  @apply text-slate-400 hover:text-orange-400 transition-colors duration-200;
 }
 
 /* ============================================
-   BRAND BORDER LEFT CARD
+   ORANGE BORDER LEFT CARD
    ============================================ */
 
-.border-l-brand {
-  border-left: 3px solid #FFD400;
+.border-l-orange {
+  border-left: 3px solid #f97316;
 }
 
 /* ============================================
@@ -335,7 +295,7 @@ body {
 }
 
 /* ============================================
-   NAV LINK
+   NAV LINK ACTIVE STATE
    ============================================ */
 
 .nav-link {
@@ -349,7 +309,7 @@ body {
   left: 0;
   width: 0;
   height: 2px;
-  background: #FFD400;
+  background: #f97316;
   transition: width 0.2s ease;
 }
 

@@ -150,7 +150,7 @@ export default function TrailerDepartment() {
                   href="https://keystonetrailers.com/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-orange-400 hover:text-orange-300 text-sm font-medium transition-colors group"
+                  className="flex items-center gap-2 text-orange-400 hover:text-orange-400-light text-sm font-medium transition-colors group"
                 >
                   <ShoppingCart className="w-4 h-4" />
                   Browse Trailer Inventory at KeystoneTrailers.com
@@ -259,7 +259,7 @@ export default function TrailerDepartment() {
                   href="https://maps.google.com/?q=480+Running+Pump+Road+Lancaster+PA+17601"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-orange-400 text-xs hover:text-orange-300 transition-colors flex items-center gap-1 mt-1"
+                  className="text-orange-400 text-xs hover:text-orange-400-light transition-colors flex items-center gap-1 mt-1"
                 >
                   Open in Google Maps
                   <ExternalLink className="w-3 h-3" />

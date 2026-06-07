@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Phone, Menu, X, ChevronDown } from 'lucide-react'
+import { Phone, Menu, X } from 'lucide-react'
 
 const navLinks = [
   { label: 'Home', href: '#hero' },
@@ -66,18 +66,32 @@ export default function Navigation() {
               onClick={(e) => { e.preventDefault(); handleNavClick('#hero') }}
               className="flex items-center gap-2 group"
             >
-              <div className="flex items-center gap-0.5">
-                <span className="text-white font-bold text-lg lg:text-xl tracking-tight group-hover:text-white transition-colors">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/otc-logo.png"
+                alt="OTC Fleet Services"
+                width={220}
+                height={60}
+                className="h-10 w-auto object-contain"
+                onError={(e) => {
+                  const img = e.currentTarget as HTMLImageElement
+                  img.style.display = 'none'
+                  const fallback = img.nextElementSibling as HTMLElement
+                  if (fallback) fallback.style.display = 'flex'
+                }}
+              />
+              <div className="items-center gap-0.5" style={{ display: 'none' }}>
+                <span className="text-white font-bold text-lg lg:text-xl tracking-tight">
                   OTC Fleet
                 </span>
                 <span
                   className="w-1.5 h-1.5 rounded-full bg-orange-500 ml-0.5 mt-0 inline-block"
                   aria-hidden="true"
                 />
+                <span className="hidden sm:block text-slate-400 text-sm font-normal border-l border-white/20 pl-2 ml-1">
+                  Services
+                </span>
               </div>
-              <span className="hidden sm:block text-slate-400 text-sm font-normal border-l border-white/20 pl-2">
-                Services
-              </span>
             </a>
 
             {/* Desktop Navigation */}
@@ -177,9 +191,25 @@ export default function Navigation() {
             {/* Mobile Menu Header */}
             <div className="flex items-center justify-between px-6 py-5 border-b border-white/10">
               <div className="flex items-center gap-1">
-                <span className="text-white font-bold text-lg">OTC Fleet</span>
-                <span className="w-1.5 h-1.5 rounded-full bg-orange-500 ml-0.5 inline-block" />
-                <span className="text-slate-400 text-sm ml-1">Services</span>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/otc-logo.png"
+                  alt="OTC Fleet Services"
+                  width={160}
+                  height={44}
+                  className="h-9 w-auto object-contain"
+                  onError={(e) => {
+                    const img = e.currentTarget as HTMLImageElement
+                    img.style.display = 'none'
+                    const fb = img.nextElementSibling as HTMLElement
+                    if (fb) fb.style.display = 'flex'
+                  }}
+                />
+                <div className="items-center gap-1" style={{ display: 'none' }}>
+                  <span className="text-white font-bold text-lg">OTC Fleet</span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-orange-500 ml-0.5 inline-block" />
+                  <span className="text-slate-400 text-sm ml-1">Services</span>
+                </div>
               </div>
               <button
                 onClick={() => setIsMobileOpen(false)}

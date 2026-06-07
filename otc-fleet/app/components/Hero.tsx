@@ -100,9 +100,7 @@ export default function Hero() {
                 >
                   <h1
                     className={`font-bold tracking-tight leading-[0.9] ${
-                      i === 2
-                        ? 'text-orange-400'
-                        : 'text-white'
+                      i === 2 ? 'text-orange-400' : 'text-white'
                     }`}
                     style={{ fontSize: 'clamp(56px, 8vw, 96px)' }}
                   >
@@ -225,7 +223,7 @@ export default function Hero() {
                 <a
                   href="#contact"
                   onClick={scrollToContact}
-                  className="mt-4 w-full flex items-center justify-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 rounded-lg transition-colors text-sm"
+                  className="mt-4 w-full flex items-center justify-center gap-2 bg-orange-500 hover:bg-orange-500-dark text-white font-semibold py-3 rounded-lg transition-colors text-sm"
                 >
                   Request Fleet Service
                   <ArrowRight className="w-4 h-4" />

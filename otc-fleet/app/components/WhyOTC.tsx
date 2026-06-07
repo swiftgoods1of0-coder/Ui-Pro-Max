@@ -166,7 +166,7 @@ export default function WhyOTC() {
                     <div className="text-white font-semibold text-sm mb-0.5">{item.title}</div>
                     <div className="text-slate-400 text-sm leading-relaxed">{item.description}</div>
                   </div>
-                  <CheckCircle className="w-4 h-4 text-orange-500/60 flex-shrink-0 mt-0.5 ml-auto" />
+                  <CheckCircle className="w-4 h-4 text-orange-400/60 flex-shrink-0 mt-0.5 ml-auto" />
                 </motion.div>
               )
             })}

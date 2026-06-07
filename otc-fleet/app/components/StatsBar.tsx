@@ -27,14 +27,12 @@ function AnimatedCounter({ target, suffix, prefix }: { target: number; suffix: s
 
     const duration = 2000
     const startTime = performance.now()
-    const startValue = 0
 
     const animate = (currentTime: number) => {
       const elapsed = currentTime - startTime
       const progress = Math.min(elapsed / duration, 1)
-      // Ease out cubic
       const eased = 1 - Math.pow(1 - progress, 3)
-      const current = Math.floor(startValue + (target - startValue) * eased)
+      const current = Math.floor(target * eased)
       setCount(current)
 
       if (progress < 1) {
@@ -58,15 +56,20 @@ export default function StatsBar() {
   return (
     <section
       id="stats"
-      className="relative bg-steel border-t border-orange-500 border-b border-b-orange-500/50 overflow-hidden"
+      className="relative overflow-hidden"
+      style={{
+        backgroundColor: '#1e293b',
+        borderTop: '1px solid #f97316',
+        borderBottom: '1px solid rgba(249,115,22,0.5)',
+      }}
       aria-label="Company statistics"
     >
       {/* Subtle background pattern */}
       <div
-        className="absolute inset-0 opacity-5"
+        className="absolute inset-0"
         style={{
-          backgroundImage:
-            'repeating-linear-gradient(45deg, #f97316 0, #f97316 1px, transparent 0, transparent 50%)',
+          opacity: 0.04,
+          backgroundImage: 'repeating-linear-gradient(45deg, #f97316 0, #f97316 1px, transparent 0, transparent 50%)',
           backgroundSize: '16px 16px',
         }}
       />

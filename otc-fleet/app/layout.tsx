@@ -166,7 +166,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
-      <body className="bg-navy-950 text-white font-sans antialiased">
+      <body className="bg-navy-900 text-white font-sans antialiased">
         <Navigation />
         <main>{children}</main>
         <FloatingCTA />

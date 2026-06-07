@@ -142,7 +142,7 @@ export default function FleetPrograms() {
                     <div>
                       <div className="text-white font-semibold text-sm mb-0.5 flex items-center gap-2">
                         {feature.title}
-                        <CheckCircle className="w-3.5 h-3.5 text-orange-500/60" />
+                        <CheckCircle className="w-3.5 h-3.5 text-orange-400/60" />
                       </div>
                       <div className="text-slate-400 text-sm leading-relaxed">{feature.description}</div>
                     </div>
@@ -241,7 +241,7 @@ export default function FleetPrograms() {
 
                     <p className="text-slate-500 text-xs text-center leading-relaxed">
                       Or call us directly:{' '}
-                      <a href="tel:7172083600" className="text-orange-400 hover:text-orange-300 transition-colors">
+                      <a href="tel:7172083600" className="text-orange-400 hover:text-orange-400-light transition-colors">
                         717-208-3600
                       </a>
                     </p>

@@ -109,7 +109,7 @@ export default function Industries() {
               className="group flex flex-col items-center gap-3 p-5 bg-navy-800 border border-navy-700 rounded-xl
                 cursor-default transition-all duration-300
                 hover:bg-orange-500/10 hover:border-orange-500/50 hover:-translate-y-1
-                hover:shadow-[0_12px_40px_rgba(249,115,22,0.15)]"
+                hover:shadow-[0_12px_40px_rgba(249,115,22,0.12)]"
             >
               <div className="w-11 h-11 rounded-lg bg-navy-700 group-hover:bg-orange-500/20 flex items-center justify-center transition-all duration-300 border border-navy-600 group-hover:border-orange-500/40">
                 <Icon className="w-5 h-5 text-slate-400 group-hover:text-orange-400 transition-colors duration-300" />
@@ -137,7 +137,7 @@ export default function Industries() {
                 e.preventDefault()
                 document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' })
               }}
-              className="text-orange-400 hover:text-orange-300 font-medium transition-colors"
+              className="text-orange-400 hover:text-orange-400-light font-medium transition-colors"
             >
               Contact us — we likely serve you.
             </a>

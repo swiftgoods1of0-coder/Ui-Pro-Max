@@ -36,13 +36,13 @@ const services: Service[] = [
     icon: Calendar,
     name: 'Preventative Maintenance Programs',
     description:
-      'PM tracking by mileage, engine hours, or date to keep fleets proactive and avoid expensive breakdowns. Structured programs tailored to your fleet\'s schedule.',
+      "PM tracking by mileage, engine hours, or date to keep fleets proactive and avoid expensive breakdowns. Structured programs tailored to your fleet's schedule.",
   },
   {
     icon: Truck,
     name: 'Mobile Service Units',
     description:
-      'Fully equipped mobile service trucks for on-site repairs and maintenance across Central PA. When your fleet can\'t come to us, we come to you.',
+      "Fully equipped mobile service trucks for on-site repairs and maintenance across Central PA. When your fleet can't come to us, we come to you.",
   },
   {
     icon: Box,
@@ -54,7 +54,7 @@ const services: Service[] = [
     icon: BarChart2,
     name: 'Fleet Reporting & Records',
     description:
-      'Digital service history through Fullbay with transparent access to records and maintenance history. Know what\'s been done, what\'s due, and what\'s coming.',
+      "Digital service history through Fullbay with transparent access to records and maintenance history. Know what's been done, what's due, and what's coming.",
   },
   {
     icon: Zap,
@@ -83,7 +83,12 @@ const FadeUp = ({ children, delay = 0 }: { children: React.ReactNode; delay?: nu
 
 export default function Services() {
   return (
-    <section id="services" className="py-24 bg-navy-950" aria-label="Our services">
+    <section
+      id="services"
+      className="py-24"
+      style={{ backgroundColor: '#0a0a0a' }}
+      aria-label="Our services"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <FadeUp>
@@ -111,21 +116,39 @@ export default function Services() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-30px' }}
                 transition={{ duration: 0.5, delay: i * 0.07, ease: [0.22, 1, 0.36, 1] }}
-                className="group relative bg-navy-800 border border-navy-700 rounded-xl p-6 cursor-default
-                  transition-all duration-300
-                  hover:border-orange-500/50 hover:shadow-[0_20px_60px_rgba(0,0,0,0.4)]
-                  hover:-translate-y-1 hover:bg-navy-800/90"
+                className="group relative rounded-xl p-6 cursor-default transition-all duration-300 hover:-translate-y-1"
+                style={{
+                  backgroundColor: '#1a1a1a',
+                  border: '1px solid #222222',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = 'rgba(249,115,22,0.4)'
+                  e.currentTarget.style.boxShadow = '0 20px 60px rgba(0,0,0,0.5)'
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = '#222222'
+                  e.currentTarget.style.boxShadow = 'none'
+                }}
               >
-                {/* Orange left border accent on hover */}
-                <div className="absolute left-0 top-0 bottom-0 w-0.5 rounded-l-xl bg-orange-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                {/* Brand left border accent */}
+                <div
+                  className="absolute left-0 top-0 bottom-0 w-0.5 rounded-l-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  style={{ backgroundColor: '#f97316' }}
+                />
 
                 {/* Icon */}
-                <div className="w-12 h-12 rounded-lg bg-orange-500/10 border border-orange-500/20 flex items-center justify-center mb-4 group-hover:bg-orange-500/20 group-hover:border-orange-500/40 transition-all duration-300">
-                  <Icon className="w-6 h-6 text-orange-400 group-hover:text-orange-300 transition-colors" />
+                <div
+                  className="w-12 h-12 rounded-lg flex items-center justify-center mb-4 transition-all duration-300"
+                  style={{
+                    backgroundColor: 'rgba(249,115,22,0.08)',
+                    border: '1px solid rgba(249,115,22,0.15)',
+                  }}
+                >
+                  <Icon className="w-6 h-6 transition-colors" style={{ color: '#f97316' }} />
                 </div>
 
                 {/* Content */}
-                <h3 className="text-white font-bold text-base mb-2 leading-tight group-hover:text-white transition-colors">
+                <h3 className="text-white font-bold text-base mb-2 leading-tight">
                   {service.name}
                 </h3>
                 <p className="text-slate-400 text-sm leading-relaxed group-hover:text-slate-300 transition-colors">
@@ -141,7 +164,10 @@ export default function Services() {
           <div className="text-center mt-12">
             <a
               href="#contact"
-              onClick={(e) => { e.preventDefault(); document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' }) }}
+              onClick={(e) => {
+                e.preventDefault()
+                document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' })
+              }}
               className="btn-orange inline-flex"
             >
               View All Services

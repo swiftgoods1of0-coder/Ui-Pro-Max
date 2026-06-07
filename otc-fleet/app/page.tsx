@@ -7,6 +7,7 @@ import FleetPrograms from './components/FleetPrograms'
 import FleetGraphix from './components/FleetGraphix'
 import TrailerDepartment from './components/TrailerDepartment'
 import SnowEquipment from './components/SnowEquipment'
+import Testimonials from './components/Testimonials'
 import Contact from './components/Contact'
 import Footer from './components/Footer'
 
@@ -22,6 +23,7 @@ export default function Home() {
       <FleetGraphix />
       <TrailerDepartment />
       <SnowEquipment />
+      <Testimonials />
       <Contact />
       <Footer />
     </>
