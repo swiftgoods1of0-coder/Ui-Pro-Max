@@ -37,12 +37,12 @@ export default function FleetGraphix() {
   return (
     <section
       id="fleet-graphix"
-      className="py-24 relative overflow-hidden bg-charcoal-950"
+      className="py-24 relative overflow-hidden bg-navy-800"
       aria-label="Fleet Graphix vehicle wraps and branding"
     >
       {/* Background accents */}
-      <div className="absolute inset-0 bg-gradient-to-br from-charcoal-950 via-charcoal-900 to-charcoal-950" />
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-brand/40 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-br from-navy-900 via-navy-900 to-navy-950" />
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-orange-500/40 to-transparent" />
       <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 
       {/* Large background "FG" text */}
@@ -58,7 +58,7 @@ export default function FleetGraphix() {
         className="absolute inset-0 opacity-10"
         style={{
           backgroundImage:
-            'repeating-linear-gradient(45deg, rgba(255,212,0,0.06) 0, rgba(255,212,0,0.06) 1px, transparent 0, transparent 50%)',
+            'repeating-linear-gradient(45deg, rgba(249,115,22,0.06) 0, rgba(249,115,22,0.06) 1px, transparent 0, transparent 50%)',
           backgroundSize: '20px 20px',
         }}
       />
@@ -68,9 +68,9 @@ export default function FleetGraphix() {
           {/* Left: Content */}
           <div>
             <FadeUp>
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-brand/10 border border-brand/30 mb-6">
-                <span className="w-1.5 h-1.5 rounded-full bg-brand" />
-                <span className="text-brand text-xs font-bold tracking-[0.2em] uppercase">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-orange-500/10 border border-orange-500/30 mb-6">
+                <span className="w-1.5 h-1.5 rounded-full bg-orange-500" />
+                <span className="text-orange-400 text-xs font-bold tracking-[0.2em] uppercase">
                   A Division of OTC Fleet Services
                 </span>
               </div>
@@ -98,15 +98,15 @@ export default function FleetGraphix() {
                 {graphixServices.map(({ icon: Icon, label }) => (
                   <div
                     key={label}
-                    className="flex items-center gap-3 p-3 rounded-lg bg-charcoal-800/60 border border-charcoal-700/60 hover:border-brand/40 hover:bg-charcoal-800/80 transition-all duration-200 group"
+                    className="flex items-center gap-3 p-3 rounded-lg bg-navy-800/60 border border-navy-700/60 hover:border-orange-500/40 hover:bg-navy-800/80 transition-all duration-200 group"
                   >
-                    <div className="w-8 h-8 rounded-md bg-brand/10 flex items-center justify-center flex-shrink-0 group-hover:bg-brand/20 transition-colors">
-                      <Icon className="w-4 h-4 text-brand" />
+                    <div className="w-8 h-8 rounded-md bg-orange-500/10 flex items-center justify-center flex-shrink-0 group-hover:bg-orange-500/20 transition-colors">
+                      <Icon className="w-4 h-4 text-orange-400" />
                     </div>
                     <span className="text-slate-300 text-sm font-medium group-hover:text-white transition-colors">
                       {label}
                     </span>
-                    <CheckCircle className="w-3.5 h-3.5 text-brand/50 ml-auto flex-shrink-0" />
+                    <CheckCircle className="w-3.5 h-3.5 text-orange-400/50 ml-auto flex-shrink-0" />
                   </div>
                 ))}
               </div>
@@ -117,7 +117,7 @@ export default function FleetGraphix() {
                 href="https://www.fleetgraphixpa.com/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-brand inline-flex"
+                className="btn-orange inline-flex"
               >
                 Learn More at FleetGraphixPA.com
                 <ExternalLink className="w-4 h-4" />
@@ -144,42 +144,42 @@ export default function FleetGraphix() {
                 data-placeholder="VehicleWrap.jpg"
               >
                 {/* Gradient background simulating a wrapped vehicle */}
-                <div className="absolute inset-0 bg-gradient-to-br from-charcoal-800 to-steel" />
+                <div className="absolute inset-0 bg-gradient-to-br from-navy-900 to-steel" />
 
                 {/* Color band - simulating a vehicle wrap design */}
                 <div className="absolute inset-0 overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-r from-charcoal-900/90 via-transparent to-charcoal-900/90" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-navy-900/90 via-transparent to-navy-950/90" />
 
                   {/* Orange accent stripes */}
-                  <div className="absolute top-0 left-0 right-0 h-2 bg-brand" />
-                  <div className="absolute bottom-0 left-0 right-0 h-2 bg-brand" />
+                  <div className="absolute top-0 left-0 right-0 h-2 bg-orange-500" />
+                  <div className="absolute bottom-0 left-0 right-0 h-2 bg-orange-500" />
                   <div
                     className="absolute top-1/3 left-0 right-0 h-16 opacity-20"
                     style={{
-                      background: 'linear-gradient(135deg, transparent 0%, rgba(255,212,0,0.4) 50%, transparent 100%)',
+                      background: 'linear-gradient(135deg, transparent 0%, rgba(249,115,22,0.4) 50%, transparent 100%)',
                     }}
                   />
 
                   {/* Side stripes */}
-                  <div className="absolute top-0 bottom-0 left-8 w-1 bg-brand/30" />
-                  <div className="absolute top-0 bottom-0 left-12 w-0.5 bg-brand/15" />
-                  <div className="absolute top-0 bottom-0 right-8 w-1 bg-brand/30" />
-                  <div className="absolute top-0 bottom-0 right-12 w-0.5 bg-brand/15" />
+                  <div className="absolute top-0 bottom-0 left-8 w-1 bg-orange-500/30" />
+                  <div className="absolute top-0 bottom-0 left-12 w-0.5 bg-orange-500/15" />
+                  <div className="absolute top-0 bottom-0 right-8 w-1 bg-orange-500/30" />
+                  <div className="absolute top-0 bottom-0 right-12 w-0.5 bg-orange-500/15" />
 
                   {/* Diagonal pattern */}
                   <div
                     className="absolute inset-0 opacity-10"
                     style={{
                       backgroundImage:
-                        'repeating-linear-gradient(135deg, rgba(255,212,0,0.3) 0, rgba(255,212,0,0.3) 2px, transparent 0, transparent 20px)',
+                        'repeating-linear-gradient(135deg, rgba(249,115,22,0.3) 0, rgba(249,115,22,0.3) 2px, transparent 0, transparent 20px)',
                     }}
                   />
                 </div>
 
                 {/* Placeholder center content */}
                 <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-8">
-                  <div className="w-16 h-16 rounded-full bg-brand/20 border border-brand/40 flex items-center justify-center mb-4">
-                    <Truck className="w-8 h-8 text-brand" />
+                  <div className="w-16 h-16 rounded-full bg-orange-500/20 border border-orange-500/40 flex items-center justify-center mb-4">
+                    <Truck className="w-8 h-8 text-orange-400" />
                   </div>
                   <div className="text-white font-bold text-xl mb-1">Fleet Graphix</div>
                   <div className="text-slate-400 text-sm">VehicleWrap.jpg</div>
@@ -187,8 +187,8 @@ export default function FleetGraphix() {
                 </div>
 
                 {/* Corner badge */}
-                <div className="absolute top-4 right-4 glass-brand rounded-lg px-3 py-1.5 border border-brand/30">
-                  <div className="text-brand text-xs font-bold uppercase tracking-wide">In-House</div>
+                <div className="absolute top-4 right-4 glass-orange rounded-lg px-3 py-1.5 border border-orange-500/30">
+                  <div className="text-orange-400 text-xs font-bold uppercase tracking-wide">In-House</div>
                 </div>
               </div>
 
@@ -199,8 +199,8 @@ export default function FleetGraphix() {
                   { value: 'DOT', label: 'Compliant' },
                   { value: 'Faster', label: 'Turnaround' },
                 ].map(({ value, label }) => (
-                  <div key={label} className="bg-charcoal-800 border border-charcoal-700 rounded-xl p-3 text-center">
-                    <div className="text-brand font-bold text-sm">{value}</div>
+                  <div key={label} className="bg-navy-800 border border-navy-700 rounded-xl p-3 text-center">
+                    <div className="text-orange-400 font-bold text-sm">{value}</div>
                     <div className="text-slate-500 text-xs">{label}</div>
                   </div>
                 ))}
@@ -211,11 +211,11 @@ export default function FleetGraphix() {
 
         {/* Bottom value prop */}
         <FadeUp delay={0.4}>
-          <div className="mt-16 p-6 lg:p-8 rounded-2xl bg-charcoal-800/40 border border-charcoal-700 relative overflow-hidden">
-            <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-brand to-brand-dark rounded-l-2xl" />
+          <div className="mt-16 p-6 lg:p-8 rounded-2xl bg-navy-800/40 border border-navy-700 relative overflow-hidden">
+            <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-orange-500 to-orange-600-dark rounded-l-2xl" />
             <div className="grid md:grid-cols-3 gap-6 pl-4">
               <div>
-                <div className="text-brand font-bold text-sm uppercase tracking-wider mb-2">
+                <div className="text-orange-400 font-bold text-sm uppercase tracking-wider mb-2">
                   Save Time
                 </div>
                 <p className="text-slate-400 text-sm leading-relaxed">
@@ -224,7 +224,7 @@ export default function FleetGraphix() {
                 </p>
               </div>
               <div>
-                <div className="text-brand font-bold text-sm uppercase tracking-wider mb-2">
+                <div className="text-orange-400 font-bold text-sm uppercase tracking-wider mb-2">
                   Save Money
                 </div>
                 <p className="text-slate-400 text-sm leading-relaxed">
@@ -233,7 +233,7 @@ export default function FleetGraphix() {
                 </p>
               </div>
               <div>
-                <div className="text-brand font-bold text-sm uppercase tracking-wider mb-2">
+                <div className="text-orange-400 font-bold text-sm uppercase tracking-wider mb-2">
                   Stay Compliant
                 </div>
                 <p className="text-slate-400 text-sm leading-relaxed">

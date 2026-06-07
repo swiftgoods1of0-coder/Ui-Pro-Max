@@ -59,8 +59,8 @@ export default function StatsBar() {
       className="relative overflow-hidden"
       style={{
         backgroundColor: '#1e293b',
-        borderTop: '1px solid #FFD400',
-        borderBottom: '1px solid rgba(255,212,0,0.5)',
+        borderTop: '1px solid #f97316',
+        borderBottom: '1px solid rgba(249,115,22,0.5)',
       }}
       aria-label="Company statistics"
     >
@@ -69,7 +69,7 @@ export default function StatsBar() {
         className="absolute inset-0"
         style={{
           opacity: 0.04,
-          backgroundImage: 'repeating-linear-gradient(45deg, #FFD400 0, #FFD400 1px, transparent 0, transparent 50%)',
+          backgroundImage: 'repeating-linear-gradient(45deg, #f97316 0, #f97316 1px, transparent 0, transparent 50%)',
           backgroundSize: '16px 16px',
         }}
       />
@@ -87,7 +87,7 @@ export default function StatsBar() {
             >
               <div
                 className="text-4xl lg:text-5xl font-bold tracking-tight mb-1"
-                style={{ color: '#FFD400' }}
+                style={{ color: '#f97316' }}
               >
                 <AnimatedCounter
                   target={parseInt(stat.number)}

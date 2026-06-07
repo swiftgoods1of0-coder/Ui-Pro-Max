@@ -1,7 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ['otcfleet.com', 'keystonetrailers.com', 'fleetgraphixpa.com'],
     remotePatterns: [
       {
         protocol: 'https',

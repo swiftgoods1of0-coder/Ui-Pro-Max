@@ -94,7 +94,7 @@ export default function Services() {
         <FadeUp>
           <div className="text-center mb-16">
             <div className="section-eyebrow mb-3">What We Do</div>
-            <div className="brand-line-lg mx-auto mb-6" />
+            <div className="orange-line-lg mx-auto mb-6" />
             <h2 className="text-4xl lg:text-5xl font-bold text-white tracking-tight mb-5">
               Complete Fleet Services
             </h2>
@@ -122,7 +122,7 @@ export default function Services() {
                   border: '1px solid #222222',
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = 'rgba(255,212,0,0.4)'
+                  e.currentTarget.style.borderColor = 'rgba(249,115,22,0.4)'
                   e.currentTarget.style.boxShadow = '0 20px 60px rgba(0,0,0,0.5)'
                 }}
                 onMouseLeave={(e) => {
@@ -133,18 +133,18 @@ export default function Services() {
                 {/* Brand left border accent */}
                 <div
                   className="absolute left-0 top-0 bottom-0 w-0.5 rounded-l-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                  style={{ backgroundColor: '#FFD400' }}
+                  style={{ backgroundColor: '#f97316' }}
                 />
 
                 {/* Icon */}
                 <div
                   className="w-12 h-12 rounded-lg flex items-center justify-center mb-4 transition-all duration-300"
                   style={{
-                    backgroundColor: 'rgba(255,212,0,0.08)',
-                    border: '1px solid rgba(255,212,0,0.15)',
+                    backgroundColor: 'rgba(249,115,22,0.08)',
+                    border: '1px solid rgba(249,115,22,0.15)',
                   }}
                 >
-                  <Icon className="w-6 h-6 transition-colors" style={{ color: '#FFD400' }} />
+                  <Icon className="w-6 h-6 transition-colors" style={{ color: '#f97316' }} />
                 </div>
 
                 {/* Content */}
@@ -168,7 +168,7 @@ export default function Services() {
                 e.preventDefault()
                 document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' })
               }}
-              className="btn-brand inline-flex"
+              className="btn-orange inline-flex"
             >
               View All Services
               <ArrowRight className="w-4 h-4" />
