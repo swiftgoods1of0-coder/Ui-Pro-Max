@@ -873,30 +873,74 @@
   @media (max-width: 900px) {
     .main-product {
       grid-template-columns: 1fr;
+      padding-top: calc(var(--nav-height) + 24px);
+      gap: 0;
     }
 
     .product-gallery {
       grid-template-columns: 1fr;
       position: static;
+      gap: 0;
     }
 
     .product-gallery__thumbs {
+      display: flex;
       flex-direction: row;
       overflow-x: auto;
       order: 2;
       gap: 6px;
+      padding: 12px 0 0;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
     }
+    .product-gallery__thumbs::-webkit-scrollbar { display: none; }
 
     .product-gallery__thumb {
-      width: 64px;
+      width: 60px;
+      aspect-ratio: 3/4;   /* keep portrait ratio on mobile thumbs */
       flex-shrink: 0;
     }
 
-    .product-gallery__main { order: 1; aspect-ratio: 1; }
+    /* Keep portrait aspect — square looks wrong on fashion */
+    .product-gallery__main { order: 1; aspect-ratio: 4/5; }
+
+    .product-info { padding-top: 24px; }
+
+    .product-title { font-size: clamp(24px, 6vw, 38px); margin-bottom: 14px; }
+
+    .product-price-block { margin-bottom: 20px; }
+    .product-price__current { font-size: 26px; }
+    .product-price__compare { font-size: 18px; }
+
+    .product-options { margin-bottom: 20px; }
+    .product-option  { margin-bottom: 18px; }
+
+    .product-option__swatches { gap: 8px; }
+    .product-swatch { width: 36px; height: 36px; } /* bigger for touch */
+
+    .product-option__sizes { gap: 6px; }
+    .product-size {
+      min-width: 44px;
+      height: 44px;   /* 44px Apple / WCAG min touch target */
+      padding: 0 12px;
+    }
+
+    .product-qty__control { width: 100%; justify-content: space-between; }
+    .product-qty__input   { flex: 1; }
+
+    .product-form__actions { gap: 10px; }
+    [data-add-btn]         { width: 100%; }
+
+    .product-accordion__trigger { padding: 16px 0; font-size: 11px; }
+    .product-accordion__body    { font-size: 13px; }
   }
 
   @media (max-width: 480px) {
-    .product-size { min-width: 40px; height: 40px; padding: 0 10px; }
+    .main-product { padding-left: var(--gutter); padding-right: var(--gutter); }
+    .product-title { font-size: clamp(22px, 7vw, 32px); }
+    .product-size  { min-width: 40px; height: 44px; padding: 0 10px; font-size: 11px; }
+    .product-price__current { font-size: 22px; }
+    .product-breadcrumb { font-size: 10px; gap: 6px; }
   }
 </style>
 

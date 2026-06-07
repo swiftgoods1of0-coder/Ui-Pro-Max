@@ -15,8 +15,9 @@
   'use strict';
 
   /* ── Guards ─────────────────────────────────────────────────── */
-  const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const isMobile = () => window.matchMedia('(max-width: 768px)').matches;
+  const REDUCED   = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const IS_TOUCH  = window.matchMedia('(pointer: coarse)').matches;
+  const isMobile  = () => window.matchMedia('(max-width: 768px)').matches;
 
   /* When reduced motion is preferred, reveal everything immediately
      and let CSS/browser handle the rest. */
@@ -86,7 +87,7 @@
     const scroll   = hero.querySelector('.hero__scroll');
     const overlay  = hero.querySelector('.hero__overlay');
 
-    const tl = gsap.timeline({ delay: 0.3, defaults: { ease: 'power4.out' } });
+    const tl = gsap.timeline({ delay: IS_TOUCH ? 0.1 : 0.3, defaults: { ease: 'power4.out' } });
 
     /* 1. Overlay dims in (media is already visible from CSS) */
     if (overlay) {
@@ -106,17 +107,22 @@
       }, 0.3);
     }
 
-    /* 3. Headline: per-line curtain reveal (mask sliding up) */
+    /* 3. Headline: per-line curtain reveal on desktop; simple fade-up on touch */
     if (headline) {
-      const lines = splitByLines(headline);
-      if (lines.length) {
-        gsap.set(lines, { y: '108%' });
-        tl.to(lines, {
-          y: '0%',
-          duration: 1.15,
-          stagger: 0.1,
-          ease: 'power4.out'
-        }, eyebrow ? 0.55 : 0.3);
+      if (IS_TOUCH) {
+        gsap.set(headline, { opacity: 0, y: 24 });
+        tl.to(headline, { opacity: 1, y: 0, duration: 0.85, ease: 'power3.out' }, eyebrow ? 0.45 : 0.2);
+      } else {
+        const lines = splitByLines(headline);
+        if (lines.length) {
+          gsap.set(lines, { y: '108%' });
+          tl.to(lines, {
+            y: '0%',
+            duration: 1.15,
+            stagger: 0.1,
+            ease: 'power4.out'
+          }, eyebrow ? 0.55 : 0.3);
+        }
       }
     }
 
@@ -160,6 +166,20 @@
     document.querySelectorAll(SELECTORS).forEach(heading => {
       /* Don't touch headings inside hero (handled separately) */
       if (heading.closest('.hero')) return;
+
+      /* On touch devices skip DOM-splitting — use simple fade-up instead */
+      if (IS_TOUCH) {
+        if (heading._sg) return;
+        heading._sg = true;
+        gsap.set(heading, { opacity: 0, y: 28 });
+        ScrollTrigger.create({
+          trigger: heading,
+          start: 'top 90%',
+          once: true,
+          onEnter: () => { gsap.to(heading, { opacity: 1, y: 0, duration: 0.75, ease: 'power3.out' }); }
+        });
+        return;
+      }
 
       const words = splitToWords(heading);
       if (!words.length) return;
@@ -785,8 +805,6 @@
     initScrollFadeIns(gsap, ScrollTrigger);
     initImageReveal(gsap, ScrollTrigger);
     initParallax(gsap, ScrollTrigger);
-    initProductCardHover(gsap);
-    initButtonHover(gsap);
     initLineDraws(gsap, ScrollTrigger);
     initCounters(gsap, ScrollTrigger);
     initCraftFeatures(gsap, ScrollTrigger);
@@ -795,7 +813,13 @@
     initNewsletterReveal(gsap, ScrollTrigger);
     initYearBadge(gsap, ScrollTrigger);
     initTicker(gsap);
-    initNavHover(gsap);
+
+    /* Hover-only modules — skip on touch devices */
+    if (!IS_TOUCH) {
+      initProductCardHover(gsap);
+      initButtonHover(gsap);
+      initNavHover(gsap);
+    }
 
     /* ScrollPlugin for smooth anchor scroll (optional, loaded separately) */
     if (window.ScrollToPlugin) {
@@ -817,8 +841,6 @@
       initHeadingReveal(gsap, ScrollTrigger);
       initScrollFadeIns(gsap, ScrollTrigger);
       initImageReveal(gsap, ScrollTrigger);
-      initProductCardHover(gsap);
-      initButtonHover(gsap);
       initLineDraws(gsap, ScrollTrigger);
       initCounters(gsap, ScrollTrigger);
       initCraftFeatures(gsap, ScrollTrigger);
@@ -827,6 +849,10 @@
       initNewsletterReveal(gsap, ScrollTrigger);
       initYearBadge(gsap, ScrollTrigger);
       initTicker(gsap);
+      if (!IS_TOUCH) {
+        initProductCardHover(gsap);
+        initButtonHover(gsap);
+      }
       ScrollTrigger.refresh();
     }, 120);
   }
