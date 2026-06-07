@@ -225,46 +225,13 @@ window.SwiftGoods = window.SwiftGoods || {};
 window.SwiftGoods.addToCart = addToCart;
 window.SwiftGoods.openCart = openCart;
 
-/* ── Scroll Animations ───────────────────────────────────────── */
-function initScrollAnimations() {
-  const elements = $$('[data-animate]');
-  if (!elements.length) return;
-
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('is-visible');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, {
-    threshold: 0.1,
-    rootMargin: '0px 0px -40px 0px',
-  });
-
-  elements.forEach(el => observer.observe(el));
-}
-
-/* ── Hero Parallax ───────────────────────────────────────────── */
-function initHeroParallax() {
-  const heroMedia = $('.hero__media');
-  if (!heroMedia) return;
-
-  let ticking = false;
-
-  const onScroll = () => {
-    if (!ticking) {
-      requestAnimationFrame(() => {
-        const scrollY = window.scrollY;
-        const speed = 0.3;
-        heroMedia.style.transform = `translateY(${scrollY * speed}px)`;
-        ticking = false;
-      });
-      ticking = true;
-    }
-  };
-
-  window.addEventListener('scroll', onScroll, { passive: true });
+/* ── Scroll Animations (CSS fallback — GSAP takes over when loaded) ─ */
+function initScrollAnimationsFallback() {
+  /* GSAP handles this — only activate if GSAP hasn't loaded after 2.5s */
+  setTimeout(() => {
+    if (window.SwiftGoods?.gsapReady) return;
+    $$('[data-animate]').forEach(el => el.classList.add('is-visible'));
+  }, 2500);
 }
 
 /* ── Video Autoplay ──────────────────────────────────────────── */
@@ -454,8 +421,7 @@ function initAnnounceBar() {
 document.addEventListener('DOMContentLoaded', () => {
   initNavigation();
   initCart();
-  initScrollAnimations();
-  initHeroParallax();
+  initScrollAnimationsFallback(); /* GSAP animations.js takes over when loaded */
   initVideos();
   initNewsletterForm();
   initSocialGallery();
@@ -471,8 +437,8 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /* ── Shopify Section Events (for theme editor) ───────────────── */
-document.addEventListener('shopify:section:load', (e) => {
-  initScrollAnimations();
+document.addEventListener('shopify:section:load', () => {
+  /* GSAP animations.js handles scroll-based re-init via shopify:section:load */
   initVideos();
   initSocialGallery();
   initTicker();

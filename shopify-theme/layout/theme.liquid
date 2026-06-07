@@ -27,6 +27,11 @@
   <!-- Theme CSS -->
   {{ 'theme.css' | asset_url | stylesheet_tag }}
 
+  <!-- GSAP + ScrollTrigger (CDN — loaded before body renders) -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
+  <script src="{{ 'animations.js' | asset_url }}" defer></script>
+
   <!-- Canonical -->
   <link rel="canonical" href="{{ canonical_url }}">
 
