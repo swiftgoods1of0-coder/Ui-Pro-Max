@@ -1,5 +1,6 @@
 {%- assign text_color = section.settings.text_color | default: '#f0ebe0' -%}
-{%- assign overlay_color = section.settings.overlay_color | default: 'rgba(8,8,8,0.55)' -%}
+{%- assign use_3d = section.settings.enable_3d -%}
+{%- assign spline_url = section.settings.spline_url -%}
 
 <section
   class="hero hero--align-{{ section.settings.text_alignment }}"
@@ -7,13 +8,44 @@
   data-section-id="{{ section.id }}"
   style="
     color: {{ text_color }};
-    --hero-height: {{ section.settings.min_height }}svh;
+    min-height: clamp(600px, {{ section.settings.min_height }}svh, 100svh);
   "
 >
 
-  <!-- Background Media -->
-  <div class="hero__media">
-    {%- if section.settings.video_url != blank -%}
+  <!-- ── Background Media ──────────────────────────────────────── -->
+  <div class="hero__media" id="hero-media-{{ section.id }}">
+
+    {%- if use_3d and spline_url != blank -%}
+      <!-- Spline 3D embed -->
+      <div class="hero__spline" id="hero-spline-{{ section.id }}" aria-hidden="true">
+        <iframe
+          src="{{ spline_url }}"
+          frameborder="0"
+          width="100%"
+          height="100%"
+          loading="lazy"
+          title="3D brand experience"
+          style="position:absolute;inset:0;width:100%;height:100%;border:none;"
+        ></iframe>
+      </div>
+
+      <!-- Spline fallback: shown until iframe loads -->
+      {%- if section.settings.fallback_image != blank -%}
+        <div class="hero__spline-fallback" id="hero-spline-fallback-{{ section.id }}">
+          {{
+            section.settings.fallback_image
+            | image_url: width: 1920
+            | image_tag:
+              loading: 'eager',
+              fetchpriority: 'high',
+              width: 1920,
+              alt: section.settings.fallback_image.alt | default: shop.name
+          }}
+        </div>
+      {%- endif -%}
+
+    {%- elsif section.settings.video_url != blank -%}
+      <!-- Video background -->
       <video
         src="{{ section.settings.video_url }}"
         autoplay
@@ -23,33 +55,39 @@
         preload="metadata"
         data-autoplay
         aria-hidden="true"
-        poster="{% if section.settings.image != blank %}{{ section.settings.image | image_url: width: 1920 }}{% endif %}"
+        {%- if section.settings.fallback_image != blank -%}
+          poster="{{ section.settings.fallback_image | image_url: width: 1920 }}"
+        {%- endif -%}
       ></video>
-    {%- elsif section.settings.image != blank -%}
+
+    {%- elsif section.settings.fallback_image != blank -%}
+      <!-- Static image background -->
       {{
-        section.settings.image
+        section.settings.fallback_image
         | image_url: width: 1920
         | image_tag:
           loading: 'eager',
           fetchpriority: 'high',
           width: 1920,
-          alt: section.settings.image.alt | default: shop.name
+          alt: section.settings.fallback_image.alt | default: shop.name
       }}
+
     {%- else -%}
-      <!-- Fallback gradient when no media is set -->
-      <div style="width:100%;height:100%;background:linear-gradient(160deg,#0a0a0a 0%,#1a1a1a 50%,#0d0d0d 100%);"></div>
+      <!-- Gradient placeholder -->
+      <div style="width:100%;height:100%;background:linear-gradient(160deg,#0a0a0a 0%,#1c1c1c 50%,#0a0a0a 100%);"></div>
     {%- endif -%}
+
   </div>
 
-  <!-- Overlay -->
+  <!-- ── Overlay ───────────────────────────────────────────────── -->
   <div
     class="hero__overlay"
-    style="background: {{ section.settings.overlay_color | default: 'rgba(8,8,8,0.55)' }};"
+    style="background:{{ section.settings.overlay_color | default: '#000000' }};opacity:{{ section.settings.overlay_opacity | divided_by: 100.0 }};"
     aria-hidden="true"
   ></div>
 
-  <!-- Content -->
-  <div class="hero__content container" style="--text-align: {{ section.settings.text_alignment }};">
+  <!-- ── Content ───────────────────────────────────────────────── -->
+  <div class="hero__content container">
 
     {%- if section.settings.eyebrow != blank -%}
       <span class="hero__eyebrow" data-animate>{{ section.settings.eyebrow }}</span>
@@ -81,9 +119,10 @@
         {%- endif -%}
       </div>
     {%- endif -%}
+
   </div>
 
-  <!-- Scroll indicator -->
+  <!-- ── Scroll Indicator ──────────────────────────────────────── -->
   {%- if section.settings.show_scroll_indicator -%}
     <div class="hero__scroll" aria-hidden="true">
       <div class="hero__scroll-line"></div>
@@ -95,7 +134,38 @@
 
 <style>
   #hero-{{ section.id }} {
-    min-height: clamp(600px, {{ section.settings.min_height }}svh, 100svh);
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+    padding-top: var(--nav-height);
+  }
+
+  /* Spline iframe container */
+  #hero-spline-{{ section.id }} {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  /* Fallback image sits behind iframe, hidden once Spline loads */
+  .hero__spline-fallback {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    transition: opacity 0.6s ease;
+  }
+
+  .hero__spline-fallback img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .hero__spline-fallback.is-hidden {
+    opacity: 0;
+    pointer-events: none;
   }
 
   {%- if section.settings.text_alignment == 'center' -%}
@@ -106,8 +176,8 @@
       text-align: center;
     }
     #hero-{{ section.id }} .hero__headline { max-width: 18ch; }
-    #hero-{{ section.id }} .hero__subtext { max-width: 54ch; }
-    #hero-{{ section.id }} .hero__actions { justify-content: center; }
+    #hero-{{ section.id }} .hero__subtext  { max-width: 52ch; }
+    #hero-{{ section.id }} .hero__actions  { justify-content: center; }
   {%- elsif section.settings.text_alignment == 'right' -%}
     #hero-{{ section.id }} .hero__content {
       display: flex;
@@ -118,6 +188,28 @@
   {%- endif -%}
 </style>
 
+<script>
+  (function () {
+    var id = '{{ section.id }}';
+    var splineEnabled = {{ use_3d | json }};
+    var splineEl = document.getElementById('hero-spline-' + id);
+    var fallbackEl = document.getElementById('hero-spline-fallback-' + id);
+
+    if (!splineEnabled || !splineEl) return;
+
+    /* Hide fallback once Spline iframe fires load event */
+    var iframe = splineEl.querySelector('iframe');
+    if (iframe && fallbackEl) {
+      iframe.addEventListener('load', function () {
+        /* Small delay to let Spline's WebGL scene init */
+        setTimeout(function () {
+          fallbackEl.classList.add('is-hidden');
+        }, 800);
+      });
+    }
+  })();
+</script>
+
 {% schema %}
 {
   "name": "Hero",
@@ -126,39 +218,56 @@
   "settings": [
     {
       "type": "header",
-      "content": "Media"
+      "content": "3D Experience"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_3d",
+      "label": "Enable 3D / Spline experience",
+      "default": false,
+      "info": "Paste a Spline scene URL below. Spline is free at spline.design"
+    },
+    {
+      "type": "text",
+      "id": "spline_url",
+      "label": "Spline scene embed URL",
+      "info": "From Spline → Export → Viewer. Looks like: https://my.spline.design/..."
+    },
+    {
+      "type": "header",
+      "content": "Background Media"
     },
     {
       "type": "image_picker",
-      "id": "image",
-      "label": "Background image"
+      "id": "fallback_image",
+      "label": "Background image (also used as Spline fallback)",
+      "info": "Shown while 3D loads, or when 3D is disabled"
     },
     {
       "type": "text",
       "id": "video_url",
-      "label": "Background video URL",
-      "info": "Enter a direct .mp4 URL. Hosted video takes priority over image."
+      "label": "Background video URL (.mp4)",
+      "info": "Used when 3D is disabled. Direct .mp4 URL only."
     },
     {
       "type": "color",
       "id": "overlay_color",
       "label": "Overlay color",
-      "default": "#000000",
-      "info": "Set opacity by adding alpha value"
+      "default": "#000000"
     },
     {
       "type": "range",
       "id": "overlay_opacity",
       "label": "Overlay opacity",
       "min": 0,
-      "max": 100,
+      "max": 90,
       "step": 5,
-      "default": 55,
+      "default": 50,
       "unit": "%"
     },
     {
       "type": "header",
-      "content": "Content"
+      "content": "Text Content"
     },
     {
       "type": "text",
@@ -170,6 +279,7 @@
       "type": "textarea",
       "id": "headline",
       "label": "Headline",
+      "info": "Each line break creates a new reveal line",
       "default": "Elevated\nStreets.\nRefined\nEdge."
     },
     {
@@ -186,7 +296,7 @@
     },
     {
       "type": "header",
-      "content": "Call to Action"
+      "content": "Buttons"
     },
     {
       "type": "text",
@@ -246,6 +356,7 @@
     {
       "name": "Hero",
       "settings": {
+        "enable_3d": false,
         "eyebrow": "New Collection — 2025",
         "headline": "Elevated\nStreets.\nRefined\nEdge.",
         "subtext": "Premium streetwear crafted for those who move with purpose.",
@@ -253,6 +364,7 @@
         "cta_secondary_label": "Our Story",
         "text_alignment": "left",
         "min_height": 100,
+        "overlay_opacity": 50,
         "show_scroll_indicator": true
       }
     }

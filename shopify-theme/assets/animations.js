@@ -381,35 +381,38 @@
       if (card._sgHover) return;
       card._sgHover = true;
 
-      const img      = card.querySelector('.product-card__media img');
-      const media    = card.querySelector('.product-card__media');
       const title    = card.querySelector('.product-card__title');
       const quickAdd = card.querySelector('.product-card__quick-add');
+      const actions  = card.querySelector('.product-card__actions');
 
-      /* Baseline: ensure quick-add is properly hidden */
+      /* CSS handles the primary↔hover image swap via transition classes.
+         GSAP manages: quick-add slide, title tint, action buttons.
+         Image scale/swap is CSS-driven (no conflict). */
       if (quickAdd) gsap.set(quickAdd, { y: '100%' });
+      if (actions)  gsap.set(actions,  { opacity: 0, x: 8 });
 
       card.addEventListener('mouseenter', () => {
-        if (img) {
-          gsap.to(img, {
-            scale: 1.07,
-            duration: 0.72,
-            ease: 'power2.out',
-            overwrite: 'auto'
-          });
-        }
         if (quickAdd) {
           gsap.to(quickAdd, {
             y: '0%',
-            duration: 0.42,
+            duration: 0.4,
             ease: 'power3.out',
+            overwrite: 'auto'
+          });
+        }
+        if (actions) {
+          gsap.to(actions, {
+            opacity: 1,
+            x: 0,
+            duration: 0.32,
+            ease: 'power2.out',
             overwrite: 'auto'
           });
         }
         if (title) {
           gsap.to(title, {
             color: 'var(--accent)',
-            duration: 0.3,
+            duration: 0.28,
             ease: 'power2.out',
             overwrite: 'auto'
           });
@@ -417,26 +420,27 @@
       });
 
       card.addEventListener('mouseleave', () => {
-        if (img) {
-          gsap.to(img, {
-            scale: 1,
-            duration: 0.72,
-            ease: 'power2.inOut',
-            overwrite: 'auto'
-          });
-        }
         if (quickAdd) {
           gsap.to(quickAdd, {
             y: '100%',
-            duration: 0.36,
+            duration: 0.32,
             ease: 'power3.in',
+            overwrite: 'auto'
+          });
+        }
+        if (actions) {
+          gsap.to(actions, {
+            opacity: 0,
+            x: 8,
+            duration: 0.24,
+            ease: 'power2.in',
             overwrite: 'auto'
           });
         }
         if (title) {
           gsap.to(title, {
             color: 'var(--text)',
-            duration: 0.3,
+            duration: 0.28,
             ease: 'power2.out',
             overwrite: 'auto'
           });

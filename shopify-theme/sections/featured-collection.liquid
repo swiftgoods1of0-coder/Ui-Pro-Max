@@ -1,6 +1,6 @@
 {%- assign collection = collections[section.settings.collection] -%}
 {%- assign products_count = section.settings.products_count | default: 4 -%}
-{%- assign columns = section.settings.columns | default: 4 -%}
+{%- assign columns = section.settings.columns | default: '4' -%}
 
 <section
   class="featured-collection"
@@ -34,96 +34,173 @@
     </div>
 
     <!-- Products Grid -->
-    {%- if collection != blank and collection.products.size > 0 -%}
-      <div
-        class="products-grid"
-        style="--cols: {{ columns }};"
-      >
-        {%- for product in collection.products limit: products_count -%}
-          {%- assign is_on_sale = false -%}
-          {%- if product.compare_at_price > product.price -%}
-            {%- assign is_on_sale = true -%}
-          {%- endif -%}
+    <div
+      class="products-grid"
+      style="--cols: {{ columns }};"
+    >
+      {%- if collection != blank and collection.products.size > 0 -%}
 
-          <article class="product-card" data-animate data-animate-delay="{{ forloop.index }}">
-            <a href="{{ product.url }}" aria-label="{{ product.title }}">
+        {%- for product in collection.products limit: products_count -%}
+          {%- assign is_on_sale    = false -%}
+          {%- assign is_sold_out   = false -%}
+          {%- if product.compare_at_price > product.price -%}{%- assign is_on_sale = true -%}{%- endif -%}
+          {%- unless product.available -%}{%- assign is_sold_out = true -%}{%- endunless -%}
+
+          {%- assign first_variant = product.selected_or_first_available_variant -%}
+          {%- assign hover_image = product.images[1] -%}
+
+          <article
+            class="product-card{% if is_sold_out %} product-card--sold-out{% endif %}{% unless hover_image %} product-card--no-hover{% endunless %}"
+            data-product-id="{{ product.id }}"
+          >
+            <!-- Media -->
+            <a href="{{ product.url }}" class="product-card__media-link" tabindex="-1" aria-hidden="true">
               <div class="product-card__media">
 
-                <!-- Sale Badge -->
-                {%- if is_on_sale and section.settings.show_sale_badge -%}
-                  <span class="product-card__badge">Sale</span>
+                <!-- Badges -->
+                <div class="product-card__badges">
+                  {%- if is_sold_out -%}
+                    <span class="product-card__badge product-card__badge--sold-out">Sold Out</span>
+                  {%- elsif is_on_sale and section.settings.show_sale_badge -%}
+                    {%- assign savings = product.compare_at_price | minus: product.price -%}
+                    {%- assign savings_pct = savings | times: 100 | divided_by: product.compare_at_price -%}
+                    <span class="product-card__badge product-card__badge--sale">−{{ savings_pct }}%</span>
+                  {%- endif -%}
+                  {%- if product.tags contains 'new' or product.tags contains 'New' -%}
+                    <span class="product-card__badge product-card__badge--new">New</span>
+                  {%- endif -%}
+                </div>
+
+                <!-- Wishlist / Quick View actions -->
+                {%- if section.settings.show_wishlist -%}
+                  <div class="product-card__actions">
+                    <button class="product-card__action-btn" aria-label="Save {{ product.title }}">
+                      <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                      </svg>
+                    </button>
+                  </div>
                 {%- endif -%}
 
-                <!-- Primary Image -->
+                <!-- Primary image -->
                 {%- if product.featured_image != blank -%}
                   {{
                     product.featured_image
-                    | image_url: width: 700
+                    | image_url: width: 800
                     | image_tag:
                       loading: 'lazy',
-                      width: 700,
+                      width: 800,
                       alt: product.featured_image.alt | default: product.title,
-                      class: 'product-card__img'
+                      class: 'product-card__img--primary'
                   }}
                 {%- else -%}
-                  <div style="width:100%;height:100%;background:var(--bg-elevated);display:flex;align-items:center;justify-content:center;">
+                  <div class="product-card__img--primary" style="background:var(--bg-elevated);display:flex;align-items:center;justify-content:center;">
                     <span style="font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-dim);">No Image</span>
                   </div>
                 {%- endif -%}
 
+                <!-- Hover / secondary image -->
+                {%- if hover_image != blank -%}
+                  {{
+                    hover_image
+                    | image_url: width: 800
+                    | image_tag:
+                      loading: 'lazy',
+                      width: 800,
+                      alt: hover_image.alt | default: product.title,
+                      class: 'product-card__img--hover'
+                  }}
+                {%- endif -%}
+
                 <!-- Quick Add -->
-                {%- if section.settings.show_quick_add -%}
+                {%- if section.settings.show_quick_add and product.available -%}
                   <button
                     class="product-card__quick-add"
-                    data-add-to-cart="{{ product.selected_or_first_available_variant.id }}"
+                    data-add-to-cart="{{ first_variant.id }}"
                     aria-label="Quick add {{ product.title }}"
                   >
-                    Quick Add
+                    {%- if first_variant.available -%}
+                      Quick Add
+                    {%- else -%}
+                      Select Options
+                    {%- endif -%}
                   </button>
+                {%- elsif is_sold_out -%}
+                  <div class="product-card__quick-add" style="cursor:default;opacity:0.5;">Sold Out</div>
                 {%- endif -%}
+
               </div>
             </a>
 
+            <!-- Info -->
             <div class="product-card__info">
-              {%- if section.settings.show_vendor and product.vendor != blank -%}
-                <p class="product-card__vendor">{{ product.vendor }}</p>
-              {%- endif -%}
+
+              <div class="product-card__meta">
+                {%- if section.settings.show_vendor and product.vendor != blank -%}
+                  <span class="product-card__vendor">{{ product.vendor }}</span>
+                {%- endif -%}
+                {%- if product.tags contains 'exclusive' or product.tags contains 'Exclusive' -%}
+                  <span class="product-card__tag">Exclusive</span>
+                {%- endif -%}
+              </div>
 
               <h3 class="product-card__title">
                 <a href="{{ product.url }}">{{ product.title }}</a>
               </h3>
 
-              <div class="product-card__price">
-                {%- if is_on_sale -%}
-                  <span class="price price--sale">{{ product.price | money }}</span>
-                  <span class="price price--compare">{{ product.compare_at_price | money }}</span>
-                {%- else -%}
-                  <span class="price">{{ product.price | money }}</span>
+              <div class="product-card__bottom">
+                <div class="product-card__price">
+                  {%- if is_on_sale -%}
+                    <span class="price price--sale">{{ product.price | money }}</span>
+                    <span class="price price--compare">{{ product.compare_at_price | money }}</span>
+                  {%- elsif is_sold_out -%}
+                    <span class="price" style="color:var(--text-dim);">{{ product.price | money }}</span>
+                  {%- else -%}
+                    <span class="price">{{ product.price | money }}</span>
+                  {%- endif -%}
+                </div>
+
+                <!-- Color swatches (if product has color options) -->
+                {%- assign color_option = product.options_by_name['Color'] | default: product.options_by_name['Colour'] -%}
+                {%- if color_option and section.settings.show_swatches -%}
+                  <div class="product-card__swatches">
+                    {%- for value in color_option.values limit: 4 -%}
+                      <span
+                        class="product-card__swatch"
+                        style="background-color:{{ value | handle | replace: '-', '' }};"
+                        title="{{ value }}"
+                        aria-label="{{ value }}"
+                      ></span>
+                    {%- endfor -%}
+                  </div>
                 {%- endif -%}
               </div>
+
             </div>
           </article>
-        {%- endfor -%}
-      </div>
 
-    {%- else -%}
-      <!-- Empty state / placeholder -->
-      <div class="products-grid" style="--cols: {{ columns }};">
+        {%- endfor -%}
+
+      {%- else -%}
+        <!-- Placeholder cards when no collection is selected -->
         {%- for i in (1..products_count) -%}
-          <div class="product-card" data-animate data-animate-delay="{{ i }}">
-            <div class="product-card__media" style="background:var(--bg-card);">
+          <div class="product-card">
+            <div class="product-card__media" style="aspect-ratio:3/4;background:var(--bg-card);">
               <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;">
                 <span style="font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-dim);">Select a collection</span>
               </div>
             </div>
             <div class="product-card__info">
+              <div class="product-card__meta"></div>
               <p class="product-card__title" style="color:var(--text-dim);">Product Name</p>
-              <p class="price" style="color:var(--text-dim);">$000.00</p>
+              <div class="product-card__bottom">
+                <div class="product-card__price"><span class="price" style="color:var(--text-dim);">$000.00</span></div>
+              </div>
             </div>
           </div>
         {%- endfor -%}
-      </div>
-    {%- endif -%}
+      {%- endif -%}
+    </div>
 
   </div>
 </section>
@@ -190,6 +267,10 @@
       "default": "4"
     },
     {
+      "type": "header",
+      "content": "Card Options"
+    },
+    {
       "type": "checkbox",
       "id": "show_vendor",
       "label": "Show vendor",
@@ -198,13 +279,25 @@
     {
       "type": "checkbox",
       "id": "show_sale_badge",
-      "label": "Show sale badge",
+      "label": "Show sale badge with % off",
       "default": true
     },
     {
       "type": "checkbox",
       "id": "show_quick_add",
       "label": "Show quick add button",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_wishlist",
+      "label": "Show wishlist button",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_swatches",
+      "label": "Show color swatches",
       "default": true
     },
     {
@@ -246,7 +339,10 @@
         "heading": "The Collection",
         "cta_label": "Shop All",
         "products_count": 4,
-        "columns": "4"
+        "columns": "4",
+        "show_quick_add": true,
+        "show_sale_badge": true,
+        "show_wishlist": true
       }
     }
   ]

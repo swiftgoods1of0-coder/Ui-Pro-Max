@@ -375,22 +375,29 @@ function initLazyImages() {
 /* ── Add To Cart Buttons ─────────────────────────────────────── */
 function initProductCards() {
   $$('[data-add-to-cart]').forEach(btn => {
+    if (btn._atcBound) return;
+    btn._atcBound = true;
+
     btn.addEventListener('click', async (e) => {
       e.preventDefault();
       const variantId = btn.dataset.addToCart;
-      if (!variantId) return;
+      if (!variantId || btn.disabled) return;
 
-      const originalText = btn.textContent;
-      btn.textContent = 'Adding...';
+      const originalText = btn.textContent.trim();
+      btn.textContent = '—';
       btn.disabled = true;
+      btn.classList.remove('is-added');
 
       await addToCart(variantId);
 
-      btn.textContent = 'Added';
+      btn.textContent = 'Added ✓';
+      btn.classList.add('is-added');
+
       setTimeout(() => {
         btn.textContent = originalText;
+        btn.classList.remove('is-added');
         btn.disabled = false;
-      }, 2000);
+      }, 2200);
     });
   });
 }
