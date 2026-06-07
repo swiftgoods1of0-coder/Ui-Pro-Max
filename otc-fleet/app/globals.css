@@ -1,0 +1,318 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================
+   BASE STYLES
+   ============================================ */
+
+:root {
+  --navy-950: #040d1a;
+  --navy-900: #0a1628;
+  --navy-800: #0d1f3c;
+  --navy-700: #112244;
+  --navy-600: #1a3366;
+  --orange: #f97316;
+  --orange-dark: #ea580c;
+  --steel: #1e293b;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: var(--navy-950);
+  color: #f8fafc;
+  font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  overflow-x: hidden;
+}
+
+/* ============================================
+   CUSTOM SCROLLBAR
+   ============================================ */
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--navy-900);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--navy-600);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--orange);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--navy-600) var(--navy-900);
+}
+
+/* ============================================
+   GLASSMORPHISM UTILITIES
+   ============================================ */
+
+@layer utilities {
+  .glass {
+    background: rgba(10, 22, 40, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .glass-light {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .glass-orange {
+    background: rgba(249, 115, 22, 0.1);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(249, 115, 22, 0.2);
+  }
+
+  /* ============================================
+     GRADIENT TEXT
+     ============================================ */
+
+  .gradient-text {
+    background: linear-gradient(135deg, #f97316 0%, #fb923c 50%, #fdba74 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .gradient-text-white {
+    background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* ============================================
+     DIAMOND PLATE TEXTURE
+     ============================================ */
+
+  .diamond-plate {
+    background-image: repeating-linear-gradient(
+      45deg,
+      rgba(249, 115, 22, 0.04) 0,
+      rgba(249, 115, 22, 0.04) 1px,
+      transparent 0,
+      transparent 50%
+    );
+    background-size: 20px 20px;
+  }
+
+  .grid-overlay {
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  /* ============================================
+     SECTION UTILITIES
+     ============================================ */
+
+  .section-eyebrow {
+    @apply text-orange-400 text-xs font-bold tracking-[0.2em] uppercase;
+  }
+
+  .section-title {
+    @apply text-white font-bold tracking-tight;
+  }
+
+  .section-body {
+    @apply text-slate-300 leading-relaxed;
+  }
+
+  /* ============================================
+     CARD UTILITIES
+     ============================================ */
+
+  .card-base {
+    @apply bg-navy-800 border border-navy-700 rounded-xl p-6 transition-all duration-300;
+  }
+
+  .card-hover {
+    @apply hover:border-orange-500/40 hover:shadow-[0_20px_60px_rgba(0,0,0,0.4)] hover:-translate-y-1;
+  }
+
+  /* ============================================
+     BUTTON UTILITIES
+     ============================================ */
+
+  .btn-orange {
+    @apply bg-orange-500 hover:bg-orange-600 text-white font-semibold px-6 py-3 rounded-lg transition-all duration-200 inline-flex items-center gap-2 shadow-lg hover:shadow-orange-500/30 hover:-translate-y-0.5 active:translate-y-0;
+  }
+
+  .btn-outline-white {
+    @apply border border-white/30 hover:border-white/60 text-white font-semibold px-6 py-3 rounded-lg transition-all duration-200 inline-flex items-center gap-2 hover:bg-white/5 hover:-translate-y-0.5;
+  }
+
+  .btn-outline-steel {
+    @apply border border-slate-600 hover:border-slate-400 text-slate-300 hover:text-white font-semibold px-6 py-3 rounded-lg transition-all duration-200 inline-flex items-center gap-2 hover:bg-slate-800/50 hover:-translate-y-0.5;
+  }
+
+  /* ============================================
+     ORANGE ACCENT LINE
+     ============================================ */
+
+  .orange-line {
+    @apply w-12 h-1 bg-orange-500 rounded-full;
+  }
+
+  .orange-line-lg {
+    @apply w-20 h-1 bg-orange-500 rounded-full;
+  }
+}
+
+/* ============================================
+   ANIMATION KEYFRAMES
+   ============================================ */
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes pulse-border {
+  0%, 100% {
+    border-color: rgba(249, 115, 22, 0.3);
+  }
+  50% {
+    border-color: rgba(249, 115, 22, 0.8);
+  }
+}
+
+/* ============================================
+   FORM STYLES
+   ============================================ */
+
+.form-input {
+  @apply w-full bg-navy-900 border border-navy-600 text-white placeholder-slate-500 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500/50 transition-all duration-200;
+}
+
+.form-label {
+  @apply block text-sm font-medium text-slate-300 mb-1.5;
+}
+
+/* ============================================
+   SELECTION STYLE
+   ============================================ */
+
+::selection {
+  background-color: rgba(249, 115, 22, 0.3);
+  color: #ffffff;
+}
+
+/* ============================================
+   LINK HOVER UNDERLINE
+   ============================================ */
+
+.link-hover {
+  @apply text-slate-400 hover:text-orange-400 transition-colors duration-200;
+}
+
+/* ============================================
+   ORANGE BORDER LEFT CARD
+   ============================================ */
+
+.border-l-orange {
+  border-left: 3px solid #f97316;
+}
+
+/* ============================================
+   RESPONSIVE VIDEO/ASPECT RATIO
+   ============================================ */
+
+.aspect-video-custom {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+}
+
+/* ============================================
+   NAV LINK ACTIVE STATE
+   ============================================ */
+
+.nav-link {
+  @apply text-slate-300 hover:text-white text-sm font-medium transition-colors duration-200 relative;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: #f97316;
+  transition: width 0.2s ease;
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
