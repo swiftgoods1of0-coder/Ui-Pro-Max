@@ -1,3 +1,9 @@
+<style>
+  #brand-story-{{ section.id }} .section-eyebrow { color: {{ section.settings.color_eyebrow | default: '#c9a84c' }}; }
+  #brand-story-{{ section.id }} .brand-story__heading { color: {{ section.settings.color_heading | default: '#f0ebe0' }}; }
+  #brand-story-{{ section.id }} .brand-story__body { color: {{ section.settings.color_body | default: '#a09080' }}; }
+  #brand-story-{{ section.id }} .brand-story__quote { color: {{ section.settings.color_quote | default: '#f0ebe0' }}; }
+</style>
 <section
   class="brand-story"
   id="brand-story-{{ section.id }}"
@@ -6,6 +12,7 @@
     padding-bottom: {{ section.settings.padding_bottom }}px;
     background-color: {{ section.settings.bg_color }};
   "
+  {%- unless section.settings.animation_enabled -%}data-no-anim{%- endunless -%}
 >
   <div class="container">
     <div class="brand-story__inner brand-story__inner--{{ section.settings.layout }}">
@@ -355,6 +362,44 @@
       "step": 8,
       "default": 120,
       "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Text Colors"
+    },
+    {
+      "type": "color",
+      "id": "color_heading",
+      "label": "Heading color",
+      "default": "#f0ebe0"
+    },
+    {
+      "type": "color",
+      "id": "color_body",
+      "label": "Body text color",
+      "default": "#a09080"
+    },
+    {
+      "type": "color",
+      "id": "color_quote",
+      "label": "Pull quote color",
+      "default": "#f0ebe0"
+    },
+    {
+      "type": "color",
+      "id": "color_eyebrow",
+      "label": "Eyebrow label color",
+      "default": "#c9a84c"
+    },
+    {
+      "type": "header",
+      "content": "Animations"
+    },
+    {
+      "type": "checkbox",
+      "id": "animation_enabled",
+      "label": "Enable scroll animations",
+      "default": true
     }
   ],
   "presets": [

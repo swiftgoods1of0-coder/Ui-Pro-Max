@@ -1,3 +1,12 @@
+<style>
+  #newsletter-{{ section.id }} .section-eyebrow { color: {{ section.settings.color_eyebrow | default: '#c9a84c' }}; }
+  #newsletter-{{ section.id }} .newsletter__heading { color: {{ section.settings.color_heading | default: '#f0ebe0' }}; }
+  #newsletter-{{ section.id }} .newsletter__subtext { color: {{ section.settings.color_body | default: '#a09080' }}; }
+  #newsletter-{{ section.id }} .newsletter__input {
+    background: {{ section.settings.input_bg | default: '#0f0f0f' }};
+    border-color: {{ section.settings.input_border | default: '#2a2a2a' }};
+  }
+</style>
 <section
   class="newsletter"
   id="newsletter-{{ section.id }}"
@@ -9,6 +18,7 @@
     border-top: 1px solid {{ section.settings.border_color }};
     border-bottom: 1px solid {{ section.settings.border_color }};
   "
+  {%- unless section.settings.animation_enabled -%}data-no-anim{%- endunless -%}
 >
   <div class="container">
     <div class="newsletter__inner newsletter__inner--{{ section.settings.layout }}">
@@ -260,6 +270,54 @@
       "step": 8,
       "default": 96,
       "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Text Colors"
+    },
+    {
+      "type": "color",
+      "id": "color_heading",
+      "label": "Heading color",
+      "default": "#f0ebe0"
+    },
+    {
+      "type": "color",
+      "id": "color_body",
+      "label": "Subtext / body color",
+      "default": "#a09080"
+    },
+    {
+      "type": "color",
+      "id": "color_eyebrow",
+      "label": "Eyebrow label color",
+      "default": "#c9a84c"
+    },
+    {
+      "type": "header",
+      "content": "Input Styling"
+    },
+    {
+      "type": "color",
+      "id": "input_bg",
+      "label": "Input field background",
+      "default": "#0f0f0f"
+    },
+    {
+      "type": "color",
+      "id": "input_border",
+      "label": "Input field border",
+      "default": "#2a2a2a"
+    },
+    {
+      "type": "header",
+      "content": "Animations"
+    },
+    {
+      "type": "checkbox",
+      "id": "animation_enabled",
+      "label": "Enable scroll animations",
+      "default": true
     }
   ],
   "presets": [

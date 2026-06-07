@@ -1,7 +1,13 @@
+<style>
+  #lifestyle-image-{{ section.id }} { background: {{ section.settings.bg_color | default: '#080808' }}; }
+</style>
 <section
   class="lifestyle-image"
   id="lifestyle-image-{{ section.id }}"
-  style="height: {{ section.settings.height }}svh;"
+  style="height: {{ section.settings.height }}svh;
+    padding-top: {{ section.settings.padding_top | default: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | default: 0 }}px;"
+  {%- unless section.settings.animation_enabled -%}data-no-anim{%- endunless -%}
 >
   {%- if section.settings.image != blank -%}
     <div class="lifestyle-image__media">
@@ -212,6 +218,50 @@
         { "value": "bottom-right", "label": "Bottom right" }
       ],
       "default": "bottom-left"
+    },
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Fallback background color",
+      "default": "#080808"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 120,
+      "step": 8,
+      "default": 0,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 120,
+      "step": 8,
+      "default": 0,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Animations"
+    },
+    {
+      "type": "checkbox",
+      "id": "animation_enabled",
+      "label": "Enable scroll animations",
+      "default": true
     }
   ],
   "presets": [

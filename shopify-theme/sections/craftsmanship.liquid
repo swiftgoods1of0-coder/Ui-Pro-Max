@@ -1,3 +1,10 @@
+<style>
+  #craftsmanship-{{ section.id }} .section-eyebrow { color: {{ section.settings.color_eyebrow | default: '#c9a84c' }}; }
+  #craftsmanship-{{ section.id }} .section-title { color: {{ section.settings.color_heading | default: '#f0ebe0' }}; }
+  #craftsmanship-{{ section.id }} .craftsmanship__feature-text { color: {{ section.settings.color_body | default: '#a09080' }}; }
+  #craftsmanship-{{ section.id }} .craftsmanship__feature-number { color: {{ section.settings.color_feature_number | default: '#c9a84c' }}; }
+  #craftsmanship-{{ section.id }} .craftsmanship__stat-value { color: {{ section.settings.color_stat_value | default: '#c9a84c' }}; }
+</style>
 <section
   class="craftsmanship"
   id="craftsmanship-{{ section.id }}"
@@ -6,6 +13,7 @@
     padding-bottom: {{ section.settings.padding_bottom }}px;
     background-color: {{ section.settings.bg_color }};
   "
+  {%- unless section.settings.animation_enabled -%}data-no-anim{%- endunless -%}
 >
   <div class="container">
 
@@ -363,6 +371,50 @@
       "step": 8,
       "default": 120,
       "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Text Colors"
+    },
+    {
+      "type": "color",
+      "id": "color_heading",
+      "label": "Section heading color",
+      "default": "#f0ebe0"
+    },
+    {
+      "type": "color",
+      "id": "color_body",
+      "label": "Body / description text color",
+      "default": "#a09080"
+    },
+    {
+      "type": "color",
+      "id": "color_eyebrow",
+      "label": "Eyebrow label color",
+      "default": "#c9a84c"
+    },
+    {
+      "type": "color",
+      "id": "color_stat_value",
+      "label": "Stat value color",
+      "default": "#c9a84c"
+    },
+    {
+      "type": "color",
+      "id": "color_feature_number",
+      "label": "Feature number color",
+      "default": "#c9a84c"
+    },
+    {
+      "type": "header",
+      "content": "Animations"
+    },
+    {
+      "type": "checkbox",
+      "id": "animation_enabled",
+      "label": "Enable scroll animations",
+      "default": true
     }
   ],
   "presets": [

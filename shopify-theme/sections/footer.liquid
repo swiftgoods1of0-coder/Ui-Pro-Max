@@ -1,3 +1,15 @@
+<style>
+  #site-footer {
+    background: {{ section.settings.bg_color | default: '#080808' }};
+    padding-top: {{ section.settings.padding_top | default: 96 }}px;
+    color: {{ section.settings.text_color | default: '#a09080' }};
+  }
+  #site-footer .footer-bottom { padding-bottom: {{ section.settings.padding_bottom | default: 32 }}px; }
+  #site-footer a { color: {{ section.settings.link_color | default: '#7a7068' }}; }
+  #site-footer a:hover { color: {{ section.settings.link_hover_color | default: '#f0ebe0' }}; }
+  #site-footer .footer-top { border-bottom-color: {{ section.settings.border_color | default: '#1f1e1b' }}; }
+  #site-footer .footer-bottom { border-top-color: {{ section.settings.border_color | default: '#1f1e1b' }}; }
+</style>
 <footer class="site-footer" id="site-footer" role="contentinfo">
 
   <!-- Footer Top -->
@@ -192,6 +204,64 @@
       "id": "show_payment_icons",
       "label": "Show payment icons",
       "default": true
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Footer background",
+      "default": "#080808"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#a09080"
+    },
+    {
+      "type": "color",
+      "id": "link_color",
+      "label": "Link color",
+      "default": "#7a7068"
+    },
+    {
+      "type": "color",
+      "id": "link_hover_color",
+      "label": "Link hover color",
+      "default": "#f0ebe0"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Divider color",
+      "default": "#1f1e1b"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 40,
+      "max": 200,
+      "step": 8,
+      "default": 96,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 16,
+      "max": 80,
+      "step": 4,
+      "default": 32,
+      "unit": "px"
     }
   ],
   "presets": [

@@ -2,6 +2,13 @@
 {%- assign products_count = section.settings.products_count | default: 4 -%}
 {%- assign columns = section.settings.columns | default: '4' -%}
 
+<style>
+  #featured-collection-{{ section.id }} .section-eyebrow { color: {{ section.settings.color_eyebrow | default: '#c9a84c' }}; }
+  #featured-collection-{{ section.id }} .section-title { color: {{ section.settings.color_heading | default: '#f0ebe0' }}; }
+  #featured-collection-{{ section.id }} .product-card__title { color: {{ section.settings.card_title_color | default: '#f0ebe0' }}; }
+  #featured-collection-{{ section.id }} .product-card__price .price { color: {{ section.settings.card_price_color | default: '#f0ebe0' }}; }
+  #featured-collection-{{ section.id }} .product-card { background: {{ section.settings.card_bg | default: '#141414' }}; }
+</style>
 <section
   class="featured-collection"
   id="featured-collection-{{ section.id }}"
@@ -10,6 +17,7 @@
     padding-bottom: {{ section.settings.padding_bottom }}px;
     background-color: {{ section.settings.bg_color }};
   "
+  {%- unless section.settings.animation_enabled -%}data-no-anim{%- endunless -%}
 >
   <div class="container">
 
@@ -329,6 +337,50 @@
       "step": 8,
       "default": 120,
       "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Text Colors"
+    },
+    {
+      "type": "color",
+      "id": "color_heading",
+      "label": "Section heading color",
+      "default": "#f0ebe0"
+    },
+    {
+      "type": "color",
+      "id": "color_eyebrow",
+      "label": "Eyebrow label color",
+      "default": "#c9a84c"
+    },
+    {
+      "type": "color",
+      "id": "card_title_color",
+      "label": "Product title color",
+      "default": "#f0ebe0"
+    },
+    {
+      "type": "color",
+      "id": "card_price_color",
+      "label": "Product price color",
+      "default": "#f0ebe0"
+    },
+    {
+      "type": "color",
+      "id": "card_bg",
+      "label": "Product card background",
+      "default": "#141414"
+    },
+    {
+      "type": "header",
+      "content": "Animations"
+    },
+    {
+      "type": "checkbox",
+      "id": "animation_enabled",
+      "label": "Enable scroll animations",
+      "default": true
     }
   ],
   "presets": [

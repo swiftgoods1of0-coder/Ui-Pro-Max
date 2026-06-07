@@ -1,3 +1,7 @@
+<style>
+  #brand-statement-{{ section.id }} .section-eyebrow { color: {{ section.settings.color_eyebrow | default: '#c9a84c' }}; }
+  #brand-statement-{{ section.id }} .brand-statement__text { font-size: clamp(24px, 4vw, {{ section.settings.statement_size | default: 48 }}px); }
+</style>
 <section
   class="brand-statement brand-statement--{{ section.settings.text_alignment }}"
   id="brand-statement-{{ section.id }}"
@@ -6,6 +10,7 @@
     padding-bottom: {{ section.settings.padding_bottom }}px;
     background-color: {{ section.settings.bg_color }};
   "
+  {%- unless section.settings.animation_enabled -%}data-no-anim{%- endunless -%}
 >
 
   <!-- Background Media -->
@@ -197,6 +202,41 @@
       "step": 8,
       "default": 120,
       "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Text Colors"
+    },
+    {
+      "type": "color",
+      "id": "color_eyebrow",
+      "label": "Eyebrow label color",
+      "default": "#c9a84c"
+    },
+    {
+      "type": "header",
+      "content": "Font Size"
+    },
+    {
+      "type": "range",
+      "id": "statement_size",
+      "label": "Statement max font size",
+      "min": 24,
+      "max": 80,
+      "step": 2,
+      "default": 48,
+      "unit": "px",
+      "info": "Clamps down on mobile automatically."
+    },
+    {
+      "type": "header",
+      "content": "Animations"
+    },
+    {
+      "type": "checkbox",
+      "id": "animation_enabled",
+      "label": "Enable scroll animations",
+      "default": true
     }
   ],
   "presets": [
