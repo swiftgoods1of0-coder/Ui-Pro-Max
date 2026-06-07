@@ -43,7 +43,7 @@ export default function Footer() {
   }
 
   return (
-    <footer className="bg-navy-800 border-t-2 border-orange-500" aria-label="Site footer">
+    <footer className="bg-charcoal-800 border-t-2 border-brand" aria-label="Site footer">
       {/* Main footer grid */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-12">
@@ -52,7 +52,7 @@ export default function Footer() {
             {/* Logo */}
             <div className="flex items-center gap-1 mb-5">
               <span className="text-white font-bold text-xl tracking-tight">OTC Fleet</span>
-              <span className="w-2 h-2 rounded-full bg-orange-500 ml-0.5 inline-block" aria-hidden="true" />
+              <span className="w-2 h-2 rounded-full bg-brand ml-0.5 inline-block" aria-hidden="true" />
               <span className="text-slate-400 text-sm ml-1">Services</span>
             </div>
 
@@ -63,26 +63,26 @@ export default function Footer() {
 
             <div className="space-y-3 text-sm">
               <div className="flex items-start gap-2.5">
-                <MapPin className="w-4 h-4 text-orange-400 mt-0.5 flex-shrink-0" />
+                <MapPin className="w-4 h-4 text-brand mt-0.5 flex-shrink-0" />
                 <div>
                   <div className="text-white font-medium">Lancaster Location</div>
                   <div className="text-slate-400">480 Running Pump Road, Lancaster, PA 17601</div>
                 </div>
               </div>
               <div className="flex items-center gap-2.5">
-                <Phone className="w-4 h-4 text-orange-400 flex-shrink-0" />
+                <Phone className="w-4 h-4 text-brand flex-shrink-0" />
                 <div className="space-y-0.5">
-                  <a href="tel:7172083600" className="block text-slate-300 hover:text-orange-400 transition-colors">
+                  <a href="tel:7172083600" className="block text-slate-300 hover:text-brand transition-colors">
                     Lancaster: 717-208-3600
                   </a>
-                  <a href="tel:6103744077" className="block text-slate-300 hover:text-orange-400 transition-colors">
+                  <a href="tel:6103744077" className="block text-slate-300 hover:text-brand transition-colors">
                     Berks: 610-374-4077
                   </a>
                 </div>
               </div>
               <div className="flex items-center gap-2.5">
-                <Mail className="w-4 h-4 text-orange-400 flex-shrink-0" />
-                <a href="mailto:info@otcfleet.com" className="text-slate-300 hover:text-orange-400 transition-colors">
+                <Mail className="w-4 h-4 text-brand flex-shrink-0" />
+                <a href="mailto:info@otcfleet.com" className="text-slate-300 hover:text-brand transition-colors">
                   info@otcfleet.com
                 </a>
               </div>
@@ -94,7 +94,7 @@ export default function Footer() {
                 href="https://www.facebook.com/otcfleet"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-9 h-9 rounded-lg bg-navy-800 border border-navy-700 flex items-center justify-center text-slate-400 hover:text-orange-400 hover:border-orange-500/40 transition-all"
+                className="w-9 h-9 rounded-lg bg-charcoal-800 border border-charcoal-700 flex items-center justify-center text-slate-400 hover:text-brand hover:border-brand/40 transition-all"
                 aria-label="OTC Fleet on Facebook"
               >
                 <Facebook className="w-4 h-4" />
@@ -103,7 +103,7 @@ export default function Footer() {
                 href="https://www.instagram.com/otcfleet"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-9 h-9 rounded-lg bg-navy-800 border border-navy-700 flex items-center justify-center text-slate-400 hover:text-orange-400 hover:border-orange-500/40 transition-all"
+                className="w-9 h-9 rounded-lg bg-charcoal-800 border border-charcoal-700 flex items-center justify-center text-slate-400 hover:text-brand hover:border-brand/40 transition-all"
                 aria-label="OTC Fleet on Instagram"
               >
                 <Instagram className="w-4 h-4" />
@@ -122,9 +122,9 @@ export default function Footer() {
                   <a
                     href={href}
                     onClick={(e) => handleAnchorClick(e, href)}
-                    className="flex items-center gap-2 text-slate-400 hover:text-orange-400 text-sm transition-colors group"
+                    className="flex items-center gap-2 text-slate-400 hover:text-brand text-sm transition-colors group"
                   >
-                    <span className="w-1 h-1 rounded-full bg-orange-500/40 group-hover:bg-orange-500 transition-colors flex-shrink-0" />
+                    <span className="w-1 h-1 rounded-full bg-brand/40 group-hover:bg-brand transition-colors flex-shrink-0" />
                     {label}
                   </a>
                 </li>
@@ -145,9 +145,9 @@ export default function Footer() {
                     onClick={external ? undefined : (e) => handleAnchorClick(e, href)}
                     target={external ? '_blank' : undefined}
                     rel={external ? 'noopener noreferrer' : undefined}
-                    className="flex items-center gap-2 text-slate-400 hover:text-orange-400 text-sm transition-colors group"
+                    className="flex items-center gap-2 text-slate-400 hover:text-brand text-sm transition-colors group"
                   >
-                    <span className="w-1 h-1 rounded-full bg-orange-500/40 group-hover:bg-orange-500 transition-colors flex-shrink-0" />
+                    <span className="w-1 h-1 rounded-full bg-brand/40 group-hover:bg-brand transition-colors flex-shrink-0" />
                     {label}
                     {external && <ExternalLink className="w-3 h-3 opacity-50" />}
                   </a>
@@ -165,13 +165,13 @@ export default function Footer() {
             <div className="space-y-5">
               {/* Lancaster */}
               <div>
-                <div className="text-orange-400 text-xs font-bold uppercase tracking-widest mb-2">
+                <div className="text-brand text-xs font-bold uppercase tracking-widest mb-2">
                   Lancaster
                 </div>
                 <div className="text-slate-400 text-sm space-y-1">
                   <div>480 Running Pump Road</div>
                   <div>Lancaster, PA 17601</div>
-                  <a href="tel:7172083600" className="block font-medium text-slate-300 hover:text-orange-400 transition-colors">
+                  <a href="tel:7172083600" className="block font-medium text-slate-300 hover:text-brand transition-colors">
                     717-208-3600
                   </a>
                 </div>
@@ -179,11 +179,11 @@ export default function Footer() {
 
               {/* Berks */}
               <div>
-                <div className="text-orange-400 text-xs font-bold uppercase tracking-widest mb-2">
+                <div className="text-brand text-xs font-bold uppercase tracking-widest mb-2">
                   Berks County
                 </div>
                 <div className="text-slate-400 text-sm">
-                  <a href="tel:6103744077" className="block font-medium text-slate-300 hover:text-orange-400 transition-colors">
+                  <a href="tel:6103744077" className="block font-medium text-slate-300 hover:text-brand transition-colors">
                     610-374-4077
                   </a>
                 </div>
@@ -192,8 +192,8 @@ export default function Footer() {
               {/* Hours */}
               <div>
                 <div className="flex items-center gap-1.5 mb-2">
-                  <Clock className="w-3.5 h-3.5 text-orange-400" />
-                  <div className="text-orange-400 text-xs font-bold uppercase tracking-widest">
+                  <Clock className="w-3.5 h-3.5 text-brand" />
+                  <div className="text-brand text-xs font-bold uppercase tracking-widest">
                     Hours
                   </div>
                 </div>
@@ -221,7 +221,7 @@ export default function Footer() {
                     href="https://keystonetrailers.com/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-1.5 text-slate-400 hover:text-orange-400 text-xs transition-colors"
+                    className="flex items-center gap-1.5 text-slate-400 hover:text-brand text-xs transition-colors"
                   >
                     <ArrowRight className="w-3 h-3" />
                     Keystone Trailers
@@ -231,7 +231,7 @@ export default function Footer() {
                     href="https://www.fleetgraphixpa.com/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-1.5 text-slate-400 hover:text-orange-400 text-xs transition-colors"
+                    className="flex items-center gap-1.5 text-slate-400 hover:text-brand text-xs transition-colors"
                   >
                     <ArrowRight className="w-3 h-3" />
                     Fleet Graphix PA
@@ -245,7 +245,7 @@ export default function Footer() {
       </div>
 
       {/* Bottom bar */}
-      <div className="border-t border-navy-700">
+      <div className="border-t border-charcoal-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="text-slate-500 text-xs text-center sm:text-left">

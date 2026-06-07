@@ -59,13 +59,13 @@ const credibilityItems = [
 
 export default function WhyOTC() {
   return (
-    <section id="why-otc" className="py-24 bg-navy-900" aria-label="Why choose OTC">
+    <section id="why-otc" className="py-24 bg-charcoal-900" aria-label="Why choose OTC">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <FadeUp>
           <div className="text-center mb-16">
             <div className="section-eyebrow mb-3">Why Choose OTC</div>
-            <div className="orange-line-lg mx-auto mb-6" />
+            <div className="brand-line-lg mx-auto mb-6" />
             <h2 className="text-4xl lg:text-5xl font-bold text-white tracking-tight">
               Why Fleet Managers Choose OTC
             </h2>
@@ -87,14 +87,14 @@ export default function WhyOTC() {
               data-placeholder="FleetShop.jpg"
             >
               {/* Background gradient */}
-              <div className="absolute inset-0 bg-gradient-to-br from-navy-800 to-steel" />
+              <div className="absolute inset-0 bg-gradient-to-br from-charcoal-800 to-steel" />
 
               {/* Industrial pattern */}
               <div
                 className="absolute inset-0 opacity-25"
                 style={{
                   backgroundImage:
-                    'repeating-linear-gradient(45deg, rgba(249,115,22,0.08) 0, rgba(249,115,22,0.08) 2px, transparent 0, transparent 50%)',
+                    'repeating-linear-gradient(45deg, rgba(255,212,0,0.08) 0, rgba(255,212,0,0.08) 2px, transparent 0, transparent 50%)',
                   backgroundSize: '24px 24px',
                 }}
               />
@@ -113,8 +113,8 @@ export default function WhyOTC() {
               </div>
 
               {/* Overlay content bottom */}
-              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-navy-950/90 to-transparent p-8">
-                <div className="text-orange-400 text-xs font-bold tracking-[0.2em] uppercase mb-2">
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-charcoal-950/90 to-transparent p-8">
+                <div className="text-brand text-xs font-bold tracking-[0.2em] uppercase mb-2">
                   Trusted Partner
                 </div>
                 <h3 className="text-white text-2xl font-bold leading-tight mb-2">
@@ -128,7 +128,7 @@ export default function WhyOTC() {
               </div>
 
               {/* Orange top accent */}
-              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-orange-500 to-orange-600" />
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-brand to-brand-dark" />
             </div>
 
             {/* Floating stat card */}
@@ -137,7 +137,7 @@ export default function WhyOTC() {
               transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
               className="absolute -top-5 -right-5 glass rounded-xl p-4 border border-white/15 shadow-xl"
             >
-              <div className="text-orange-400 text-xs font-bold uppercase tracking-wider mb-0.5">
+              <div className="text-brand text-xs font-bold uppercase tracking-wider mb-0.5">
                 Response Time
               </div>
               <div className="text-white text-xl font-bold">Same Day</div>
@@ -156,17 +156,17 @@ export default function WhyOTC() {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true, margin: '-30px' }}
                   transition={{ duration: 0.5, delay: i * 0.06, ease: [0.22, 1, 0.36, 1] }}
-                  className="flex items-start gap-4 p-4 rounded-xl bg-navy-800/60 border border-navy-700/60
-                    hover:border-orange-500/30 hover:bg-navy-800/80 transition-all duration-300 group"
+                  className="flex items-start gap-4 p-4 rounded-xl bg-charcoal-800/60 border border-charcoal-700/60
+                    hover:border-brand/30 hover:bg-charcoal-800/80 transition-all duration-300 group"
                 >
-                  <div className="w-10 h-10 rounded-lg bg-orange-500/10 border border-orange-500/20 flex items-center justify-center flex-shrink-0 group-hover:bg-orange-500/20 transition-colors">
-                    <Icon className="w-5 h-5 text-orange-400" />
+                  <div className="w-10 h-10 rounded-lg bg-brand/10 border border-brand/20 flex items-center justify-center flex-shrink-0 group-hover:bg-brand/20 transition-colors">
+                    <Icon className="w-5 h-5 text-brand" />
                   </div>
                   <div>
                     <div className="text-white font-semibold text-sm mb-0.5">{item.title}</div>
                     <div className="text-slate-400 text-sm leading-relaxed">{item.description}</div>
                   </div>
-                  <CheckCircle className="w-4 h-4 text-orange-400/60 flex-shrink-0 mt-0.5 ml-auto" />
+                  <CheckCircle className="w-4 h-4 text-brand/60 flex-shrink-0 mt-0.5 ml-auto" />
                 </motion.div>
               )
             })}
@@ -180,7 +180,7 @@ export default function WhyOTC() {
                     e.preventDefault()
                     document.querySelector('#fleet-programs')?.scrollIntoView({ behavior: 'smooth' })
                   }}
-                  className="btn-orange w-full justify-center"
+                  className="btn-brand w-full justify-center"
                 >
                   Get a Fleet Program Quote
                   <ArrowRight className="w-4 h-4" />

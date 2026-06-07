@@ -117,16 +117,16 @@ export default function Contact() {
   }
 
   return (
-    <section id="contact" className="py-24 bg-navy-800" aria-label="Contact OTC Fleet Services">
+    <section id="contact" className="py-24 bg-charcoal-800" aria-label="Contact OTC Fleet Services">
       {/* Top accent */}
-      <div className="absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-orange-500/40 to-transparent" />
+      <div className="absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-brand/40 to-transparent" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <FadeUp>
           <div className="text-center mb-16">
             <div className="section-eyebrow mb-3">Get In Touch</div>
-            <div className="orange-line-lg mx-auto mb-6" />
+            <div className="brand-line-lg mx-auto mb-6" />
             <h2 className="text-4xl lg:text-5xl font-bold text-white tracking-tight mb-5">
               Contact OTC Fleet Services
             </h2>
@@ -146,35 +146,35 @@ export default function Contact() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
-              className="bg-navy-800 border border-navy-700 rounded-xl overflow-hidden"
+              className="bg-charcoal-800 border border-charcoal-700 rounded-xl overflow-hidden"
             >
-              <div className="h-1 bg-gradient-to-r from-orange-500 to-orange-600-dark" />
+              <div className="h-1 bg-gradient-to-r from-brand to-brand-dark-dark" />
               <div className="p-5">
-                <div className="text-orange-400 text-xs font-bold uppercase tracking-widest mb-3">
+                <div className="text-brand text-xs font-bold uppercase tracking-widest mb-3">
                   Lancaster Location
                 </div>
                 <div className="space-y-3">
                   <div className="flex items-start gap-3">
-                    <MapPin className="w-4 h-4 text-orange-400 mt-0.5 flex-shrink-0" />
+                    <MapPin className="w-4 h-4 text-brand mt-0.5 flex-shrink-0" />
                     <div>
                       <div className="text-white text-sm font-medium">480 Running Pump Road</div>
                       <div className="text-slate-400 text-xs">Lancaster, PA 17601</div>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
-                    <Phone className="w-4 h-4 text-orange-400 flex-shrink-0" />
-                    <a href="tel:7172083600" className="text-white text-sm font-semibold hover:text-orange-400 transition-colors">
+                    <Phone className="w-4 h-4 text-brand flex-shrink-0" />
+                    <a href="tel:7172083600" className="text-white text-sm font-semibold hover:text-brand transition-colors">
                       717-208-3600
                     </a>
                   </div>
                   <div className="flex items-center gap-3">
-                    <Mail className="w-4 h-4 text-orange-400 flex-shrink-0" />
-                    <a href="mailto:info@otcfleet.com" className="text-white text-sm hover:text-orange-400 transition-colors">
+                    <Mail className="w-4 h-4 text-brand flex-shrink-0" />
+                    <a href="mailto:info@otcfleet.com" className="text-white text-sm hover:text-brand transition-colors">
                       info@otcfleet.com
                     </a>
                   </div>
                   <div className="flex items-start gap-3">
-                    <Clock className="w-4 h-4 text-orange-400 mt-0.5 flex-shrink-0" />
+                    <Clock className="w-4 h-4 text-brand mt-0.5 flex-shrink-0" />
                     <div className="text-slate-400 text-xs leading-relaxed">
                       Mon–Fri: 7:00 AM – 4:30 PM<br />
                       Saturday: By appointment only
@@ -190,28 +190,28 @@ export default function Contact() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="bg-navy-800 border border-navy-700 rounded-xl overflow-hidden"
+              className="bg-charcoal-800 border border-charcoal-700 rounded-xl overflow-hidden"
             >
-              <div className="h-1 bg-gradient-to-r from-navy-900 to-navy-950" />
+              <div className="h-1 bg-gradient-to-r from-charcoal-900 to-charcoal-950" />
               <div className="p-5">
-                <div className="text-orange-400 text-xs font-bold uppercase tracking-widest mb-3">
+                <div className="text-brand text-xs font-bold uppercase tracking-widest mb-3">
                   Berks County Location
                 </div>
                 <div className="space-y-3">
                   <div className="flex items-center gap-3">
-                    <Phone className="w-4 h-4 text-orange-400 flex-shrink-0" />
-                    <a href="tel:6103744077" className="text-white text-sm font-semibold hover:text-orange-400 transition-colors">
+                    <Phone className="w-4 h-4 text-brand flex-shrink-0" />
+                    <a href="tel:6103744077" className="text-white text-sm font-semibold hover:text-brand transition-colors">
                       610-374-4077
                     </a>
                   </div>
                   <div className="flex items-center gap-3">
-                    <Mail className="w-4 h-4 text-orange-400 flex-shrink-0" />
-                    <a href="mailto:info@otcfleet.com" className="text-white text-sm hover:text-orange-400 transition-colors">
+                    <Mail className="w-4 h-4 text-brand flex-shrink-0" />
+                    <a href="mailto:info@otcfleet.com" className="text-white text-sm hover:text-brand transition-colors">
                       info@otcfleet.com
                     </a>
                   </div>
                   <div className="flex items-start gap-3">
-                    <Clock className="w-4 h-4 text-orange-400 mt-0.5 flex-shrink-0" />
+                    <Clock className="w-4 h-4 text-brand mt-0.5 flex-shrink-0" />
                     <div className="text-slate-400 text-xs leading-relaxed">
                       Mon–Fri: 7:00 AM – 4:30 PM<br />
                       Saturday: By appointment only
@@ -227,7 +227,7 @@ export default function Contact() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.15 }}
-              className="bg-navy-800 border border-navy-700 rounded-xl p-5"
+              className="bg-charcoal-800 border border-charcoal-700 rounded-xl p-5"
             >
               <div className="text-white font-bold text-sm mb-4">Quick Links</div>
               <div className="space-y-2">
@@ -237,9 +237,9 @@ export default function Contact() {
                     href={href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-navy-800 transition-colors group"
+                    className="flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-charcoal-800 transition-colors group"
                   >
-                    <Icon className="w-4 h-4 text-orange-400/70 group-hover:text-orange-400 flex-shrink-0 transition-colors" />
+                    <Icon className="w-4 h-4 text-brand/70 group-hover:text-brand flex-shrink-0 transition-colors" />
                     <div className="flex-1 min-w-0">
                       <div className="text-slate-300 text-xs font-medium group-hover:text-white transition-colors truncate">
                         {label}
@@ -260,10 +260,10 @@ export default function Contact() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7 }}
-              className="bg-navy-800 border border-navy-700 rounded-2xl overflow-hidden shadow-[0_30px_60px_rgba(0,0,0,0.3)]"
+              className="bg-charcoal-800 border border-charcoal-700 rounded-2xl overflow-hidden shadow-[0_30px_60px_rgba(0,0,0,0.3)]"
             >
               {/* Form header */}
-              <div className="px-6 py-5 border-b border-navy-700 bg-navy-800/50">
+              <div className="px-6 py-5 border-b border-charcoal-700 bg-charcoal-800/50">
                 <h3 className="text-white text-xl font-bold">Send Us a Message</h3>
                 <p className="text-slate-400 text-sm mt-1">
                   Fill out the form and a member of our team will respond within one business day.
@@ -277,7 +277,7 @@ export default function Contact() {
                     <div className="grid sm:grid-cols-2 gap-4">
                       <div>
                         <label htmlFor="contact-name" className="form-label">
-                          Full Name <span className="text-orange-400">*</span>
+                          Full Name <span className="text-brand">*</span>
                         </label>
                         <input
                           id="contact-name"
@@ -310,7 +310,7 @@ export default function Contact() {
                     <div className="grid sm:grid-cols-2 gap-4">
                       <div>
                         <label htmlFor="contact-email" className="form-label">
-                          Email Address <span className="text-orange-400">*</span>
+                          Email Address <span className="text-brand">*</span>
                         </label>
                         <input
                           id="contact-email"
@@ -411,7 +411,7 @@ export default function Contact() {
                     {/* Row 5: Message */}
                     <div>
                       <label htmlFor="contact-message" className="form-label">
-                        Message <span className="text-orange-400">*</span>
+                        Message <span className="text-brand">*</span>
                       </label>
                       <textarea
                         id="contact-message"
@@ -426,7 +426,7 @@ export default function Contact() {
                     </div>
 
                     {/* Submit */}
-                    <button type="submit" className="btn-orange w-full justify-center">
+                    <button type="submit" className="btn-brand w-full justify-center">
                       <Send className="w-4 h-4" />
                       Send Message
                     </button>
@@ -438,8 +438,8 @@ export default function Contact() {
                   </form>
                 ) : (
                   <div className="py-16 text-center space-y-5">
-                    <div className="w-16 h-16 rounded-full bg-orange-500/20 flex items-center justify-center mx-auto">
-                      <CheckCircle className="w-9 h-9 text-orange-400" />
+                    <div className="w-16 h-16 rounded-full bg-brand/20 flex items-center justify-center mx-auto">
+                      <CheckCircle className="w-9 h-9 text-brand" />
                     </div>
                     <div>
                       <div className="text-white font-bold text-2xl mb-2">Message Sent!</div>
@@ -451,7 +451,7 @@ export default function Contact() {
                     <div className="pt-2 space-y-2">
                       <div className="text-slate-500 text-sm">Need immediate assistance? Call us:</div>
                       <div className="flex gap-3 justify-center flex-wrap">
-                        <a href="tel:7172083600" className="btn-orange text-sm py-2 px-4">
+                        <a href="tel:7172083600" className="btn-brand text-sm py-2 px-4">
                           <Phone className="w-3.5 h-3.5" />
                           Lancaster: 717-208-3600
                         </a>
@@ -472,11 +472,11 @@ export default function Contact() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="mt-5 relative rounded-xl overflow-hidden border border-navy-700"
+              className="mt-5 relative rounded-xl overflow-hidden border border-charcoal-700"
               style={{ height: '200px' }}
               data-placeholder="GoogleMap-Lancaster.jpg"
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-navy-900 to-steel" />
+              <div className="absolute inset-0 bg-gradient-to-br from-charcoal-900 to-steel" />
               <div
                 className="absolute inset-0 opacity-20"
                 style={{
@@ -486,7 +486,7 @@ export default function Contact() {
                 }}
               />
               <div className="absolute inset-0 flex flex-col items-center justify-center gap-2">
-                <MapPin className="w-8 h-8 text-orange-400 opacity-70" />
+                <MapPin className="w-8 h-8 text-brand opacity-70" />
                 <div className="text-center">
                   <div className="text-white text-sm font-semibold">OTC Fleet Services – Lancaster</div>
                   <div className="text-slate-400 text-xs">480 Running Pump Road, Lancaster, PA 17601</div>
@@ -495,7 +495,7 @@ export default function Contact() {
                   href="https://maps.google.com/?q=480+Running+Pump+Road+Lancaster+PA+17601"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-orange-400 text-xs hover:text-orange-400-light transition-colors flex items-center gap-1 mt-1"
+                  className="text-brand text-xs hover:text-brand-light transition-colors flex items-center gap-1 mt-1"
                 >
                   Open in Google Maps
                   <ExternalLink className="w-3 h-3" />

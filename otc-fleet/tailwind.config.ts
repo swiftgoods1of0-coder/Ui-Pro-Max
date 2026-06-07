@@ -9,30 +9,20 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Brand yellow — OTC Fleet's primary accent
-        brand: {
-          DEFAULT: '#FFD400',
-          dark: '#e6bf00',
-          light: '#ffe066',
-          50: '#fffbe6',
-          100: '#fff3b3',
-          200: '#ffe066',
-          300: '#FFD400',
-          400: '#FFD400',
-          500: '#FFD400',
-          600: '#e6bf00',
-          700: '#ccaa00',
+        navy: {
+          950: '#040d1a',
+          900: '#0a1628',
+          800: '#0d1f3c',
+          700: '#112244',
+          600: '#1a3366',
+          500: '#1e40af',
         },
-        // Charcoal dark backgrounds
-        charcoal: {
-          DEFAULT: '#111111',
-          950: '#0a0a0a',
-          900: '#111111',
-          800: '#1a1a1a',
-          700: '#222222',
-          600: '#2d2d2d',
-          500: '#3a3a3a',
-          400: '#4a4a4a',
+        orange: {
+          DEFAULT: '#f97316',
+          dark: '#ea580c',
+          400: '#fb923c',
+          500: '#f97316',
+          600: '#ea580c',
         },
         steel: '#1e293b',
       },
@@ -43,7 +33,7 @@ const config: Config = {
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
-        'diamond-plate': "repeating-linear-gradient(45deg, rgba(255,212,0,0.03) 0, rgba(255,212,0,0.03) 1px, transparent 0, transparent 50%)",
+        'diamond-plate': "repeating-linear-gradient(45deg, rgba(249,115,22,0.03) 0, rgba(249,115,22,0.03) 1px, transparent 0, transparent 50%)",
         'grid-overlay': "linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)",
       },
       backgroundSize: {
@@ -72,8 +62,8 @@ const config: Config = {
         },
       },
       boxShadow: {
-        'glow-brand': '0 0 30px rgba(255,212,0,0.25)',
-        'glow-charcoal': '0 0 30px rgba(10,10,10,0.5)',
+        'glow-orange': '0 0 30px rgba(249,115,22,0.3)',
+        'glow-navy': '0 0 30px rgba(10,22,40,0.5)',
         'card-hover': '0 20px 60px rgba(0,0,0,0.4)',
       },
       screens: {

@@ -14,8 +14,8 @@
   --navy-800: #0d1f3c;
   --navy-700: #112244;
   --navy-600: #1a3366;
-  --orange: #f97316;
-  --orange-dark: #ea580c;
+  --orange: #FFD400;
+  --orange-dark: #e6be00;
   --steel: #1e293b;
 }
 
@@ -90,7 +90,7 @@ body {
      ============================================ */
 
   .gradient-text {
-    background: linear-gradient(135deg, #f97316 0%, #fb923c 50%, #fdba74 100%);
+    background: linear-gradient(135deg, #FFD400 0%, #fb923c 50%, #fdba74 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -130,7 +130,7 @@ body {
      ============================================ */
 
   .section-eyebrow {
-    @apply text-orange-400 text-xs font-bold tracking-[0.2em] uppercase;
+    @apply text-yellow-400 text-xs font-bold tracking-[0.2em] uppercase;
   }
 
   .section-title {
@@ -150,7 +150,7 @@ body {
   }
 
   .card-hover {
-    @apply hover:border-orange-500/40 hover:shadow-[0_20px_60px_rgba(0,0,0,0.4)] hover:-translate-y-1;
+    @apply hover:border-yellow-500/40 hover:shadow-[0_20px_60px_rgba(0,0,0,0.4)] hover:-translate-y-1;
   }
 
   /* ============================================
@@ -158,7 +158,7 @@ body {
      ============================================ */
 
   .btn-orange {
-    @apply bg-orange-500 hover:bg-orange-600 text-white font-semibold px-6 py-3 rounded-lg transition-all duration-200 inline-flex items-center gap-2 shadow-lg hover:shadow-orange-500/30 hover:-translate-y-0.5 active:translate-y-0;
+    @apply bg-yellow-500 hover:bg-yellow-600 text-white font-semibold px-6 py-3 rounded-lg transition-all duration-200 inline-flex items-center gap-2 shadow-lg hover:shadow-orange-500/30 hover:-translate-y-0.5 active:translate-y-0;
   }
 
   .btn-outline-white {
@@ -174,11 +174,11 @@ body {
      ============================================ */
 
   .orange-line {
-    @apply w-12 h-1 bg-orange-500 rounded-full;
+    @apply w-12 h-1 bg-yellow-500 rounded-full;
   }
 
   .orange-line-lg {
-    @apply w-20 h-1 bg-orange-500 rounded-full;
+    @apply w-20 h-1 bg-yellow-500 rounded-full;
   }
 }
 
@@ -251,7 +251,7 @@ body {
    ============================================ */
 
 .form-input {
-  @apply w-full bg-navy-900 border border-navy-600 text-white placeholder-slate-500 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500/50 transition-all duration-200;
+  @apply w-full bg-navy-900 border border-navy-600 text-white placeholder-slate-500 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-yellow-500/50 transition-all duration-200;
 }
 
 .form-label {
@@ -272,7 +272,7 @@ body {
    ============================================ */
 
 .link-hover {
-  @apply text-slate-400 hover:text-orange-400 transition-colors duration-200;
+  @apply text-slate-400 hover:text-yellow-400 transition-colors duration-200;
 }
 
 /* ============================================
@@ -280,7 +280,7 @@ body {
    ============================================ */
 
 .border-l-orange {
-  border-left: 3px solid #f97316;
+  border-left: 3px solid #FFD400;
 }
 
 /* ============================================
@@ -309,7 +309,7 @@ body {
   left: 0;
   width: 0;
   height: 2px;
-  background: #f97316;
+  background: #FFD400;
   transition: width 0.2s ease;
 }
 

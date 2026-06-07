@@ -73,7 +73,7 @@ const itemVariants = {
 
 export default function Industries() {
   return (
-    <section id="industries" className="py-24 bg-navy-950" aria-label="Industries we serve">
+    <section id="industries" className="py-24 bg-charcoal-950" aria-label="Industries we serve">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div
@@ -84,7 +84,7 @@ export default function Industries() {
           className="text-center mb-16"
         >
           <div className="section-eyebrow mb-3">Trusted By Businesses Across Central PA</div>
-          <div className="orange-line-lg mx-auto mb-6" />
+          <div className="brand-line-lg mx-auto mb-6" />
           <h2 className="text-4xl lg:text-5xl font-bold text-white tracking-tight mb-5">
             Industries We Serve
           </h2>
@@ -106,13 +106,13 @@ export default function Industries() {
             <motion.div
               key={label}
               variants={itemVariants}
-              className="group flex flex-col items-center gap-3 p-5 bg-navy-800 border border-navy-700 rounded-xl
+              className="group flex flex-col items-center gap-3 p-5 bg-charcoal-800 border border-charcoal-700 rounded-xl
                 cursor-default transition-all duration-300
-                hover:bg-orange-500/10 hover:border-orange-500/50 hover:-translate-y-1
-                hover:shadow-[0_12px_40px_rgba(249,115,22,0.12)]"
+                hover:bg-brand/10 hover:border-brand/50 hover:-translate-y-1
+                hover:shadow-[0_12px_40px_rgba(255,212,0,0.12)]"
             >
-              <div className="w-11 h-11 rounded-lg bg-navy-700 group-hover:bg-orange-500/20 flex items-center justify-center transition-all duration-300 border border-navy-600 group-hover:border-orange-500/40">
-                <Icon className="w-5 h-5 text-slate-400 group-hover:text-orange-400 transition-colors duration-300" />
+              <div className="w-11 h-11 rounded-lg bg-charcoal-700 group-hover:bg-brand/20 flex items-center justify-center transition-all duration-300 border border-charcoal-600 group-hover:border-brand/40">
+                <Icon className="w-5 h-5 text-slate-400 group-hover:text-brand transition-colors duration-300" />
               </div>
               <span className="text-slate-300 group-hover:text-white text-xs font-semibold text-center leading-tight transition-colors duration-300">
                 {label}
@@ -137,7 +137,7 @@ export default function Industries() {
                 e.preventDefault()
                 document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' })
               }}
-              className="text-orange-400 hover:text-orange-400-light font-medium transition-colors"
+              className="text-brand hover:text-brand-light font-medium transition-colors"
             >
               Contact us — we likely serve you.
             </a>
