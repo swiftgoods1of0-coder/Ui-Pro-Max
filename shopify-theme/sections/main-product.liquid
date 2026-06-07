@@ -197,7 +197,7 @@
                       data-swatch-value="{{ value | escape }}"
                       title="{{ value }}"
                       aria-label="{{ value }}"
-                      aria-pressed="{{ option.selected_value == value }}"
+                      aria-pressed="{% if option.selected_value == value %}true{% else %}false{% endif %}"
                     >
                       <span
                         class="product-swatch__inner"
@@ -255,7 +255,7 @@
                       class="product-size{% if option.selected_value == value %} is-selected{% endif %}"
                       data-size-btn="{{ value | escape }}"
                       aria-label="{{ value }}"
-                      aria-pressed="{{ option.selected_value == value }}"
+                      aria-pressed="{% if option.selected_value == value %}true{% else %}false{% endif %}"
                     >
                       {{ value }}
                     </button>
