@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#080808">
+
+  {%- if page_description -%}
+    <meta name="description" content="{{ page_description | escape }}">
+  {%- endif -%}
+
+  <title>
+    {{ page_title }}{% unless page_title contains shop.name %} — {{ shop.name }}{% endunless %}
+  </title>
+
+  {%- if settings.favicon != blank -%}
+    <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32 }}">
+  {%- endif -%}
+
+  <!-- Preconnect -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!-- Google Fonts: Cormorant Garamond + Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Theme CSS -->
+  {{ 'theme.css' | asset_url | stylesheet_tag }}
+
+  <!-- Canonical -->
+  <link rel="canonical" href="{{ canonical_url }}">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="{{ page_title | escape }}">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="{{ canonical_url }}">
+  {%- if page_image -%}
+    <meta property="og:image" content="{{ page_image | image_url: width: 1200 }}">
+  {%- elsif settings.og_image != blank -%}
+    <meta property="og:image" content="{{ settings.og_image | image_url: width: 1200 }}">
+  {%- endif -%}
+  <meta property="og:site_name" content="{{ shop.name }}">
+
+  <!-- Shopify Head Content -->
+  {{ content_for_header }}
+
+  <!-- Custom Cursor CSS (injected inline to avoid flash) -->
+  <style>
+    .custom-cursor { position: fixed; pointer-events: none; z-index: 99999; top: 0; left: 0; mix-blend-mode: exclusion; }
+    .custom-cursor__dot { position: absolute; width: 6px; height: 6px; background: #f0ebe0; border-radius: 50%; transform: translate(-50%, -50%); transition: transform 0.15s ease; will-change: transform; }
+    .custom-cursor__ring { position: absolute; width: 36px; height: 36px; border: 1px solid rgba(240,235,224,0.5); border-radius: 50%; transform: translate(-50%, -50%); transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease; will-change: transform; }
+    .custom-cursor.is-hovering .custom-cursor__dot { transform: translate(-50%, -50%) scale(2.5); background: #c9a84c; }
+    .custom-cursor.is-hovering .custom-cursor__ring { width: 54px; height: 54px; border-color: rgba(201,168,76,0.4); }
+    @media (pointer: coarse) { .custom-cursor { display: none; } }
+  </style>
+
+  <script>document.documentElement.classList.remove('no-js'); document.documentElement.classList.add('js');</script>
+</head>
+
+<body class="template-{{ template | split: '.' | first | handle }}">
+
+  <!-- Skip Link -->
+  <a href="#main-content" class="skip-link">Skip to content</a>
+
+  <!-- Announcement Bar -->
+  {%- if settings.announcement_enabled and settings.announcement_text != blank -%}
+    <div class="announce-bar" id="announce-bar" role="complementary">
+      <div class="container">
+        {%- if settings.announcement_link != blank -%}
+          <a href="{{ settings.announcement_link }}">{{ settings.announcement_text }}</a>
+        {%- else -%}
+          {{ settings.announcement_text }}
+        {%- endif -%}
+        {%- if settings.announcement_dismissible -%}
+          <button id="announce-close" aria-label="Dismiss announcement" style="margin-left:16px;opacity:0.6;font-size:16px;line-height:1;">&times;</button>
+        {%- endif -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  <!-- Site Header -->
+  <header class="site-header" id="site-header" role="banner">
+    <div class="container header-inner">
+
+      <!-- Logo -->
+      <a href="{{ routes.root_url }}" class="header-logo" aria-label="{{ shop.name }}">
+        {%- if settings.logo != blank -%}
+          <img src="{{ settings.logo | image_url: width: 200 }}"
+               alt="{{ shop.name }}"
+               width="120"
+               height="36"
+               loading="eager">
+        {%- else -%}
+          {{ shop.name }}
+        {%- endif -%}
+      </a>
+
+      <!-- Desktop Navigation -->
+      <nav class="header-nav" role="navigation" aria-label="Main navigation">
+        {%- for link in linklists[settings.nav_menu].links -%}
+          <a href="{{ link.url }}" class="header-nav__link"{% if link.active %} aria-current="page"{% endif %}>
+            {{ link.title }}
+          </a>
+        {%- endfor -%}
+      </nav>
+
+      <!-- Header Actions -->
+      <div class="header-actions">
+
+        <!-- Search -->
+        <a href="{{ routes.search_url }}" class="header-btn" aria-label="Search">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="11" cy="11" r="8"/>
+            <path d="m21 21-4.35-4.35"/>
+          </svg>
+        </a>
+
+        <!-- Account -->
+        <a href="{{ routes.account_url }}" class="header-btn" aria-label="Account">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+        </a>
+
+        <!-- Cart -->
+        <button class="header-btn" data-cart-toggle aria-label="Open cart" id="cart-toggle">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <path d="M16 10a4 4 0 0 1-8 0"/>
+          </svg>
+          <span class="cart-count" aria-live="polite" aria-label="Cart items">0</span>
+        </button>
+
+        <!-- Hamburger (mobile) -->
+        <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobile-menu" role="dialog" aria-label="Mobile navigation" aria-modal="true">
+    <button id="mobile-menu-close" style="position:absolute;top:24px;right:var(--gutter);font-size:28px;color:var(--text-muted);line-height:1;" aria-label="Close menu">&times;</button>
+
+    <nav class="mobile-menu__nav" aria-label="Mobile navigation">
+      {%- for link in linklists[settings.nav_menu].links -%}
+        <a href="{{ link.url }}" class="mobile-menu__link">{{ link.title }}</a>
+      {%- endfor -%}
+    </nav>
+
+    <div class="mobile-menu__footer">
+      <div class="mobile-menu__social">
+        {%- if settings.social_instagram != blank -%}
+          <a href="{{ settings.social_instagram }}" target="_blank" rel="noopener">Instagram</a>
+        {%- endif -%}
+        {%- if settings.social_twitter != blank -%}
+          <a href="{{ settings.social_twitter }}" target="_blank" rel="noopener">Twitter</a>
+        {%- endif -%}
+        {%- if settings.social_tiktok != blank -%}
+          <a href="{{ settings.social_tiktok }}" target="_blank" rel="noopener">TikTok</a>
+        {%- endif -%}
+      </div>
+      <span style="font-size:11px;color:var(--text-dim);letter-spacing:0.15em;text-transform:uppercase;">{{ shop.name }}</span>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <main id="main-content" role="main" tabindex="-1">
+    {{ content_for_layout }}
+  </main>
+
+  <!-- Footer Section -->
+  {% section 'footer' %}
+
+  <!-- Cart Overlay -->
+  <div class="cart-overlay" id="cart-overlay" aria-hidden="true"></div>
+
+  <!-- Cart Drawer -->
+  <aside class="cart-drawer" id="cart-drawer" role="dialog" aria-label="Shopping cart" aria-modal="true">
+    <div class="cart-drawer__header">
+      <h2 class="cart-drawer__title">Your Bag</h2>
+      <button class="cart-close" id="cart-close" aria-label="Close cart">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="cart-drawer__body">
+      <div id="cart-empty" class="cart-empty" style="display:none;">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" style="color:var(--text-dim)">
+          <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <path d="M16 10a4 4 0 0 1-8 0"/>
+        </svg>
+        <p>Your bag is empty.</p>
+        <a href="{{ routes.collections_url }}" class="btn btn--secondary" style="height:44px;padding:0 24px;font-size:10px;">Shop Now</a>
+      </div>
+      <div id="cart-items"></div>
+    </div>
+
+    <div class="cart-drawer__footer">
+      <div class="cart-subtotal">
+        <span>Subtotal</span>
+        <span class="amount" id="cart-subtotal-amount">—</span>
+      </div>
+      <a href="{{ routes.cart_url }}" class="btn btn--primary btn--full btn--lg">Checkout</a>
+      <p style="text-align:center;font-size:11px;color:var(--text-dim);margin-top:14px;letter-spacing:0.08em;">
+        Taxes and shipping calculated at checkout
+      </p>
+    </div>
+  </aside>
+
+  <!-- Theme JS -->
+  <script src="{{ 'theme.js' | asset_url }}" defer></script>
+
+</body>
+</html>
+
+
+{% schema %}
+{
+  "name": "Theme Settings",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Logo"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo image"
+    },
+    {
+      "type": "image_picker",
+      "id": "favicon",
+      "label": "Favicon"
+    },
+    {
+      "type": "image_picker",
+      "id": "og_image",
+      "label": "Default social sharing image"
+    },
+    {
+      "type": "header",
+      "content": "Navigation"
+    },
+    {
+      "type": "link_list",
+      "id": "nav_menu",
+      "label": "Main menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "header",
+      "content": "Announcement Bar"
+    },
+    {
+      "type": "checkbox",
+      "id": "announcement_enabled",
+      "label": "Show announcement bar",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "announcement_text",
+      "label": "Announcement text",
+      "default": "Free shipping on orders over $150 — Use code SWIFT150"
+    },
+    {
+      "type": "url",
+      "id": "announcement_link",
+      "label": "Announcement link"
+    },
+    {
+      "type": "checkbox",
+      "id": "announcement_dismissible",
+      "label": "Allow customers to dismiss",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Social Links"
+    },
+    {
+      "type": "url",
+      "id": "social_instagram",
+      "label": "Instagram URL"
+    },
+    {
+      "type": "url",
+      "id": "social_twitter",
+      "label": "Twitter / X URL"
+    },
+    {
+      "type": "url",
+      "id": "social_tiktok",
+      "label": "TikTok URL"
+    },
+    {
+      "type": "url",
+      "id": "social_facebook",
+      "label": "Facebook URL"
+    },
+    {
+      "type": "url",
+      "id": "social_youtube",
+      "label": "YouTube URL"
+    },
+    {
+      "type": "url",
+      "id": "social_pinterest",
+      "label": "Pinterest URL"
+    }
+  ]
+}
+{% endschema %}

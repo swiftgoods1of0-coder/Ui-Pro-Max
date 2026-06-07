@@ -1,0 +1,254 @@
+{%- assign collection = collections[section.settings.collection] -%}
+{%- assign products_count = section.settings.products_count | default: 4 -%}
+{%- assign columns = section.settings.columns | default: 4 -%}
+
+<section
+  class="featured-collection"
+  id="featured-collection-{{ section.id }}"
+  style="
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    background-color: {{ section.settings.bg_color }};
+  "
+>
+  <div class="container">
+
+    <!-- Header -->
+    <div class="featured-collection__header" data-animate>
+      <div>
+        {%- if section.settings.eyebrow != blank -%}
+          <span class="section-eyebrow" style="display:block;margin-bottom:10px;">{{ section.settings.eyebrow }}</span>
+        {%- endif -%}
+        <h2 class="section-title">{{ section.settings.heading }}</h2>
+      </div>
+
+      {%- if section.settings.cta_label != blank -%}
+        <a href="{{ collection.url | default: routes.collections_url }}" class="collection-link">
+          {{ section.settings.cta_label }}
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </a>
+      {%- endif -%}
+    </div>
+
+    <!-- Products Grid -->
+    {%- if collection != blank and collection.products.size > 0 -%}
+      <div
+        class="products-grid"
+        style="--cols: {{ columns }};"
+      >
+        {%- for product in collection.products limit: products_count -%}
+          {%- assign is_on_sale = false -%}
+          {%- if product.compare_at_price > product.price -%}
+            {%- assign is_on_sale = true -%}
+          {%- endif -%}
+
+          <article class="product-card" data-animate data-animate-delay="{{ forloop.index }}">
+            <a href="{{ product.url }}" aria-label="{{ product.title }}">
+              <div class="product-card__media">
+
+                <!-- Sale Badge -->
+                {%- if is_on_sale and section.settings.show_sale_badge -%}
+                  <span class="product-card__badge">Sale</span>
+                {%- endif -%}
+
+                <!-- Primary Image -->
+                {%- if product.featured_image != blank -%}
+                  {{
+                    product.featured_image
+                    | image_url: width: 700
+                    | image_tag:
+                      loading: 'lazy',
+                      width: 700,
+                      alt: product.featured_image.alt | default: product.title,
+                      class: 'product-card__img'
+                  }}
+                {%- else -%}
+                  <div style="width:100%;height:100%;background:var(--bg-elevated);display:flex;align-items:center;justify-content:center;">
+                    <span style="font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-dim);">No Image</span>
+                  </div>
+                {%- endif -%}
+
+                <!-- Quick Add -->
+                {%- if section.settings.show_quick_add -%}
+                  <button
+                    class="product-card__quick-add"
+                    data-add-to-cart="{{ product.selected_or_first_available_variant.id }}"
+                    aria-label="Quick add {{ product.title }}"
+                  >
+                    Quick Add
+                  </button>
+                {%- endif -%}
+              </div>
+            </a>
+
+            <div class="product-card__info">
+              {%- if section.settings.show_vendor and product.vendor != blank -%}
+                <p class="product-card__vendor">{{ product.vendor }}</p>
+              {%- endif -%}
+
+              <h3 class="product-card__title">
+                <a href="{{ product.url }}">{{ product.title }}</a>
+              </h3>
+
+              <div class="product-card__price">
+                {%- if is_on_sale -%}
+                  <span class="price price--sale">{{ product.price | money }}</span>
+                  <span class="price price--compare">{{ product.compare_at_price | money }}</span>
+                {%- else -%}
+                  <span class="price">{{ product.price | money }}</span>
+                {%- endif -%}
+              </div>
+            </div>
+          </article>
+        {%- endfor -%}
+      </div>
+
+    {%- else -%}
+      <!-- Empty state / placeholder -->
+      <div class="products-grid" style="--cols: {{ columns }};">
+        {%- for i in (1..products_count) -%}
+          <div class="product-card" data-animate data-animate-delay="{{ i }}">
+            <div class="product-card__media" style="background:var(--bg-card);">
+              <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;">
+                <span style="font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-dim);">Select a collection</span>
+              </div>
+            </div>
+            <div class="product-card__info">
+              <p class="product-card__title" style="color:var(--text-dim);">Product Name</p>
+              <p class="price" style="color:var(--text-dim);">$000.00</p>
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Featured Collection",
+  "tag": "section",
+  "class": "section-featured-collection",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow label",
+      "default": "New Arrivals"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section heading",
+      "default": "The Collection"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "View all label",
+      "default": "Shop All"
+    },
+    {
+      "type": "header",
+      "content": "Collection"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "products_count",
+      "label": "Products to show",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "header",
+      "content": "Grid"
+    },
+    {
+      "type": "select",
+      "id": "columns",
+      "label": "Columns (desktop)",
+      "options": [
+        { "value": "2", "label": "2 columns" },
+        { "value": "3", "label": "3 columns" },
+        { "value": "4", "label": "4 columns" }
+      ],
+      "default": "4"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "Show vendor",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_sale_badge",
+      "label": "Show sale badge",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_quick_add",
+      "label": "Show quick add button",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background color",
+      "default": "#080808"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 40,
+      "max": 200,
+      "step": 8,
+      "default": 120,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 40,
+      "max": 200,
+      "step": 8,
+      "default": 120,
+      "unit": "px"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Collection",
+      "settings": {
+        "eyebrow": "New Arrivals",
+        "heading": "The Collection",
+        "cta_label": "Shop All",
+        "products_count": 4,
+        "columns": "4"
+      }
+    }
+  ]
+}
+{% endschema %}

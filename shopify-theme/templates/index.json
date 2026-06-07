@@ -1,0 +1,192 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero",
+      "settings": {
+        "eyebrow": "New Collection — 2025",
+        "headline": "Elevated\nStreets.\nRefined\nEdge.",
+        "subtext": "Premium streetwear crafted for those who move with purpose. Limited drops. Unlimited identity.",
+        "cta_primary_label": "Shop Collection",
+        "cta_secondary_label": "Our Story",
+        "text_alignment": "left",
+        "min_height": 100,
+        "show_scroll_indicator": true,
+        "overlay_opacity": 50
+      }
+    },
+    "brand-statement": {
+      "type": "brand-statement",
+      "settings": {
+        "eyebrow": "Our Philosophy",
+        "statement": "We don't follow trends.\nWe <em>set</em> the standard\nfor those who refuse\nto be ordinary.",
+        "body_text": "Swift Goods is built on the intersection of luxury craftsmanship and street culture. Every piece is engineered for those who demand more — from the fabric to the finish.",
+        "text_alignment": "left",
+        "padding_top": 160,
+        "padding_bottom": 160,
+        "overlay_opacity": 80,
+        "bg_color": "#080808"
+      }
+    },
+    "featured-collection": {
+      "type": "featured-collection",
+      "settings": {
+        "eyebrow": "New Arrivals",
+        "heading": "The Collection",
+        "cta_label": "Shop All",
+        "products_count": 4,
+        "columns": "4",
+        "show_sale_badge": true,
+        "show_quick_add": true,
+        "bg_color": "#080808",
+        "padding_top": 120,
+        "padding_bottom": 120
+      }
+    },
+    "lifestyle-image": {
+      "type": "lifestyle-image",
+      "settings": {
+        "height": 85,
+        "overlay_opacity": 25,
+        "overlay_color": "#080808",
+        "image_position": "center center",
+        "content_position": "bottom-left"
+      }
+    },
+    "best-sellers": {
+      "type": "best-sellers",
+      "settings": {
+        "eyebrow": "Most Wanted",
+        "heading": "Best Sellers",
+        "products_count": 5,
+        "layout": "editorial",
+        "show_ticker": true,
+        "ticker_text": "Swift Goods — Premium Streetwear — Limited Edition",
+        "featured_badge": "Best Seller",
+        "show_quick_add": true,
+        "bg_color": "#0f0f0f",
+        "padding_top": 120,
+        "padding_bottom": 120
+      }
+    },
+    "craftsmanship": {
+      "type": "craftsmanship",
+      "settings": {
+        "eyebrow": "The Details",
+        "heading": "Materials & Craftsmanship",
+        "subtext": "Every Swift Goods piece is constructed with obsessive attention to detail — from the first stitch to the final finish.",
+        "layout": "image-left",
+        "bg_color": "#080808",
+        "padding_top": 120,
+        "padding_bottom": 120
+      },
+      "blocks": {
+        "feature-1": {
+          "type": "feature",
+          "settings": {
+            "number": "01",
+            "title": "Premium Fabric",
+            "text": "Sourced exclusively from premium mills in Japan and Italy, each fabric is selected for its weight, hand feel, and durability."
+          }
+        },
+        "feature-2": {
+          "type": "feature",
+          "settings": {
+            "number": "02",
+            "title": "Hand Finished",
+            "text": "Every seam is inspected and finished by hand to ensure our exacting standards are met in every single piece."
+          }
+        },
+        "feature-3": {
+          "type": "feature",
+          "settings": {
+            "number": "03",
+            "title": "Limited Production",
+            "text": "Small-batch drops ensure exclusivity and allow us to maintain uncompromised quality control from start to finish."
+          }
+        },
+        "divider-1": {
+          "type": "divider",
+          "settings": {
+            "margin": 16
+          }
+        },
+        "stat-1": {
+          "type": "stat",
+          "settings": {
+            "value": "100%",
+            "label": "Premium Cotton"
+          }
+        }
+      },
+      "blocks_order": ["feature-1", "feature-2", "feature-3", "divider-1", "stat-1"]
+    },
+    "brand-story": {
+      "type": "brand-story",
+      "settings": {
+        "eyebrow": "The Story",
+        "heading": "Born in the streets.\nBuilt for the bold.",
+        "body_1": "Swift Goods was founded with a singular mission: to bridge the gap between luxury fashion and the authenticity of street culture. We believe your clothes should be as deliberate as your moves.",
+        "body_2": "Every collection is crafted in limited runs, ensuring those who wear Swift Goods are part of an exclusive circle that values quality over quantity, identity over imitation.",
+        "pull_quote": "Luxury isn't a price point — it's a standard we refuse to compromise.",
+        "cta_label": "Our Story",
+        "layout": "text-left",
+        "founding_year": "2019",
+        "year_label": "Est.",
+        "bg_color": "#080808",
+        "padding_top": 120,
+        "padding_bottom": 120
+      }
+    },
+    "social-gallery": {
+      "type": "social-gallery",
+      "settings": {
+        "eyebrow": "Community",
+        "heading": "Wear the Culture",
+        "handle": "@swiftgoods",
+        "cta_label": "Follow @SwiftGoods",
+        "columns": 6,
+        "gap": 4,
+        "bg_color": "#080808",
+        "padding_top": 80,
+        "padding_bottom": 80
+      },
+      "blocks": {
+        "photo-1": { "type": "photo", "settings": {} },
+        "photo-2": { "type": "photo", "settings": {} },
+        "photo-3": { "type": "photo", "settings": {} },
+        "photo-4": { "type": "photo", "settings": {} },
+        "photo-5": { "type": "photo", "settings": {} },
+        "photo-6": { "type": "photo", "settings": {} }
+      },
+      "blocks_order": ["photo-1", "photo-2", "photo-3", "photo-4", "photo-5", "photo-6"]
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {
+        "eyebrow": "Stay Informed",
+        "heading": "Join the Inner Circle",
+        "subtext": "Early access to drops, exclusive offers, and behind-the-scenes content. No spam — only what matters.",
+        "perks": "Early access to limited drops, Members-only pricing, Exclusive editorial content",
+        "btn_label": "Subscribe",
+        "email_placeholder": "Your email address",
+        "success_message": "You're in. Welcome to Swift Goods.",
+        "layout": "side-by-side",
+        "bg_color": "#0f0f0f",
+        "border_color": "#1a1a1a",
+        "padding_top": 96,
+        "padding_bottom": 96
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "brand-statement",
+    "featured-collection",
+    "lifestyle-image",
+    "best-sellers",
+    "craftsmanship",
+    "brand-story",
+    "social-gallery",
+    "newsletter"
+  ]
+}

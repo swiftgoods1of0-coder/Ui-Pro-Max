@@ -1,0 +1,261 @@
+{%- assign text_color = section.settings.text_color | default: '#f0ebe0' -%}
+{%- assign overlay_color = section.settings.overlay_color | default: 'rgba(8,8,8,0.55)' -%}
+
+<section
+  class="hero hero--align-{{ section.settings.text_alignment }}"
+  id="hero-{{ section.id }}"
+  data-section-id="{{ section.id }}"
+  style="
+    color: {{ text_color }};
+    --hero-height: {{ section.settings.min_height }}svh;
+  "
+>
+
+  <!-- Background Media -->
+  <div class="hero__media">
+    {%- if section.settings.video_url != blank -%}
+      <video
+        src="{{ section.settings.video_url }}"
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="metadata"
+        data-autoplay
+        aria-hidden="true"
+        poster="{% if section.settings.image != blank %}{{ section.settings.image | image_url: width: 1920 }}{% endif %}"
+      ></video>
+    {%- elsif section.settings.image != blank -%}
+      {{
+        section.settings.image
+        | image_url: width: 1920
+        | image_tag:
+          loading: 'eager',
+          fetchpriority: 'high',
+          width: 1920,
+          alt: section.settings.image.alt | default: shop.name
+      }}
+    {%- else -%}
+      <!-- Fallback gradient when no media is set -->
+      <div style="width:100%;height:100%;background:linear-gradient(160deg,#0a0a0a 0%,#1a1a1a 50%,#0d0d0d 100%);"></div>
+    {%- endif -%}
+  </div>
+
+  <!-- Overlay -->
+  <div
+    class="hero__overlay"
+    style="background: {{ section.settings.overlay_color | default: 'rgba(8,8,8,0.55)' }};"
+    aria-hidden="true"
+  ></div>
+
+  <!-- Content -->
+  <div class="hero__content container" style="--text-align: {{ section.settings.text_alignment }};">
+
+    {%- if section.settings.eyebrow != blank -%}
+      <span class="hero__eyebrow" data-animate>{{ section.settings.eyebrow }}</span>
+    {%- endif -%}
+
+    {%- if section.settings.headline != blank -%}
+      <h1 class="hero__headline" data-animate data-animate-delay="1" style="color:{{ text_color }};">
+        {{ section.settings.headline | newline_to_br }}
+      </h1>
+    {%- endif -%}
+
+    {%- if section.settings.subtext != blank -%}
+      <p class="hero__subtext" data-animate data-animate-delay="2">
+        {{ section.settings.subtext }}
+      </p>
+    {%- endif -%}
+
+    {%- if section.settings.cta_primary_label != blank or section.settings.cta_secondary_label != blank -%}
+      <div class="hero__actions" data-animate data-animate-delay="3">
+        {%- if section.settings.cta_primary_label != blank -%}
+          <a href="{{ section.settings.cta_primary_url | default: routes.collections_url }}" class="btn btn--primary btn--lg">
+            {{ section.settings.cta_primary_label }}
+          </a>
+        {%- endif -%}
+        {%- if section.settings.cta_secondary_label != blank -%}
+          <a href="{{ section.settings.cta_secondary_url | default: routes.collections_url }}" class="btn btn--secondary btn--lg">
+            {{ section.settings.cta_secondary_label }}
+          </a>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+
+  <!-- Scroll indicator -->
+  {%- if section.settings.show_scroll_indicator -%}
+    <div class="hero__scroll" aria-hidden="true">
+      <div class="hero__scroll-line"></div>
+      <span class="hero__scroll-text">Scroll</span>
+    </div>
+  {%- endif -%}
+
+</section>
+
+<style>
+  #hero-{{ section.id }} {
+    min-height: clamp(600px, {{ section.settings.min_height }}svh, 100svh);
+  }
+
+  {%- if section.settings.text_alignment == 'center' -%}
+    #hero-{{ section.id }} .hero__content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    #hero-{{ section.id }} .hero__headline { max-width: 18ch; }
+    #hero-{{ section.id }} .hero__subtext { max-width: 54ch; }
+    #hero-{{ section.id }} .hero__actions { justify-content: center; }
+  {%- elsif section.settings.text_alignment == 'right' -%}
+    #hero-{{ section.id }} .hero__content {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      text-align: right;
+    }
+  {%- endif -%}
+</style>
+
+{% schema %}
+{
+  "name": "Hero",
+  "tag": "section",
+  "class": "section-hero",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Media"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Background image"
+    },
+    {
+      "type": "text",
+      "id": "video_url",
+      "label": "Background video URL",
+      "info": "Enter a direct .mp4 URL. Hosted video takes priority over image."
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay color",
+      "default": "#000000",
+      "info": "Set opacity by adding alpha value"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 55,
+      "unit": "%"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow text",
+      "default": "New Collection — 2025"
+    },
+    {
+      "type": "textarea",
+      "id": "headline",
+      "label": "Headline",
+      "default": "Elevated\nStreets.\nRefined\nEdge."
+    },
+    {
+      "type": "textarea",
+      "id": "subtext",
+      "label": "Subtext",
+      "default": "Premium streetwear crafted for those who move with purpose. Limited drops. Unlimited identity."
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#f0ebe0"
+    },
+    {
+      "type": "header",
+      "content": "Call to Action"
+    },
+    {
+      "type": "text",
+      "id": "cta_primary_label",
+      "label": "Primary button label",
+      "default": "Shop Collection"
+    },
+    {
+      "type": "url",
+      "id": "cta_primary_url",
+      "label": "Primary button URL"
+    },
+    {
+      "type": "text",
+      "id": "cta_secondary_label",
+      "label": "Secondary button label",
+      "default": "Our Story"
+    },
+    {
+      "type": "url",
+      "id": "cta_secondary_url",
+      "label": "Secondary button URL"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "options": [
+        { "value": "left",   "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right",  "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "range",
+      "id": "min_height",
+      "label": "Section height",
+      "min": 60,
+      "max": 100,
+      "step": 5,
+      "default": 100,
+      "unit": "vh"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_scroll_indicator",
+      "label": "Show scroll indicator",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero",
+      "settings": {
+        "eyebrow": "New Collection — 2025",
+        "headline": "Elevated\nStreets.\nRefined\nEdge.",
+        "subtext": "Premium streetwear crafted for those who move with purpose.",
+        "cta_primary_label": "Shop Collection",
+        "cta_secondary_label": "Our Story",
+        "text_alignment": "left",
+        "min_height": 100,
+        "show_scroll_indicator": true
+      }
+    }
+  ]
+}
+{% endschema %}

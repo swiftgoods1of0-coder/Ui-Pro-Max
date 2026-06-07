@@ -1,0 +1,214 @@
+<section
+  class="brand-statement brand-statement--{{ section.settings.text_alignment }}"
+  id="brand-statement-{{ section.id }}"
+  style="
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    background-color: {{ section.settings.bg_color }};
+  "
+>
+
+  <!-- Background Media -->
+  {%- if section.settings.bg_image != blank or section.settings.bg_video_url != blank -%}
+    <div class="brand-statement__media">
+      {%- if section.settings.bg_video_url != blank -%}
+        <video
+          src="{{ section.settings.bg_video_url }}"
+          autoplay muted loop playsinline preload="metadata"
+          data-autoplay aria-hidden="true"
+          {%- if section.settings.bg_image != blank -%}
+            poster="{{ section.settings.bg_image | image_url: width: 1920 }}"
+          {%- endif -%}
+        ></video>
+      {%- elsif section.settings.bg_image != blank -%}
+        {{
+          section.settings.bg_image
+          | image_url: width: 1920
+          | image_tag:
+            loading: 'lazy',
+            alt: section.settings.bg_image.alt | default: ''
+        }}
+      {%- endif -%}
+    </div>
+    <div
+      class="brand-statement__overlay"
+      style="background: {{ section.settings.overlay_color }}; opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};"
+      aria-hidden="true"
+    ></div>
+  {%- endif -%}
+
+  <div class="container">
+    <div class="brand-statement__content">
+
+      {%- if section.settings.eyebrow != blank -%}
+        <span class="section-eyebrow" data-animate>{{ section.settings.eyebrow }}</span>
+      {%- endif -%}
+
+      <div class="brand-statement__accent-bar" data-animate data-animate-delay="1"></div>
+
+      {%- if section.settings.statement != blank -%}
+        <blockquote class="brand-statement__quote" data-animate data-animate-delay="1" style="color:{{ section.settings.text_color }};">
+          {{ section.settings.statement }}
+        </blockquote>
+      {%- endif -%}
+
+      {%- if section.settings.body_text != blank -%}
+        <p class="brand-statement__body" data-animate data-animate-delay="2" style="color:{{ section.settings.body_color }};">
+          {{ section.settings.body_text }}
+        </p>
+      {%- endif -%}
+
+      {%- if section.settings.cta_label != blank -%}
+        <a
+          href="{{ section.settings.cta_url | default: routes.root_url }}"
+          class="btn btn--secondary"
+          data-animate
+          data-animate-delay="3"
+        >
+          {{ section.settings.cta_label }}
+        </a>
+      {%- endif -%}
+
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Brand Statement",
+  "tag": "section",
+  "class": "section-brand-statement",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow label",
+      "default": "Our Philosophy"
+    },
+    {
+      "type": "textarea",
+      "id": "statement",
+      "label": "Statement / Quote",
+      "default": "We don't follow trends. We set the standard for those who refuse to be ordinary."
+    },
+    {
+      "type": "textarea",
+      "id": "body_text",
+      "label": "Supporting text",
+      "default": "Swift Goods is built on the intersection of luxury craftsmanship and street culture. Every piece is engineered for those who demand more — from the fabric to the finish."
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Statement text color",
+      "default": "#f0ebe0"
+    },
+    {
+      "type": "color",
+      "id": "body_color",
+      "label": "Body text color",
+      "default": "#7a7068"
+    },
+    {
+      "type": "header",
+      "content": "Call to Action"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Button label"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "Button URL"
+    },
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "image_picker",
+      "id": "bg_image",
+      "label": "Background image"
+    },
+    {
+      "type": "text",
+      "id": "bg_video_url",
+      "label": "Background video URL (.mp4)"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay color",
+      "default": "#080808"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 80,
+      "unit": "%"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background color (no media)",
+      "default": "#080808"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "options": [
+        { "value": "left",   "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right",  "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 40,
+      "max": 200,
+      "step": 8,
+      "default": 120,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 40,
+      "max": 200,
+      "step": 8,
+      "default": 120,
+      "unit": "px"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Brand Statement",
+      "settings": {
+        "eyebrow": "Our Philosophy",
+        "statement": "We don't follow trends. We set the standard for those who refuse to be ordinary.",
+        "body_text": "Swift Goods is built on the intersection of luxury craftsmanship and street culture.",
+        "text_alignment": "left"
+      }
+    }
+  ]
+}
+{% endschema %}

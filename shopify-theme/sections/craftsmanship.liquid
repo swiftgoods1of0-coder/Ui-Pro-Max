@@ -1,0 +1,385 @@
+<section
+  class="craftsmanship"
+  id="craftsmanship-{{ section.id }}"
+  style="
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    background-color: {{ section.settings.bg_color }};
+  "
+>
+  <div class="container">
+
+    <!-- Section Header -->
+    <div class="craftsmanship__header" data-animate>
+      {%- if section.settings.eyebrow != blank -%}
+        <span class="section-eyebrow" style="display:block;margin-bottom:14px;">{{ section.settings.eyebrow }}</span>
+      {%- endif -%}
+      {%- if section.settings.heading != blank -%}
+        <h2 class="craftsmanship__heading">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+      {%- if section.settings.subtext != blank -%}
+        <p class="craftsmanship__subtext">{{ section.settings.subtext }}</p>
+      {%- endif -%}
+    </div>
+
+    <!-- Layout -->
+    <div class="craftsmanship__layout craftsmanship__layout--{{ section.settings.layout }}">
+
+      <!-- Image side -->
+      {%- if section.settings.image != blank -%}
+        <div class="craftsmanship__image-wrap" data-animate>
+          {{
+            section.settings.image
+            | image_url: width: 900
+            | image_tag:
+              loading: 'lazy',
+              width: 900,
+              alt: section.settings.image.alt | default: section.settings.heading
+          }}
+          {%- if section.settings.image_caption != blank -%}
+            <p class="craftsmanship__image-caption">{{ section.settings.image_caption }}</p>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+      <!-- Materials / Features blocks -->
+      <div class="craftsmanship__features" data-animate data-animate-delay="2">
+
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+
+          {%- when 'feature' -%}
+            <div class="craft-feature" {{ block.shopify_attributes }}>
+              <div class="craft-feature__header">
+                {%- if block.settings.number != blank -%}
+                  <span class="craft-feature__number">{{ block.settings.number }}</span>
+                {%- endif -%}
+                <h3 class="craft-feature__title">{{ block.settings.title }}</h3>
+              </div>
+              {%- if block.settings.text != blank -%}
+                <p class="craft-feature__text">{{ block.settings.text }}</p>
+              {%- endif -%}
+            </div>
+
+          {%- when 'stat' -%}
+            <div class="craft-stat" {{ block.shopify_attributes }}>
+              <span class="craft-stat__value">{{ block.settings.value }}</span>
+              <span class="craft-stat__label">{{ block.settings.label }}</span>
+            </div>
+
+          {%- when 'divider' -%}
+            <div class="divider" style="margin: {{ block.settings.margin }}px 0;" {{ block.shopify_attributes }}></div>
+
+          {%- endcase -%}
+        {%- endfor -%}
+
+        {%- if section.settings.cta_label != blank -%}
+          <a href="{{ section.settings.cta_url | default: routes.root_url }}" class="btn btn--secondary" style="margin-top:32px;">
+            {{ section.settings.cta_label }}
+          </a>
+        {%- endif -%}
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<style>
+  .craftsmanship__header {
+    max-width: 72ch;
+    margin-bottom: clamp(48px, 7vw, 96px);
+  }
+
+  .craftsmanship__heading {
+    font-family: var(--font-display);
+    font-size: clamp(36px, 5vw, 72px);
+    font-weight: 400;
+    line-height: 1.0;
+    letter-spacing: -0.01em;
+    margin-bottom: 20px;
+  }
+
+  .craftsmanship__subtext {
+    font-size: 16px;
+    color: var(--text-muted);
+    line-height: 1.75;
+    max-width: 60ch;
+  }
+
+  .craftsmanship__layout {
+    display: grid;
+    gap: clamp(40px, 6vw, 96px);
+    align-items: start;
+  }
+
+  .craftsmanship__layout--image-left  { grid-template-columns: 1fr 1fr; }
+  .craftsmanship__layout--image-right { grid-template-columns: 1fr 1fr; }
+  .craftsmanship__layout--no-image    { grid-template-columns: 1fr; }
+
+  .craftsmanship__layout--image-right .craftsmanship__image-wrap { order: 2; }
+  .craftsmanship__layout--image-right .craftsmanship__features   { order: 1; }
+
+  .craftsmanship__image-wrap {
+    position: sticky;
+    top: calc(var(--nav-height) + 24px);
+  }
+
+  .craftsmanship__image-wrap img {
+    width: 100%;
+    aspect-ratio: 4/5;
+    object-fit: cover;
+  }
+
+  .craftsmanship__image-caption {
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 0.12em;
+    margin-top: 14px;
+    text-transform: uppercase;
+  }
+
+  .craftsmanship__features {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Craft Feature */
+  .craft-feature {
+    padding: 28px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .craft-feature:first-child { border-top: 1px solid var(--border); }
+
+  .craft-feature__header {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 12px;
+  }
+
+  .craft-feature__number {
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-style: italic;
+    color: var(--accent);
+    flex-shrink: 0;
+  }
+
+  .craft-feature__title {
+    font-family: var(--font-display);
+    font-size: clamp(20px, 2.5vw, 28px);
+    font-weight: 400;
+    letter-spacing: 0.02em;
+  }
+
+  .craft-feature__text {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.75;
+    padding-left: calc(13px + 16px);
+  }
+
+  /* Craft Stat */
+  .craft-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 24px 0;
+  }
+
+  .craft-stat__value {
+    font-family: var(--font-display);
+    font-size: clamp(48px, 8vw, 96px);
+    font-weight: 400;
+    line-height: 1;
+    color: var(--accent);
+    letter-spacing: -0.02em;
+  }
+
+  .craft-stat__label {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  @media (max-width: 768px) {
+    .craftsmanship__layout--image-left,
+    .craftsmanship__layout--image-right { grid-template-columns: 1fr; }
+    .craftsmanship__layout--image-right .craftsmanship__image-wrap { order: 0; }
+    .craftsmanship__image-wrap { position: static; }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Craftsmanship",
+  "tag": "section",
+  "class": "section-craftsmanship",
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature / Material",
+      "settings": [
+        {
+          "type": "text",
+          "id": "number",
+          "label": "Number / Icon",
+          "default": "01"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Premium Fabric"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Description",
+          "default": "Sourced exclusively from premium mills in Japan and Italy, each fabric is selected for its weight, hand feel, and durability."
+        }
+      ]
+    },
+    {
+      "type": "stat",
+      "name": "Stat",
+      "settings": [
+        {
+          "type": "text",
+          "id": "value",
+          "label": "Value",
+          "default": "100%"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Premium Cotton"
+        }
+      ]
+    },
+    {
+      "type": "divider",
+      "name": "Divider",
+      "settings": [
+        {
+          "type": "range",
+          "id": "margin",
+          "label": "Vertical margin",
+          "min": 0,
+          "max": 60,
+          "step": 4,
+          "default": 16
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow label",
+      "default": "The Details"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section heading",
+      "default": "Materials & Craftsmanship"
+    },
+    {
+      "type": "textarea",
+      "id": "subtext",
+      "label": "Supporting text",
+      "default": "Every Swift Goods piece is constructed with obsessive attention to detail — from the first stitch to the final finish."
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Button label"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "Button URL"
+    },
+    {
+      "type": "header",
+      "content": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Side image"
+    },
+    {
+      "type": "text",
+      "id": "image_caption",
+      "label": "Image caption"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        { "value": "image-left",  "label": "Image left" },
+        { "value": "image-right", "label": "Image right" },
+        { "value": "no-image",    "label": "No image" }
+      ],
+      "default": "image-left"
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background color",
+      "default": "#080808"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 40,
+      "max": 200,
+      "step": 8,
+      "default": 120,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 40,
+      "max": 200,
+      "step": 8,
+      "default": 120,
+      "unit": "px"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Craftsmanship",
+      "settings": {
+        "eyebrow": "The Details",
+        "heading": "Materials & Craftsmanship",
+        "layout": "image-left"
+      },
+      "blocks": [
+        { "type": "feature", "settings": { "number": "01", "title": "Premium Fabric", "text": "Sourced exclusively from premium mills in Japan and Italy." } },
+        { "type": "feature", "settings": { "number": "02", "title": "Hand Finished", "text": "Every seam is inspected and finished by hand to ensure perfection." } },
+        { "type": "feature", "settings": { "number": "03", "title": "Limited Production", "text": "Small-batch drops ensure exclusivity and uncompromised quality." } },
+        { "type": "stat",    "settings": { "value": "100%", "label": "Premium Cotton" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

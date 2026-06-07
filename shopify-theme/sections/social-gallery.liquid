@@ -1,0 +1,324 @@
+<section
+  class="social-gallery-section"
+  id="social-gallery-{{ section.id }}"
+  style="
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    background-color: {{ section.settings.bg_color }};
+  "
+>
+  <div class="container">
+    <div class="social-gallery__header" data-animate>
+      {%- if section.settings.eyebrow != blank -%}
+        <span class="section-eyebrow" style="display:block;margin-bottom:14px;">{{ section.settings.eyebrow }}</span>
+      {%- endif -%}
+      {%- if section.settings.heading != blank -%}
+        <h2 class="section-title" style="margin-bottom:10px;">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+      {%- if section.settings.handle != blank -%}
+        <a
+          href="https://www.instagram.com/{{ section.settings.handle | remove: '@' }}"
+          class="social-gallery__instagram-link"
+          target="_blank"
+          rel="noopener"
+        >
+          @{{ section.settings.handle | remove: '@' }}
+        </a>
+      {%- endif -%}
+    </div>
+  </div>
+
+  <!-- Gallery Grid -->
+  <div class="social-gallery" style="--gallery-cols: {{ section.settings.columns }};">
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'photo' -%}
+        <div class="social-gallery__item" {{ block.shopify_attributes }}>
+          {%- if block.settings.image != blank -%}
+            <a
+              href="{{ block.settings.link | default: '#' }}"
+              {%- if block.settings.link != blank -%} target="_blank" rel="noopener" {%- endif -%}
+              class="social-gallery__link"
+              aria-label="View on Instagram"
+            >
+              {{
+                block.settings.image
+                | image_url: width: 600
+                | image_tag:
+                  loading: 'lazy',
+                  width: 600,
+                  alt: block.settings.caption | default: 'Swift Goods on Instagram'
+              }}
+
+              <div class="social-gallery__hover">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                  <circle cx="12" cy="12" r="4"/>
+                  <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor"/>
+                </svg>
+                {%- if block.settings.caption != blank -%}
+                  <p class="social-gallery__caption">{{ block.settings.caption }}</p>
+                {%- endif -%}
+              </div>
+            </a>
+          {%- else -%}
+            <div class="social-gallery__placeholder">
+              <span>Add Image</span>
+            </div>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+
+  {%- if section.settings.cta_label != blank -%}
+    <div class="container" style="text-align:center;margin-top:clamp(32px,5vw,56px);" data-animate>
+      <a
+        href="{{ section.settings.cta_url | default: '#' }}"
+        class="btn btn--secondary"
+        target="_blank"
+        rel="noopener"
+      >
+        {{ section.settings.cta_label }}
+      </a>
+    </div>
+  {%- endif -%}
+</section>
+
+<style>
+  .social-gallery__header {
+    margin-bottom: clamp(32px, 5vw, 56px);
+  }
+
+  .social-gallery__instagram-link {
+    font-size: 13px;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    transition: opacity var(--transition);
+  }
+
+  .social-gallery__instagram-link:hover { opacity: 0.7; }
+
+  .social-gallery {
+    display: grid;
+    grid-template-columns: repeat(var(--gallery-cols, 6), 1fr);
+    gap: {{ section.settings.gap }}px;
+  }
+
+  .social-gallery__item {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 1;
+    background: var(--bg-card);
+    transition: opacity var(--transition);
+  }
+
+  .social-gallery__item.is-dimmed { opacity: 0.4; }
+
+  .social-gallery__link {
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+
+  .social-gallery__link img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--transition-md);
+  }
+
+  .social-gallery__item:hover .social-gallery__link img {
+    transform: scale(1.06);
+  }
+
+  .social-gallery__hover {
+    position: absolute;
+    inset: 0;
+    background: rgba(8, 8, 8, 0.75);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    opacity: 0;
+    transition: opacity var(--transition-md);
+    color: var(--text);
+    padding: 16px;
+    text-align: center;
+  }
+
+  .social-gallery__item:hover .social-gallery__hover { opacity: 1; }
+
+  .social-gallery__caption {
+    font-size: 11px;
+    color: rgba(240, 235, 224, 0.7);
+    letter-spacing: 0.05em;
+    line-height: 1.5;
+  }
+
+  .social-gallery__placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 1024px) {
+    .social-gallery { grid-template-columns: repeat(4, 1fr); }
+  }
+
+  @media (max-width: 640px) {
+    .social-gallery { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  @media (max-width: 400px) {
+    .social-gallery { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Social Gallery",
+  "tag": "section",
+  "class": "section-social-gallery",
+  "max_blocks": 12,
+  "blocks": [
+    {
+      "type": "photo",
+      "name": "Photo",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Photo"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link (e.g. Instagram post URL)"
+        },
+        {
+          "type": "text",
+          "id": "caption",
+          "label": "Caption (shown on hover)"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Community"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Wear the Culture"
+    },
+    {
+      "type": "text",
+      "id": "handle",
+      "label": "Instagram handle",
+      "default": "@swiftgoods",
+      "info": "Include or exclude the @ symbol"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Follow button label",
+      "default": "Follow @SwiftGoods"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "Instagram profile URL"
+    },
+    {
+      "type": "header",
+      "content": "Grid"
+    },
+    {
+      "type": "range",
+      "id": "columns",
+      "label": "Columns (desktop)",
+      "min": 3,
+      "max": 8,
+      "step": 1,
+      "default": 6
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Grid gap",
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "default": 4,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background color",
+      "default": "#080808"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 160,
+      "step": 8,
+      "default": 80,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 160,
+      "step": 8,
+      "default": 80,
+      "unit": "px"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Social Gallery",
+      "settings": {
+        "eyebrow": "Community",
+        "heading": "Wear the Culture",
+        "handle": "@swiftgoods",
+        "cta_label": "Follow @SwiftGoods",
+        "columns": 6
+      },
+      "blocks": [
+        { "type": "photo" },
+        { "type": "photo" },
+        { "type": "photo" },
+        { "type": "photo" },
+        { "type": "photo" },
+        { "type": "photo" }
+      ]
+    }
+  ]
+}
+{% endschema %}

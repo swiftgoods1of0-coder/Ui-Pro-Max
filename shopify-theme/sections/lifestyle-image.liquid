@@ -1,0 +1,227 @@
+<section
+  class="lifestyle-image"
+  id="lifestyle-image-{{ section.id }}"
+  style="height: {{ section.settings.height }}svh;"
+>
+  {%- if section.settings.image != blank -%}
+    <div class="lifestyle-image__media">
+      {{
+        section.settings.image
+        | image_url: width: 2000
+        | image_tag:
+          loading: 'lazy',
+          width: 2000,
+          alt: section.settings.image.alt | default: shop.name
+      }}
+    </div>
+  {%- else -%}
+    <div class="lifestyle-image__media lifestyle-image__media--placeholder">
+      <div style="width:100%;height:100%;background:linear-gradient(180deg,#0d0d0d,#1a1a1a);display:flex;align-items:center;justify-content:center;">
+        <span style="font-size:11px;letter-spacing:0.25em;text-transform:uppercase;color:var(--text-dim);">Add a lifestyle image</span>
+      </div>
+    </div>
+  {%- endif -%}
+
+  <div class="lifestyle-image__overlay" style="background:{{ section.settings.overlay_color }};opacity:{{ section.settings.overlay_opacity | divided_by: 100.0 }};"></div>
+
+  {%- if section.settings.text != blank or section.settings.cta_label != blank -%}
+    <div class="lifestyle-image__content lifestyle-image__content--{{ section.settings.content_position }}">
+      {%- if section.settings.eyebrow != blank -%}
+        <span class="section-eyebrow" style="display:block;margin-bottom:14px;">{{ section.settings.eyebrow }}</span>
+      {%- endif -%}
+      {%- if section.settings.text != blank -%}
+        <p class="lifestyle-image__text" style="color:{{ section.settings.text_color }};">{{ section.settings.text }}</p>
+      {%- endif -%}
+      {%- if section.settings.cta_label != blank -%}
+        <a href="{{ section.settings.cta_url | default: routes.collections_url }}" class="btn btn--secondary" style="margin-top:32px;">
+          {{ section.settings.cta_label }}
+        </a>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+</section>
+
+<style>
+  #lifestyle-image-{{ section.id }} {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    min-height: 400px;
+  }
+
+  #lifestyle-image-{{ section.id }} .lifestyle-image__media {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  #lifestyle-image-{{ section.id }} .lifestyle-image__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: {{ section.settings.image_position | default: 'center center' }};
+    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  #lifestyle-image-{{ section.id }}:hover .lifestyle-image__media img {
+    transform: scale(1.03);
+  }
+
+  #lifestyle-image-{{ section.id }} .lifestyle-image__overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+
+  #lifestyle-image-{{ section.id }} .lifestyle-image__content {
+    position: relative;
+    z-index: 2;
+    padding: var(--gutter);
+    width: 100%;
+    max-width: var(--max-width);
+    margin: 0 auto;
+  }
+
+  #lifestyle-image-{{ section.id }} .lifestyle-image__content--bottom-left {
+    align-self: flex-end;
+    padding-bottom: clamp(40px, 6vw, 80px);
+  }
+
+  #lifestyle-image-{{ section.id }} .lifestyle-image__content--bottom-right {
+    align-self: flex-end;
+    padding-bottom: clamp(40px, 6vw, 80px);
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+
+  #lifestyle-image-{{ section.id }} .lifestyle-image__content--center {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #lifestyle-image-{{ section.id }} .lifestyle-image__text {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 4vw, 56px);
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    max-width: 20ch;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Lifestyle Image",
+  "tag": "section",
+  "class": "section-lifestyle-image",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Image focal point",
+      "options": [
+        { "value": "top center",    "label": "Top" },
+        { "value": "center center", "label": "Center" },
+        { "value": "bottom center", "label": "Bottom" },
+        { "value": "center left",   "label": "Left" },
+        { "value": "center right",  "label": "Right" }
+      ],
+      "default": "center center"
+    },
+    {
+      "type": "range",
+      "id": "height",
+      "label": "Section height",
+      "min": 40,
+      "max": 100,
+      "step": 5,
+      "default": 80,
+      "unit": "vh"
+    },
+    {
+      "type": "header",
+      "content": "Overlay"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay color",
+      "default": "#080808"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay opacity",
+      "min": 0,
+      "max": 90,
+      "step": 5,
+      "default": 30,
+      "unit": "%"
+    },
+    {
+      "type": "header",
+      "content": "Text (optional)"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Headline text"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#f0ebe0"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Button label"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "Button URL"
+    },
+    {
+      "type": "select",
+      "id": "content_position",
+      "label": "Content position",
+      "options": [
+        { "value": "bottom-left",  "label": "Bottom left" },
+        { "value": "center",       "label": "Center" },
+        { "value": "bottom-right", "label": "Bottom right" }
+      ],
+      "default": "bottom-left"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Lifestyle Image",
+      "settings": {
+        "height": 80,
+        "overlay_opacity": 30
+      }
+    }
+  ]
+}
+{% endschema %}
