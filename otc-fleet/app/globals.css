@@ -1,0 +1,366 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================
+   BASE STYLES
+   ============================================ */
+
+:root {
+  --charcoal-950: #0a0a0a;
+  --charcoal-900: #111111;
+  --charcoal-800: #1a1a1a;
+  --charcoal-700: #222222;
+  --charcoal-600: #2d2d2d;
+  --brand: #FFD400;
+  --brand-dark: #e6bf00;
+  --steel: #1e293b;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: var(--charcoal-950);
+  color: #f8fafc;
+  font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  overflow-x: hidden;
+}
+
+/* ============================================
+   CUSTOM SCROLLBAR
+   ============================================ */
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--charcoal-900);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--charcoal-600);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--brand);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--charcoal-600) var(--charcoal-900);
+}
+
+/* ============================================
+   GLASSMORPHISM UTILITIES
+   ============================================ */
+
+@layer utilities {
+  .glass {
+    background: rgba(17, 17, 17, 0.75);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .glass-light {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .glass-brand {
+    background: rgba(255, 212, 0, 0.08);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 212, 0, 0.2);
+  }
+
+  /* ============================================
+     GRADIENT TEXT
+     ============================================ */
+
+  .gradient-text {
+    background: linear-gradient(135deg, #FFD400 0%, #fb923c 50%, #fdba74 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .gradient-text-white {
+    background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* ============================================
+     DIAMOND PLATE TEXTURE
+     ============================================ */
+
+  .diamond-plate {
+    background-image: repeating-linear-gradient(
+      45deg,
+      rgba(255, 212, 0, 0.04) 0,
+      rgba(255, 212, 0, 0.04) 1px,
+      transparent 0,
+      transparent 50%
+    );
+    background-size: 20px 20px;
+  }
+
+  .grid-overlay {
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  /* ============================================
+     SECTION UTILITIES
+     ============================================ */
+
+  .section-eyebrow {
+    color: #FFD400;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .section-title {
+    @apply text-white font-bold tracking-tight;
+  }
+
+  .section-body {
+    @apply text-slate-300 leading-relaxed;
+  }
+
+  /* ============================================
+     CARD UTILITIES
+     ============================================ */
+
+  .card-base {
+    background-color: #1a1a1a;
+    border: 1px solid #222222;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    transition: all 0.3s;
+  }
+
+  .card-hover:hover {
+    border-color: rgba(255, 212, 0, 0.4);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    transform: translateY(-4px);
+  }
+
+  /* ============================================
+     BUTTON UTILITIES
+     ============================================ */
+
+  .btn-brand {
+    background-color: #FFD400;
+    color: #111111;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.3);
+  }
+
+  .btn-brand:hover {
+    background-color: #e6be00;
+    transform: translateY(-2px);
+  }
+
+  .btn-brand:active {
+    transform: translateY(0);
+  }
+
+  .btn-outline-white {
+    @apply border border-white/30 hover:border-white/60 text-white font-semibold px-6 py-3 rounded-lg transition-all duration-200 inline-flex items-center gap-2 hover:bg-white/5 hover:-translate-y-0.5;
+  }
+
+  .btn-outline-steel {
+    @apply border border-slate-600 hover:border-slate-400 text-slate-300 hover:text-white font-semibold px-6 py-3 rounded-lg transition-all duration-200 inline-flex items-center gap-2 hover:bg-slate-800/50 hover:-translate-y-0.5;
+  }
+
+  /* ============================================
+     BRAND ACCENT LINE
+     ============================================ */
+
+  .brand-line {
+    width: 3rem;
+    height: 0.25rem;
+    background-color: #FFD400;
+    border-radius: 9999px;
+  }
+
+  .brand-line-lg {
+    width: 5rem;
+    height: 0.25rem;
+    background-color: #FFD400;
+    border-radius: 9999px;
+  }
+}
+
+/* ============================================
+   ANIMATION KEYFRAMES
+   ============================================ */
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes pulse-border {
+  0%, 100% {
+    border-color: rgba(255, 212, 0, 0.25);
+  }
+  50% {
+    border-color: rgba(255, 212, 0, 0.8);
+  }
+}
+
+/* ============================================
+   FORM STYLES
+   ============================================ */
+
+.form-input {
+  width: 100%;
+  background-color: #111111;
+  border: 1px solid #2d2d2d;
+  color: white;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  outline: none;
+  transition: all 0.2s;
+}
+.form-input::placeholder { color: #64748b; }
+.form-input:focus {
+  box-shadow: 0 0 0 2px rgba(255, 212, 0, 0.3);
+  border-color: rgba(255, 212, 0, 0.4);
+}
+
+.form-label {
+  @apply block text-sm font-medium text-slate-300 mb-1.5;
+}
+
+/* ============================================
+   SELECTION STYLE
+   ============================================ */
+
+::selection {
+  background-color: rgba(255, 212, 0, 0.25);
+  color: #ffffff;
+}
+
+/* ============================================
+   LINK HOVER UNDERLINE
+   ============================================ */
+
+.link-hover {
+  color: #94a3b8;
+  transition: color 0.2s;
+}
+.link-hover:hover { color: #FFD400; }
+
+/* ============================================
+   BRAND BORDER LEFT CARD
+   ============================================ */
+
+.border-l-brand {
+  border-left: 3px solid #FFD400;
+}
+
+/* ============================================
+   RESPONSIVE VIDEO/ASPECT RATIO
+   ============================================ */
+
+.aspect-video-custom {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+}
+
+/* ============================================
+   NAV LINK ACTIVE STATE
+   ============================================ */
+
+.nav-link {
+  @apply text-slate-300 hover:text-white text-sm font-medium transition-colors duration-200 relative;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: #FFD400;
+  transition: width 0.2s ease;
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
