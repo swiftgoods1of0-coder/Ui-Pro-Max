@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import { Phone, Mail, MapPin, Facebook, Instagram } from 'lucide-react'
 
-const services = ['General Contracting', 'Kitchen Remodels', 'Bathroom Remodels', 'Basement Finishing', 'Plumbing Services', 'Pressure Washing', 'Deck Construction', 'Interior Painting']
+const services = ['Kitchen Remodeling', 'Bathroom Remodeling', 'Plumbing Repair & Install', 'Water Heater Services', 'Drain & Sewer Repair', 'Pressure Washing', 'Garage Remodeling', 'New Construction']
 const areas = ['York, PA', 'Hanover, PA', 'Red Lion, PA', 'Spring Grove, PA', 'Dallastown, PA', 'Shrewsbury, PA', 'Dover, PA', 'New Freedom, PA']
 
 export default function Footer() {
@@ -14,7 +14,7 @@ export default function Footer() {
           <div className="lg:col-span-1">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-12 h-12 relative">
-                <Image src="/logo.png" alt="Powell Renovations" fill sizes="48px" className="object-contain" />
+                <Image src="/logo.jpg" alt="Powell Renovations" fill sizes="48px" className="object-contain" />
               </div>
               <div>
                 <p className="text-xs tracking-[0.2em] text-gold-500 uppercase font-medium">Powell</p>
@@ -77,9 +77,9 @@ export default function Footer() {
           <div>
             <h3 className="text-white font-semibold text-sm uppercase tracking-wider mb-5">Contact</h3>
             <div className="space-y-4">
-              <a href="tel:+17175550100" className="flex items-start gap-3 text-dark-400 hover:text-gold-400 transition-colors group">
+              <a href="tel:+17178183276" className="flex items-start gap-3 text-dark-400 hover:text-gold-400 transition-colors group">
                 <Phone size={16} className="mt-0.5 shrink-0 group-hover:text-gold-400" />
-                <span className="text-sm">(717) 555-0100</span>
+                <span className="text-sm">(717) 818-3276</span>
               </a>
               <a href="mailto:info@powellrenovations.com" className="flex items-start gap-3 text-dark-400 hover:text-gold-400 transition-colors group">
                 <Mail size={16} className="mt-0.5 shrink-0 group-hover:text-gold-400" />
@@ -87,15 +87,14 @@ export default function Footer() {
               </a>
               <div className="flex items-start gap-3 text-dark-400">
                 <MapPin size={16} className="mt-0.5 shrink-0 text-gold-600" />
-                <span className="text-sm">York, PA 17401<br />Serving South-Central PA</span>
+                <span className="text-sm">1104 N George St<br />York, PA 17404</span>
               </div>
             </div>
 
             <div className="mt-6 p-4 border border-dark-800 rounded-sm">
               <p className="text-xs text-dark-400 uppercase tracking-wider mb-1 font-medium">Business Hours</p>
-              <p className="text-sm text-dark-300">Mon – Fri: 7:00 AM – 6:00 PM</p>
-              <p className="text-sm text-dark-300">Saturday: 8:00 AM – 2:00 PM</p>
-              <p className="text-sm text-gold-500 mt-1">Emergency plumbing: 24/7</p>
+              <p className="text-sm text-dark-300">Mon – Sat: Open 24 Hours</p>
+              <p className="text-sm text-gold-500 mt-1">We never close — call anytime</p>
             </div>
           </div>
         </div>

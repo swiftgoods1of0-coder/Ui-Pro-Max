@@ -64,8 +64,8 @@ export default function CTA() {
                 </div>
                 <div>
                   <p className="text-xs text-dark-400 uppercase tracking-wider">Call Us</p>
-                  <a href="tel:+17175550100" className="text-white font-semibold hover:text-gold-400 transition-colors">
-                    (717) 555-0100
+                  <a href="tel:+17178183276" className="text-white font-semibold hover:text-gold-400 transition-colors">
+                    (717) 818-3276
                   </a>
                 </div>
               </div>
@@ -86,17 +86,20 @@ export default function CTA() {
                 </div>
                 <div>
                   <p className="text-xs text-dark-400 uppercase tracking-wider">Hours</p>
-                  <p className="text-white font-semibold">Mon–Fri 7am–6pm · Sat 8am–2pm</p>
+                  <p className="text-white font-semibold">Mon–Sat: Open 24 Hours</p>
                 </div>
               </div>
             </div>
 
             <div className="mt-10 p-5 bg-dark-950 border border-gold-500/20 rounded-sm">
-              <p className="text-sm text-gold-300 font-semibold mb-1">Fast Response Guarantee</p>
-              <p className="text-dark-400 text-sm">
-                We respond to every estimate request within 24 hours — often same day.
-                Emergency plumbing? We're available 24/7.
-              </p>
+              <p className="text-sm text-gold-300 font-semibold mb-2">We Accept</p>
+              <div className="flex flex-wrap gap-2">
+                {['Cash', 'Venmo', 'PayPal', 'Cash App'].map((method) => (
+                  <span key={method} className="px-3 py-1 text-xs font-medium text-dark-300 border border-dark-700 rounded-sm">
+                    {method}
+                  </span>
+                ))}
+              </div>
             </div>
           </motion.div>
 
