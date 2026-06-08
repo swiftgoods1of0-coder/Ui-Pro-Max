@@ -88,19 +88,19 @@ export default function Experience() {
               <div className="rounded-2xl overflow-hidden h-44">
                 <div
                   className="w-full h-full bg-cover bg-center"
-                  style={{ backgroundImage: "url('/images/dogs-playing.jpg')" }}
+                  style={{ backgroundImage: "url('/images/yard-play.jpg')" }}
                 />
               </div>
               <div className="rounded-2xl overflow-hidden h-44">
                 <div
                   className="w-full h-full bg-cover bg-center"
-                  style={{ backgroundImage: "url('/images/pomeranian.jpg')" }}
+                  style={{ backgroundImage: "url('/images/boarding-dog.jpg')" }}
                 />
               </div>
               <div className="rounded-2xl overflow-hidden h-36 col-span-2">
                 <div
-                  className="w-full h-full bg-cover bg-center"
-                  style={{ backgroundImage: "url('/images/facility-sign.jpg')" }}
+                  className="w-full h-full bg-cover bg-top"
+                  style={{ backgroundImage: "url('/images/facility-building.jpg')" }}
                 />
               </div>
             </div>

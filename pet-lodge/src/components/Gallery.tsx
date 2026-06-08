@@ -6,13 +6,13 @@ import { useInView } from 'react-intersection-observer'
 import { X, ZoomIn } from 'lucide-react'
 
 const photos = [
-  { src: '/images/dogs-playing.jpg', alt: 'Dogs playing together in outdoor yard', span: 'col-span-2 row-span-2' },
-  { src: '/images/pomeranian.jpg', alt: 'Fluffy Pomeranian enjoying the play area', span: '' },
-  { src: '/images/facility-sign.jpg', alt: 'The Pet Lodge facility exterior', span: '' },
-  { src: '/images/transport-van.jpg', alt: 'Pet transport vehicle', span: 'col-span-2' },
-  { src: '/images/gallery-play.svg', alt: 'Outdoor play area', span: '' },
-  { src: '/images/gallery-kennel.svg', alt: 'Comfortable boarding suites', span: '' },
-  { src: '/images/gallery-groom.svg', alt: 'Grooming studio', span: '' },
+  { src: '/images/yard-play.jpg', alt: 'Dogs playing in our fenced outdoor yard', span: 'col-span-2 row-span-2' },
+  { src: '/images/boarding-dog.jpg', alt: 'A guest in our comfortable boarding suites', span: '' },
+  { src: '/images/facility-building.jpg', alt: 'The Pet Lodge facility exterior', span: '' },
+  { src: '/images/dogs-playing.jpg', alt: 'Group daycare playtime', span: 'col-span-2' },
+  { src: '/images/pomeranian.jpg', alt: 'Fluffy guest enjoying the play area', span: '' },
+  { src: '/images/transport-van.jpg', alt: 'Our pet transport vehicle', span: '' },
+  { src: '/images/facility-sign.jpg', alt: 'The Pet Lodge — Leonardtown, MD', span: '' },
 ]
 
 export default function Gallery() {
