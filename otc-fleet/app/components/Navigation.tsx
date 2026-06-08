@@ -72,7 +72,7 @@ export default function Navigation() {
                 alt="OTC Fleet Services"
                 width={220}
                 height={60}
-                className="h-7 w-auto object-contain"
+                className="h-8 w-auto object-contain"
                 onError={(e) => {
                   const img = e.currentTarget as HTMLImageElement
                   img.style.display = 'none'
@@ -197,7 +197,7 @@ export default function Navigation() {
                   alt="OTC Fleet Services"
                   width={160}
                   height={44}
-                  className="h-6 w-auto object-contain"
+                  className="h-7 w-auto object-contain"
                   onError={(e) => {
                     const img = e.currentTarget as HTMLImageElement
                     img.style.display = 'none'
