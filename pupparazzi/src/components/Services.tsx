@@ -11,6 +11,7 @@ const services = [
     description: 'A thorough bath with premium shampoo, blow-dry, brush-out, nail trim, ear cleaning, and a spritz of cologne. Your pet leaves smelling amazing and feeling great.',
     highlights: ['Premium shampoo & conditioner', 'Full blow-dry & brush-out', 'Nail trim & filing', 'Ear cleaning', 'Spritz & bandana'],
     image: '/images/cat-black.jpg',
+    bgPos: 'center top',
     badge: null,
   },
   {
@@ -20,6 +21,7 @@ const services = [
     description: 'Everything in the Bath & Groom plus a full body trim and sanitary trim tailored to your breed and style preference. Walk out looking like a show dog.',
     highlights: ['Full bath & dry', 'Full body trim', 'Sanitary trim', 'Breed-specific styling', 'Finishing touches'],
     image: '/images/sheltie.jpg',
+    bgPos: 'center top',
     badge: 'Most Popular',
   },
   {
@@ -29,6 +31,7 @@ const services = [
     description: 'Precision haircuts designed around your pet\'s coat type and your style wishes. Includes a full body trim and sanitary trim to keep your pet looking polished.',
     highlights: ['Full body trim', 'Sanitary trim', 'Breed or custom style', 'Face & paw shaping', 'Finishing bow or bandana'],
     image: '/images/poodles-duo.jpg',
+    bgPos: 'center top',
     badge: null,
   },
 ]
@@ -72,8 +75,8 @@ export default function Services() {
               >
                 {/* Photo */}
                 <div className="relative h-52 overflow-hidden">
-                  <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
-                    style={{ backgroundImage: `url('${svc.image}')` }} />
+                  <div className="absolute inset-0 bg-cover transition-transform duration-700 group-hover:scale-105"
+                    style={{ backgroundImage: `url('${svc.image}')`, backgroundPosition: svc.bgPos }} />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
                   <div className="absolute bottom-4 left-4 p-2.5 rounded-xl bg-white/20 backdrop-blur-sm border border-white/30">
                     <Icon size={20} className="text-white" />
