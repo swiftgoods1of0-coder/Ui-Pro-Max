@@ -54,22 +54,24 @@ export default function WhyChooseUs() {
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           >
-            <p className="text-gold-500 text-xs font-semibold tracking-[0.3em] uppercase mb-3">Why Powell</p>
-            <h2 className="font-display text-display text-white mb-6 text-balance">
+            <p className="text-gold-500 text-xs font-semibold tracking-[0.3em] uppercase mb-3 text-center lg:text-left">Why Powell</p>
+            <h2 className="font-display text-display text-white mb-6 text-balance text-center lg:text-left">
               The Standard Every Contractor Should Meet — But Few Do
             </h2>
-            <p className="text-dark-300 text-lg leading-relaxed mb-8 text-pretty">
+            <p className="text-dark-300 text-lg leading-relaxed mb-8 text-pretty text-center lg:text-left">
               There are hundreds of contractors in York County. Most will give you a price.
               Fewer will show up on time. Almost none will leave your home cleaner than they
               found it. Powell Renovations is built on a different standard.
             </p>
-            <a
-              href="#contact"
-              className="inline-flex items-center gap-3 px-7 py-3.5 font-semibold text-dark-950 rounded-sm transition-all hover:shadow-gold-lg hover:scale-[1.02]"
-              style={{ background: 'linear-gradient(135deg, #C4922A, #E8C547)' }}
-            >
-              Start Your Project
-            </a>
+            <div className="flex justify-center lg:justify-start">
+              <a
+                href="#contact"
+                className="inline-flex items-center gap-3 px-7 py-3.5 font-semibold text-dark-950 rounded-sm transition-all hover:shadow-gold-lg hover:scale-[1.02]"
+                style={{ background: 'linear-gradient(135deg, #C4922A, #E8C547)' }}
+              >
+                Start Your Project
+              </a>
+            </div>
           </motion.div>
 
           {/* Right — grid */}
