@@ -27,11 +27,11 @@ export default function About() {
           >
             {/* Main photo */}
             <div className="rounded-3xl overflow-hidden h-[480px] shadow-large">
-              <div className="w-full h-full bg-cover bg-center" style={{ backgroundImage: "url('/images/spaniel-xmas.jpg')" }} />
+              <div className="w-full h-full bg-cover" style={{ backgroundImage: "url('/images/spaniel-xmas.jpg')", backgroundPosition: '50% 15%' }} />
             </div>
             {/* Floating inset photo */}
             <div className="absolute -bottom-6 -right-4 sm:-right-8 w-44 h-44 rounded-2xl overflow-hidden shadow-large border-4 border-white">
-              <div className="w-full h-full bg-cover bg-center" style={{ backgroundImage: "url('/images/poodles-duo.jpg')" }} />
+              <div className="w-full h-full bg-cover" style={{ backgroundImage: "url('/images/poodles-duo.jpg')", backgroundPosition: '50% 30%' }} />
             </div>
             {/* Tag */}
             <div className="absolute top-5 left-5 px-4 py-2 rounded-full bg-white/95 shadow-soft flex items-center gap-2">

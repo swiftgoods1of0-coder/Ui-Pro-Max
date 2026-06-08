@@ -11,7 +11,7 @@ const services = [
     description: 'A thorough bath with premium shampoo, blow-dry, brush-out, nail trim, ear cleaning, and a spritz of cologne. Your pet leaves smelling amazing and feeling great.',
     highlights: ['Premium shampoo & conditioner', 'Full blow-dry & brush-out', 'Nail trim & filing', 'Ear cleaning', 'Spritz & bandana'],
     image: '/images/cat-black.jpg',
-    bgPos: 'center top',
+    bgPos: '50% 60%',
     badge: null,
   },
   {
@@ -21,7 +21,7 @@ const services = [
     description: 'Everything in the Bath & Groom plus a full body trim and sanitary trim tailored to your breed and style preference. Walk out looking like a show dog.',
     highlights: ['Full bath & dry', 'Full body trim', 'Sanitary trim', 'Breed-specific styling', 'Finishing touches'],
     image: '/images/sheltie.jpg',
-    bgPos: 'center top',
+    bgPos: '50% 25%',
     badge: 'Most Popular',
   },
   {
@@ -31,7 +31,7 @@ const services = [
     description: 'Precision haircuts designed around your pet\'s coat type and your style wishes. Includes a full body trim and sanitary trim to keep your pet looking polished.',
     highlights: ['Full body trim', 'Sanitary trim', 'Breed or custom style', 'Face & paw shaping', 'Finishing bow or bandana'],
     image: '/images/poodles-duo.jpg',
-    bgPos: 'center top',
+    bgPos: '50% 35%',
     badge: null,
   },
 ]
