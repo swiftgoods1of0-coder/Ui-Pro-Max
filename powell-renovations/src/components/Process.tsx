@@ -35,7 +35,7 @@ export default function Process() {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 })
 
   return (
-    <section id="process" className="py-24 bg-dark-900">
+    <section id="process" className="py-24 bg-dark-900 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <motion.div
           ref={ref}
@@ -69,7 +69,7 @@ export default function Process() {
               return (
                 <motion.div
                   key={step.number}
-                  initial={{ opacity: 0, x: -30 }}
+                  initial={{ opacity: 0, x: 0, y: 20 }}
                   animate={inView ? { opacity: 1, x: 0 } : {}}
                   transition={{ duration: 0.6, delay: 0.2 + i * 0.15, ease: [0.16, 1, 0.3, 1] }}
                   className="relative flex gap-6 items-start"

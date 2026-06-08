@@ -67,7 +67,7 @@ export default function Services() {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 })
 
   return (
-    <section id="services" className="py-24 bg-dark-950">
+    <section id="services" className="py-24 bg-dark-950 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         {/* Header */}
         <motion.div

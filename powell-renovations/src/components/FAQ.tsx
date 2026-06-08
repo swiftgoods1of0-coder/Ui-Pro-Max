@@ -41,7 +41,7 @@ export default function FAQ() {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 })
 
   return (
-    <section id="faq" className="py-24 bg-dark-950">
+    <section id="faq" className="py-24 bg-dark-950 overflow-hidden">
       <div className="max-w-3xl mx-auto px-4 sm:px-6">
         <motion.div
           ref={ref}

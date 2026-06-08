@@ -71,7 +71,7 @@ export default function Projects() {
   const filtered = filter === 'All' ? projects : projects.filter((p) => p.category === filter)
 
   return (
-    <section id="projects" className="py-24 bg-dark-950">
+    <section id="projects" className="py-24 bg-dark-950 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         {/* Header */}
         <motion.div

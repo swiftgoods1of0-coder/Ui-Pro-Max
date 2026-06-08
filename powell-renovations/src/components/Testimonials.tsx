@@ -75,13 +75,13 @@ export default function Testimonials() {
   }, [current])
 
   const variants = {
-    enter: (dir: number) => ({ opacity: 0, x: dir > 0 ? 60 : -60 }),
+    enter: (dir: number) => ({ opacity: 0, x: dir > 0 ? 30 : -30 }),
     center: { opacity: 1, x: 0 },
-    exit: (dir: number) => ({ opacity: 0, x: dir > 0 ? -60 : 60 }),
+    exit: (dir: number) => ({ opacity: 0, x: dir > 0 ? -30 : 30 }),
   }
 
   return (
-    <section id="testimonials" className="py-24 bg-dark-900">
+    <section id="testimonials" className="py-24 bg-dark-900 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         {/* Header */}
         <motion.div
@@ -101,8 +101,8 @@ export default function Testimonials() {
         </motion.div>
 
         {/* Carousel */}
-        <div className="relative max-w-3xl mx-auto">
-          <div className="overflow-hidden rounded-sm border border-dark-800 bg-dark-950 p-8 sm:p-12 min-h-[280px]">
+        <div className="relative max-w-3xl mx-auto overflow-hidden">
+          <div className="overflow-hidden rounded-sm border border-dark-800 bg-dark-950 p-5 sm:p-10 min-h-[280px]">
             <Quote size={40} className="text-gold-500/20 mb-6" />
             <AnimatePresence mode="wait" custom={direction}>
               <motion.div
@@ -114,7 +114,7 @@ export default function Testimonials() {
                 exit="exit"
                 transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
               >
-                <p className="text-dark-200 text-lg leading-relaxed mb-8 text-pretty italic">
+                <p className="text-dark-200 text-base leading-relaxed mb-6 text-pretty italic break-words">
                   &ldquo;{reviews[current].text}&rdquo;
                 </p>
                 <div className="flex items-center justify-between flex-wrap gap-4">
