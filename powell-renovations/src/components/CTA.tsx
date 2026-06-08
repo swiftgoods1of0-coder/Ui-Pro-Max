@@ -53,7 +53,7 @@ export default function CTA() {
               Ready to Upgrade Your Property?
             </h2>
             <p className="text-dark-300 text-lg leading-relaxed mb-10 text-pretty">
-              Your dream home is one conversation away. Fill out the form and we'll
+              Your dream home is one conversation away. Fill out the form and we&apos;ll
               get back to you within 24 hours — usually faster.
             </p>
 
@@ -118,7 +118,7 @@ export default function CTA() {
                 <CheckCircle size={48} className="text-gold-400 mb-4" />
                 <h3 className="font-display text-2xl font-bold text-white mb-2">Request Received</h3>
                 <p className="text-dark-300">
-                  We'll be in touch within 24 hours to schedule your free consultation.
+                  We&apos;ll be in touch within 24 hours to schedule your free consultation.
                   Talk soon.
                 </p>
               </motion.div>

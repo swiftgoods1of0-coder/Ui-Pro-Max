@@ -46,7 +46,7 @@ const services = [
     id: 'pressure',
     icon: Droplets,
     title: 'Pressure Washing',
-    tagline: 'Restore your property's curb appeal in one day.',
+    tagline: "Restore your property's curb appeal in one day.",
     image: '/images/pressure-washing.jpg',
     items: [
       'House & siding washing',

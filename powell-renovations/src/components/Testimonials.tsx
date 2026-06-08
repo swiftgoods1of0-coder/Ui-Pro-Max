@@ -115,7 +115,7 @@ export default function Testimonials() {
                 transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
               >
                 <p className="text-dark-200 text-lg leading-relaxed mb-8 text-pretty italic">
-                  "{reviews[current].text}"
+                  &ldquo;{reviews[current].text}&rdquo;
                 </p>
                 <div className="flex items-center justify-between flex-wrap gap-4">
                   <div>
