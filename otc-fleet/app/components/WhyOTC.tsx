@@ -73,7 +73,7 @@ export default function WhyOTC() {
         </FadeUp>
 
         <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-start">
-          {/* Left: Large image placeholder with overlay */}
+          {/* Left: Premium stats feature panel */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -83,48 +83,77 @@ export default function WhyOTC() {
           >
             <div
               className="relative rounded-2xl overflow-hidden"
-              style={{ minHeight: '480px' }}
+              style={{ minHeight: '480px', backgroundColor: '#111111', border: '1px solid #222222' }}
             >
-              {/* Real technician photo */}
-              <img
-                src="/ethan-working.jpg"
-                alt="OTC Fleet technician Ethan servicing a Rank truck on a heavy-duty Atlas lift"
-                className="absolute inset-0 w-full h-full object-cover object-center"
-              />
-              {/* Dark gradient overlay for text legibility */}
-              <div className="absolute inset-0 bg-gradient-to-t from-charcoal-900/90 via-charcoal-900/30 to-transparent" />
+              {/* Top brand accent */}
+              <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(to right, #FFD400, #e6bf00)' }} />
 
-              {/* Overlay content bottom */}
-              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-charcoal-900/90 to-transparent p-8">
-                <div className="text-brand text-xs font-bold tracking-[0.2em] uppercase mb-2">
-                  Trusted Partner
+              {/* Grid texture */}
+              <div className="absolute inset-0 opacity-30" style={{
+                backgroundImage: 'linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)',
+                backgroundSize: '40px 40px',
+              }} />
+
+              {/* Diamond plate subtle texture */}
+              <div className="absolute inset-0 opacity-10" style={{
+                backgroundImage: 'repeating-linear-gradient(45deg, rgba(255,212,0,0.08) 0, rgba(255,212,0,0.08) 1px, transparent 0, transparent 50%)',
+                backgroundSize: '20px 20px',
+              }} />
+
+              <div className="relative z-10 p-8 flex flex-col h-full" style={{ minHeight: '480px' }}>
+                {/* Header */}
+                <div className="mb-8">
+                  <div className="text-xs font-bold tracking-[0.2em] uppercase mb-3" style={{ color: '#FFD400' }}>
+                    Trusted Partner
+                  </div>
+                  <h3 className="text-white text-3xl font-bold leading-tight mb-3">
+                    Your Fleet Is<br />Our Priority
+                  </h3>
+                  <p className="text-slate-400 text-sm leading-relaxed">
+                    OTC Fleet Services has been keeping commercial fleets moving across Central
+                    Pennsylvania for over 20 years. Fast service, honest communication, reliable results.
+                  </p>
                 </div>
-                <h3 className="text-white text-2xl font-bold leading-tight mb-2">
-                  Your Fleet Is Our Priority
-                </h3>
-                <p className="text-slate-300 text-sm leading-relaxed">
-                  OTC Fleet Services has been keeping commercial fleets moving across Central
-                  Pennsylvania for over 20 years. We know what fleet managers need: fast service,
-                  honest communication, and reliable results.
-                </p>
-              </div>
 
-              {/* Orange top accent */}
-              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-brand to-brand-dark-dark" />
+                {/* Big stats */}
+                <div className="grid grid-cols-2 gap-4 mb-6">
+                  {[
+                    { value: '20+', label: 'Years in Business', sub: 'Since 2004' },
+                    { value: '2', label: 'Shop Locations', sub: 'Lancaster & Berks' },
+                    { value: 'Same Day', label: 'Response Time', sub: 'Fleet customers' },
+                    { value: '100%', label: 'Digital Records', sub: 'Via Fullbay' },
+                  ].map(({ value, label, sub }) => (
+                    <div
+                      key={label}
+                      className="rounded-xl p-4"
+                      style={{ backgroundColor: '#1a1a1a', border: '1px solid #2d2d2d' }}
+                    >
+                      <div className="text-2xl font-bold mb-0.5" style={{ color: '#FFD400' }}>{value}</div>
+                      <div className="text-white text-xs font-semibold">{label}</div>
+                      <div className="text-slate-500 text-xs mt-0.5">{sub}</div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Two locations */}
+                <div className="mt-auto grid grid-cols-2 gap-3">
+                  {[
+                    { city: 'Lancaster', address: '480 Running Pump Rd', phone: '717-208-3600' },
+                    { city: 'Berks County', address: 'Central PA Region', phone: '610-374-4077' },
+                  ].map(({ city, address, phone }) => (
+                    <div
+                      key={city}
+                      className="rounded-lg p-3"
+                      style={{ backgroundColor: 'rgba(255,212,0,0.06)', border: '1px solid rgba(255,212,0,0.15)' }}
+                    >
+                      <div className="text-xs font-bold uppercase tracking-wide mb-1" style={{ color: '#FFD400' }}>{city}</div>
+                      <div className="text-white text-sm font-semibold">{phone}</div>
+                      <div className="text-slate-500 text-xs">{address}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
-
-            {/* Floating stat card */}
-            <motion.div
-              animate={{ y: [0, -8, 0] }}
-              transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
-              className="absolute -top-5 -right-5 glass rounded-xl p-4 border border-white/15 shadow-xl"
-            >
-              <div className="text-brand text-xs font-bold uppercase tracking-wider mb-0.5">
-                Response Time
-              </div>
-              <div className="text-white text-xl font-bold">Same Day</div>
-              <div className="text-slate-400 text-xs">For fleet customers</div>
-            </motion.div>
           </motion.div>
 
           {/* Right: Credibility grid */}

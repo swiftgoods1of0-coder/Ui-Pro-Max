@@ -10,10 +10,12 @@ import SnowEquipment from './components/SnowEquipment'
 import Testimonials from './components/Testimonials'
 import Contact from './components/Contact'
 import Footer from './components/Footer'
+import SectionNav from './components/SectionNav'
 
 export default function Home() {
   return (
     <>
+      <SectionNav />
       <Hero />
       <StatsBar />
       <Services />
