@@ -105,6 +105,38 @@ export default function Services() {
           </div>
         </FadeUp>
 
+        {/* Shop Photo Feature */}
+        <FadeUp delay={0.2}>
+          <div className="relative rounded-2xl overflow-hidden mb-14" style={{ height: '360px' }}>
+            <img
+              src="/shop-clean.jpg"
+              alt="OTC Fleet Services shop bay — professional service facility in Lancaster, PA"
+              className="absolute inset-0 w-full h-full object-cover object-center"
+            />
+            <div className="absolute inset-0" style={{ background: 'linear-gradient(to right, rgba(10,10,10,0.92) 30%, rgba(10,10,10,0.4) 70%, transparent 100%)' }} />
+            <div className="absolute top-0 left-0 right-0 h-0.5" style={{ background: 'linear-gradient(to right, #FFD400, #e6bf00, transparent)' }} />
+            <div className="absolute inset-0 flex items-center px-10 lg:px-16">
+              <div className="max-w-md">
+                <div className="text-xs font-bold tracking-[0.2em] uppercase mb-3" style={{ color: '#FFD400' }}>Our Facility</div>
+                <h3 className="text-white text-3xl lg:text-4xl font-bold leading-tight mb-3">
+                  State-of-the-Art<br />Service Bays
+                </h3>
+                <p className="text-slate-300 text-sm leading-relaxed mb-4">
+                  Heavy-duty lifts, diagnostic equipment, and a fully equipped team — built to handle every vehicle in your fleet, fast.
+                </p>
+                <div className="flex gap-6">
+                  {[['8+', 'Service Bays'], ['2', 'Locations'], ['20+', 'Years Experience']].map(([val, label]) => (
+                    <div key={label}>
+                      <div className="text-white text-xl font-bold" style={{ color: '#FFD400' }}>{val}</div>
+                      <div className="text-slate-400 text-xs">{label}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </FadeUp>
+
         {/* Service Cards Grid */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {services.map((service, i) => {

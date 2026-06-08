@@ -87,8 +87,8 @@ export default function WhyOTC() {
             >
               {/* Real technician photo */}
               <img
-                src="/tech-working.jpg"
-                alt="OTC Fleet technician servicing a commercial van on a two-post lift"
+                src="/ethan-working.jpg"
+                alt="OTC Fleet technician Ethan servicing a Rank truck on a heavy-duty Atlas lift"
                 className="absolute inset-0 w-full h-full object-cover object-center"
               />
               {/* Dark gradient overlay for text legibility */}
