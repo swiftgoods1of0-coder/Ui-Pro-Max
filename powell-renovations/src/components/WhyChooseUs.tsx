@@ -50,8 +50,8 @@ export default function WhyChooseUs() {
           {/* Left — text */}
           <motion.div
             ref={ref}
-            initial={{ opacity: 0, x: -20 }}
-            animate={inView ? { opacity: 1, x: 0 } : {}}
+            initial={{ opacity: 0, y: 30 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           >
             <p className="text-gold-500 text-xs font-semibold tracking-[0.3em] uppercase mb-3">Why Powell</p>
