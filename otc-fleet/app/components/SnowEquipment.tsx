@@ -68,7 +68,7 @@ export default function SnowEquipment() {
       {/* Icy blue glow top */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[200px] rounded-full bg-blue-400/5 blur-[80px] pointer-events-none" />
       {/* Orange warm glow bottom right */}
-      <div className="absolute bottom-0 right-0 w-[400px] h-[300px] rounded-full bg-orange-500/5 blur-[100px] pointer-events-none" />
+      <div className="absolute bottom-0 right-0 w-[400px] h-[300px] rounded-full bg-brand/5 blur-[100px] pointer-events-none" />
 
       {/* Top accent line */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-400/30 to-transparent" />
@@ -87,7 +87,7 @@ export default function SnowEquipment() {
           </FadeUp>
 
           <FadeUp delay={0.1}>
-            <div className="orange-line-lg mx-auto mb-6" />
+            <div className="brand-line-lg mx-auto mb-6" />
             <h2 className="text-4xl lg:text-5xl font-bold text-white tracking-tight mb-5">
               Snow Equipment Sales & Service
             </h2>
@@ -121,8 +121,8 @@ export default function SnowEquipment() {
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true, margin: '-20px' }}
                     transition={{ duration: 0.4, delay: i * 0.06, ease: [0.22, 1, 0.36, 1] }}
-                    className="flex items-start gap-4 p-4 rounded-xl bg-navy-800/40 border border-navy-700/50
-                      hover:border-blue-400/20 hover:bg-navy-800/60 transition-all duration-300 group"
+                    className="flex items-start gap-4 p-4 rounded-xl bg-charcoal-800/40 border border-charcoal-700/50
+                      hover:border-blue-400/20 hover:bg-charcoal-800/60 transition-all duration-300 group"
                   >
                     <div className="w-10 h-10 rounded-lg bg-blue-400/10 border border-blue-400/20 flex items-center justify-center flex-shrink-0 group-hover:bg-blue-400/20 transition-colors">
                       <Icon className="w-5 h-5 text-blue-300 group-hover:text-blue-200 transition-colors" />
@@ -130,7 +130,7 @@ export default function SnowEquipment() {
                     <div>
                       <div className="text-white font-semibold text-sm mb-0.5 flex items-center gap-2">
                         {service.label}
-                        <CheckCircle className="w-3.5 h-3.5 text-orange-400/70" />
+                        <CheckCircle className="w-3.5 h-3.5 text-brand/70" />
                       </div>
                       <div className="text-slate-400 text-sm leading-relaxed">{service.description}</div>
                     </div>
@@ -150,12 +150,12 @@ export default function SnowEquipment() {
               transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             >
               <div
-                className="relative rounded-2xl overflow-hidden border border-navy-700 shadow-[0_30px_60px_rgba(0,0,0,0.5)]"
+                className="relative rounded-2xl overflow-hidden border border-charcoal-700 shadow-[0_30px_60px_rgba(0,0,0,0.5)]"
                 style={{ minHeight: '300px' }}
                 data-placeholder="SnowPlow.jpg"
               >
                 {/* Background */}
-                <div className="absolute inset-0 bg-gradient-to-br from-navy-900 to-navy-950" />
+                <div className="absolute inset-0 bg-gradient-to-br from-charcoal-900 to-charcoal-950" />
 
                 {/* Icy texture */}
                 <div
@@ -218,8 +218,8 @@ export default function SnowEquipment() {
                 { value: 'Expert', label: 'Technicians' },
                 { value: 'Priority', label: 'Winter Service' },
               ].map(({ value, label }) => (
-                <div key={label} className="bg-navy-800/50 border border-navy-700 rounded-xl p-4 text-center hover:border-blue-400/30 transition-colors">
-                  <div className="text-orange-400 font-bold text-sm">{value}</div>
+                <div key={label} className="bg-charcoal-800/50 border border-charcoal-700 rounded-xl p-4 text-center hover:border-blue-400/30 transition-colors">
+                  <div className="text-brand font-bold text-sm">{value}</div>
                   <div className="text-slate-500 text-xs mt-0.5">{label}</div>
                 </div>
               ))}
@@ -231,7 +231,7 @@ export default function SnowEquipment() {
                 href="https://keystonetrailers.com/snow-removal"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-orange w-full justify-center"
+                className="btn-brand w-full justify-center"
               >
                 <Snowflake className="w-4 h-4" />
                 View Snow Plow Inventory
@@ -243,7 +243,7 @@ export default function SnowEquipment() {
             <FadeUp delay={0.35}>
               <p className="text-center text-slate-500 text-sm">
                 Questions? Call{' '}
-                <a href="tel:7175819020" className="text-orange-400 hover:text-orange-400-light transition-colors">
+                <a href="tel:7175819020" className="text-brand hover:text-brand-light transition-colors">
                   717-581-9020
                 </a>{' '}
                 (Keystone Trailers Sales)
@@ -281,7 +281,7 @@ export default function SnowEquipment() {
                     e.preventDefault()
                     document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' })
                   }}
-                  className="btn-orange whitespace-nowrap"
+                  className="btn-brand whitespace-nowrap"
                 >
                   Schedule Service
                   <ArrowRight className="w-4 h-4" />

@@ -54,8 +54,8 @@ export default function Navigation() {
         transition={{ duration: 0.5, ease: 'easeOut' }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           isScrolled
-            ? 'backdrop-blur-md bg-navy-800/95 border-b border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.5)]'
-            : 'backdrop-blur-md bg-navy-800/80 border-b border-white/5'
+            ? 'backdrop-blur-md bg-charcoal-800/95 border-b border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.5)]'
+            : 'backdrop-blur-md bg-charcoal-800/80 border-b border-white/5'
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -85,7 +85,7 @@ export default function Navigation() {
                   OTC Fleet
                 </span>
                 <span
-                  className="w-1.5 h-1.5 rounded-full bg-orange-500 ml-0.5 mt-0 inline-block"
+                  className="w-1.5 h-1.5 rounded-full bg-brand ml-0.5 mt-0 inline-block"
                   aria-hidden="true"
                 />
                 <span className="hidden sm:block text-slate-400 text-sm font-normal border-l border-white/20 pl-2 ml-1">
@@ -114,15 +114,15 @@ export default function Navigation() {
                 href="tel:7172083600"
                 className="flex items-center gap-2 text-slate-300 hover:text-white transition-colors text-sm font-medium group"
               >
-                <div className="w-7 h-7 rounded-full bg-orange-500/15 group-hover:bg-orange-500/25 flex items-center justify-center transition-colors">
-                  <Phone className="w-3.5 h-3.5 text-orange-400" />
+                <div className="w-7 h-7 rounded-full bg-brand/15 group-hover:bg-brand/25 flex items-center justify-center transition-colors">
+                  <Phone className="w-3.5 h-3.5 text-brand" />
                 </div>
                 <span>717-208-3600</span>
               </a>
               <a
                 href="#contact"
                 onClick={(e) => { e.preventDefault(); handleNavClick('#contact') }}
-                className="btn-orange text-sm py-2 px-5"
+                className="btn-brand text-sm py-2 px-5"
               >
                 Schedule Service
               </a>
@@ -174,7 +174,7 @@ export default function Navigation() {
             className="fixed inset-0 z-40 lg:hidden"
             onClick={() => setIsMobileOpen(false)}
           >
-            <div className="absolute inset-0 bg-navy-800/60 backdrop-blur-sm" />
+            <div className="absolute inset-0 bg-charcoal-800/60 backdrop-blur-sm" />
           </motion.div>
         )}
       </AnimatePresence>
@@ -186,7 +186,7 @@ export default function Navigation() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: '100%' }}
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed top-0 right-0 bottom-0 z-50 w-80 max-w-[90vw] bg-navy-800 border-l border-white/10 lg:hidden flex flex-col"
+            className="fixed top-0 right-0 bottom-0 z-50 w-80 max-w-[90vw] bg-charcoal-800 border-l border-white/10 lg:hidden flex flex-col"
           >
             {/* Mobile Menu Header */}
             <div className="flex items-center justify-between px-6 py-5 border-b border-white/10">
@@ -207,7 +207,7 @@ export default function Navigation() {
                 />
                 <div className="items-center gap-1" style={{ display: 'none' }}>
                   <span className="text-white font-bold text-lg">OTC Fleet</span>
-                  <span className="w-1.5 h-1.5 rounded-full bg-orange-500 ml-0.5 inline-block" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-brand ml-0.5 inline-block" />
                   <span className="text-slate-400 text-sm ml-1">Services</span>
                 </div>
               </div>
@@ -233,7 +233,7 @@ export default function Navigation() {
                     onClick={(e) => { e.preventDefault(); handleNavClick(link.href) }}
                     className="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-300 hover:text-white hover:bg-white/5 transition-all duration-200 group"
                   >
-                    <span className="w-1.5 h-1.5 rounded-full bg-orange-500/50 group-hover:bg-orange-500 transition-colors" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-brand/50 group-hover:bg-brand transition-colors" />
                     <span className="font-medium">{link.label}</span>
                   </motion.a>
                 ))}
@@ -244,10 +244,10 @@ export default function Navigation() {
             <div className="px-4 py-6 border-t border-white/10 space-y-3">
               <a
                 href="tel:7172083600"
-                className="flex items-center gap-3 px-4 py-3 rounded-lg bg-navy-800 hover:bg-navy-800 transition-colors text-white"
+                className="flex items-center gap-3 px-4 py-3 rounded-lg bg-charcoal-800 hover:bg-charcoal-800 transition-colors text-white"
               >
-                <div className="w-8 h-8 rounded-full bg-orange-500/20 flex items-center justify-center">
-                  <Phone className="w-4 h-4 text-orange-400" />
+                <div className="w-8 h-8 rounded-full bg-brand/20 flex items-center justify-center">
+                  <Phone className="w-4 h-4 text-brand" />
                 </div>
                 <div>
                   <div className="text-xs text-slate-400">Lancaster</div>
@@ -256,10 +256,10 @@ export default function Navigation() {
               </a>
               <a
                 href="tel:6103744077"
-                className="flex items-center gap-3 px-4 py-3 rounded-lg bg-navy-800 hover:bg-navy-800 transition-colors text-white"
+                className="flex items-center gap-3 px-4 py-3 rounded-lg bg-charcoal-800 hover:bg-charcoal-800 transition-colors text-white"
               >
-                <div className="w-8 h-8 rounded-full bg-orange-500/20 flex items-center justify-center">
-                  <Phone className="w-4 h-4 text-orange-400" />
+                <div className="w-8 h-8 rounded-full bg-brand/20 flex items-center justify-center">
+                  <Phone className="w-4 h-4 text-brand" />
                 </div>
                 <div>
                   <div className="text-xs text-slate-400">Berks County</div>
@@ -269,7 +269,7 @@ export default function Navigation() {
               <a
                 href="#contact"
                 onClick={(e) => { e.preventDefault(); handleNavClick('#contact') }}
-                className="btn-orange w-full justify-center"
+                className="btn-brand w-full justify-center"
               >
                 Schedule Service
               </a>

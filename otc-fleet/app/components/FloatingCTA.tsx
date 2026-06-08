@@ -31,7 +31,7 @@ export default function FloatingCTA() {
           aria-label="Mobile call to action bar"
         >
           {/* Orange gradient top line */}
-          <div className="h-0.5 bg-gradient-to-r from-orange-500-dark via-orange-500 to-orange-600-dark-dark" />
+          <div className="h-0.5 bg-gradient-to-r from-brand-dark via-brand to-brand-dark-dark-dark" />
 
           <div
             className="grid grid-cols-2"
@@ -41,7 +41,7 @@ export default function FloatingCTA() {
             <a
               href="tel:7172083600"
               className="flex items-center justify-center gap-2 py-4 font-bold text-sm transition-all duration-200 active:scale-95"
-              style={{ backgroundColor: '#f97316', color: '#ffffff' }}
+              style={{ backgroundColor: '#FFD400', color: '#ffffff' }}
               aria-label="Call Lancaster location at 717-208-3600"
             >
               <Phone className="w-4 h-4" />
@@ -55,12 +55,12 @@ export default function FloatingCTA() {
               className="flex items-center justify-center gap-2 py-4 font-bold text-sm border-l transition-all duration-200 active:scale-95"
               style={{
                 backgroundColor: '#0d1f3c',
-                borderColor: 'rgba(249,115,22,0.3)',
+                borderColor: 'rgba(255,212,0,0.3)',
                 color: '#ffffff',
               }}
               aria-label="Schedule service"
             >
-              <Calendar className="w-4 h-4" style={{ color: '#f97316' }} />
+              <Calendar className="w-4 h-4" style={{ color: '#FFD400' }} />
               <span>Schedule Service</span>
             </a>
           </div>

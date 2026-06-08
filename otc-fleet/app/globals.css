@@ -14,7 +14,7 @@
   --navy-800: #0d1f3c;
   --navy-700: #112244;
   --navy-600: #1a3366;
-  --orange: #f97316;
+  --orange: #FFD400;
   --orange-dark: #e6be00;
   --steel: #1e293b;
 }
@@ -78,7 +78,7 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.1);
   }
 
-  .glass-orange {
+  .glass-brand {
     background: rgba(249, 115, 22, 0.1);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
@@ -90,7 +90,7 @@ body {
      ============================================ */
 
   .gradient-text {
-    background: linear-gradient(135deg, #f97316 0%, #fb923c 50%, #fdba74 100%);
+    background: linear-gradient(135deg, #FFD400 0%, #fb923c 50%, #fdba74 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -130,7 +130,7 @@ body {
      ============================================ */
 
   .section-eyebrow {
-    @apply text-orange-400 text-xs font-bold tracking-[0.2em] uppercase;
+    @apply text-brand text-xs font-bold tracking-[0.2em] uppercase;
   }
 
   .section-title {
@@ -146,19 +146,19 @@ body {
      ============================================ */
 
   .card-base {
-    @apply bg-navy-800 border border-navy-700 rounded-xl p-6 transition-all duration-300;
+    @apply bg-charcoal-800 border border-charcoal-700 rounded-xl p-6 transition-all duration-300;
   }
 
   .card-hover {
-    @apply hover:border-orange-500/40 hover:shadow-[0_20px_60px_rgba(0,0,0,0.4)] hover:-translate-y-1;
+    @apply hover:border-brand/40 hover:shadow-[0_20px_60px_rgba(0,0,0,0.4)] hover:-translate-y-1;
   }
 
   /* ============================================
      BUTTON UTILITIES
      ============================================ */
 
-  .btn-orange {
-    @apply bg-orange-500 hover:bg-orange-600 text-white font-semibold px-6 py-3 rounded-lg transition-all duration-200 inline-flex items-center gap-2 shadow-lg hover:shadow-orange-500/30 hover:-translate-y-0.5 active:translate-y-0;
+  .btn-brand {
+    @apply bg-brand hover:bg-brand-dark text-white font-semibold px-6 py-3 rounded-lg transition-all duration-200 inline-flex items-center gap-2 shadow-lg hover:shadow-orange-500/30 hover:-translate-y-0.5 active:translate-y-0;
   }
 
   .btn-outline-white {
@@ -173,12 +173,12 @@ body {
      ORANGE ACCENT LINE
      ============================================ */
 
-  .orange-line {
-    @apply w-12 h-1 bg-orange-500 rounded-full;
+  .brand-line {
+    @apply w-12 h-1 bg-brand rounded-full;
   }
 
-  .orange-line-lg {
-    @apply w-20 h-1 bg-orange-500 rounded-full;
+  .brand-line-lg {
+    @apply w-20 h-1 bg-brand rounded-full;
   }
 }
 
@@ -251,7 +251,7 @@ body {
    ============================================ */
 
 .form-input {
-  @apply w-full bg-navy-900 border border-navy-600 text-white placeholder-slate-500 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500/50 transition-all duration-200;
+  @apply w-full bg-charcoal-900 border border-charcoal-600 text-white placeholder-slate-500 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-brand/50 transition-all duration-200;
 }
 
 .form-label {
@@ -272,7 +272,7 @@ body {
    ============================================ */
 
 .link-hover {
-  @apply text-slate-400 hover:text-orange-400 transition-colors duration-200;
+  @apply text-slate-400 hover:text-brand transition-colors duration-200;
 }
 
 /* ============================================
@@ -280,7 +280,7 @@ body {
    ============================================ */
 
 .border-l-orange {
-  border-left: 3px solid #f97316;
+  border-left: 3px solid #FFD400;
 }
 
 /* ============================================
@@ -309,7 +309,7 @@ body {
   left: 0;
   width: 0;
   height: 2px;
-  background: #f97316;
+  background: #FFD400;
   transition: width 0.2s ease;
 }
 
