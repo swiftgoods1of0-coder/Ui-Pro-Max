@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
-import { ArrowDown, Shield, Star, Award } from 'lucide-react'
+import { Shield, Star, Award } from 'lucide-react'
 
 const badges = [
   { icon: Shield, label: 'Licensed & Insured' },
@@ -23,13 +23,13 @@ export default function Hero() {
   }, [])
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-dark-950">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-dark-950 w-full max-w-[100vw]">
       {/* Background — replace src with a real hero image */}
       <div ref={parallaxRef} className="absolute inset-0 will-change-transform">
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
-            backgroundImage: `url('/images/hero-bg.jpg')`,
+            backgroundImage: `url('/images/hero-bg.svg')`,
             backgroundPosition: 'center 30%',
           }}
         />
@@ -39,8 +39,8 @@ export default function Hero() {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(8,8,8,0.6)_100%)]" />
       </div>
 
-      {/* Animated background particles */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      {/* Animated background particles — hidden on mobile to prevent overflow */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none hidden sm:block">
         {[...Array(6)].map((_, i) => (
           <motion.div
             key={i}
@@ -146,21 +146,6 @@ export default function Hero() {
         </motion.div>
       </div>
 
-      {/* Scroll indicator */}
-      <motion.div
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-dark-500"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.4 }}
-      >
-        <span className="text-xs tracking-widest uppercase">Scroll</span>
-        <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
-        >
-          <ArrowDown size={16} className="text-gold-500" />
-        </motion.div>
-      </motion.div>
     </section>
   )
 }

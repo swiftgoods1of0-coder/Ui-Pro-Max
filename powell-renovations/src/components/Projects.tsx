@@ -14,7 +14,7 @@ const projects = [
     category: 'Renovation',
     location: 'York, PA',
     desc: 'Complete gut renovation — new cabinets, quartz countertops, tile backsplash, and premium fixtures.',
-    image: '/images/project-kitchen.jpg',
+    image: '/images/project-kitchen.svg',
     span: 'col-span-2',
   },
   {
@@ -23,7 +23,7 @@ const projects = [
     category: 'Renovation',
     location: 'Spring Grove, PA',
     desc: 'Custom tile shower, double vanity, and radiant floor heating.',
-    image: '/images/project-bath.jpg',
+    image: '/images/project-bath.svg',
     span: 'col-span-1',
   },
   {
@@ -32,7 +32,7 @@ const projects = [
     category: 'Plumbing',
     location: 'Red Lion, PA',
     desc: 'Full copper-to-PEX conversion on a 1960s colonial. Zero leaks. Lifetime warranty.',
-    image: '/images/project-plumbing.jpg',
+    image: '/images/plumbing2.jpg',
     span: 'col-span-1',
   },
   {
@@ -41,7 +41,7 @@ const projects = [
     category: 'Pressure Washing',
     location: 'Shrewsbury, PA',
     desc: 'Removed 8 years of grime from vinyl siding and restored the driveway to like-new condition.',
-    image: '/images/project-wash.jpg',
+    image: '/images/project-wash.svg',
     span: 'col-span-1',
   },
   {
@@ -50,7 +50,7 @@ const projects = [
     category: 'Renovation',
     location: 'Dover, PA',
     desc: '1,200 sq ft unfinished basement converted to a fully livable entertainment space.',
-    image: '/images/project-basement.jpg',
+    image: '/images/project-basement.svg',
     span: 'col-span-1',
   },
   {
@@ -59,7 +59,7 @@ const projects = [
     category: 'Renovation',
     location: 'Dallastown, PA',
     desc: '400 sq ft composite deck with built-in lighting and cable railing system.',
-    image: '/images/project-deck.jpg',
+    image: '/images/project-deck.svg',
     span: 'col-span-1',
   },
 ]

@@ -11,7 +11,7 @@ const services = [
     icon: HardHat,
     title: 'General Contracting',
     tagline: 'Complete home transformations, inside and out.',
-    image: '/images/contracting.jpg',
+    image: '/images/contracting.svg',
     items: [
       'Kitchen & bathroom remodeling',
       'Bedroom & garage remodeling',
@@ -47,7 +47,7 @@ const services = [
     icon: Droplets,
     title: 'Pressure Washing',
     tagline: "Restore your property's curb appeal in one day.",
-    image: '/images/pressure-washing.jpg',
+    image: '/images/pressure-washing.svg',
     items: [
       'House & siding washing',
       'Driveway & walkway cleaning',
