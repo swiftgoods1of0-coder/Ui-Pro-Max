@@ -50,10 +50,26 @@ export default function Footer() {
           {/* Column 1: Company info */}
           <div>
             {/* Logo */}
-            <div className="flex items-center gap-1 mb-5">
-              <span className="text-white font-bold text-xl tracking-tight">OTC Fleet</span>
-              <span className="w-2 h-2 rounded-full bg-brand ml-0.5 inline-block" aria-hidden="true" />
-              <span className="text-slate-400 text-sm ml-1">Services</span>
+            <div className="mb-5">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/otc-logo.png"
+                alt="OTC Fleet Services"
+                width={220}
+                height={60}
+                className="h-12 w-auto object-contain"
+                onError={(e) => {
+                  const img = e.currentTarget as HTMLImageElement
+                  img.style.display = 'none'
+                  const fb = img.nextElementSibling as HTMLElement
+                  if (fb) fb.style.display = 'flex'
+                }}
+              />
+              <div className="items-center gap-1" style={{ display: 'none' }}>
+                <span className="text-white font-bold text-xl tracking-tight">OTC Fleet</span>
+                <span className="w-2 h-2 rounded-full bg-brand ml-0.5 inline-block" aria-hidden="true" />
+                <span className="text-slate-400 text-sm ml-1">Services</span>
+              </div>
             </div>
 
             <p className="text-slate-400 text-sm leading-relaxed mb-5">
