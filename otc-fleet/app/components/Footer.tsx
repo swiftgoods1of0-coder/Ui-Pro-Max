@@ -57,7 +57,7 @@ export default function Footer() {
                 alt="OTC Fleet Services"
                 width={220}
                 height={60}
-                className="h-12 w-auto object-contain"
+                className="h-9 w-auto object-contain"
                 onError={(e) => {
                   const img = e.currentTarget as HTMLImageElement
                   img.style.display = 'none'
