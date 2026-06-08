@@ -41,7 +41,7 @@ const services = [
     tagline: 'Adventures tailored to your dog\'s energy.',
     description: 'Reliable, professional walkers who know dog behavior. Solo and group walks available, with real-time updates so you always know where your pup is exploring.',
     highlights: ['Solo or group walks', 'GPS-tracked routes', 'Post-walk report', 'Flexible scheduling'],
-    image: '/images/walk-bg.svg',
+    image: '/images/dog-walk.jpg',
     accent: 'from-forest-600 to-sage-500',
     badge: null,
   },
