@@ -53,7 +53,7 @@ export default function Footer() {
             <div className="mb-5">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/otc-logo.png"
+                src="/otc-logo.svg"
                 alt="OTC Fleet Services"
                 width={220}
                 height={60}

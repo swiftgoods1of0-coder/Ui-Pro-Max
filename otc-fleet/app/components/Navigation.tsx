@@ -68,7 +68,7 @@ export default function Navigation() {
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/otc-logo.png"
+                src="/otc-logo.svg"
                 alt="OTC Fleet Services"
                 width={220}
                 height={60}
@@ -193,7 +193,7 @@ export default function Navigation() {
               <div className="flex items-center gap-1">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src="/otc-logo.png"
+                  src="/otc-logo.svg"
                   alt="OTC Fleet Services"
                   width={160}
                   height={44}
