@@ -9,13 +9,13 @@
    ============================================ */
 
 :root {
-  --navy-950: #040d1a;
-  --navy-900: #0a1628;
-  --navy-800: #0d1f3c;
-  --navy-700: #112244;
-  --navy-600: #1a3366;
-  --orange: #FFD400;
-  --orange-dark: #e6be00;
+  --charcoal-950: #0a0a0a;
+  --charcoal-900: #111111;
+  --charcoal-800: #1a1a1a;
+  --charcoal-700: #222222;
+  --charcoal-600: #2d2d2d;
+  --brand: #FFD400;
+  --brand-dark: #e6bf00;
   --steel: #1e293b;
 }
 
@@ -26,7 +26,7 @@ html {
 }
 
 body {
-  background-color: var(--navy-950);
+  background-color: var(--charcoal-950);
   color: #f8fafc;
   font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
   overflow-x: hidden;
@@ -42,21 +42,21 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--navy-900);
+  background: var(--charcoal-900);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--navy-600);
+  background: var(--charcoal-600);
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--orange);
+  background: var(--brand);
 }
 
 * {
   scrollbar-width: thin;
-  scrollbar-color: var(--navy-600) var(--navy-900);
+  scrollbar-color: var(--charcoal-600) var(--charcoal-900);
 }
 
 /* ============================================
@@ -65,7 +65,7 @@ body {
 
 @layer utilities {
   .glass {
-    background: rgba(10, 22, 40, 0.7);
+    background: rgba(17, 17, 17, 0.75);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.08);
@@ -79,10 +79,10 @@ body {
   }
 
   .glass-brand {
-    background: rgba(249, 115, 22, 0.1);
+    background: rgba(255, 212, 0, 0.08);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
-    border: 1px solid rgba(249, 115, 22, 0.2);
+    border: 1px solid rgba(255, 212, 0, 0.2);
   }
 
   /* ============================================
@@ -110,8 +110,8 @@ body {
   .diamond-plate {
     background-image: repeating-linear-gradient(
       45deg,
-      rgba(249, 115, 22, 0.04) 0,
-      rgba(249, 115, 22, 0.04) 1px,
+      rgba(255, 212, 0, 0.04) 0,
+      rgba(255, 212, 0, 0.04) 1px,
       transparent 0,
       transparent 50%
     );
@@ -158,7 +158,7 @@ body {
      ============================================ */
 
   .btn-brand {
-    @apply bg-brand hover:bg-brand-dark text-white font-semibold px-6 py-3 rounded-lg transition-all duration-200 inline-flex items-center gap-2 shadow-lg hover:shadow-orange-500/30 hover:-translate-y-0.5 active:translate-y-0;
+    @apply bg-brand hover:bg-brand-dark text-white font-semibold px-6 py-3 rounded-lg transition-all duration-200 inline-flex items-center gap-2 shadow-lg hover:shadow-brand/30 hover:-translate-y-0.5 active:translate-y-0;
   }
 
   .btn-outline-white {
@@ -170,7 +170,7 @@ body {
   }
 
   /* ============================================
-     ORANGE ACCENT LINE
+     BRAND ACCENT LINE
      ============================================ */
 
   .brand-line {
@@ -239,10 +239,10 @@ body {
 
 @keyframes pulse-border {
   0%, 100% {
-    border-color: rgba(249, 115, 22, 0.3);
+    border-color: rgba(255, 212, 0, 0.25);
   }
   50% {
-    border-color: rgba(249, 115, 22, 0.8);
+    border-color: rgba(255, 212, 0, 0.8);
   }
 }
 
@@ -251,7 +251,7 @@ body {
    ============================================ */
 
 .form-input {
-  @apply w-full bg-charcoal-900 border border-charcoal-600 text-white placeholder-slate-500 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-brand/50 transition-all duration-200;
+  @apply w-full bg-charcoal-900 border border-charcoal-600 text-white placeholder-slate-500 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand/50 focus:border-brand/50 transition-all duration-200;
 }
 
 .form-label {
@@ -263,7 +263,7 @@ body {
    ============================================ */
 
 ::selection {
-  background-color: rgba(249, 115, 22, 0.3);
+  background-color: rgba(255, 212, 0, 0.25);
   color: #ffffff;
 }
 
@@ -276,10 +276,10 @@ body {
 }
 
 /* ============================================
-   ORANGE BORDER LEFT CARD
+   BRAND BORDER LEFT CARD
    ============================================ */
 
-.border-l-orange {
+.border-l-brand {
   border-left: 3px solid #FFD400;
 }
 
