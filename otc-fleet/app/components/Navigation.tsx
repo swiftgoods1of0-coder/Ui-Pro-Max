@@ -68,11 +68,11 @@ export default function Navigation() {
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/otc-logo.svg"
+                src="/otc-logo.png"
                 alt="OTC Fleet Services"
                 width={220}
                 height={60}
-                className="h-8 w-auto object-contain"
+                className="h-10 w-auto object-contain"
                 onError={(e) => {
                   const img = e.currentTarget as HTMLImageElement
                   img.style.display = 'none'
@@ -193,11 +193,11 @@ export default function Navigation() {
               <div className="flex items-center gap-1">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src="/otc-logo.svg"
+                  src="/otc-logo.png"
                   alt="OTC Fleet Services"
                   width={160}
                   height={44}
-                  className="h-7 w-auto object-contain"
+                  className="h-9 w-auto object-contain"
                   onError={(e) => {
                     const img = e.currentTarget as HTMLImageElement
                     img.style.display = 'none'
