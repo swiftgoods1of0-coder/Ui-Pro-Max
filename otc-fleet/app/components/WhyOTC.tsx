@@ -84,33 +84,15 @@ export default function WhyOTC() {
             <div
               className="relative rounded-2xl overflow-hidden"
               style={{ minHeight: '480px' }}
-              data-placeholder="FleetShop.jpg"
             >
-              {/* Background gradient */}
-              <div className="absolute inset-0 bg-gradient-to-br from-charcoal-900 to-steel" />
-
-              {/* Industrial pattern */}
-              <div
-                className="absolute inset-0 opacity-25"
-                style={{
-                  backgroundImage:
-                    'repeating-linear-gradient(45deg, rgba(255,212,0,0.08) 0, rgba(255,212,0,0.08) 2px, transparent 0, transparent 50%)',
-                  backgroundSize: '24px 24px',
-                }}
+              {/* Real technician photo */}
+              <img
+                src="/tech-working.jpg"
+                alt="OTC Fleet technician servicing a commercial van on a two-post lift"
+                className="absolute inset-0 w-full h-full object-cover object-center"
               />
-              <div
-                className="absolute inset-0 opacity-20"
-                style={{
-                  backgroundImage:
-                    'linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px)',
-                  backgroundSize: '50px 50px',
-                }}
-              />
-
-              {/* Placeholder label */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-slate-600 text-sm font-medium">FleetShop.jpg</span>
-              </div>
+              {/* Dark gradient overlay for text legibility */}
+              <div className="absolute inset-0 bg-gradient-to-t from-charcoal-900/90 via-charcoal-900/30 to-transparent" />
 
               {/* Overlay content bottom */}
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-charcoal-900/90 to-transparent p-8">

@@ -42,11 +42,18 @@ export default function Hero() {
   return (
     <section
       id="hero"
-      className="relative min-h-screen flex items-center overflow-hidden bg-charcoal-800"
+      className="relative min-h-screen flex items-center overflow-hidden bg-charcoal-900"
       aria-label="Hero section"
     >
-      {/* Background Layers */}
-      <div className="absolute inset-0 bg-gradient-to-br from-charcoal-900 via-charcoal-900 to-steel" />
+      {/* Real shop photo background */}
+      <div
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: "url('/shop-bay.jpg')" }}
+        role="img"
+        aria-label="OTC Fleet Services shop bay with vehicles on lifts"
+      />
+      {/* Dark overlay so text stays readable */}
+      <div className="absolute inset-0 bg-charcoal-900/80" />
 
       {/* Grid overlay */}
       <div
