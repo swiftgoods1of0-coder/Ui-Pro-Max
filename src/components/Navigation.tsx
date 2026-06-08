@@ -44,7 +44,7 @@ export default function Navigation() {
           <a href="#" className="flex items-center gap-3 group">
             <div className="w-12 h-12 relative">
               <Image
-                src="/logo.png"
+                src="/logo.jpg"
                 alt="Powell Renovations"
                 fill
                 sizes="48px"
@@ -75,11 +75,11 @@ export default function Navigation() {
           {/* Desktop CTA */}
           <div className="hidden lg:flex items-center gap-4">
             <a
-              href="tel:+17175550100"
+              href="tel:+17178183276"
               className="flex items-center gap-2 text-sm text-dark-300 hover:text-gold-400 transition-colors"
             >
               <PhoneCall size={15} />
-              (717) 555-0100
+              (717) 818-3276
             </a>
             <a
               href="#contact"
@@ -128,12 +128,12 @@ export default function Navigation() {
             </nav>
             <div className="mt-auto flex flex-col gap-4">
               <a
-                href="tel:+17175550100"
+                href="tel:+17178183276"
                 className="flex items-center justify-center gap-2 py-4 border border-gold-500 text-gold-400 font-semibold rounded-sm"
                 onClick={() => setOpen(false)}
               >
                 <PhoneCall size={18} />
-                (717) 555-0100
+                (717) 818-3276
               </a>
               <a
                 href="#contact"
