@@ -11,7 +11,7 @@ const services = [
     description: 'A thorough bath with premium shampoo, blow-dry, brush-out, nail trim, ear cleaning, and a spritz of cologne. Your pet leaves smelling amazing and feeling great.',
     highlights: ['Premium shampoo & conditioner', 'Full blow-dry & brush-out', 'Nail trim & filing', 'Ear cleaning', 'Spritz & bandana'],
     image: '/images/cat-black.jpg',
-    bgPos: '50% 75%',
+    bgPos: '50% 65%',
     badge: null,
   },
   {
