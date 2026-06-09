@@ -1,0 +1,160 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 520">
+<defs>
+  <linearGradient id="cwall" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="#1c1a18"/>
+    <stop offset="100%" stop-color="#242220"/>
+  </linearGradient>
+  <linearGradient id="cfloor" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="#3a3028"/>
+    <stop offset="100%" stop-color="#1e1a14"/>
+  </linearGradient>
+  <linearGradient id="cwainscot" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="#2a2620"/>
+    <stop offset="100%" stop-color="#1e1c18"/>
+  </linearGradient>
+  <radialGradient id="clight" cx="50%" cy="0%" r="60%">
+    <stop offset="0%" stop-color="#e8d8b0" stop-opacity="0.5"/>
+    <stop offset="100%" stop-color="transparent"/>
+  </radialGradient>
+  <linearGradient id="caccent" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="#c4922a"/>
+    <stop offset="100%" stop-color="#8a6010"/>
+  </linearGradient>
+</defs>
+<!-- Background wall -->
+<rect width="800" height="520" fill="url(#cwall)"/>
+
+<!-- Floor -->
+<rect x="0" y="390" width="800" height="130" fill="url(#cfloor)"/>
+<!-- Hardwood floor planks -->
+<g stroke="#2a2018" stroke-width="1.2" opacity="0.7">
+  <line x1="0" y1="410" x2="800" y2="410"/>
+  <line x1="0" y1="430" x2="800" y2="430"/>
+  <line x1="0" y1="450" x2="800" y2="450"/>
+  <line x1="0" y1="470" x2="800" y2="470"/>
+  <line x1="0" y1="490" x2="800" y2="490"/>
+  <line x1="0" y1="510" x2="800" y2="510"/>
+  <line x1="100" y1="390" x2="100" y2="520"/>
+  <line x1="180" y1="390" x2="180" y2="520"/>
+  <line x1="280" y1="390" x2="280" y2="520"/>
+  <line x1="360" y1="390" x2="360" y2="520"/>
+  <line x1="460" y1="390" x2="460" y2="520"/>
+  <line x1="560" y1="390" x2="560" y2="520"/>
+  <line x1="640" y1="390" x2="640" y2="520"/>
+  <line x1="740" y1="390" x2="740" y2="520"/>
+</g>
+<!-- Floor grain -->
+<g stroke="#2e2416" stroke-width="0.5" opacity="0.3">
+  <line x1="40" y1="390" x2="60" y2="430"/>
+  <line x1="150" y1="390" x2="130" y2="430"/>
+  <line x1="320" y1="390" x2="340" y2="430"/>
+  <line x1="500" y1="390" x2="520" y2="430"/>
+  <line x1="680" y1="390" x2="660" y2="430"/>
+</g>
+
+<!-- Wainscoting / lower wall paneling -->
+<rect x="0" y="270" width="800" height="120" fill="url(#cwainscot)"/>
+<rect x="0" y="270" width="800" height="3" fill="#3a3428"/>
+<rect x="0" y="390" width="800" height="3" fill="#3a3428"/>
+<!-- Panel details -->
+<g fill="none" stroke="#302c26" stroke-width="1">
+  <rect x="20" y="280" width="120" height="100" rx="1"/>
+  <rect x="160" y="280" width="120" height="100" rx="1"/>
+  <rect x="300" y="280" width="120" height="100" rx="1"/>
+  <rect x="440" y="280" width="120" height="100" rx="1"/>
+  <rect x="580" y="280" width="120" height="100" rx="1"/>
+  <rect x="660" y="280" width="120" height="100" rx="1"/>
+</g>
+<!-- Accent molding strip gold -->
+<rect x="0" y="270" width="800" height="4" fill="url(#caccent)" opacity="0.7"/>
+
+<!-- Upper wall - dark paint -->
+<rect x="0" y="0" width="800" height="273" fill="#1a1818"/>
+
+<!-- Crown molding -->
+<rect x="0" y="0" width="800" height="12" fill="#252220"/>
+<rect x="0" y="10" width="800" height="5" fill="#2e2a26"/>
+
+<!-- Large window -->
+<rect x="280" y="40" width="240" height="220" fill="#0a1422"/>
+<rect x="286" y="46" width="228" height="208" fill="#0e1c30"/>
+<!-- Window frame -->
+<rect x="278" y="38" width="244" height="226" fill="none" stroke="#2a2824" stroke-width="5"/>
+<rect x="400" y="38" width="4" height="226" fill="#242020"/>
+<rect x="278" y="155" width="244" height="4" fill="#242020"/>
+<!-- Window light fill -->
+<rect x="286" y="46" width="228" height="208" fill="#1a3050" opacity="0.6"/>
+<!-- Window muntins shine -->
+<line x1="286" y1="50" x2="290" y2="52" stroke="#4a6a8a" stroke-width="1" opacity="0.7"/>
+<!-- Exterior hint through window -->
+<rect x="290" y="50" width="106" height="104" fill="#0e2040"/>
+<rect x="402" y="50" width="108" height="104" fill="#0e2040"/>
+<rect x="290" y="160" width="106" height="90" fill="#0e2040"/>
+<rect x="402" y="160" width="108" height="90" fill="#0e2040"/>
+
+<!-- Wall sconces / lighting -->
+<rect x="100" y="160" width="14" height="50" rx="3" fill="#2a2620"/>
+<rect x="93" y="158" width="28" height="8" rx="3" fill="#1e1c18"/>
+<ellipse cx="107" cy="162" rx="10" ry="4" fill="#c4922a" opacity="0.8"/>
+<ellipse cx="107" cy="162" rx="5" ry="2" fill="#e8c870" opacity="0.7"/>
+<rect x="680" y="160" width="14" height="50" rx="3" fill="#2a2620"/>
+<rect x="673" y="158" width="28" height="8" rx="3" fill="#1e1c18"/>
+<ellipse cx="687" cy="162" rx="10" ry="4" fill="#c4922a" opacity="0.8"/>
+<ellipse cx="687" cy="162" rx="5" ry="2" fill="#e8c870" opacity="0.7"/>
+
+<!-- Overhead warm light cone -->
+<rect x="0" y="0" width="800" height="400" fill="url(#clight)" opacity="0.7"/>
+
+<!-- Fireplace / focal point center -->
+<rect x="330" y="220" width="140" height="170" fill="#111010"/>
+<rect x="330" y="220" width="140" height="170" fill="none" stroke="#3a3230" stroke-width="4"/>
+<!-- Mantel -->
+<rect x="310" y="215" width="180" height="12" fill="#2a2620"/>
+<rect x="305" y="226" width="190" height="6" fill="#252220"/>
+<!-- Fireplace surround tiles -->
+<g fill="#1a1816" stroke="#2a2620" stroke-width="1">
+  <rect x="334" y="224" width="30" height="30"/>
+  <rect x="366" y="224" width="30" height="30"/>
+  <rect x="398" y="224" width="30" height="30"/>
+  <rect x="430" y="224" width="36" height="30"/>
+  <rect x="334" y="256" width="30" height="30"/>
+  <rect x="430" y="256" width="36" height="30"/>
+</g>
+<!-- Firebox -->
+<rect x="345" y="255" width="110" height="130" fill="#0a0808"/>
+<!-- Faux fire -->
+<ellipse cx="400" cy="370" rx="50" ry="8" fill="#c4922a" opacity="0.3"/>
+<ellipse cx="400" cy="360" rx="30" ry="15" fill="#e85010" opacity="0.4"/>
+<ellipse cx="390" cy="345" rx="18" ry="25" fill="#e87020" opacity="0.35"/>
+<ellipse cx="412" cy="340" rx="15" ry="22" fill="#e8a020" opacity="0.3"/>
+<ellipse cx="400" cy="350" rx="10" ry="18" fill="#f0c040" opacity="0.25"/>
+
+<!-- Decorative objects on mantel -->
+<rect x="320" y="196" width="14" height="20" rx="2" fill="#2a3040" opacity="0.7"/>
+<ellipse cx="327" cy="196" rx="7" ry="4" fill="#1a2030" opacity="0.7"/>
+<rect x="460" y="196" width="14" height="20" rx="2" fill="#2a3040" opacity="0.7"/>
+<ellipse cx="467" cy="196" rx="7" ry="4" fill="#1a2030" opacity="0.7"/>
+
+<!-- Furniture silhouette - sofa -->
+<rect x="100" y="340" width="240" height="55" rx="3" fill="#1a2030" opacity="0.9"/>
+<rect x="94" y="316" width="252" height="28" rx="3" fill="#1e2838"/>
+<!-- Cushions -->
+<rect x="108" y="318" width="70" height="24" rx="2" fill="#1a2234"/>
+<rect x="184" y="318" width="70" height="24" rx="2" fill="#1a2234"/>
+<rect x="260" y="318" width="70" height="24" rx="2" fill="#1a2234"/>
+<!-- Throw pillow gold -->
+<rect x="306" y="312" width="36" height="30" rx="4" fill="#c4922a" opacity="0.7"/>
+
+<!-- Right chair -->
+<rect x="560" y="340" width="120" height="55" rx="3" fill="#1a2030" opacity="0.9"/>
+<rect x="554" y="316" width="132" height="28" rx="3" fill="#1e2838"/>
+<!-- Pillow -->
+<rect x="610" y="312" width="30" height="26" rx="3" fill="#c4922a" opacity="0.6"/>
+
+<!-- Vignette -->
+<radialGradient id="cvig" cx="50%" cy="45%" r="70%">
+  <stop offset="0%" stop-color="transparent"/>
+  <stop offset="100%" stop-color="rgba(0,0,0,0.55)"/>
+</radialGradient>
+<rect width="800" height="520" fill="url(#cvig)"/>
+</svg>

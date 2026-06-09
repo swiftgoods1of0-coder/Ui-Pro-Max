@@ -1,0 +1,6 @@
+{
+  "buildCommand": "cd acrux && npm install && npm run build",
+  "outputDirectory": "acrux/.next",
+  "installCommand": "cd acrux && npm install",
+  "framework": "nextjs"
+}

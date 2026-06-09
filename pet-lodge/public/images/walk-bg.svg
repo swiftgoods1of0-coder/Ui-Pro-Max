@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 480">
+<defs>
+  <linearGradient id="wsky" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#5a8abA"/><stop offset="100%" stop-color="#7aaace"/></linearGradient>
+  <linearGradient id="wgrass" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#3a7040"/><stop offset="100%" stop-color="#2a5030"/></linearGradient>
+  <linearGradient id="wpath" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#c8b888"/><stop offset="100%" stop-color="#b0a070"/></linearGradient>
+  <radialGradient id="wsun" cx="80%" cy="15%" r="30%"><stop offset="0%" stop-color="#f0e090" stop-opacity="0.7"/><stop offset="100%" stop-color="transparent"/></radialGradient>
+  <radialGradient id="wvig" cx="50%" cy="50%" r="70%"><stop offset="0%" stop-color="transparent"/><stop offset="100%" stop-color="rgba(0,0,0,0.4)"/></radialGradient>
+</defs>
+<!-- Sky -->
+<rect width="800" height="480" fill="url(#wsky)"/>
+<rect width="800" height="480" fill="url(#wsun)"/>
+<!-- Clouds -->
+<ellipse cx="150" cy="60" rx="80" ry="30" fill="white" opacity="0.7"/>
+<ellipse cx="210" cy="55" rx="60" ry="25" fill="white" opacity="0.8"/>
+<ellipse cx="120" cy="65" rx="50" ry="20" fill="white" opacity="0.6"/>
+<ellipse cx="600" cy="80" rx="70" ry="25" fill="white" opacity="0.6"/>
+<ellipse cx="650" cy="75" rx="55" ry="22" fill="white" opacity="0.7"/>
+<!-- Trees background -->
+<rect x="0" y="200" width="800" height="280" fill="url(#wgrass)"/>
+<g fill="#1e4028" opacity="0.8">
+  <ellipse cx="80" cy="220" rx="60" ry="80"/><ellipse cx="160" cy="200" rx="55" ry="70"/>
+  <ellipse cx="620" cy="215" rx="60" ry="80"/><ellipse cx="700" cy="200" rx="55" ry="70"/>
+  <ellipse cx="750" cy="220" rx="50" ry="65"/>
+</g>
+<g fill="#0e2818">
+  <rect x="50" y="280" width="24" height="200"/><rect x="130" y="260" width="22" height="220"/>
+  <rect x="594" y="276" width="24" height="204"/><rect x="673" y="260" width="22" height="220"/>
+  <rect x="726" y="280" width="20" height="200"/>
+</g>
+<!-- Middle trees -->
+<g fill="#2a5835" opacity="0.9">
+  <ellipse cx="240" cy="280" rx="45" ry="60"/><ellipse cx="560" cy="280" rx="45" ry="60"/>
+  <ellipse cx="310" cy="295" rx="35" ry="50"/><ellipse cx="490" cy="295" rx="35" ry="50"/>
+</g>
+<g fill="#1a3820">
+  <rect x="218" y="320" width="18" height="160"/><rect x="542" y="320" width="18" height="160"/>
+  <rect x="294" y="330" width="16" height="150"/><rect x="474" y="330" width="16" height="150"/>
+</g>
+<!-- Path -->
+<path d="M 300 480 Q 350 380 380 320 Q 400 270 420 220 Q 440 170 460 100" stroke="url(#wpath)" stroke-width="80" fill="none" opacity="0.85"/>
+<path d="M 300 480 Q 350 380 380 320 Q 400 270 420 220 Q 440 170 460 100" stroke="#d8c898" stroke-width="60" fill="none" opacity="0.5"/>
+<!-- Path texture / stones -->
+<g fill="#a89868" opacity="0.4">
+  <ellipse cx="370" cy="380" rx="15" ry="5"/><ellipse cx="400" cy="350" rx="12" ry="4"/>
+  <ellipse cx="395" cy="320" rx="10" ry="3"/><ellipse cx="415" cy="290" rx="14" ry="5"/>
+  <ellipse cx="425" cy="260" rx="11" ry="4"/>
+</g>
+<!-- Walker silhouette -->
+<rect x="410" y="280" width="22" height="70" rx="5" fill="#1a3020" opacity="0.85"/>
+<circle cx="421" cy="265" r="18" fill="#1a3020" opacity="0.85"/>
+<!-- Leash -->
+<path d="M 435 315 Q 480 300 490 310 Q 500 318 495 330" stroke="#4a3020" stroke-width="3" fill="none"/>
+<!-- Dog on leash -->
+<ellipse cx="498" cy="338" rx="22" ry="12" fill="#c4922a" opacity="0.8"/>
+<ellipse cx="518" cy="332" rx="12" ry="9" fill="#c4922a" opacity="0.8"/>
+<!-- Dog tail up wagging -->
+<path d="M 476 332 Q 465 315 470 305" stroke="#c4922a" stroke-width="5" fill="none"/>
+<!-- Grass foreground -->
+<rect x="0" y="420" width="800" height="60" fill="#2a5030"/>
+<g stroke="#3a6038" stroke-width="2" opacity="0.7">
+  <line x1="20" y1="420" x2="15" y2="400"/><line x1="30" y1="420" x2="35" y2="398"/>
+  <line x1="50" y1="420" x2="45" y2="402"/><line x1="700" y1="420" x2="695" y2="400"/>
+  <line x1="720" y1="420" x2="725" y2="398"/><line x1="750" y1="420" x2="745" y2="402"/>
+</g>
+<!-- Paw prints on path -->
+<g opacity="0.3" fill="#8a7048">
+  <ellipse cx="360" cy="400" rx="6" ry="8"/><ellipse cx="375" cy="390" rx="6" ry="8"/>
+  <ellipse cx="385" cy="370" rx="5" ry="7"/><ellipse cx="400" cy="360" rx="5" ry="7"/>
+</g>
+<rect width="800" height="480" fill="url(#wvig)"/>
+</svg>

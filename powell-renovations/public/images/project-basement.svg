@@ -1,0 +1,141 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 520">
+<defs>
+  <linearGradient id="baswall" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="#141820"/>
+    <stop offset="100%" stop-color="#1a2030"/>
+  </linearGradient>
+  <linearGradient id="basfloor" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="#2a2218"/>
+    <stop offset="100%" stop-color="#1a1610"/>
+  </linearGradient>
+  <linearGradient id="basceil" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="#0e1218"/>
+    <stop offset="100%" stop-color="#141820"/>
+  </linearGradient>
+  <radialGradient id="baslight1" cx="25%" cy="0%" r="50%">
+    <stop offset="0%" stop-color="#e8c870" stop-opacity="0.5"/>
+    <stop offset="100%" stop-color="transparent"/>
+  </radialGradient>
+  <radialGradient id="baslight2" cx="50%" cy="0%" r="50%">
+    <stop offset="0%" stop-color="#e8c870" stop-opacity="0.5"/>
+    <stop offset="100%" stop-color="transparent"/>
+  </radialGradient>
+  <radialGradient id="baslight3" cx="75%" cy="0%" r="50%">
+    <stop offset="0%" stop-color="#e8c870" stop-opacity="0.5"/>
+    <stop offset="100%" stop-color="transparent"/>
+  </radialGradient>
+  <linearGradient id="tvscreen" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="#0a1628"/>
+    <stop offset="40%" stop-color="#1a3050"/>
+    <stop offset="100%" stop-color="#0a1020"/>
+  </linearGradient>
+</defs>
+<!-- Background -->
+<rect width="800" height="520" fill="url(#baswall)"/>
+<!-- Ceiling -->
+<rect x="0" y="0" width="800" height="50" fill="url(#basceil)"/>
+<!-- Recessed lighting can housings -->
+<ellipse cx="200" cy="45" rx="20" ry="6" fill="#1e2430"/>
+<ellipse cx="200" cy="44" rx="14" ry="4" fill="#c4922a" opacity="0.7"/>
+<ellipse cx="400" cy="45" rx="20" ry="6" fill="#1e2430"/>
+<ellipse cx="400" cy="44" rx="14" ry="4" fill="#c4922a" opacity="0.7"/>
+<ellipse cx="600" cy="45" rx="20" ry="6" fill="#1e2430"/>
+<ellipse cx="600" cy="44" rx="14" ry="4" fill="#c4922a" opacity="0.7"/>
+<!-- Light cones -->
+<rect x="0" y="46" width="800" height="300" fill="url(#baslight1)" opacity="0.8"/>
+<rect x="0" y="46" width="800" height="300" fill="url(#baslight2)" opacity="0.8"/>
+<rect x="0" y="46" width="800" height="300" fill="url(#baslight3)" opacity="0.8"/>
+
+<!-- Floor - LVP planks -->
+<rect x="0" y="400" width="800" height="120" fill="url(#basfloor)"/>
+<g stroke="#251d14" stroke-width="1.2" opacity="0.7">
+  <line x1="0" y1="420" x2="800" y2="420"/>
+  <line x1="0" y1="440" x2="800" y2="440"/>
+  <line x1="0" y1="460" x2="800" y2="460"/>
+  <line x1="0" y1="480" x2="800" y2="480"/>
+  <line x1="0" y1="500" x2="800" y2="500"/>
+  <line x1="120" y1="400" x2="120" y2="520"/>
+  <line x1="240" y1="400" x2="240" y2="520"/>
+  <line x1="360" y1="400" x2="360" y2="520"/>
+  <line x1="480" y1="400" x2="480" y2="520"/>
+  <line x1="600" y1="400" x2="600" y2="520"/>
+  <line x1="720" y1="400" x2="720" y2="520"/>
+</g>
+
+<!-- Back wall with TV unit -->
+<rect x="100" y="80" width="600" height="320" fill="#111520" opacity="0.4"/>
+
+<!-- Built-in shelving / entertainment unit -->
+<rect x="80" y="60" width="640" height="340" fill="#0e1218"/>
+<rect x="84" y="64" width="632" height="332" fill="#141820" stroke="#1e2430" stroke-width="1"/>
+<!-- Shelf dividers -->
+<line x1="280" y1="64" x2="280" y2="396" stroke="#1e2430" stroke-width="2"/>
+<line x1="520" y1="64" x2="520" y2="396" stroke="#1e2430" stroke-width="2"/>
+<line x1="84" y1="250" x2="280" y2="250" stroke="#1e2430" stroke-width="2"/>
+<line x1="520" y1="250" x2="716" y2="250" stroke="#1e2430" stroke-width="2"/>
+
+<!-- TV (center large) -->
+<rect x="284" y="68" width="232" height="140" fill="url(#tvscreen)" rx="2"/>
+<rect x="284" y="68" width="232" height="140" fill="none" stroke="#3a4a5a" stroke-width="3" rx="2"/>
+<!-- TV stand -->
+<rect x="380" y="208" width="40" height="8" fill="#252d38"/>
+<rect x="370" y="214" width="60" height="4" fill="#252d38"/>
+<!-- TV reflection/screen content hint -->
+<rect x="290" y="74" width="220" height="128" fill="#0d1a2e"/>
+<line x1="290" y1="120" x2="510" y2="120" stroke="#1a2a3a" stroke-width="0.5" opacity="0.5"/>
+<rect x="300" y="80" width="100" height="30" rx="2" fill="#142030" opacity="0.5"/>
+
+<!-- Left side shelves content - bar area -->
+<rect x="90" y="256" width="184" height="136" fill="#0e1218"/>
+<!-- Bar shelves -->
+<line x1="90" y1="300" x2="274" y2="300" stroke="#1e2430" stroke-width="1.5"/>
+<line x1="90" y1="330" x2="274" y2="330" stroke="#1e2430" stroke-width="1.5"/>
+<line x1="90" y1="360" x2="274" y2="360" stroke="#1e2430" stroke-width="1.5"/>
+<!-- Bottles silhouettes -->
+<rect x="100" y="272" width="14" height="26" rx="4" fill="#2a4a2a" opacity="0.7"/>
+<rect x="118" y="268" width="14" height="30" rx="4" fill="#4a2a10" opacity="0.7"/>
+<rect x="136" y="272" width="14" height="26" rx="4" fill="#1a3a1a" opacity="0.7"/>
+<rect x="154" y="270" width="14" height="28" rx="4" fill="#3a1a10" opacity="0.7"/>
+<rect x="172" y="272" width="14" height="26" rx="4" fill="#2a3a4a" opacity="0.7"/>
+<rect x="190" y="268" width="14" height="30" rx="4" fill="#4a3a10" opacity="0.7"/>
+<rect x="208" y="272" width="14" height="26" rx="4" fill="#2a4a2a" opacity="0.7"/>
+<rect x="226" y="270" width="14" height="28" rx="4" fill="#1a2a3a" opacity="0.7"/>
+<!-- Gold bottle caps/tops -->
+<rect x="101" y="270" width="12" height="4" rx="2" fill="#c4922a" opacity="0.6"/>
+<rect x="119" y="266" width="12" height="4" rx="2" fill="#c4922a" opacity="0.6"/>
+
+<!-- Right side decorative shelves -->
+<rect x="526" y="256" width="184" height="136" fill="#0e1218"/>
+<line x1="526" y1="300" x2="710" y2="300" stroke="#1e2430" stroke-width="1.5"/>
+<line x1="526" y1="345" x2="710" y2="345" stroke="#1e2430" stroke-width="1.5"/>
+<!-- Decorative items -->
+<rect x="540" y="268" width="30" height="28" rx="2" fill="#2a3a4a" opacity="0.6"/>
+<rect x="580" y="265" width="20" height="32" rx="2" fill="#1a2a1a" opacity="0.6"/>
+<rect x="610" y="270" width="25" height="28" rx="2" fill="#3a2a1a" opacity="0.6"/>
+<rect x="650" y="266" width="20" height="30" rx="2" fill="#2a1a3a" opacity="0.6"/>
+<rect x="680" y="268" width="18" height="28" rx="2" fill="#1a3a2a" opacity="0.6"/>
+
+<!-- LED strip accent lighting -->
+<rect x="84" y="60" width="632" height="4" fill="#c4922a" opacity="0.5"/>
+<rect x="84" y="60" width="632" height="2" fill="#e8c870" opacity="0.4" filter="url(#baslight2)"/>
+
+<!-- Couch / seating area -->
+<rect x="150" y="370" width="500" height="40" rx="4" fill="#1e2840"/>
+<rect x="150" y="352" width="500" height="22" rx="2" fill="#253050"/>
+<!-- Couch back -->
+<rect x="144" y="340" width="512" height="30" rx="3" fill="#1a2238"/>
+<!-- Couch cushions -->
+<rect x="158" y="354" width="120" height="18" rx="2" fill="#2a3650"/>
+<rect x="290" y="354" width="120" height="18" rx="2" fill="#2a3650"/>
+<rect x="422" y="354" width="120" height="18" rx="2" fill="#2a3650"/>
+<!-- Throw pillows gold -->
+<rect x="544" y="346" width="40" height="30" rx="4" fill="#c4922a" opacity="0.7"/>
+<rect x="210" y="346" width="35" height="28" rx="4" fill="#c4922a" opacity="0.5"/>
+
+<!-- Vignette -->
+<radialGradient id="basvig" cx="50%" cy="50%" r="75%">
+  <stop offset="0%" stop-color="transparent"/>
+  <stop offset="100%" stop-color="rgba(0,0,0,0.6)"/>
+</radialGradient>
+<rect width="800" height="520" fill="url(#basvig)"/>
+</svg>
