@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import './globals.css'
 import Navigation from './components/Navigation'
 import FloatingCTA from './components/FloatingCTA'
+import Footer from './components/Footer'
 
 export const metadata: Metadata = {
   title: 'OTC Fleet Services | Fleet Repair, Maintenance & Trailer Service in Lancaster & Berks County PA',
@@ -169,6 +170,7 @@ export default function RootLayout({
       <body className="bg-charcoal-800 text-white font-sans antialiased">
         <Navigation />
         <main>{children}</main>
+        <Footer />
         <FloatingCTA />
       </body>
     </html>

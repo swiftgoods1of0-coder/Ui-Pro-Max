@@ -1,6 +1,5 @@
 'use client'
-
-import { motion } from 'framer-motion'
+import Link from 'next/link'
 import {
   Phone,
   Mail,
@@ -13,34 +12,26 @@ import {
 } from 'lucide-react'
 
 const serviceLinks = [
-  { label: 'Light, Medium & Heavy Repairs', href: '#services' },
-  { label: 'DOT Inspections & Compliance', href: '#services' },
-  { label: 'Preventative Maintenance Programs', href: '#services' },
-  { label: 'Mobile Service Units', href: '#services' },
-  { label: 'Trailer Repairs & Service', href: '#trailer-department' },
-  { label: 'Fleet Reporting & Records', href: '#fleet-programs' },
-  { label: 'Emergency & Priority Scheduling', href: '#services' },
-  { label: 'Snow Equipment Sales & Service', href: '#snow-equipment' },
+  { label: 'Light, Medium & Heavy Repairs', href: '/services' },
+  { label: 'DOT Inspections & Compliance', href: '/services' },
+  { label: 'Preventative Maintenance Programs', href: '/services' },
+  { label: 'Mobile Service Units', href: '/services' },
+  { label: 'Trailer Repairs & Service', href: '/services' },
+  { label: 'Fleet Reporting & Records', href: '/services' },
+  { label: 'Emergency & Priority Scheduling', href: '/services' },
+  { label: 'Snow Equipment Sales & Service', href: '/services' },
 ]
 
 const companyLinks = [
-  { label: 'Fleet Programs', href: '#fleet-programs' },
-  { label: 'Trailer Department', href: '#trailer-department' },
-  { label: 'Fleet Graphix', href: '#fleet-graphix' },
-  { label: 'Snow Equipment', href: '#snow-equipment' },
-  { label: 'Industries We Serve', href: '#industries' },
+  { label: 'About OTC', href: '/about' },
+  { label: 'Services', href: '/services' },
+  { label: 'Contact', href: '/contact' },
   { label: 'Careers', href: 'https://www.otcfleet.com/careers', external: true },
-  { label: 'Contact', href: '#contact' },
   { label: 'New Account Application', href: 'https://forms.wix.com/f/7032341824161186218', external: true },
+  { label: 'Parts & Service Warranty', href: 'https://www.otcfleet.com/warranty', external: true },
 ]
 
 export default function Footer() {
-  const handleAnchorClick = (e: React.MouseEvent, href: string) => {
-    if (href.startsWith('#')) {
-      e.preventDefault()
-      document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' })
-    }
-  }
 
   return (
     <footer className="bg-charcoal-800 border-t-2 border-brand" aria-label="Site footer">
@@ -135,14 +126,10 @@ export default function Footer() {
             <ul className="space-y-2.5">
               {serviceLinks.map(({ label, href }) => (
                 <li key={label}>
-                  <a
-                    href={href}
-                    onClick={(e) => handleAnchorClick(e, href)}
-                    className="flex items-center gap-2 text-slate-400 hover:text-brand text-sm transition-colors group"
-                  >
+                  <Link href={href} className="flex items-center gap-2 text-slate-400 hover:text-brand text-sm transition-colors group">
                     <span className="w-1 h-1 rounded-full bg-brand/40 group-hover:bg-brand transition-colors flex-shrink-0" />
                     {label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -156,17 +143,18 @@ export default function Footer() {
             <ul className="space-y-2.5">
               {companyLinks.map(({ label, href, external }) => (
                 <li key={label}>
-                  <a
-                    href={href}
-                    onClick={external ? undefined : (e) => handleAnchorClick(e, href)}
-                    target={external ? '_blank' : undefined}
-                    rel={external ? 'noopener noreferrer' : undefined}
-                    className="flex items-center gap-2 text-slate-400 hover:text-brand text-sm transition-colors group"
-                  >
-                    <span className="w-1 h-1 rounded-full bg-brand/40 group-hover:bg-brand transition-colors flex-shrink-0" />
-                    {label}
-                    {external && <ExternalLink className="w-3 h-3 opacity-50" />}
-                  </a>
+                  {external ? (
+                    <a href={href} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-slate-400 hover:text-brand text-sm transition-colors group">
+                      <span className="w-1 h-1 rounded-full bg-brand/40 group-hover:bg-brand transition-colors flex-shrink-0" />
+                      {label}
+                      <ExternalLink className="w-3 h-3 opacity-50" />
+                    </a>
+                  ) : (
+                    <Link href={href} className="flex items-center gap-2 text-slate-400 hover:text-brand text-sm transition-colors group">
+                      <span className="w-1 h-1 rounded-full bg-brand/40 group-hover:bg-brand transition-colors flex-shrink-0" />
+                      {label}
+                    </Link>
+                  )}
                 </li>
               ))}
             </ul>
