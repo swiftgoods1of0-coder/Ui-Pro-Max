@@ -2,6 +2,12 @@
 
 import { useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
+import dynamic from 'next/dynamic'
+
+const SplineScene = dynamic(
+  () => import('./SplineScene').then((m) => m.SplineScene),
+  { ssr: false, loading: () => null }
+)
 
 // Letter-scramble text animation
 function ScrambleText({ text, delay = 0 }: { text: string; delay?: number }) {
@@ -55,12 +61,23 @@ const itemVariant = {
 export function Hero() {
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden" id="hero">
-      {/* Deep radial glow — the Acrux star bleeding through */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_70%_at_50%_55%,rgba(0,102,255,0.14)_0%,transparent_70%)]" />
+
+      {/* ── Spline 3D scene — fullscreen behind all text ── */}
+      <div className="absolute inset-0 z-[1]">
+        <SplineScene />
       </div>
 
-      <div className="relative z-10 flex flex-col items-center text-center px-6 pt-20">
+      {/* Gradient overlay — keeps text readable over the 3D scene */}
+      <div className="absolute inset-0 z-[2] pointer-events-none"
+        style={{
+          background: `
+            radial-gradient(ellipse 70% 60% at 50% 50%, transparent 0%, rgba(2,5,8,0.45) 100%),
+            linear-gradient(to bottom, rgba(2,5,8,0.3) 0%, transparent 30%, transparent 60%, rgba(2,5,8,0.7) 100%)
+          `,
+        }}
+      />
+
+      <div className="relative z-[10] flex flex-col items-center text-center px-6 pt-20">
         {/* Studio tag */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
