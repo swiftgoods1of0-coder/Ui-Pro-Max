@@ -45,8 +45,11 @@ export function Contact() {
   const selectedBudget = watch('budget')
 
   const onSubmit = async (data: FormData) => {
-    await new Promise((r) => setTimeout(r, 1400))
-    console.log('Form submitted:', data)
+    const subject = encodeURIComponent(`New Project Inquiry from ${data.name}`)
+    const body = encodeURIComponent(
+      `Name: ${data.name}\nEmail: ${data.email}\nCompany: ${data.company || 'N/A'}\nBudget: ${data.budget}\n\nProject Details:\n${data.message}`
+    )
+    window.open(`mailto:acruxwebsitebuilding@gmail.com?subject=${subject}&body=${body}`)
     setSubmitted(true)
   }
 
@@ -146,7 +149,7 @@ export function Contact() {
                 ))}
               </div>
               <div className="text-center">
-                <div className="text-white text-sm font-semibold mb-1">hello@acrux.studio</div>
+                <a href="mailto:acruxwebsitebuilding@gmail.com" className="text-white text-sm font-semibold hover:text-[#4488ff] transition-colors block mb-1">acruxwebsitebuilding@gmail.com</a>
                 <div className="text-[var(--color-muted)] text-xs">Or just fill in the form →</div>
               </div>
             </div>
