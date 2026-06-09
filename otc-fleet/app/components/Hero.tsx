@@ -49,8 +49,8 @@ export default function Hero() {
         role="img"
         aria-label="OTC Fleet Services shop bay with vehicles on lifts"
       />
-      {/* Dark overlay so text stays readable */}
-      <div className="absolute inset-0 bg-charcoal-900/80" />
+      {/* Gradient tint — deep left for text, lighter right to show the shop */}
+      <div className="absolute inset-0" style={{ background: 'linear-gradient(105deg, rgba(10,12,16,0.92) 0%, rgba(10,12,16,0.80) 45%, rgba(10,12,16,0.55) 70%, rgba(10,12,16,0.35) 100%)' }} />
 
       {/* Grid overlay */}
       <div
