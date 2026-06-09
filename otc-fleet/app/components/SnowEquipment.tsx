@@ -152,7 +152,6 @@ export default function SnowEquipment() {
               <div
                 className="relative rounded-2xl overflow-hidden border border-charcoal-700 shadow-[0_30px_60px_rgba(0,0,0,0.5)]"
                 style={{ minHeight: '300px' }}
-                data-placeholder="SnowPlow.jpg"
               >
                 {/* Background */}
                 <div className="absolute inset-0 bg-gradient-to-br from-charcoal-900 to-charcoal-950" />
@@ -196,7 +195,6 @@ export default function SnowEquipment() {
                     Live inventory • Upfront pricing
                   </div>
 
-                  <div className="text-slate-600 text-xs">SnowPlow.jpg</div>
                 </div>
 
                 {/* Top accent */}

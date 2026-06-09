@@ -238,7 +238,6 @@ export default function TrailerDepartment() {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="relative rounded-xl overflow-hidden border border-charcoal-700"
               style={{ height: '180px' }}
-              data-placeholder="LancasterMap.jpg"
             >
               <div className="absolute inset-0 bg-gradient-to-br from-charcoal-900 to-steel" />
               <div

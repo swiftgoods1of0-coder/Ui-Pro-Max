@@ -265,7 +265,7 @@ export default function Footer() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="text-slate-500 text-xs text-center sm:text-left">
-              &copy; 2025 Mobiltech Companies LLC. All rights reserved.
+              &copy; {new Date().getFullYear()} Mobiltech Companies LLC. All rights reserved.
             </div>
             <div className="flex items-center gap-4 text-xs">
               <a
@@ -276,7 +276,7 @@ export default function Footer() {
               >
                 Terms of Service
               </a>
-              <span className="text-charcoal-800">|</span>
+              <span className="text-charcoal-600">·</span>
               <a
                 href="https://www.otcfleet.com/privacy"
                 target="_blank"
@@ -285,7 +285,7 @@ export default function Footer() {
               >
                 Privacy Policy
               </a>
-              <span className="text-charcoal-800">|</span>
+              <span className="text-charcoal-600">·</span>
               <a
                 href="https://www.otcfleet.com/warranty"
                 target="_blank"

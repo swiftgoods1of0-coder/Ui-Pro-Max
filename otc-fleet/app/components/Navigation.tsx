@@ -244,7 +244,7 @@ export default function Navigation() {
             <div className="px-4 py-6 border-t border-white/10 space-y-3">
               <a
                 href="tel:7172083600"
-                className="flex items-center gap-3 px-4 py-3 rounded-lg bg-charcoal-800 hover:bg-charcoal-800 transition-colors text-white"
+                className="flex items-center gap-3 px-4 py-3 rounded-lg bg-charcoal-700/50 hover:bg-charcoal-700 transition-colors text-white"
               >
                 <div className="w-8 h-8 rounded-full bg-brand/20 flex items-center justify-center">
                   <Phone className="w-4 h-4 text-brand" />
@@ -256,7 +256,7 @@ export default function Navigation() {
               </a>
               <a
                 href="tel:6103744077"
-                className="flex items-center gap-3 px-4 py-3 rounded-lg bg-charcoal-800 hover:bg-charcoal-800 transition-colors text-white"
+                className="flex items-center gap-3 px-4 py-3 rounded-lg bg-charcoal-700/50 hover:bg-charcoal-700 transition-colors text-white"
               >
                 <div className="w-8 h-8 rounded-full bg-brand/20 flex items-center justify-center">
                   <Phone className="w-4 h-4 text-brand" />

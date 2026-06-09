@@ -474,7 +474,6 @@ export default function Contact() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="mt-5 relative rounded-xl overflow-hidden border border-charcoal-700"
               style={{ height: '200px' }}
-              data-placeholder="GoogleMap-Lancaster.jpg"
             >
               <div className="absolute inset-0 bg-gradient-to-br from-charcoal-900 to-steel" />
               <div
