@@ -1,15 +1,15 @@
 import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
+  output: 'export',
   typescript: {
-    // R3F JSX elements — TS checks pass at runtime, types resolved via global.d.ts
     ignoreBuildErrors: true,
   },
   eslint: {
     ignoreDuringBuilds: true,
   },
   images: {
-    formats: ['image/avif', 'image/webp'],
+    unoptimized: true,
   },
   experimental: {
     optimizePackageImports: ['lucide-react', 'framer-motion'],
