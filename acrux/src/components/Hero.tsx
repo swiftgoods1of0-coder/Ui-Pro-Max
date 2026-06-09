@@ -67,28 +67,28 @@ export function Hero() {
         }}
       />
 
-      <div className="relative z-[10] flex flex-col items-center text-center px-6 pt-20">
+      <div className="relative z-[10] w-full flex flex-col items-center text-center px-4 sm:px-6 pt-20 max-w-5xl mx-auto">
         {/* Studio tag */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, delay: 0.9, ease: [0.22, 1, 0.36, 1] }}
-          className="flex items-center gap-3 mb-10"
+          className="flex items-center gap-2 sm:gap-3 mb-8 sm:mb-10"
         >
-          <div className="w-8 h-px bg-gradient-to-r from-transparent to-[#0066ff]" />
-          <span className="text-[#0099ff] text-[10px] md:text-xs font-semibold tracking-[0.4em] uppercase font-body">
+          <div className="w-6 sm:w-8 h-px bg-gradient-to-r from-transparent to-[#0066ff]" />
+          <span className="text-[#0099ff] text-[9px] sm:text-[10px] md:text-xs font-semibold tracking-[0.3em] sm:tracking-[0.4em] uppercase font-body">
             The North Star For Modern Business
           </span>
-          <div className="w-8 h-px bg-gradient-to-l from-transparent to-[#0066ff]" />
+          <div className="w-6 sm:w-8 h-px bg-gradient-to-l from-transparent to-[#0066ff]" />
         </motion.div>
 
         {/* Main headline */}
-        <motion.div variants={container} initial="hidden" animate="show">
+        <motion.div variants={container} initial="hidden" animate="show" className="w-full">
           <div className="overflow-hidden">
             <motion.h1
               variants={itemVariant}
               className="font-heading font-bold leading-[0.9] tracking-[-0.02em] text-gradient"
-              style={{ fontSize: 'clamp(3.8rem, 11vw, 9.5rem)' }}
+              style={{ fontSize: 'clamp(2.4rem, 11vw, 9.5rem)' }}
             >
               BUILT TO BE
             </motion.h1>
@@ -97,7 +97,7 @@ export function Hero() {
             <motion.h1
               variants={itemVariant}
               className="font-heading font-bold leading-[0.9] tracking-[-0.02em] shimmer-text"
-              style={{ fontSize: 'clamp(3.8rem, 11vw, 9.5rem)' }}
+              style={{ fontSize: 'clamp(2.4rem, 11vw, 9.5rem)' }}
             >
               REMEMBERED.
             </motion.h1>
@@ -109,7 +109,7 @@ export function Hero() {
           initial={{ scaleX: 0, opacity: 0 }}
           animate={{ scaleX: 1, opacity: 1 }}
           transition={{ duration: 1.2, delay: 1.6, ease: [0.22, 1, 0.36, 1] }}
-          className="w-64 h-px mt-6 bg-gradient-to-r from-transparent via-[rgba(0,102,255,0.7)] to-transparent origin-left"
+          className="w-40 sm:w-64 h-px mt-5 sm:mt-6 bg-gradient-to-r from-transparent via-[rgba(0,102,255,0.7)] to-transparent origin-left"
         />
 
         {/* Subtext */}
@@ -117,7 +117,7 @@ export function Hero() {
           initial={{ opacity: 0, y: 28 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 1.8, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-7 text-[var(--color-muted)] text-lg md:text-xl max-w-lg leading-relaxed font-body"
+          className="mt-5 sm:mt-7 text-[var(--color-muted)] text-base sm:text-lg md:text-xl max-w-sm sm:max-w-lg leading-relaxed font-body px-2"
         >
           We craft digital experiences so exceptional, your competition
           won&apos;t know what hit them.
@@ -128,11 +128,11 @@ export function Hero() {
           initial={{ opacity: 0, y: 28 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 2.1, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-10 flex flex-col sm:flex-row items-center gap-4"
+          className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-center gap-3 sm:gap-4 w-full sm:w-auto"
         >
           <motion.a
             href="#contact"
-            className="btn-primary px-9 py-4 rounded-full font-semibold text-base tracking-wide relative overflow-hidden group"
+            className="btn-primary w-full sm:w-auto px-8 sm:px-9 py-3.5 sm:py-4 rounded-full font-semibold text-sm sm:text-base tracking-wide relative overflow-hidden group text-center"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.96 }}
             data-magnetic
@@ -142,7 +142,7 @@ export function Hero() {
           </motion.a>
           <motion.a
             href="#portfolio"
-            className="btn-ghost px-9 py-4 rounded-full font-semibold text-base tracking-wide"
+            className="btn-ghost w-full sm:w-auto px-8 sm:px-9 py-3.5 sm:py-4 rounded-full font-semibold text-sm sm:text-base tracking-wide text-center"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.96 }}
             data-magnetic
@@ -156,17 +156,17 @@ export function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 2.5 }}
-          className="mt-16 flex flex-wrap items-center justify-center gap-8 md:gap-14"
+          className="mt-12 sm:mt-16 flex flex-wrap items-center justify-center gap-6 sm:gap-10 md:gap-14"
         >
           {[
-            { val: '100+',  label: 'Projects Delivered'      },
-            { val: '98%',   label: 'Client Satisfaction'     },
-            { val: '$50M+', label: 'Revenue Generated'       },
-            { val: '4.9★',  label: 'Average Client Rating'   },
+            { val: '100+', label: 'Projects Delivered'    },
+            { val: '98%',  label: 'Client Satisfaction'   },
+            { val: '50+',  label: 'Happy Clients'         },
+            { val: '4.9★', label: 'Average Client Rating' },
           ].map(({ val, label }) => (
-            <div key={label} className="flex flex-col items-center">
-              <span className="font-heading font-bold text-2xl text-gradient-blue">{val}</span>
-              <span className="text-[var(--color-muted)] text-xs tracking-wider mt-0.5">{label}</span>
+            <div key={label} className="flex flex-col items-center min-w-[70px]">
+              <span className="font-heading font-bold text-xl sm:text-2xl text-gradient-blue">{val}</span>
+              <span className="text-[var(--color-muted)] text-[10px] sm:text-xs tracking-wider mt-0.5 text-center">{label}</span>
             </div>
           ))}
         </motion.div>

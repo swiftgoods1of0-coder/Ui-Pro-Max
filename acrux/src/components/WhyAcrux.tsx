@@ -85,7 +85,7 @@ export function WhyAcrux() {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_80%_at_80%_50%,rgba(0,102,255,0.06)_0%,transparent_70%)]" />
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
         {/* Header */}
         <div className="max-w-3xl mb-16">
           <motion.div

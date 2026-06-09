@@ -172,7 +172,7 @@ export function Portfolio() {
     <section className="section relative" id="portfolio">
       <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_80%_60%_at_50%_50%,rgba(0,40,100,0.05)_0%,transparent_70%)]" />
 
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
         {/* Header */}
         <div className="text-center mb-20">
           <motion.div
