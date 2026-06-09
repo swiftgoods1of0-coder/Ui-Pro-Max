@@ -2,17 +2,12 @@
 
 import { useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
-import dynamic from 'next/dynamic'
 
-const SplineScene = dynamic(
-  () => import('./SplineScene').then((m) => m.SplineScene),
-  { ssr: false, loading: () => null }
-)
+const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ·∙◦○●'
 
 // Letter-scramble text animation
 function ScrambleText({ text, delay = 0 }: { text: string; delay?: number }) {
   const ref = useRef<HTMLSpanElement>(null)
-  const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ·∙◦○●'
 
   useEffect(() => {
     const el = ref.current
@@ -38,7 +33,7 @@ function ScrambleText({ text, delay = 0 }: { text: string; delay?: number }) {
     }, delay * 1000)
 
     return () => clearTimeout(timer)
-  }, [text, delay, CHARS])
+  }, [text, delay])
 
   return <span ref={ref}>{text}</span>
 }
@@ -62,17 +57,12 @@ export function Hero() {
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden" id="hero">
 
-      {/* ── Spline 3D scene — fullscreen behind all text ── */}
-      <div className="absolute inset-0 z-[1]">
-        <SplineScene />
-      </div>
-
-      {/* Gradient overlay — keeps text readable over the 3D scene */}
+      {/* Gradient overlay — readability over the WorldCanvas 3D scene behind */}
       <div className="absolute inset-0 z-[2] pointer-events-none"
         style={{
           background: `
-            radial-gradient(ellipse 70% 60% at 50% 50%, transparent 0%, rgba(2,5,8,0.45) 100%),
-            linear-gradient(to bottom, rgba(2,5,8,0.3) 0%, transparent 30%, transparent 60%, rgba(2,5,8,0.7) 100%)
+            radial-gradient(ellipse 80% 70% at 50% 50%, transparent 0%, rgba(2,5,8,0.35) 100%),
+            linear-gradient(to bottom, rgba(2,5,8,0.2) 0%, transparent 25%, transparent 65%, rgba(2,5,8,0.75) 100%)
           `,
         }}
       />
