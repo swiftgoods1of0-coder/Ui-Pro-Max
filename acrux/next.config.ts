@@ -14,8 +14,6 @@ const nextConfig: NextConfig = {
     'three',
     '@react-three/fiber',
     '@react-three/drei',
-    '@react-three/postprocessing',
-    'postprocessing',
   ],
 }
 
