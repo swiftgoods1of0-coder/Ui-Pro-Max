@@ -11,9 +11,13 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true,
   },
-  experimental: {
-    optimizePackageImports: ['lucide-react', 'framer-motion'],
-  },
+  transpilePackages: [
+    'three',
+    '@react-three/fiber',
+    '@react-three/drei',
+    '@react-three/postprocessing',
+    'postprocessing',
+  ],
 }
 
 export default nextConfig

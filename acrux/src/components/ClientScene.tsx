@@ -1,6 +1,7 @@
 'use client'
 
 import dynamic from 'next/dynamic'
+import { SceneErrorBoundary } from './SceneErrorBoundary'
 
 const WorldCanvas = dynamic(
   () => import('./WorldCanvas').then((m) => m.WorldCanvas),
@@ -8,5 +9,9 @@ const WorldCanvas = dynamic(
 )
 
 export function ClientScene() {
-  return <WorldCanvas />
+  return (
+    <SceneErrorBoundary>
+      <WorldCanvas />
+    </SceneErrorBoundary>
+  )
 }
