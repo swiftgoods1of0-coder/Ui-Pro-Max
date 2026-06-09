@@ -137,55 +137,17 @@ export default function FleetGraphix() {
               transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
               className="relative"
             >
-              {/* Main wrap preview card */}
+              {/* Main wrap photo */}
               <div
                 className="relative rounded-2xl overflow-hidden shadow-[0_40px_80px_rgba(0,0,0,0.6)] border border-white/10"
                 style={{ minHeight: '400px' }}
-                data-placeholder="VehicleWrap.jpg"
               >
-                {/* Gradient background simulating a wrapped vehicle */}
-                <div className="absolute inset-0 bg-gradient-to-br from-charcoal-900 to-steel" />
-
-                {/* Color band - simulating a vehicle wrap design */}
-                <div className="absolute inset-0 overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-r from-charcoal-900/90 via-transparent to-charcoal-950/90" />
-
-                  {/* Orange accent stripes */}
-                  <div className="absolute top-0 left-0 right-0 h-2 bg-brand" />
-                  <div className="absolute bottom-0 left-0 right-0 h-2 bg-brand" />
-                  <div
-                    className="absolute top-1/3 left-0 right-0 h-16 opacity-20"
-                    style={{
-                      background: 'linear-gradient(135deg, transparent 0%, rgba(255,212,0,0.4) 50%, transparent 100%)',
-                    }}
-                  />
-
-                  {/* Side stripes */}
-                  <div className="absolute top-0 bottom-0 left-8 w-1 bg-brand/30" />
-                  <div className="absolute top-0 bottom-0 left-12 w-0.5 bg-brand/15" />
-                  <div className="absolute top-0 bottom-0 right-8 w-1 bg-brand/30" />
-                  <div className="absolute top-0 bottom-0 right-12 w-0.5 bg-brand/15" />
-
-                  {/* Diagonal pattern */}
-                  <div
-                    className="absolute inset-0 opacity-10"
-                    style={{
-                      backgroundImage:
-                        'repeating-linear-gradient(135deg, rgba(255,212,0,0.3) 0, rgba(255,212,0,0.3) 2px, transparent 0, transparent 20px)',
-                    }}
-                  />
-                </div>
-
-                {/* Placeholder center content */}
-                <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-8">
-                  <div className="w-16 h-16 rounded-full bg-brand/20 border border-brand/40 flex items-center justify-center mb-4">
-                    <Truck className="w-8 h-8 text-brand" />
-                  </div>
-                  <div className="text-white font-bold text-xl mb-1">Fleet Graphix</div>
-                  <div className="text-slate-400 text-sm">VehicleWrap.jpg</div>
-                  <div className="text-slate-600 text-xs mt-1">Vehicle Wrap & Branding Preview</div>
-                </div>
-
+                <img
+                  src="/fgx-wrap.jpg"
+                  alt="Fleet Graphix vehicle wrap installation"
+                  className="w-full h-full object-cover"
+                  style={{ minHeight: '400px' }}
+                />
                 {/* Corner badge */}
                 <div className="absolute top-4 right-4 glass-brand rounded-lg px-3 py-1.5 border border-brand/30">
                   <div className="text-brand text-xs font-bold uppercase tracking-wide">In-House</div>
