@@ -88,7 +88,7 @@ export function Hero() {
             <motion.h1
               variants={itemVariant}
               className="font-heading font-bold leading-[0.9] tracking-[-0.02em] text-gradient"
-              style={{ fontSize: 'clamp(2.4rem, 11vw, 9.5rem)' }}
+              style={{ fontSize: 'clamp(2.4rem, 11vw, 8rem)' }}
             >
               BUILT TO BE
             </motion.h1>
@@ -97,7 +97,7 @@ export function Hero() {
             <motion.h1
               variants={itemVariant}
               className="font-heading font-bold leading-[0.9] tracking-[-0.02em] shimmer-text"
-              style={{ fontSize: 'clamp(2.4rem, 11vw, 9.5rem)' }}
+              style={{ fontSize: 'clamp(2.4rem, 11vw, 8rem)' }}
             >
               REMEMBERED.
             </motion.h1>
