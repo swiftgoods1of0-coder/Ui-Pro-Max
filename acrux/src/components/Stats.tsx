@@ -8,7 +8,7 @@ import { useInView } from 'react-intersection-observer'
 const STATS = [
   { value: 100,  suffix: '+',   label: 'Projects Delivered',       sub: 'Across 12 countries'         },
   { value: 98,   suffix: '%',   label: 'Client Satisfaction',      sub: 'Average NPS score: 74'       },
-  { value: 50,   suffix: 'M+',  label: 'Revenue Generated',        sub: 'For our clients', prefix: '$' },
+  { value: 14,   suffix: '+',   label: 'Industries Served',        sub: 'B2B, SaaS, fashion & more'   },
   { value: 4.9,  suffix: '★',   label: 'Average Rating',           sub: 'Across all platforms'        },
 ]
 
