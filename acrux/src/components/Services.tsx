@@ -83,7 +83,7 @@ function ServiceCard({ s, idx }: { s: typeof SERVICES[0]; idx: number }) {
         transformPerspective: 1000,
         transformStyle: 'preserve-3d',
       }}
-      className="glass-card rounded-2xl p-7 relative overflow-hidden group cursor-none"
+      className="card-border-glow glass-card rounded-2xl p-7 relative overflow-hidden group cursor-none"
     >
       {/* Cursor-tracked glow */}
       <div

@@ -5,20 +5,39 @@ import { motion, AnimatePresence } from 'framer-motion'
 import Image from 'next/image'
 
 const NAV_LINKS = [
-  { label: 'Services',   href: '#services'   },
-  { label: 'Portfolio',  href: '#portfolio'  },
-  { label: 'About',      href: '#why-acrux'  },
-  { label: 'Contact',    href: '#contact'    },
+  { label: 'Services',   href: '#services',   id: 'services'   },
+  { label: 'Portfolio',  href: '#portfolio',  id: 'portfolio'  },
+  { label: 'About',      href: '#why-acrux',  id: 'why-acrux'  },
+  { label: 'Contact',    href: '#contact',    id: 'contact'    },
 ]
 
 export function Navigation() {
-  const [scrolled, setScrolled] = useState(false)
-  const [mobileOpen, setMobileOpen] = useState(false)
+  const [scrolled,    setScrolled]   = useState(false)
+  const [mobileOpen,  setMobileOpen] = useState(false)
+  const [activeId,    setActiveId]   = useState('')
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 40)
     window.addEventListener('scroll', handler, { passive: true })
     return () => window.removeEventListener('scroll', handler)
+  }, [])
+
+  useEffect(() => {
+    const sections = NAV_LINKS.map(l => document.getElementById(l.id)).filter(Boolean) as HTMLElement[]
+    const observer = new IntersectionObserver(
+      entries => {
+        const visible = entries.filter(e => e.isIntersecting)
+        if (visible.length > 0) {
+          const top = visible.reduce((a, b) =>
+            (a.boundingClientRect.top < b.boundingClientRect.top ? a : b)
+          )
+          setActiveId(top.target.id)
+        }
+      },
+      { rootMargin: '-20% 0px -60% 0px', threshold: 0 }
+    )
+    sections.forEach(el => observer.observe(el))
+    return () => observer.disconnect()
   }, [])
 
   return (
@@ -48,16 +67,27 @@ export function Navigation() {
 
           {/* Desktop links */}
           <div className="hidden md:flex items-center gap-8">
-            {NAV_LINKS.map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                className="relative text-sm font-medium tracking-wide text-[var(--color-muted)] hover:text-white transition-colors duration-200 group"
-              >
-                {link.label}
-                <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-gradient-to-r from-[#0066ff] to-[#00ccff] group-hover:w-full transition-all duration-300 ease-out" />
-              </a>
-            ))}
+            {NAV_LINKS.map((link) => {
+              const isActive = activeId === link.id
+              return (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  className={`relative text-sm font-medium tracking-wide transition-colors duration-200 group ${
+                    isActive ? 'text-white' : 'text-[var(--color-muted)] hover:text-white'
+                  }`}
+                >
+                  {link.label}
+                  <span
+                    className="absolute -bottom-0.5 left-0 h-px bg-gradient-to-r from-[#0066ff] to-[#00ccff] transition-all duration-300 ease-out"
+                    style={{ width: isActive ? '100%' : '0%' }}
+                  />
+                  {!isActive && (
+                    <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-gradient-to-r from-[#0066ff] to-[#00ccff] group-hover:w-full transition-all duration-300 ease-out" />
+                  )}
+                </a>
+              )
+            })}
           </div>
 
           {/* CTA + hamburger */}

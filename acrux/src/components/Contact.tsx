@@ -45,11 +45,12 @@ export function Contact() {
   const selectedBudget = watch('budget')
 
   const onSubmit = async (data: FormData) => {
-    const subject = encodeURIComponent(`New Project Inquiry from ${data.name}`)
-    const body = encodeURIComponent(
-      `Name: ${data.name}\nEmail: ${data.email}\nCompany: ${data.company || 'N/A'}\nBudget: ${data.budget}\n\nProject Details:\n${data.message}`
-    )
-    window.open(`mailto:acruxwebsitebuilding@gmail.com?subject=${subject}&body=${body}`)
+    const res = await fetch('/api/contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    })
+    if (!res.ok) throw new Error('Failed to send')
     setSubmitted(true)
   }
 

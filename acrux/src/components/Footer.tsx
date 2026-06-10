@@ -7,7 +7,7 @@ import { SplitHeading } from './SplitHeading'
 const LINKS = {
   Services: ['Web Design', 'Development', 'Branding', 'SEO', 'AI Integration'],
   Company:  ['About', 'Portfolio', 'Process', 'Careers', 'Blog'],
-  Connect:  ['hello@acrux.studio', 'Twitter / X', 'LinkedIn', 'Instagram', 'Dribbble'],
+  Connect:  ['acruxwebsitebuilding@gmail.com', 'Twitter / X', 'LinkedIn', 'Instagram', 'Dribbble'],
 }
 
 export function Footer() {
