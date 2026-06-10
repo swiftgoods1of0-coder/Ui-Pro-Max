@@ -4,6 +4,7 @@ import { useRef } from 'react'
 import { motion } from 'framer-motion'
 import CountUp from 'react-countup'
 import { useInView } from 'react-intersection-observer'
+import { SplitHeading } from './SplitHeading'
 
 const STATS = [
   { value: 100,  suffix: '+',   label: 'Projects Delivered',       sub: 'Across 12 countries'         },
@@ -84,8 +85,9 @@ export function Stats() {
   return (
     <section className="section relative overflow-hidden" id="stats">
       {/* Ambient */}
-      <div className="absolute inset-0 pointer-events-none">
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_70%_at_50%_50%,rgba(0,50,150,0.08)_0%,transparent_70%)]" />
+        <div className="absolute -bottom-20 left-1/2 -translate-x-1/2 rounded-full" style={{ width: 700, height: 400, background: 'radial-gradient(circle, rgba(0,55,200,0.11) 0%, transparent 70%)', filter: 'blur(80px)' }} />
         <div className="divider absolute top-0 left-0 right-0" />
         <div className="divider absolute bottom-0 left-0 right-0" />
       </div>
@@ -104,16 +106,13 @@ export function Stats() {
             <div className="w-8 h-px bg-gradient-to-l from-transparent to-[#0066ff]" />
           </motion.div>
 
-          <motion.h2
-            initial={{ opacity: 0, y: 32 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+          <SplitHeading
+            text="The Results Speak."
             className="font-heading font-bold text-gradient leading-tight"
             style={{ fontSize: 'clamp(2.4rem, 5vw, 4.5rem)' }}
-          >
-            The Results Speak.
-          </motion.h2>
+            baseDelay={0.08}
+            stagger={0.12}
+          />
         </div>
 
         {/* Stats grid */}

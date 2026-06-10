@@ -145,7 +145,7 @@ export function Hero() {
           <motion.a
             href="#portfolio"
             className="flex items-center gap-2 text-[0.8rem] sm:text-sm font-medium tracking-[0.1em] transition-all duration-300 group"
-            style={{ color: 'rgba(180,210,235,0.6)' }}
+            style={{ color: 'rgba(195,225,252,0.82)' }}
             whileHover={{ color: 'rgba(255,255,255,1)' } as never}
           >
             <span>See Work</span>
@@ -170,12 +170,12 @@ export function Hero() {
               <div className="flex flex-col items-center px-5 sm:px-7">
                 <span className="font-heading font-bold text-base sm:text-lg text-white tracking-tight">{val}</span>
                 <span className="text-[9px] sm:text-[10px] tracking-[0.2em] uppercase mt-0.5"
-                  style={{ color: 'rgba(120,155,185,0.7)' }}>
+                  style={{ color: 'rgba(155,190,220,0.88)' }}>
                   {label}
                 </span>
               </div>
               {i < arr.length - 1 && (
-                <div className="w-px h-6 self-center" style={{ background: 'rgba(0,102,255,0.2)' }} />
+                <div className="w-px h-6 self-center" style={{ background: 'rgba(0,120,255,0.35)' }} />
               )}
             </div>
           ))}

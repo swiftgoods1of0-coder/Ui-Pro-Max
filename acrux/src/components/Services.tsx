@@ -3,6 +3,7 @@
 import { useRef } from 'react'
 import { motion, useSpring, useMotionValue } from 'framer-motion'
 import { Palette, Code2, Sparkles, TrendingUp, MousePointerClick, Brain } from 'lucide-react'
+import { SplitHeading } from './SplitHeading'
 
 const SERVICES = [
   {
@@ -109,7 +110,7 @@ function ServiceCard({ s, idx }: { s: typeof SERVICES[0]; idx: number }) {
       <p className="text-[10px] font-medium tracking-[0.25em] uppercase text-[var(--color-muted)] mb-4">
         {s.subtitle}
       </p>
-      <p className="text-sm text-[var(--color-text)] leading-relaxed opacity-65 group-hover:opacity-100 transition-opacity duration-300 mb-5">
+      <p className="text-sm text-[var(--color-text)] leading-relaxed mb-5">
         {s.desc}
       </p>
 
@@ -136,7 +137,12 @@ function ServiceCard({ s, idx }: { s: typeof SERVICES[0]; idx: number }) {
 export function Services() {
   return (
     <section className="section relative" id="services">
-      <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_70%_50%_at_50%_0%,rgba(0,102,255,0.07)_0%,transparent_70%)]" />
+      {/* Mesh orbs */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_50%_0%,rgba(0,102,255,0.07)_0%,transparent_70%)]" />
+        <div className="absolute -top-20 -left-20 rounded-full" style={{ width: 600, height: 600, background: 'radial-gradient(circle, rgba(0,50,220,0.1) 0%, transparent 70%)', filter: 'blur(90px)' }} />
+        <div className="absolute bottom-0 right-0 rounded-full" style={{ width: 500, height: 500, background: 'radial-gradient(circle, rgba(0,80,255,0.09) 0%, transparent 70%)', filter: 'blur(100px)' }} />
+      </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
         {/* Header */}
@@ -153,16 +159,13 @@ export function Services() {
             <div className="w-8 h-px bg-gradient-to-l from-transparent to-[#0066ff]" />
           </motion.div>
 
-          <motion.h2
-            initial={{ opacity: 0, y: 32 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.9, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
+          <SplitHeading
+            text="Every Service. One Standard."
             className="font-heading font-bold text-gradient leading-tight"
             style={{ fontSize: 'clamp(2.4rem, 5vw, 4.5rem)' }}
-          >
-            Every Service.<br />One Standard.
-          </motion.h2>
+            baseDelay={0.08}
+            stagger={0.09}
+          />
 
           <motion.p
             initial={{ opacity: 0, y: 20 }}

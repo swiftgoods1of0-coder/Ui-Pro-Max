@@ -7,10 +7,10 @@
   --color-blue: #0066FF;
   --color-bright: #0099FF;
   --color-cyan: #00CCFF;
-  --color-text: #D8E8F5;
-  --color-muted: #7090AA;
-  --color-border: rgba(0, 102, 255, 0.14);
-  --color-border-hover: rgba(0, 153, 255, 0.32);
+  --color-text: #EBF4FF;
+  --color-muted: #9DB5CE;
+  --color-border: rgba(0, 102, 255, 0.16);
+  --color-border-hover: rgba(0, 153, 255, 0.38);
   --color-glass: rgba(4, 16, 36, 0.8);
 }
 

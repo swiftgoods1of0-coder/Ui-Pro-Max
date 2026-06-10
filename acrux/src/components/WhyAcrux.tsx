@@ -2,6 +2,7 @@
 
 import { useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
+import { SplitHeading } from './SplitHeading'
 
 const TRUTHS = [
   {
@@ -83,6 +84,8 @@ export function WhyAcrux() {
     <section className="section relative overflow-hidden" id="why-acrux" ref={sectionRef}>
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_80%_at_80%_50%,rgba(0,102,255,0.06)_0%,transparent_70%)]" />
+        <div className="absolute top-1/4 -right-32 rounded-full" style={{ width: 600, height: 600, background: 'radial-gradient(circle, rgba(0,55,200,0.1) 0%, transparent 70%)', filter: 'blur(100px)' }} />
+        <div className="absolute bottom-1/4 -left-32 rounded-full" style={{ width: 500, height: 500, background: 'radial-gradient(circle, rgba(0,40,180,0.09) 0%, transparent 70%)', filter: 'blur(90px)' }} />
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
@@ -98,16 +101,13 @@ export function WhyAcrux() {
             <span className="text-[#0099ff] text-[10px] font-semibold tracking-[0.4em] uppercase">The Hard Truth</span>
           </motion.div>
 
-          <motion.h2
-            initial={{ opacity: 0, y: 32 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+          <SplitHeading
+            text="Your Website Is Either Making You Money Or Losing It."
             className="font-heading font-bold text-gradient leading-tight mb-6"
             style={{ fontSize: 'clamp(2.4rem, 5vw, 4.5rem)' }}
-          >
-            Your Website Is Either<br />Making You Money Or<br />Losing It.
-          </motion.h2>
+            baseDelay={0.08}
+            stagger={0.07}
+          />
 
           <motion.p
             initial={{ opacity: 0, y: 20 }}

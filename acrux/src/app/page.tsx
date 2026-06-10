@@ -1,5 +1,6 @@
 import { ClientScene } from '@/components/ClientScene'
 import { Loader } from '@/components/Loader'
+import { FloatingCTA } from '@/components/FloatingCTA'
 import { SmoothScroll } from '@/components/SmoothScroll'
 import { Cursor } from '@/components/Cursor'
 import { Navigation } from '@/components/Navigation'
@@ -21,6 +22,8 @@ export default function Home() {
       <ClientScene />
       {/* Custom cursor */}
       <Cursor />
+      {/* Floating CTA — appears after 35% scroll */}
+      <FloatingCTA />
 
       <SmoothScroll>
         <Navigation />

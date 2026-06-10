@@ -1,13 +1,18 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import { SplitHeading } from './SplitHeading'
 
 export function About() {
   return (
     <section className="section relative overflow-hidden" id="about">
-      {/* Subtle background glow */}
+      {/* Mesh orbs + dividers */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_50%_50%,rgba(0,80,200,0.07)_0%,transparent_70%)]" />
+        <div className="absolute top-[-60px] right-[-80px] rounded-full"
+          style={{ width: 550, height: 550, background: 'radial-gradient(circle, rgba(0,60,220,0.11) 0%, transparent 70%)', filter: 'blur(90px)' }} />
+        <div className="absolute bottom-[-60px] left-[-80px] rounded-full"
+          style={{ width: 450, height: 450, background: 'radial-gradient(circle, rgba(0,40,180,0.1) 0%, transparent 70%)', filter: 'blur(100px)' }} />
         <div className="divider absolute top-0 left-0 right-0" />
         <div className="divider absolute bottom-0 left-0 right-0" />
       </div>
@@ -25,17 +30,14 @@ export function About() {
           <div className="w-8 h-px bg-gradient-to-l from-transparent to-[#0066ff]" />
         </motion.div>
 
-        {/* Headline */}
-        <motion.h2
-          initial={{ opacity: 0, y: 28 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+        {/* Headline — word-by-word reveal */}
+        <SplitHeading
+          text="Welcome to Acrux."
           className="font-heading font-bold text-gradient leading-tight mb-10"
           style={{ fontSize: 'clamp(2.2rem, 4.5vw, 4rem)' }}
-        >
-          Welcome to Acrux.
-        </motion.h2>
+          baseDelay={0.1}
+          stagger={0.12}
+        />
 
         {/* Dividing rule */}
         <motion.div
@@ -80,6 +82,7 @@ export function About() {
           <a
             href="#contact"
             className="btn-primary inline-flex items-center gap-3 px-8 py-4 rounded-full font-semibold text-base tracking-wide"
+            data-magnetic
           >
             <span>Start Your Project</span>
             <span className="text-[rgba(255,255,255,0.7)]">→</span>
