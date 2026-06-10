@@ -38,6 +38,70 @@ function makeFlareTexture(): THREE.CanvasTexture {
   return new THREE.CanvasTexture(c)
 }
 
+// ── Photosphere matcap — limb darkening + granulation ────────────
+// Matcap maps camera-space normals to texture coords, so the bright
+// center / dark limb always faces the viewer regardless of rotation.
+function makeStarSurface(): THREE.CanvasTexture {
+  const S = 256
+  const c = document.createElement('canvas')
+  c.width = c.height = S
+  const ctx = c.getContext('2d')!
+  const H = S / 2
+
+  // Base radial gradient — bright white core, limb-darkening toward edge
+  const base = ctx.createRadialGradient(H, H, 0, H, H, H)
+  base.addColorStop(0,    '#ffffff')
+  base.addColorStop(0.20, '#eef4ff')
+  base.addColorStop(0.48, '#c4d9f2')
+  base.addColorStop(0.72, '#7aa2cc')
+  base.addColorStop(0.88, '#2c527c')
+  base.addColorStop(1,    '#071630')
+  ctx.fillStyle = base
+  ctx.fillRect(0, 0, S, S)
+
+  // Convection granulation — hot plasma rising in bright cells
+  for (let i = 0; i < 220; i++) {
+    const a  = Math.random() * Math.PI * 2
+    const d  = Math.pow(Math.random(), 0.55) * H * 0.88
+    const x  = H + Math.cos(a) * d
+    const y  = H + Math.sin(a) * d
+    const r  = 3 + Math.random() * 15
+    const br = (0.05 + Math.random() * 0.14).toFixed(3)
+    const g2 = ctx.createRadialGradient(x, y, 0, x, y, r)
+    g2.addColorStop(0,   `rgba(255,255,255,${br})`)
+    g2.addColorStop(0.55, `rgba(180,215,255,${(+br * 0.3).toFixed(3)})`)
+    g2.addColorStop(1,   'rgba(0,0,0,0)')
+    ctx.fillStyle = g2
+    ctx.beginPath()
+    ctx.arc(x, y, r, 0, Math.PI * 2)
+    ctx.fill()
+  }
+
+  // Bright active-region patches (faculae)
+  for (let i = 0; i < 6; i++) {
+    const a = Math.random() * Math.PI * 2
+    const d = Math.random() * H * 0.65
+    const x = H + Math.cos(a) * d
+    const y = H + Math.sin(a) * d
+    const r = 12 + Math.random() * 22
+    const f = ctx.createRadialGradient(x, y, 0, x, y, r)
+    f.addColorStop(0, 'rgba(255,255,255,0.22)')
+    f.addColorStop(1, 'rgba(0,0,0,0)')
+    ctx.fillStyle = f
+    ctx.fillRect(x - r, y - r, r * 2, r * 2)
+  }
+
+  // Circular clip — matcap textures must be circular
+  ctx.globalCompositeOperation = 'destination-in'
+  ctx.beginPath()
+  ctx.arc(H, H, H, 0, Math.PI * 2)
+  ctx.fillStyle = '#fff'
+  ctx.fill()
+  ctx.globalCompositeOperation = 'source-over'
+
+  return new THREE.CanvasTexture(c)
+}
+
 export function WorldCanvas() {
   const mountRef = useRef<HTMLDivElement>(null)
 
@@ -45,7 +109,7 @@ export function WorldCanvas() {
     const mount = mountRef.current
     if (!mount) return
 
-    // ── Renderer setup ───────────────────────────────────────
+    // ── Renderer ─────────────────────────────────────────────
     let W = window.innerWidth
     let H = window.innerHeight
     const mobile = W < 768
@@ -61,8 +125,9 @@ export function WorldCanvas() {
     const camera = new THREE.PerspectiveCamera(58, W / H, 0.1, 600)
     camera.position.set(0, 1.2, 9)
 
-    const glowTex  = makeGlowSprite()
-    const flareTex = makeFlareTexture()
+    const glowTex    = makeGlowSprite()
+    const flareTex   = makeFlareTexture()
+    const surfaceTex = makeStarSurface()
 
     // ── Galaxy spiral (18 000 particles, 3 arms) ─────────────
     const GALAXY = mobile ? 7000 : 18000
@@ -84,7 +149,6 @@ export function WorldCanvas() {
       gPos[i * 3 + 1] = y
       gPos[i * 3 + 2] = z
 
-      // color: center = white → cyan → deep blue outer
       const dist = Math.sqrt(x * x + z * z)
       const cf   = Math.min(1, dist / 15)
       gCol[i * 3]     = THREE.MathUtils.lerp(0.95, 0.06, cf)
@@ -151,9 +215,9 @@ export function WorldCanvas() {
     const light2 = new THREE.PointLight(0xaaccff, 45,  14, 2)
     starGroup.add(light1, light2)
 
-    // Layered glow shells — outer to inner
+    // Outer corona shells — additive, blue-to-midnight gradient
     const shells: [number, number, number][] = [
-      [7.0, 0x000a33, 0.04],
+      [7.0, 0x020c22, 0.055],
       [4.5, 0x001266, 0.07],
       [2.4, 0x0033aa, 0.13],
       [1.3, 0x0055ee, 0.21],
@@ -169,18 +233,77 @@ export function WorldCanvas() {
       ))
     })
 
-    // Core sphere + hot centre
+    // Photosphere — MeshMatcapMaterial gives correct limb darkening
+    // (camera-space normals → texture lookup, always dark at silhouette)
+    const STAR_R = 0.38
     const core = new THREE.Mesh(
-      new THREE.SphereGeometry(0.36, 32, 32),
-      new THREE.MeshBasicMaterial({ color: 0xffffff }),
+      new THREE.SphereGeometry(STAR_R, 64, 64),
+      new THREE.MeshMatcapMaterial({ matcap: surfaceTex }),
     )
-    const hotCentre = new THREE.Mesh(
-      new THREE.SphereGeometry(0.17, 32, 32),
-      new THREE.MeshBasicMaterial({ color: 0xeef5ff }),
-    )
-    starGroup.add(core, hotCentre)
+    starGroup.add(core)
 
-    // 8-spike diffraction flares
+    // Chromosphere — thin additive shell just above the photosphere
+    starGroup.add(new THREE.Mesh(
+      new THREE.SphereGeometry(STAR_R * 1.10, 32, 32),
+      new THREE.MeshBasicMaterial({
+        color: 0x66aaff, transparent: true, opacity: 0.14,
+        depthWrite: false, blending: THREE.AdditiveBlending,
+      }),
+    ))
+
+    // ── Plasma prominence arcs ────────────────────────────────
+    // Magnetic field loops with trapped plasma — signature of real stars
+    const arcGroup = new THREE.Group()
+    starGroup.add(arcGroup)
+
+    const arcMats: THREE.MeshBasicMaterial[] = []
+    const arcPhases: number[] = []
+    const arcGeos: THREE.BufferGeometry[] = []
+    const arcColors = [0x55ccff, 0x44bbee, 0x77ddff, 0x3399ff, 0x88eeff, 0x4499dd, 0x66bbff]
+
+    const NUM_ARCS = mobile ? 4 : 7
+    for (let i = 0; i < NUM_ARCS; i++) {
+      const peakH = 0.55 + Math.random() * 1.15
+      const span  = 0.5  + Math.random() * 0.85
+      const a0    = Math.random() * Math.PI * 2
+
+      // Arc is a half-ellipse in the XY plane: starts and ends on star surface,
+      // peaks outward at distance STAR_R + peakH from centre
+      const pts: THREE.Vector3[] = []
+      for (let j = 0; j <= 30; j++) {
+        const frac = j / 30
+        const ang  = a0 + frac * span
+        const r    = STAR_R + Math.sin(frac * Math.PI) * peakH
+        pts.push(new THREE.Vector3(Math.cos(ang) * r, Math.sin(ang) * r, 0))
+      }
+
+      const tube = new THREE.TubeGeometry(
+        new THREE.CatmullRomCurve3(pts), 30,
+        0.006 + Math.random() * 0.009, 5, false,
+      )
+      arcGeos.push(tube)
+
+      const mat = new THREE.MeshBasicMaterial({
+        color: arcColors[i % arcColors.length],
+        transparent: true,
+        opacity: 0.28 + Math.random() * 0.3,
+        depthWrite: false,
+        blending: THREE.AdditiveBlending,
+      })
+      arcMats.push(mat)
+      arcPhases.push(Math.random() * Math.PI * 2)
+
+      const mesh = new THREE.Mesh(tube, mat)
+      // Random orientation — arcs appear all over the star surface
+      mesh.rotation.set(
+        Math.random() * Math.PI * 2,
+        Math.random() * Math.PI * 2,
+        Math.random() * Math.PI * 2,
+      )
+      arcGroup.add(mesh)
+    }
+
+    // ── Diffraction spike flares ──────────────────────────────
     const flareGroup = new THREE.Group()
     starGroup.add(flareGroup)
     const flareMat = new THREE.MeshBasicMaterial({
@@ -197,17 +320,15 @@ export function WorldCanvas() {
       flareGroup.add(spike)
     }
 
-    // Corona particle ring
+    // ── Corona particle rings (two planes, different tilts) ───
     const CORONA = 800
     const coroPos = new Float32Array(CORONA * 3)
-    const coroPhase = new Float32Array(CORONA) // individual speed offsets
     for (let i = 0; i < CORONA; i++) {
       const angle = (i / CORONA) * Math.PI * 2
       const rr    = 0.55 + Math.random() * 0.45
       coroPos[i * 3]     = Math.cos(angle) * rr
       coroPos[i * 3 + 1] = (Math.random() - 0.5) * 0.3
       coroPos[i * 3 + 2] = Math.sin(angle) * rr
-      coroPhase[i]        = Math.random() * Math.PI * 2
     }
     const coronaGeo = new THREE.BufferGeometry()
     coronaGeo.setAttribute('position', new THREE.BufferAttribute(coroPos, 3))
@@ -217,6 +338,25 @@ export function WorldCanvas() {
       depthWrite: false, blending: THREE.AdditiveBlending,
     }))
     starGroup.add(corona)
+
+    // Second ring tilted ~60° for a sense of 3D volume
+    const coroPos2 = new Float32Array(CORONA * 3)
+    for (let i = 0; i < CORONA; i++) {
+      const angle = (i / CORONA) * Math.PI * 2
+      const rr    = 0.68 + Math.random() * 0.52
+      coroPos2[i * 3]     = Math.cos(angle) * rr
+      coroPos2[i * 3 + 1] = (Math.random() - 0.5) * 0.22
+      coroPos2[i * 3 + 2] = Math.sin(angle) * rr
+    }
+    const coronaGeo2 = new THREE.BufferGeometry()
+    coronaGeo2.setAttribute('position', new THREE.BufferAttribute(coroPos2, 3))
+    const corona2 = new THREE.Points(coronaGeo2, new THREE.PointsMaterial({
+      size: 0.044, map: glowTex, color: 0x4488bb,
+      transparent: true, opacity: 0.42,
+      depthWrite: false, blending: THREE.AdditiveBlending,
+    }))
+    corona2.rotation.x = Math.PI / 2.8
+    starGroup.add(corona2)
 
     // ── State ────────────────────────────────────────────────
     let scroll = 0, mx = 0, my = 0, clickWave = 0
@@ -257,29 +397,39 @@ export function WorldCanvas() {
       const dt = Math.min(clock.getDelta(), 0.05)
       const t  = clock.elapsedTime
 
-      // Galaxy slow rotation + gentle tilt wobble
+      // Galaxy slow rotation
       galaxy.rotation.y += 0.022 * dt
       galaxy.rotation.x  = Math.sin(t * 0.04) * 0.055
 
-      // Star flare rotation
+      // Flare rotation
       flareGroup.rotation.z = t * 0.16
 
-      // Corona slow spin
-      corona.rotation.y = t * 0.35
+      // Corona rings counter-rotate slightly for depth
+      corona.rotation.y  =  t * 0.35
+      corona2.rotation.y = -t * 0.22
 
-      // Star pulse
-      const pulse = 1 + Math.sin(t * 2.1) * 0.055
+      // Star core slow self-rotation (shows granulation moving)
+      core.rotation.y = t * 0.08
+
+      // Prominence arcs: each pulses with its own phase
+      arcMats.forEach((m, i) => {
+        m.opacity = 0.16 + (Math.sin(t * (0.52 + i * 0.13) + arcPhases[i]) * 0.5 + 0.5) * 0.34
+      })
+      arcGroup.rotation.y = t * 0.038
+
+      // Photosphere pulse
+      const pulse = 1 + Math.sin(t * 2.1) * 0.045
       core.scale.setScalar(pulse)
       light1.intensity = 130 + Math.sin(t * 1.85) * 32
 
-      // Star parallax
+      // Star parallax follows mouse
       starGroup.position.x += (mx * 0.65 - starGroup.position.x) * 0.045
       starGroup.position.y += (my * 0.48 - starGroup.position.y) * 0.045
 
-      // Star grows as camera approaches
+      // Star grows as camera approaches on scroll
       starGroup.scale.setScalar(1 + scroll * 1.9)
 
-      // Camera: flies toward star on scroll, arcs horizontally
+      // Camera: flies toward star on scroll, arcs horizontally with mouse
       camera.position.x += (mx * 0.35 + Math.sin(scroll * Math.PI) * 1.8 - camera.position.x) * 0.022
       camera.position.y += (my * 0.2  + scroll * 2.8                      - camera.position.y) * 0.025
       camera.position.z += (9   - scroll * 6.5                             - camera.position.z) * 0.025
@@ -294,16 +444,13 @@ export function WorldCanvas() {
       for (let i = 0; i < REACT; i++) {
         const ix = i * 3, iy = i * 3 + 1, iz = i * 3 + 2
 
-        // Spring back to base
         pos[ix] += (rBase[ix] - pos[ix]) * 0.013 + rVel[ix]
         pos[iy] += (rBase[iy] - pos[iy]) * 0.013 + rVel[iy]
         pos[iz] += (rBase[iz] - pos[iz]) * 0.013 + rVel[iz]
 
-        // Ambient wave drift
         pos[ix] += Math.sin(t * 0.14 + i * 0.007) * 0.0013
         pos[iy] += Math.cos(t * 0.11 + i * 0.013) * 0.0013
 
-        // Mouse repulsion
         const dx = pos[ix] - mpx
         const dy = pos[iy] - mpy
         const d2 = dx * dx + dy * dy
@@ -314,7 +461,6 @@ export function WorldCanvas() {
           rVel[iy] += (dy / d) * f
         }
 
-        // Click shockwave from origin
         if (clickWave > 0.01) {
           const cx = pos[ix], cy = pos[iy], cz = pos[iz]
           const cd = Math.sqrt(cx * cx + cy * cy + cz * cz)
@@ -326,7 +472,6 @@ export function WorldCanvas() {
           }
         }
 
-        // Velocity damping
         rVel[ix] *= 0.905
         rVel[iy] *= 0.905
         rVel[iz] *= 0.905
@@ -349,10 +494,14 @@ export function WorldCanvas() {
       renderer.dispose()
       glowTex.dispose()
       flareTex.dispose()
+      surfaceTex.dispose()
       galaxyGeo.dispose()
       reactGeo.dispose()
       bgGeo.dispose()
       coronaGeo.dispose()
+      coronaGeo2.dispose()
+      arcGeos.forEach(g => g.dispose())
+      arcMats.forEach(m => m.dispose())
     }
   }, [])
 
