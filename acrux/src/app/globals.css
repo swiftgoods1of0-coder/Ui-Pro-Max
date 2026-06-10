@@ -78,10 +78,11 @@ p {
 
 /* ─── Typography helpers ─── */
 .text-gradient {
-  background: linear-gradient(130deg, #ffffff 0%, #a8c8f0 50%, #4499ff 100%);
+  background: linear-gradient(130deg, #ffffff 0%, #ddf0ff 55%, #77bbff 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  filter: drop-shadow(0 0 28px rgba(0, 130, 255, 0.45)) drop-shadow(0 2px 16px rgba(0, 0, 0, 0.95));
 }
 
 .text-gradient-blue {
@@ -264,15 +265,16 @@ p {
 .shimmer-text {
   background: linear-gradient(
     90deg,
-    rgba(200, 216, 232, 0.5) 0%,
+    rgba(200, 230, 255, 0.88) 0%,
     rgba(255, 255, 255, 1) 40%,
-    rgba(200, 216, 232, 0.5) 80%
+    rgba(200, 230, 255, 0.88) 80%
   );
   background-size: 200% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   animation: shimmer 4s linear infinite;
+  filter: drop-shadow(0 0 32px rgba(0, 140, 255, 0.5)) drop-shadow(0 2px 18px rgba(0, 0, 0, 0.98));
 }
 
 /* ─── Utility ─── */

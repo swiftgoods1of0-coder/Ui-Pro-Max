@@ -118,7 +118,7 @@ export function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 1.8, ease: [0.22, 1, 0.36, 1] }}
           className="mt-7 sm:mt-9 font-body text-sm sm:text-[0.95rem] leading-[1.95] tracking-[0.025em] max-w-[34ch]"
-          style={{ color: 'rgba(210,228,245,0.72)', textShadow: '0 2px 24px rgba(0,0,0,0.85)' }}
+          style={{ color: 'rgba(220,238,255,0.92)', textShadow: '0 2px 20px rgba(0,0,0,1), 0 0 40px rgba(0,0,0,0.9)' }}
         >
           We craft digital experiences so exceptional, your competition
           won&apos;t know what hit them.
