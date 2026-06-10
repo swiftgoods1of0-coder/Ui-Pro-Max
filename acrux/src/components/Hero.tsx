@@ -172,19 +172,6 @@ export function Hero() {
         </motion.div>
       </div>
 
-      {/* Scroll indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 3, duration: 1 }}
-        className="absolute bottom-16 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
-      >
-        <span className="text-[var(--color-muted)] text-[10px] tracking-[0.35em] uppercase font-body">
-          Scroll
-        </span>
-        <div className="w-px h-12 bg-gradient-to-b from-[rgba(0,102,255,0.7)] to-transparent animate-float" />
-      </motion.div>
-
       {/* Marquee ticker */}
       <div className="absolute bottom-0 left-0 right-0 overflow-hidden h-10 flex items-center border-t border-[var(--color-border)]">
         <div className="marquee-track">
