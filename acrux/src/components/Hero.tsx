@@ -55,7 +55,8 @@ const itemVariant = {
 
 export function Hero() {
   return (
-    <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden" id="hero">
+    <section className="relative flex flex-col items-center justify-center overflow-hidden" id="hero"
+      style={{ minHeight: '100svh' }}>
 
       {/* Gradient overlay — centre scrim + edge vignette */}
       <div className="absolute inset-0 z-[2] pointer-events-none"

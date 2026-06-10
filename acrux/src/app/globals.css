@@ -37,7 +37,12 @@ body {
   line-height: 1.7;
   letter-spacing: 0.012em;
   overflow-x: hidden;
+  overscroll-behavior: none;
   cursor: none;
+}
+
+@media (max-width: 767px) {
+  body { cursor: auto; }
 }
 
 /* ─── Luxury heading defaults ─── */
@@ -285,5 +290,4 @@ p {
 @media (max-width: 768px) {
   html { font-size: 16px; }
   .section { padding: 4rem 0; }
-  body { cursor: auto; }
 }

@@ -459,13 +459,13 @@ export function WorldCanvas() {
     let scroll = 0, mx = 0, my = 0, clickWave = 0
 
     const onScroll = () => {
+      if (mobile) return                                      // no scroll-driven camera on mobile
       const max = document.documentElement.scrollHeight - window.innerHeight
       scroll = max > 0 ? window.scrollY / max : 0
     }
     const onMouse = (e: MouseEvent) => { mx = (e.clientX / W) * 2 - 1; my = -((e.clientY / H) * 2 - 1) }
-    const onTouch = (e: TouchEvent) => {
-      const t = e.touches[0]
-      mx = (t.clientX / W) * 2 - 1; my = -((t.clientY / H) * 2 - 1)
+    const onTouch = (_e: TouchEvent) => {
+      // On mobile touch is for scrolling — don't move the star
     }
     const onClick  = () => { clickWave = 1 }
     const onResize = () => {
@@ -518,16 +518,23 @@ export function WorldCanvas() {
       })
       arcGroup.rotation.y = t * 0.038
 
-      // Star parallax
-      starGroup.position.x += (mx * 0.65 - starGroup.position.x) * 0.045
-      starGroup.position.y += (my * 0.48 - starGroup.position.y) * 0.045
-      starGroup.scale.setScalar(1 + scroll * 1.9)
+      if (mobile) {
+        // On mobile: keep everything perfectly still — no scroll jitter, no touch drift
+        starGroup.position.set(0, 0, 0)
+        starGroup.scale.setScalar(1)
+        camera.position.set(0, 1.2, 9)
+        camera.lookAt(0, 0, 0)
+      } else {
+        // Desktop: scroll-driven parallax + camera fly-in
+        starGroup.position.x += (mx * 0.65 - starGroup.position.x) * 0.045
+        starGroup.position.y += (my * 0.48 - starGroup.position.y) * 0.045
+        starGroup.scale.setScalar(1 + scroll * 1.9)
 
-      // Camera flies toward star on scroll
-      camera.position.x += (mx * 0.35 + Math.sin(scroll * Math.PI) * 1.8 - camera.position.x) * 0.022
-      camera.position.y += (my * 0.2  + scroll * 2.8                      - camera.position.y) * 0.025
-      camera.position.z += (9   - scroll * 6.5                             - camera.position.z) * 0.025
-      camera.lookAt(0, scroll * 1.4, 0)
+        camera.position.x += (mx * 0.35 + Math.sin(scroll * Math.PI) * 1.8 - camera.position.x) * 0.022
+        camera.position.y += (my * 0.2  + scroll * 2.8                      - camera.position.y) * 0.025
+        camera.position.z += (9   - scroll * 6.5                             - camera.position.z) * 0.025
+        camera.lookAt(0, scroll * 1.4, 0)
+      }
 
       // Reactive particle update
       const pos = reactGeo.attributes.position.array as Float32Array
