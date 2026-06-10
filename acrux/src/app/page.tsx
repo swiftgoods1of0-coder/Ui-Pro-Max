@@ -1,4 +1,5 @@
 import { ClientScene } from '@/components/ClientScene'
+import { Loader } from '@/components/Loader'
 import { SmoothScroll } from '@/components/SmoothScroll'
 import { Cursor } from '@/components/Cursor'
 import { Navigation } from '@/components/Navigation'
@@ -14,6 +15,8 @@ import { Footer } from '@/components/Footer'
 export default function Home() {
   return (
     <>
+      {/* Cinematic intro loader */}
+      <Loader />
       {/* Fixed 3D universe — sits behind everything */}
       <ClientScene />
       {/* Custom cursor */}

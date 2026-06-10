@@ -49,8 +49,8 @@ const container = {
   show: { transition: { staggerChildren: 0.12, delayChildren: 0.8 } },
 }
 const itemVariant = {
-  hidden: { opacity: 0, y: 80 },
-  show:   { opacity: 1, y: 0, transition: { duration: 1.1, ease: [0.22, 1, 0.36, 1] } },
+  hidden: { y: '108%' },
+  show:   { y: '0%', transition: { duration: 1.15, ease: [0.22, 1, 0.36, 1] } },
 }
 
 export function Hero() {

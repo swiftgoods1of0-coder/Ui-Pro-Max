@@ -64,7 +64,7 @@ function StatCard({ stat, index }: { stat: typeof STATS[0]; index: number }) {
               end={stat.value}
               duration={2.5}
               decimals={stat.value % 1 !== 0 ? 1 : 0}
-              prefix={stat.prefix ?? ''}
+              prefix=""
               suffix={stat.suffix}
             />
           ) : (
