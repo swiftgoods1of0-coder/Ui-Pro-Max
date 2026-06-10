@@ -61,8 +61,8 @@ export function Hero() {
       <div className="absolute inset-0 z-[2] pointer-events-none"
         style={{
           background: `
-            radial-gradient(ellipse 65% 55% at 50% 48%, rgba(2,5,8,0.78) 0%, rgba(2,5,8,0.3) 55%, transparent 100%),
-            linear-gradient(to bottom, rgba(2,5,8,0.35) 0%, transparent 18%, transparent 68%, rgba(2,5,8,0.9) 100%)
+            radial-gradient(ellipse 70% 60% at 50% 48%, rgba(2,5,8,0.35) 0%, rgba(2,5,8,0.1) 50%, transparent 100%),
+            linear-gradient(to bottom, rgba(2,5,8,0.3) 0%, transparent 20%, transparent 68%, rgba(2,5,8,0.88) 100%)
           `,
         }}
       />
