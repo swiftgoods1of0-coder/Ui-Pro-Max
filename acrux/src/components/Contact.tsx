@@ -33,6 +33,7 @@ const INFO = [
 
 export function Contact() {
   const [submitted, setSubmitted] = useState(false)
+  const [submitError, setSubmitError] = useState('')
 
   const {
     register,
@@ -45,13 +46,18 @@ export function Contact() {
   const selectedBudget = watch('budget')
 
   const onSubmit = async (data: FormData) => {
-    const res = await fetch('/api/contact', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
-    })
-    if (!res.ok) throw new Error('Failed to send')
-    setSubmitted(true)
+    setSubmitError('')
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      })
+      if (!res.ok) throw new Error('Failed to send')
+      setSubmitted(true)
+    } catch {
+      setSubmitError('Something went wrong. Please email us directly at acruxwebsitebuilding@gmail.com')
+    }
   }
 
   return (
@@ -258,6 +264,12 @@ export function Contact() {
                   />
                   {errors.message && <p className="text-red-400 text-xs mt-1">{errors.message.message}</p>}
                 </div>
+
+                {submitError && (
+                  <p className="text-red-400 text-sm text-center bg-red-400/10 border border-red-400/20 rounded-lg px-4 py-3">
+                    {submitError}
+                  </p>
+                )}
 
                 <motion.button
                   type="submit"

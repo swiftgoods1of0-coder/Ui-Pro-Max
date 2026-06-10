@@ -54,7 +54,7 @@ export function Navigation() {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           {/* Logo */}
-          <a href="#" className="flex items-center gap-2.5 group" data-magnetic>
+          <a href="/" className="flex items-center gap-2.5 group" data-magnetic>
             <div className="relative">
               <div className="absolute inset-0 rounded blur-md opacity-50 group-hover:opacity-80 transition-opacity"
                    style={{ background: 'rgba(0,102,255,0.4)' }} />

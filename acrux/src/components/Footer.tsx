@@ -4,10 +4,28 @@ import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { SplitHeading } from './SplitHeading'
 
-const LINKS = {
-  Services: ['Web Design', 'Development', 'Branding', 'SEO', 'AI Integration'],
-  Company:  ['About', 'Portfolio', 'Process', 'Careers', 'Blog'],
-  Connect:  ['acruxwebsitebuilding@gmail.com', 'Twitter / X', 'LinkedIn', 'Instagram', 'Dribbble'],
+const LINKS: Record<string, { label: string; href: string }[]> = {
+  Services: [
+    { label: 'Web Design',     href: '#services' },
+    { label: 'Development',    href: '#services' },
+    { label: 'Branding',       href: '#services' },
+    { label: 'SEO',            href: '#services' },
+    { label: 'AI Integration', href: '#services' },
+  ],
+  Company: [
+    { label: 'About',     href: '#why-acrux' },
+    { label: 'Portfolio', href: '#portfolio'  },
+    { label: 'Process',   href: '#process'   },
+    { label: 'Careers',   href: '#contact'   },
+    { label: 'Blog',      href: '#contact'   },
+  ],
+  Connect: [
+    { label: 'acruxwebsitebuilding@gmail.com', href: 'mailto:acruxwebsitebuilding@gmail.com' },
+    { label: 'Twitter / X', href: '#' },
+    { label: 'LinkedIn',    href: '#' },
+    { label: 'Instagram',   href: '#' },
+    { label: 'Dribbble',    href: '#' },
+  ],
 }
 
 export function Footer() {
@@ -101,10 +119,10 @@ export function Footer() {
                 {title}
               </h4>
               <ul className="space-y-3">
-                {items.map(item => (
-                  <li key={item}>
-                    <a href="#" className="text-[var(--color-muted)] text-sm hover:text-white transition-colors duration-200">
-                      {item}
+                {items.map(({ label, href }) => (
+                  <li key={label}>
+                    <a href={href} className="text-[var(--color-muted)] text-sm hover:text-white transition-colors duration-200 break-all">
+                      {label}
                     </a>
                   </li>
                 ))}
