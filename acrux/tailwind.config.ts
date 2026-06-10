@@ -17,8 +17,8 @@ const config: Config = {
         'acrux-star': '#E8F4FF',
       },
       fontFamily: {
-        heading: ['var(--font-space-grotesk)', 'system-ui', 'sans-serif'],
-        body: ['var(--font-inter)', 'system-ui', 'sans-serif'],
+        heading: ['"Clash Display"', 'var(--font-space-grotesk)', 'system-ui', 'sans-serif'],
+        body: ['"General Sans"', 'var(--font-inter)', 'system-ui', 'sans-serif'],
       },
       animation: {
         'float': 'float 6s ease-in-out infinite',

@@ -4,6 +4,7 @@ import { Cursor } from '@/components/Cursor'
 import { Navigation } from '@/components/Navigation'
 import { Hero } from '@/components/Hero'
 import { Services } from '@/components/Services'
+import { About } from '@/components/About'
 import { Portfolio } from '@/components/Portfolio'
 import { Stats } from '@/components/Stats'
 import { WhyAcrux } from '@/components/WhyAcrux'
@@ -22,6 +23,7 @@ export default function Home() {
         <Navigation />
         <main>
           <Hero />
+          <About />
           <Services />
           <Portfolio />
           <Stats />

@@ -7,8 +7,8 @@
   --color-blue: #0066FF;
   --color-bright: #0099FF;
   --color-cyan: #00CCFF;
-  --color-text: #C8D8E8;
-  --color-muted: #4A6080;
+  --color-text: #D8E8F5;
+  --color-muted: #7090AA;
   --color-border: rgba(0, 102, 255, 0.14);
   --color-border-hover: rgba(0, 153, 255, 0.32);
   --color-glass: rgba(4, 16, 36, 0.8);
@@ -26,14 +26,46 @@ html {
   scroll-behavior: auto;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-size: 17px;
 }
 
 body {
   background-color: var(--color-bg);
   color: var(--color-text);
-  font-family: var(--font-inter), system-ui, sans-serif;
+  font-family: 'General Sans', var(--font-inter), system-ui, sans-serif;
+  font-size: 1rem;
+  line-height: 1.7;
+  letter-spacing: 0.012em;
   overflow-x: hidden;
   cursor: none;
+}
+
+/* ─── Luxury heading defaults ─── */
+h1, h2, h3, h4 {
+  font-family: 'Clash Display', var(--font-space-grotesk), system-ui, sans-serif;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  color: #ffffff;
+}
+
+h1 { font-weight: 700; }
+h2 { font-weight: 700; }
+h3 { font-weight: 600; }
+
+/* ─── Readable paragraph defaults ─── */
+p {
+  line-height: 1.75;
+  color: var(--color-text);
+}
+
+/* ─── Section label utility ─── */
+.label-tag {
+  font-family: 'General Sans', var(--font-inter), system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--color-bright);
 }
 
 /* Custom scrollbar */
@@ -249,6 +281,7 @@ body {
 }
 
 @media (max-width: 768px) {
+  html { font-size: 16px; }
   .section { padding: 4rem 0; }
   body { cursor: auto; }
 }
