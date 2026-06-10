@@ -5,45 +5,45 @@ import { motion, useScroll, useTransform } from 'framer-motion'
 
 const PROJECTS = [
   {
-    id: 'P01',
-    title: 'Velocity Capital',
-    type: 'FinTech · SaaS Platform',
-    desc: 'A next-generation investment platform with real-time data visualization, custom trading dashboards, and AI-driven insights.',
-    tags: ['Next.js', 'Three.js', 'Real-time Data', 'AI'],
-    result: '+340% Conversion Rate',
+    id: '01',
+    title: 'SaaS Platforms',
+    type: 'Web Applications · Dashboards',
+    desc: 'End-to-end product design and engineering for software companies. From onboarding flows to complex data dashboards — built to retain, convert, and scale.',
+    tags: ['Next.js', 'TypeScript', 'Real-time Data', 'Auth Systems'],
+    result: 'Rapid Iteration · Production-Ready',
     gradient: 'from-[#0a0f2e] via-[#0033aa] to-[#001155]',
     accent: '#0066ff',
     featured: true,
   },
   {
-    id: 'P02',
-    title: 'Aurum Collective',
-    type: 'Luxury E-Commerce',
-    desc: 'Ultra-premium jewelry brand redefining online luxury. Immersive 3D product previews with AR try-on integration.',
-    tags: ['Shopify', '3D Viewer', 'AR', 'Custom Checkout'],
-    result: '+520% Average Order Value',
-    gradient: 'from-[#1a1000] via-[#4a3000] to-[#2a1a00]',
+    id: '02',
+    title: 'Luxury E-Commerce',
+    type: 'Premium Retail · DTC Brands',
+    desc: 'For brands where presentation is everything. We build shopping experiences that match the quality of the product — and significantly lift revenue per visitor.',
+    tags: ['Shopify', '3D Product Views', 'Custom CMS', 'CRO'],
+    result: 'Conversion-Optimized · Brand-First',
+    gradient: 'from-[#1a1000] via-[#3a2200] to-[#2a1a00]',
     accent: '#cc8800',
     featured: false,
   },
   {
-    id: 'P03',
-    title: 'Apex Law Group',
-    type: 'Professional Services',
-    desc: 'Law firm that needed to command authority. Built a digital presence that positions them as the undisputed premium choice.',
-    tags: ['Brand Identity', 'Next.js', 'SEO', 'CRO'],
-    result: '+280% Qualified Leads',
+    id: '03',
+    title: 'Brand Identities',
+    type: 'Visual Identity · Design Systems',
+    desc: 'Complete brand systems from concept to launch. We craft identities that establish authority in competitive markets and scale across every touchpoint.',
+    tags: ['Brand Strategy', 'Design System', 'Typography', 'Motion'],
+    result: 'Timeless · Scalable · Ownable',
     gradient: 'from-[#050d1a] via-[#0a1f35] to-[#051020]',
     accent: '#4488ff',
     featured: false,
   },
   {
-    id: 'P04',
-    title: 'NovaBuild',
-    type: 'Construction · Real Estate',
-    desc: 'Luxury real estate developer needed a site that matched $5M+ homes. We delivered the digital equivalent.',
-    tags: ['Next.js', 'GSAP', 'Framer Motion', 'Maps'],
-    result: '+195% Property Inquiries',
+    id: '04',
+    title: 'Marketing Sites',
+    type: 'Landing Pages · Lead Generation',
+    desc: 'High-converting marketing sites built for growth. Engineered with conversion psychology, scroll-triggered storytelling, and sub-2s load times.',
+    tags: ['Next.js', 'GSAP', 'Framer Motion', 'SEO'],
+    result: 'Speed-Optimized · SEO-Ready',
     gradient: 'from-[#0d0d0d] via-[#1a1f2e] to-[#0a0e1a]',
     accent: '#00aaff',
     featured: false,
@@ -182,7 +182,7 @@ export function Portfolio() {
             className="flex items-center justify-center gap-3 mb-5"
           >
             <div className="w-8 h-px bg-gradient-to-r from-transparent to-[#0066ff]" />
-            <span className="text-[#0099ff] text-[10px] font-semibold tracking-[0.4em] uppercase">Selected Work</span>
+            <span className="text-[#0099ff] text-[10px] font-semibold tracking-[0.4em] uppercase">Our Capabilities</span>
             <div className="w-8 h-px bg-gradient-to-l from-transparent to-[#0066ff]" />
           </motion.div>
 
@@ -194,7 +194,7 @@ export function Portfolio() {
             className="font-heading font-bold text-gradient leading-tight"
             style={{ fontSize: 'clamp(2.4rem, 5vw, 4.5rem)' }}
           >
-            Proof of Capability.
+            What We Build.
           </motion.h2>
           <motion.p
             initial={{ opacity: 0 }}
@@ -203,7 +203,7 @@ export function Portfolio() {
             transition={{ delay: 0.2, duration: 0.8 }}
             className="text-[var(--color-muted)] text-base mt-4 max-w-xl mx-auto"
           >
-            Every project is a competitive advantage delivered. Here&apos;s how we&apos;ve transformed businesses.
+            From SaaS platforms to luxury brands — every engagement is engineered to outperform.
           </motion.p>
         </div>
 
