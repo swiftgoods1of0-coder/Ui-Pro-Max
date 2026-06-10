@@ -57,12 +57,12 @@ export function Hero() {
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden" id="hero">
 
-      {/* Gradient overlay — readability over the WorldCanvas 3D scene behind */}
+      {/* Gradient overlay — centre scrim + edge vignette */}
       <div className="absolute inset-0 z-[2] pointer-events-none"
         style={{
           background: `
-            radial-gradient(ellipse 80% 70% at 50% 50%, transparent 0%, rgba(2,5,8,0.35) 100%),
-            linear-gradient(to bottom, rgba(2,5,8,0.2) 0%, transparent 25%, transparent 65%, rgba(2,5,8,0.75) 100%)
+            radial-gradient(ellipse 65% 55% at 50% 48%, rgba(2,5,8,0.78) 0%, rgba(2,5,8,0.3) 55%, transparent 100%),
+            linear-gradient(to bottom, rgba(2,5,8,0.35) 0%, transparent 18%, transparent 68%, rgba(2,5,8,0.9) 100%)
           `,
         }}
       />
@@ -114,10 +114,11 @@ export function Hero() {
 
         {/* Subtext */}
         <motion.p
-          initial={{ opacity: 0, y: 28 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 1.8, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-5 sm:mt-7 text-[var(--color-muted)] text-base sm:text-lg md:text-xl max-w-sm sm:max-w-lg leading-relaxed font-body px-2"
+          className="mt-7 sm:mt-9 font-body text-sm sm:text-[0.95rem] leading-[1.95] tracking-[0.025em] max-w-[34ch]"
+          style={{ color: 'rgba(210,228,245,0.72)', textShadow: '0 2px 24px rgba(0,0,0,0.85)' }}
         >
           We craft digital experiences so exceptional, your competition
           won&apos;t know what hit them.
@@ -125,48 +126,56 @@ export function Hero() {
 
         {/* CTAs */}
         <motion.div
-          initial={{ opacity: 0, y: 28 }}
+          initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 2.1, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-center gap-3 sm:gap-4 w-full sm:w-auto"
+          transition={{ duration: 1, delay: 2.05, ease: [0.22, 1, 0.36, 1] }}
+          className="mt-9 sm:mt-11 flex items-center justify-center gap-5 sm:gap-8"
         >
           <motion.a
             href="#contact"
-            className="btn-primary w-full sm:w-auto px-8 sm:px-9 py-3.5 sm:py-4 rounded-full font-semibold text-sm sm:text-base tracking-wide relative overflow-hidden group text-center"
+            className="btn-primary px-7 sm:px-8 py-2.5 sm:py-3 rounded-full text-[0.8rem] sm:text-sm font-semibold tracking-[0.1em] relative overflow-hidden group"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.96 }}
-            data-magnetic
           >
-            <span className="relative z-10">Start Your Project</span>
+            <span className="relative z-10">Start Project</span>
             <span className="absolute inset-0 bg-white/10 scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300" />
           </motion.a>
+
           <motion.a
             href="#portfolio"
-            className="btn-ghost w-full sm:w-auto px-8 sm:px-9 py-3.5 sm:py-4 rounded-full font-semibold text-sm sm:text-base tracking-wide text-center"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.96 }}
-            data-magnetic
+            className="flex items-center gap-2 text-[0.8rem] sm:text-sm font-medium tracking-[0.1em] transition-all duration-300 group"
+            style={{ color: 'rgba(180,210,235,0.6)' }}
+            whileHover={{ color: 'rgba(255,255,255,1)' } as never}
           >
-            View Our Work
+            <span>See Work</span>
+            <span className="transition-transform duration-300 group-hover:translate-x-1 text-xs">→</span>
           </motion.a>
         </motion.div>
 
-        {/* Social proof row */}
+        {/* Stats — single elegant row */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 2.5 }}
-          className="mt-12 sm:mt-16 flex flex-wrap items-center justify-center gap-6 sm:gap-10 md:gap-14"
+          transition={{ duration: 1, delay: 2.45 }}
+          className="mt-14 sm:mt-16 flex items-center justify-center gap-0"
         >
           {[
-            { val: '100+', label: 'Projects Delivered'    },
-            { val: '98%',  label: 'Client Satisfaction'   },
-            { val: '50+',  label: 'Happy Clients'         },
-            { val: '4.9★', label: 'Average Client Rating' },
-          ].map(({ val, label }) => (
-            <div key={label} className="flex flex-col items-center min-w-[70px]">
-              <span className="font-heading font-bold text-xl sm:text-2xl text-gradient-blue">{val}</span>
-              <span className="text-[var(--color-muted)] text-[10px] sm:text-xs tracking-wider mt-0.5 text-center">{label}</span>
+            { val: '100+', label: 'Projects' },
+            { val: '98%',  label: 'Satisfaction' },
+            { val: '50+',  label: 'Clients' },
+            { val: '4.9★', label: 'Rating' },
+          ].map(({ val, label }, i, arr) => (
+            <div key={label} className="flex items-center">
+              <div className="flex flex-col items-center px-5 sm:px-7">
+                <span className="font-heading font-bold text-base sm:text-lg text-white tracking-tight">{val}</span>
+                <span className="text-[9px] sm:text-[10px] tracking-[0.2em] uppercase mt-0.5"
+                  style={{ color: 'rgba(120,155,185,0.7)' }}>
+                  {label}
+                </span>
+              </div>
+              {i < arr.length - 1 && (
+                <div className="w-px h-6 self-center" style={{ background: 'rgba(0,102,255,0.2)' }} />
+              )}
             </div>
           ))}
         </motion.div>
