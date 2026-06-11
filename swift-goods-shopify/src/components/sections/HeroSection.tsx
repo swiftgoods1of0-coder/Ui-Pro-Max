@@ -15,6 +15,7 @@ export default function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null)
   const labelRef = useRef<HTMLDivElement>(null)
   const headingRef = useRef<HTMLHeadingElement>(null)
+  const headingContainerRef = useRef<HTMLDivElement>(null)
   const subtitleRef = useRef<HTMLParagraphElement>(null)
   const ctasRef = useRef<HTMLDivElement>(null)
   const scrollIndicatorRef = useRef<HTMLDivElement>(null)
@@ -153,21 +154,55 @@ export default function HeroSection() {
             />
           </div>
 
-          {/* Main heading */}
-          <h1
-            ref={headingRef}
-            className="opacity-0 mb-8 leading-none tracking-widest uppercase select-none"
+          {/* Video-through-text headline */}
+          <div
+            ref={headingContainerRef}
             style={{
-              fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)',
-              fontSize: 'clamp(3.5rem, 12vw, 10rem)',
-              background: 'linear-gradient(135deg, #c9a84c, #e6c870, #c8aa8a)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
+              position: 'relative',
+              display: 'inline-block',
+              isolation: 'isolate',
+              background: '#000000',
+              marginBottom: '2rem',
             }}
           >
-            COMFORT IS LUXURY.
-          </h1>
+            <h1
+              ref={headingRef}
+              className="opacity-0 leading-none tracking-widest uppercase select-none"
+              style={{
+                fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)',
+                fontSize: 'clamp(3.5rem, 12vw, 10rem)',
+                color: '#ffffff',
+                position: 'relative',
+                zIndex: 1,
+                WebkitBackgroundClip: 'unset',
+                WebkitTextFillColor: 'unset',
+                backgroundClip: 'unset',
+              }}
+            >
+              COMFORT IS LUXURY.
+            </h1>
+            {/* Campaign video bleeds through the white letterforms via multiply blend */}
+            <video
+              autoPlay
+              muted
+              loop
+              playsInline
+              aria-hidden="true"
+              style={{
+                position: 'absolute',
+                inset: 0,
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                mixBlendMode: 'multiply',
+                zIndex: 2,
+                opacity: 1,
+              }}
+            >
+              <source src="/brand/sg-hero-video.mov" type="video/quicktime" />
+              <source src="/brand/sg-hero-video.mp4" type="video/mp4" />
+            </video>
+          </div>
 
           {/* Subtitle */}
           <p
