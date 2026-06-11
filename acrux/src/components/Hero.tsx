@@ -1,7 +1,8 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
+import { ShowreelModal } from './ShowreelModal'
 
 const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ·∙◦○●'
 
@@ -54,9 +55,13 @@ const itemVariant = {
 }
 
 export function Hero() {
+  const [showreel, setShowreel] = useState(false)
+
   return (
     <section className="relative flex flex-col items-center justify-center overflow-hidden" id="hero"
       style={{ minHeight: '100svh' }}>
+
+      <ShowreelModal open={showreel} onClose={() => setShowreel(false)} />
 
       {/* Dot-grid texture */}
       <div className="absolute inset-0 z-[1] pointer-events-none dot-grid opacity-[0.028]" />
@@ -84,6 +89,22 @@ export function Hero() {
             The North Star For Modern Business
           </span>
           <div className="w-6 sm:w-8 h-px bg-gradient-to-l from-transparent to-[#0066ff]" />
+        </motion.div>
+
+        {/* Currently available badge */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          className="flex items-center gap-2 mb-6 sm:mb-8 px-4 py-2 rounded-full border border-[rgba(34,197,94,0.2)] bg-[rgba(34,197,94,0.05)]"
+        >
+          <span className="relative flex h-1.5 w-1.5 shrink-0">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-70" />
+            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-400" />
+          </span>
+          <span className="text-emerald-400 text-[10px] font-semibold tracking-[0.22em] uppercase">
+            Available · Q3 2025 · 2 Spots Remaining
+          </span>
         </motion.div>
 
         {/* Main headline */}
@@ -154,6 +175,20 @@ export function Hero() {
             <span>See Work</span>
             <span className="transition-transform duration-300 group-hover:translate-x-1 text-xs">→</span>
           </motion.a>
+
+          {/* Showreel button */}
+          <motion.button
+            onClick={() => setShowreel(true)}
+            className="flex items-center gap-2 text-[0.8rem] sm:text-sm font-medium tracking-[0.1em] transition-all duration-300 group"
+            style={{ color: 'rgba(195,225,252,0.82)' }}
+            whileHover={{ color: 'rgba(255,255,255,1)' } as never}
+            data-cursor-label="PLAY"
+          >
+            <span className="w-6 h-6 rounded-full border border-current flex items-center justify-center transition-all duration-300 group-hover:bg-white/10">
+              <span className="text-[8px] ml-0.5">▶</span>
+            </span>
+            <span>Play Showreel</span>
+          </motion.button>
         </motion.div>
 
         {/* Stats — single elegant row */}

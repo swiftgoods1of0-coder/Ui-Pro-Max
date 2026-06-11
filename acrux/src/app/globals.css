@@ -336,6 +336,51 @@ p {
   filter: drop-shadow(0 0 32px rgba(0, 140, 255, 0.5)) drop-shadow(0 2px 18px rgba(0, 0, 0, 0.98));
 }
 
+/* ─── Scroll velocity blur — applied to headings with .vel-blur ─── */
+:root { --scroll-blur: 0px; }
+.vel-blur { filter: blur(var(--scroll-blur)); will-change: filter; }
+
+/* ─── Floating label inputs ─── */
+.float-field { position: relative; }
+.float-field input,
+.float-field textarea {
+  padding-top: 1.35rem;
+  padding-bottom: 0.6rem;
+}
+.float-field label {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  pointer-events: none;
+  transition: all 0.22s cubic-bezier(0.22,1,0.36,1);
+}
+.float-field textarea ~ label { top: 1.1rem; transform: none; }
+.float-field input:focus ~ label,
+.float-field input:not(:placeholder-shown) ~ label,
+.float-field textarea:focus ~ label,
+.float-field textarea:not(:placeholder-shown) ~ label {
+  top: 0.55rem;
+  transform: none;
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  color: var(--color-bright);
+}
+.float-field input:focus,
+.float-field textarea:focus {
+  border-color: rgba(0,153,255,0.55) !important;
+  box-shadow: 0 0 0 3px rgba(0,102,255,0.08);
+}
+.float-field input.valid,
+.float-field textarea.valid {
+  border-color: rgba(34,197,94,0.4) !important;
+}
+
 /* ─── Dot-grid background ─── */
 .dot-grid {
   background-image: radial-gradient(circle, rgba(100, 160, 255, 0.18) 1px, transparent 1px);

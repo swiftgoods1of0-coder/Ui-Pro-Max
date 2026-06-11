@@ -1,8 +1,8 @@
 'use client'
 
-import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { PROJECTS } from '@/lib/projects'
+import { useTransitionNavigate } from '@/components/PageTransition'
 
 type Project = typeof PROJECTS[number]
 
@@ -13,6 +13,8 @@ export function CaseStudyClient({
   project: Project
   nextProject: Project
 }) {
+  const navigate = useTransitionNavigate()
+
   return (
     <main
       className="min-h-screen"
@@ -22,13 +24,13 @@ export function CaseStudyClient({
       <div className="fixed top-0 left-0 right-0 z-50 border-b border-[rgba(0,102,255,0.08)]"
         style={{ background: 'rgba(2,5,8,0.88)', backdropFilter: 'blur(20px)' }}>
         <div className="max-w-7xl mx-auto px-6 sm:px-10 h-14 flex items-center justify-between">
-          <Link
-            href="/"
+          <button
+            onClick={() => navigate('/')}
             className="flex items-center gap-2 text-[var(--color-muted)] hover:text-white transition-colors text-sm font-medium group"
           >
             <span className="group-hover:-translate-x-1 transition-transform inline-block">←</span>
             <span>ACRUX</span>
-          </Link>
+          </button>
           <span className="font-mono text-[10px] tracking-[0.3em] text-[var(--color-muted)] uppercase">
             {project.id} / Case Study
           </span>
@@ -203,9 +205,9 @@ export function CaseStudyClient({
           <div className="text-[10px] font-semibold tracking-[0.4em] uppercase text-[var(--color-muted)] mb-4">
             Next Project
           </div>
-          <Link
-            href={`/work/${nextProject.slug}`}
-            className="group flex items-end justify-between gap-8"
+          <button
+            onClick={() => navigate(`/work/${nextProject.slug}`)}
+            className="group flex items-end justify-between gap-8 w-full text-left"
           >
             <h2
               className="font-heading font-bold text-white leading-none group-hover:opacity-80 transition-opacity"
@@ -219,19 +221,19 @@ export function CaseStudyClient({
             >
               →
             </span>
-          </Link>
+          </button>
         </div>
       </section>
 
       {/* ── Footer strip ── */}
       <div className="border-t border-[rgba(0,102,255,0.07)] py-5">
         <div className="max-w-5xl mx-auto px-6 sm:px-10 flex items-center justify-between">
-          <Link href="/" className="text-[var(--color-muted)] text-xs hover:text-white transition-colors">
+          <button onClick={() => navigate('/')} className="text-[var(--color-muted)] text-xs hover:text-white transition-colors">
             ← Back to ACRUX
-          </Link>
-          <Link href="/#contact" className="btn-primary text-xs px-5 py-2 rounded-full font-semibold">
+          </button>
+          <button onClick={() => navigate('/#contact')} className="btn-primary text-xs px-5 py-2 rounded-full font-semibold">
             Start a Project
-          </Link>
+          </button>
         </div>
       </div>
     </main>

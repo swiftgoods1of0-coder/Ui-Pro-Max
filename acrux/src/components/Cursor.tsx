@@ -7,10 +7,17 @@ type CursorVariant = 'default' | 'pointer' | 'view'
 
 interface TrailPoint { x: number; y: number; t: number }
 
+// Reads [data-cursor-label] from the hovered element chain
+function getCursorLabel(target: Element): string {
+  const el = target.closest<HTMLElement>('[data-cursor-label]')
+  return el?.dataset.cursorLabel ?? ''
+}
+
 export function Cursor() {
-  const [visible,  setVisible]  = useState(false)
-  const [variant,  setVariant]  = useState<CursorVariant>('default')
-  const [clicking, setClicking] = useState(false)
+  const [visible,      setVisible]      = useState(false)
+  const [variant,      setVariant]      = useState<CursorVariant>('default')
+  const [clicking,     setClicking]     = useState(false)
+  const [cursorLabel,  setCursorLabel]  = useState('')
 
   const rawX = useMotionValue(0)
   const rawY = useMotionValue(0)
@@ -76,6 +83,7 @@ export function Cursor() {
       const isView    = !!target.closest('[data-cursor-view]')
       const isPointer = !!target.closest('a, button, [data-magnetic], [role="button"]')
       setVariant(isView ? 'view' : isPointer ? 'pointer' : 'default')
+      setCursorLabel(getCursorLabel(target))
 
       if (activeMagnetic.current && activeMagnetic.current !== magnetEl) {
         activeMagnetic.current.style.transform  = 'translate(0px,0px)'
@@ -172,6 +180,32 @@ export function Cursor() {
         transition={{ duration: 0.15 }}
       >
         <div className="w-[5px] h-[5px] rounded-full bg-white" />
+      </motion.div>
+
+      {/* ── Context label pill ── */}
+      <motion.div
+        className="fixed top-0 left-0 pointer-events-none"
+        style={{ x: ringX, y: ringY, translateX: 'calc(-50% + 22px)', translateY: 'calc(-50% - 22px)', zIndex: 9999 }}
+        animate={{ opacity: visible && !!cursorLabel ? 1 : 0, scale: !!cursorLabel ? 1 : 0.7 }}
+        transition={{ duration: 0.18 }}
+      >
+        <span
+          style={{
+            display: 'inline-block',
+            background: '#ffffff',
+            color: '#020508',
+            fontSize: 8,
+            fontWeight: 700,
+            letterSpacing: '0.16em',
+            textTransform: 'uppercase',
+            fontFamily: 'sans-serif',
+            padding: '3px 7px',
+            borderRadius: 20,
+            whiteSpace: 'nowrap',
+          }}
+        >
+          {cursorLabel}
+        </span>
       </motion.div>
     </>
   )

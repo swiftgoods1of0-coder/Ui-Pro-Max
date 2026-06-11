@@ -5,7 +5,10 @@ import { motion } from 'framer-motion'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { Send, CheckCircle } from 'lucide-react'
+import { Send, CheckCircle, Calendar } from 'lucide-react'
+
+// Swap this with your real Calendly link
+const CALENDLY_URL = 'https://calendly.com/acruxwebsitebuilding'
 
 const schema = z.object({
   name:    z.string().min(2, 'Name must be at least 2 characters'),
@@ -26,13 +29,31 @@ const BUDGETS = [
 ]
 
 const INFO = [
-  { label: 'Response Time', value: 'Within 24 hours' },
+  { label: 'Response Time', value: 'Within 24 hours'             },
   { label: 'Availability',  value: 'Currently accepting projects' },
-  { label: 'Base Location', value: 'Global · Remote-First' },
+  { label: 'Base Location', value: 'Global · Remote-First'       },
 ]
 
+// Floating-label field wrapper
+function FloatField({
+  label, error, children,
+}: { label: string; error?: string; children: React.ReactNode }) {
+  return (
+    <div>
+      <div className="float-field">
+        {children}
+        <label>{label}</label>
+      </div>
+      {error && <p className="text-red-400 text-xs mt-1">{error}</p>}
+    </div>
+  )
+}
+
+const inputCls =
+  'w-full bg-[rgba(0,0,0,0.3)] border border-[var(--color-border)] rounded-lg px-4 text-white text-sm placeholder-transparent focus:outline-none transition-all duration-200'
+
 export function Contact() {
-  const [submitted, setSubmitted] = useState(false)
+  const [submitted,   setSubmitted]   = useState(false)
   const [submitError, setSubmitError] = useState('')
 
   const {
@@ -44,6 +65,9 @@ export function Contact() {
   } = useForm<FormData>({ resolver: zodResolver(schema) })
 
   const selectedBudget = watch('budget')
+  const watchName      = watch('name')
+  const watchEmail     = watch('email')
+  const watchMessage   = watch('message')
 
   const onSubmit = async (data: FormData) => {
     setSubmitError('')
@@ -68,18 +92,12 @@ export function Contact() {
         <div className="divider absolute top-0 left-0 right-0" />
       </div>
 
-      {/* Orbit particles (CSS) */}
+      {/* Orbit particles */}
       {[80, 120, 160].map((r, i) => (
         <div
           key={i}
           className="absolute top-1/2 left-1/2 rounded-full border border-[rgba(0,102,255,0.08)] pointer-events-none"
-          style={{
-            width: r * 2,
-            height: r * 2,
-            marginLeft: -r,
-            marginTop: -r,
-            animation: `spin ${20 + i * 10}s linear infinite ${i % 2 ? 'reverse' : ''}`,
-          }}
+          style={{ width: r * 2, height: r * 2, marginLeft: -r, marginTop: -r, animation: `spin ${20 + i * 10}s linear infinite ${i % 2 ? 'reverse' : ''}` }}
         />
       ))}
 
@@ -96,18 +114,16 @@ export function Contact() {
             <span className="text-[#0099ff] text-[10px] font-semibold tracking-[0.4em] uppercase">Get In Touch</span>
             <div className="w-8 h-px bg-gradient-to-l from-transparent to-[#0066ff]" />
           </motion.div>
-
           <motion.h2
             initial={{ opacity: 0, y: 32 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-            className="font-heading font-bold text-gradient leading-tight"
+            className="font-heading font-bold text-gradient leading-tight vel-blur"
             style={{ fontSize: 'clamp(2.4rem, 5vw, 4.5rem)' }}
           >
             Let&apos;s Build Something<br />Extraordinary.
           </motion.h2>
-
           <motion.p
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -120,7 +136,7 @@ export function Contact() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-8">
-          {/* Left panel — info */}
+          {/* Left panel — info + book a call */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -135,30 +151,29 @@ export function Contact() {
               </div>
             ))}
 
-            {/* Star orb decoration */}
-            <div className="glass-card rounded-xl p-6 flex flex-col items-center gap-4 mt-2">
-              <div className="relative">
-                <div className="w-20 h-20 rounded-full flex items-center justify-center"
-                  style={{ background: 'radial-gradient(circle, rgba(0,102,255,0.2) 0%, transparent 70%)', border: '1px solid rgba(0,102,255,0.15)' }}>
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#4488ff] to-[#0033cc] animate-pulse"
-                    style={{ boxShadow: '0 0 30px rgba(0,102,255,0.6)' }} />
-                </div>
-                {[60, 90, 120].map((r, i) => (
-                  <div
-                    key={i}
-                    className="absolute top-1/2 left-1/2 rounded-full border border-[rgba(0,102,255,0.12)] -translate-x-1/2 -translate-y-1/2"
-                    style={{
-                      width: r,
-                      height: r,
-                      animation: `spin ${15 + i * 8}s linear infinite ${i % 2 ? 'reverse' : ''}`,
-                    }}
-                  />
-                ))}
+            {/* Book a call card */}
+            <a
+              href={CALENDLY_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="glass-card rounded-xl p-5 flex items-start gap-4 group hover:border-[rgba(0,102,255,0.35)] transition-colors duration-300 block"
+              data-cursor-label="OPEN"
+            >
+              <div className="w-10 h-10 rounded-xl bg-[rgba(0,102,255,0.15)] border border-[rgba(0,102,255,0.2)] flex items-center justify-center shrink-0 group-hover:bg-[rgba(0,102,255,0.25)] transition-colors">
+                <Calendar size={16} className="text-[#0099ff]" />
               </div>
-              <div className="text-center">
-                <a href="mailto:acruxwebsitebuilding@gmail.com" className="text-white text-sm font-semibold hover:text-[#4488ff] transition-colors block mb-1">acruxwebsitebuilding@gmail.com</a>
-                <div className="text-[var(--color-muted)] text-xs">Or just fill in the form →</div>
+              <div>
+                <div className="text-white text-sm font-semibold mb-1 group-hover:text-[#0099ff] transition-colors">Book a 20-min Intro Call</div>
+                <div className="text-[var(--color-muted)] text-xs leading-relaxed">Prefer to talk first? Pick a time that works — no pressure, no pitch.</div>
               </div>
+            </a>
+
+            {/* Email */}
+            <div className="glass-card rounded-xl p-5 text-center">
+              <a href="mailto:acruxwebsitebuilding@gmail.com" className="text-white text-sm font-semibold hover:text-[#4488ff] transition-colors block mb-1 break-all">
+                acruxwebsitebuilding@gmail.com
+              </a>
+              <div className="text-[var(--color-muted)] text-xs">Or just fill in the form →</div>
             </div>
           </motion.div>
 
@@ -184,56 +199,39 @@ export function Contact() {
                 </p>
               </div>
             ) : (
-              <form
-                onSubmit={handleSubmit(onSubmit)}
-                className="glass-card rounded-2xl p-8 space-y-5"
-              >
+              <form onSubmit={handleSubmit(onSubmit)} className="glass-card rounded-2xl p-8 space-y-5">
                 {/* Row 1 */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-xs font-medium tracking-wider text-[var(--color-muted)] uppercase mb-2">
-                      Name *
-                    </label>
+                  <FloatField label="Name *" error={errors.name?.message}>
                     <input
                       {...register('name')}
-                      placeholder="Alex Johnson"
-                      className="w-full bg-[rgba(0,0,0,0.3)] border border-[var(--color-border)] rounded-lg px-4 py-3 text-white text-sm placeholder:text-[var(--color-muted)] focus:outline-none focus:border-[rgba(0,102,255,0.5)] transition-colors"
+                      placeholder=" "
+                      className={`${inputCls} py-3 ${watchName && !errors.name ? 'valid' : ''}`}
                     />
-                    {errors.name && <p className="text-red-400 text-xs mt-1">{errors.name.message}</p>}
-                  </div>
-                  <div>
-                    <label className="block text-xs font-medium tracking-wider text-[var(--color-muted)] uppercase mb-2">
-                      Email *
-                    </label>
+                  </FloatField>
+                  <FloatField label="Email *" error={errors.email?.message}>
                     <input
                       {...register('email')}
                       type="email"
-                      placeholder="alex@company.com"
-                      className="w-full bg-[rgba(0,0,0,0.3)] border border-[var(--color-border)] rounded-lg px-4 py-3 text-white text-sm placeholder:text-[var(--color-muted)] focus:outline-none focus:border-[rgba(0,102,255,0.5)] transition-colors"
+                      placeholder=" "
+                      className={`${inputCls} py-3 ${watchEmail && !errors.email ? 'valid' : ''}`}
                     />
-                    {errors.email && <p className="text-red-400 text-xs mt-1">{errors.email.message}</p>}
-                  </div>
+                  </FloatField>
                 </div>
 
-                {/* Company */}
-                <div>
-                  <label className="block text-xs font-medium tracking-wider text-[var(--color-muted)] uppercase mb-2">
-                    Company
-                  </label>
+                <FloatField label="Company">
                   <input
                     {...register('company')}
-                    placeholder="Your Company Name"
-                    className="w-full bg-[rgba(0,0,0,0.3)] border border-[var(--color-border)] rounded-lg px-4 py-3 text-white text-sm placeholder:text-[var(--color-muted)] focus:outline-none focus:border-[rgba(0,102,255,0.5)] transition-colors"
+                    placeholder=" "
+                    className={`${inputCls} py-3`}
                   />
-                </div>
+                </FloatField>
 
                 {/* Budget */}
                 <div>
-                  <label className="block text-xs font-medium tracking-wider text-[var(--color-muted)] uppercase mb-2">
-                    Budget Range *
-                  </label>
+                  <div className="text-[10px] font-medium tracking-[0.12em] uppercase text-[var(--color-muted)] mb-3">Budget Range *</div>
                   <div className="flex flex-wrap gap-2">
-                    {BUDGETS.map((b) => (
+                    {BUDGETS.map(b => (
                       <button
                         key={b}
                         type="button"
@@ -251,19 +249,14 @@ export function Contact() {
                   {errors.budget && <p className="text-red-400 text-xs mt-1">{errors.budget.message}</p>}
                 </div>
 
-                {/* Message */}
-                <div>
-                  <label className="block text-xs font-medium tracking-wider text-[var(--color-muted)] uppercase mb-2">
-                    Tell Us About Your Project *
-                  </label>
+                <FloatField label="Tell Us About Your Project *" error={errors.message?.message}>
                   <textarea
                     {...register('message')}
                     rows={4}
-                    placeholder="We're looking to build a premium website that positions us as the leading provider in our space..."
-                    className="w-full bg-[rgba(0,0,0,0.3)] border border-[var(--color-border)] rounded-lg px-4 py-3 text-white text-sm placeholder:text-[var(--color-muted)] focus:outline-none focus:border-[rgba(0,102,255,0.5)] transition-colors resize-none"
+                    placeholder=" "
+                    className={`${inputCls} pt-6 pb-3 resize-none ${watchMessage && !errors.message ? 'valid' : ''}`}
                   />
-                  {errors.message && <p className="text-red-400 text-xs mt-1">{errors.message.message}</p>}
-                </div>
+                </FloatField>
 
                 {submitError && (
                   <p className="text-red-400 text-sm text-center bg-red-400/10 border border-red-400/20 rounded-lg px-4 py-3">
@@ -281,6 +274,19 @@ export function Contact() {
                   <span className="relative z-10">{isSubmitting ? 'Sending...' : 'Send Project Brief'}</span>
                   {!isSubmitting && <Send size={16} className="relative z-10" />}
                 </motion.button>
+
+                <p className="text-center text-[var(--color-muted)] text-xs">
+                  Or{' '}
+                  <a
+                    href={CALENDLY_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[#0099ff] hover:text-white transition-colors"
+                  >
+                    schedule a 20-min intro call
+                  </a>
+                  {' '}instead
+                </p>
               </form>
             )}
           </motion.div>

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Space_Grotesk, Inter } from 'next/font/google'
+import { PageTransitionProvider } from '@/components/PageTransition'
 import './globals.css'
 
 const spaceGrotesk = Space_Grotesk({
@@ -56,7 +57,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           rel="stylesheet"
         />
       </head>
-      <body className="noise">{children}</body>
+      <body className="noise">
+        <PageTransitionProvider>{children}</PageTransitionProvider>
+      </body>
     </html>
   )
 }

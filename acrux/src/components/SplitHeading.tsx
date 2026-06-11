@@ -25,7 +25,7 @@ export function SplitHeading({
   const words = text.split(' ')
 
   return (
-    <Tag className={className} style={style}>
+    <Tag className={`vel-blur ${className}`} style={style}>
       {words.map((word, i) => (
         <span
           key={i}
