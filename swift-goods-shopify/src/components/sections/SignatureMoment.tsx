@@ -86,15 +86,15 @@ export default function SignatureMoment() {
         }
       )
 
-      // "THIS IS" slides in from left on scroll
+      // "THIS IS" clip-path reveal from left on scroll
       gsap.fromTo(
         thisIsRef.current,
-        { x: -120, opacity: 0 },
+        { clipPath: 'inset(0 100% 0 0)', opacity: 0 },
         {
-          x: 0,
+          clipPath: 'inset(0 0% 0 0)',
           opacity: 1,
-          duration: 1.1,
-          ease: 'power3.out',
+          duration: 1.0,
+          ease: 'power3.inOut',
           scrollTrigger: {
             trigger: sectionRef.current,
             start: 'top 78%',
@@ -103,15 +103,15 @@ export default function SignatureMoment() {
         }
       )
 
-      // "Swift Goods." slides in from right on scroll
+      // "Swift Goods." clip-path reveal from right on scroll
       gsap.fromTo(
         brandNameRef.current,
-        { x: 120, opacity: 0 },
+        { clipPath: 'inset(0 0 0 100%)', opacity: 0 },
         {
-          x: 0,
+          clipPath: 'inset(0 0 0 0%)',
           opacity: 1,
-          duration: 1.1,
-          ease: 'power3.out',
+          duration: 1.0,
+          ease: 'power3.inOut',
           scrollTrigger: {
             trigger: sectionRef.current,
             start: 'top 78%',
@@ -125,9 +125,9 @@ export default function SignatureMoment() {
         const statEls = statsRef.current.querySelectorAll<HTMLElement>('.stat-item')
         gsap.fromTo(
           statEls,
-          { y: 40, opacity: 0 },
+          { clipPath: 'inset(0 0 100% 0)', opacity: 0 },
           {
-            y: 0,
+            clipPath: 'inset(0 0 0% 0)',
             opacity: 1,
             duration: 0.75,
             ease: 'power3.out',
@@ -141,15 +141,15 @@ export default function SignatureMoment() {
         )
       }
 
-      // Blockquote fade up
+      // Blockquote clip-path rise from below
       gsap.fromTo(
         quoteRef.current,
-        { y: 30, opacity: 0 },
+        { clipPath: 'inset(110% 0 0 0)', opacity: 0 },
         {
-          y: 0,
+          clipPath: 'inset(0% 0 0 0)',
           opacity: 1,
           duration: 0.9,
-          ease: 'power3.out',
+          ease: 'power2.out',
           scrollTrigger: {
             trigger: quoteRef.current,
             start: 'top 88%',

@@ -27,33 +27,33 @@ export default function HeroSection() {
 
       tl.fromTo(
         labelRef.current,
-        { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' },
+        { clipPath: 'inset(0 100% 0 0)', opacity: 0 },
+        { clipPath: 'inset(0 0% 0 0)', opacity: 1, duration: 0.8, ease: 'power3.out' },
         0
       )
         .fromTo(
           headingRef.current,
-          { opacity: 0, y: 50 },
-          { opacity: 1, y: 0, duration: 1.0, ease: 'power3.out' },
-          0.3
+          { clipPath: 'inset(0 100% 0 0)', opacity: 0 },
+          { clipPath: 'inset(0 0% 0 0)', opacity: 1, duration: 1.1, ease: 'power3.inOut' },
+          0.25
         )
         .fromTo(
           subtitleRef.current,
-          { opacity: 0, y: 30 },
-          { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' },
-          0.7
+          { clipPath: 'inset(110% 0 0 0)', opacity: 0 },
+          { clipPath: 'inset(0% 0 0 0)', opacity: 1, duration: 0.85, ease: 'power2.out' },
+          0.65
         )
         .fromTo(
           ctasRef.current,
-          { opacity: 0, y: 30 },
-          { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' },
-          1.0
+          { clipPath: 'inset(0 0 100% 0)', opacity: 0 },
+          { clipPath: 'inset(0 0 0% 0)', opacity: 1, duration: 0.7, ease: 'power2.out' },
+          0.95
         )
         .fromTo(
           scrollIndicatorRef.current,
           { opacity: 0 },
           { opacity: 1, duration: 0.6, ease: 'power2.out' },
-          1.4
+          1.35
         )
     }, sectionRef)
 
@@ -77,7 +77,7 @@ export default function HeroSection() {
           loop
           playsInline
           className="absolute inset-0 w-full h-full object-cover"
-          style={{ opacity: 0.18, filter: 'grayscale(30%) contrast(1.1)' }}
+          style={{ opacity: 0.38, filter: 'contrast(1.1)' }}
         >
           <source src="/brand/sg-hero-video.mov" type="video/quicktime" />
         </video>

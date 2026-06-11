@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from 'next'
 import { Cormorant_Garamond, Bebas_Neue, Inter } from 'next/font/google'
 import dynamic from 'next/dynamic'
 import './globals.css'
-import { SmoothScrollProvider } from '@/lib/smooth-scroll'
+import ClientRoot from '@/components/ui/ClientRoot'
 
 // ============================================================
 // FONT CONFIGURATION
@@ -136,9 +136,9 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className={`${fontVariables} antialiased bg-sg-black text-sg-text`}>
-        <SmoothScrollProvider>
+        <ClientRoot>
           {children}
-        </SmoothScrollProvider>
+        </ClientRoot>
         <CustomCursor />
       </body>
     </html>
