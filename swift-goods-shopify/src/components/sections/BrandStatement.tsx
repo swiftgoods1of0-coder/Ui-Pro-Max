@@ -4,27 +4,29 @@ import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
-const BRAND_PILLARS = [
+interface BrandPillar {
+  title: string
+  body: string
+}
+
+const BRAND_PILLARS: BrandPillar[] = [
   {
     title: 'PRECISION',
-    body:
-      'Every stitch, every seam, every silhouette is engineered with obsessive attention to detail. Nothing is accidental. Everything is intentional.',
+    body: 'Every stitch, every seam, every silhouette is engineered with obsessive attention to detail. Nothing is accidental. Everything is intentional.',
   },
   {
     title: 'COMFORT',
-    body:
-      'We believe true luxury lives in how a garment feels in motion. Not just how it photographs — how it moves with you through every hour of your day.',
+    body: 'True luxury lives in how a garment feels in motion — not just how it photographs. We engineer comfort that moves with you through every hour of your day.',
   },
   {
     title: 'PRESENCE',
-    body:
-      'What you wear shapes how you enter a room before you speak. Swift Goods dresses the version of you that commands attention without demanding it.',
+    body: 'What you wear shapes how you enter a room before you speak. Swift Goods dresses the version of you that commands attention without demanding it.',
   },
 ]
 
 export default function BrandStatement() {
   const sectionRef = useRef<HTMLElement>(null)
-  const labelRef = useRef<HTMLSpanElement>(null)
+  const labelRef = useRef<HTMLDivElement>(null)
   const quoteRef = useRef<HTMLDivElement>(null)
   const pillarsRef = useRef<HTMLDivElement>(null)
 
@@ -32,59 +34,59 @@ export default function BrandStatement() {
     gsap.registerPlugin(ScrollTrigger)
 
     const ctx = gsap.context(() => {
-      // Label animation
+      // Label scroll animation
       gsap.fromTo(
         labelRef.current,
-        { opacity: 0, y: 20 },
+        { opacity: 0, y: 24 },
         {
           opacity: 1,
           y: 0,
-          duration: 0.7,
+          duration: 0.8,
           ease: 'power3.out',
           scrollTrigger: {
             trigger: labelRef.current,
-            start: 'top 85%',
+            start: 'top 88%',
             toggleActions: 'play none none none',
           },
         }
       )
 
-      // Quote word-by-word stagger
+      // Quote: split words stagger
       if (quoteRef.current) {
-        const words = quoteRef.current.querySelectorAll('.quote-word')
+        const words = quoteRef.current.querySelectorAll<HTMLElement>('.quote-word')
         gsap.fromTo(
           words,
           { opacity: 0, y: 60 },
           {
             opacity: 1,
             y: 0,
-            duration: 0.7,
+            duration: 0.75,
             ease: 'power3.out',
-            stagger: 0.06,
+            stagger: 0.055,
             scrollTrigger: {
               trigger: quoteRef.current,
-              start: 'top 80%',
+              start: 'top 82%',
               toggleActions: 'play none none none',
             },
           }
         )
       }
 
-      // Pillars stagger animation
+      // Pillars stagger on scroll
       if (pillarsRef.current) {
-        const pillars = pillarsRef.current.querySelectorAll('.pillar-item')
+        const items = pillarsRef.current.querySelectorAll<HTMLElement>('.pillar-item')
         gsap.fromTo(
-          pillars,
+          items,
           { opacity: 0, y: 50 },
           {
             opacity: 1,
             y: 0,
-            duration: 0.8,
+            duration: 0.85,
             ease: 'power3.out',
-            stagger: 0.2,
+            stagger: 0.18,
             scrollTrigger: {
               trigger: pillarsRef.current,
-              start: 'top 80%',
+              start: 'top 82%',
               toggleActions: 'play none none none',
             },
           }
@@ -97,8 +99,7 @@ export default function BrandStatement() {
     }
   }, [])
 
-  const quoteText = "We don't make clothes. We engineer comfort into an art form."
-  const quoteWords = quoteText.split(' ')
+  const quoteWords = "We don't make clothes. We engineer comfort into an art form.".split(' ')
 
   return (
     <section
@@ -107,12 +108,13 @@ export default function BrandStatement() {
       className="relative min-h-screen flex flex-col justify-center overflow-hidden"
       style={{ background: '#0a0a0a' }}
     >
-      {/* Diagonal stripe pattern */}
+      {/* Subtle diagonal stripe pattern */}
       <div
-        className="absolute inset-0 pointer-events-none opacity-[0.025]"
+        className="absolute inset-0 pointer-events-none"
         style={{
+          opacity: 0.022,
           backgroundImage:
-            'repeating-linear-gradient(135deg, rgba(201,168,76,0.8) 0px, rgba(201,168,76,0.8) 1px, transparent 1px, transparent 60px)',
+            'repeating-linear-gradient(135deg, #c9a84c 0px, #c9a84c 1px, transparent 1px, transparent 56px)',
         }}
       />
 
@@ -121,77 +123,95 @@ export default function BrandStatement() {
         className="absolute left-0 top-0 w-px h-full pointer-events-none"
         style={{
           background:
-            'linear-gradient(to bottom, transparent 0%, rgba(201,168,76,0.6) 40%, rgba(201,168,76,0.6) 60%, transparent 100%)',
+            'linear-gradient(to bottom, transparent 0%, rgba(201,168,76,0.65) 35%, rgba(201,168,76,0.65) 65%, transparent 100%)',
         }}
       />
 
-      {/* Right subtle line */}
+      {/* Right subtle accent line */}
       <div
         className="absolute right-0 top-0 w-px h-full pointer-events-none"
         style={{
           background:
-            'linear-gradient(to bottom, transparent 0%, rgba(201,168,76,0.15) 50%, transparent 100%)',
+            'linear-gradient(to bottom, transparent 0%, rgba(201,168,76,0.12) 50%, transparent 100%)',
         }}
       />
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-16 py-32 w-full">
-        {/* Label */}
-        <div className="mb-16">
-          <span
-            ref={labelRef}
-            className="inline-flex items-center gap-4 text-xs tracking-[0.4em] uppercase opacity-0"
-            style={{ color: '#c9a84c', fontFamily: 'var(--font-body, Inter, sans-serif)' }}
+
+        {/* "THE PHILOSOPHY" label */}
+        <div className="mb-16" ref={labelRef}>
+          <div
+            className="opacity-0 inline-flex items-center gap-4"
+            style={{ opacity: 0 }}
           >
             <span
-              className="inline-block w-12 h-px"
+              className="block w-14 h-px"
               style={{ background: 'linear-gradient(to right, #c9a84c, transparent)' }}
             />
-            The Philosophy
-          </span>
+            <span
+              className="text-[11px] tracking-[0.42em] uppercase"
+              style={{
+                color: '#c9a84c',
+                fontFamily: 'var(--font-body, Inter, sans-serif)',
+                fontWeight: 500,
+              }}
+            >
+              THE PHILOSOPHY
+            </span>
+          </div>
         </div>
 
-        {/* Large Quote */}
-        <div className="mb-24 max-w-5xl" ref={quoteRef}>
+        {/* Large quote */}
+        <div className="mb-28 max-w-5xl" ref={quoteRef}>
           <blockquote
-            className="leading-tight"
             style={{
               fontFamily: 'var(--font-display, "Cormorant Garamond", serif)',
-              fontSize: 'clamp(2rem, 5vw, 4.5rem)',
+              fontSize: 'clamp(1.9rem, 4.8vw, 4.5rem)',
               fontStyle: 'italic',
               color: '#f5f5f5',
-              lineHeight: 1.15,
+              lineHeight: 1.14,
             }}
           >
             {quoteWords.map((word, i) => (
-              <span key={i} className="quote-word inline-block opacity-0" style={{ marginRight: '0.28em' }}>
+              <span
+                key={i}
+                className="quote-word inline-block opacity-0"
+                style={{ marginRight: '0.26em' }}
+              >
                 {word}
               </span>
             ))}
           </blockquote>
           <div
-            className="mt-8 h-px w-24"
+            className="mt-10 h-px w-20"
             style={{ background: 'linear-gradient(to right, #c9a84c, transparent)' }}
           />
         </div>
 
-        {/* Brand Pillars */}
-        <div ref={pillarsRef} className="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-20">
+        {/* Brand pillars — 3 columns */}
+        <div
+          ref={pillarsRef}
+          className="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-20"
+        >
           {BRAND_PILLARS.map((pillar, index) => (
-            <div key={pillar.title} className="pillar-item opacity-0 group">
-              {/* Number */}
+            <div key={pillar.title} className="pillar-item opacity-0 group cursor-default">
+              {/* Index number */}
               <span
-                className="block mb-4 text-xs tracking-[0.3em]"
-                style={{ color: 'rgba(201,168,76,0.4)', fontFamily: 'var(--font-body, Inter, sans-serif)' }}
+                className="block mb-4 text-[11px] tracking-[0.35em]"
+                style={{
+                  color: 'rgba(201,168,76,0.35)',
+                  fontFamily: 'var(--font-body, Inter, sans-serif)',
+                }}
               >
                 0{index + 1}
               </span>
 
-              {/* Pillar Title */}
+              {/* Pillar heading */}
               <h3
-                className="mb-6 leading-none tracking-wider"
+                className="mb-6 leading-none tracking-wide"
                 style={{
                   fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)',
-                  fontSize: 'clamp(2.5rem, 4vw, 4rem)',
+                  fontSize: 'clamp(2.6rem, 4vw, 4.2rem)',
                   background: 'linear-gradient(135deg, #c9a84c, #e6c870, #c8aa8a)',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
@@ -201,20 +221,23 @@ export default function BrandStatement() {
                 {pillar.title}
               </h3>
 
-              {/* Divider */}
+              {/* Expanding divider */}
               <div
-                className="mb-6 h-px w-12 transition-all duration-500 group-hover:w-24"
-                style={{ background: 'linear-gradient(to right, #c9a84c, transparent)' }}
+                className="mb-7 h-px transition-all duration-500 ease-out group-hover:w-20"
+                style={{
+                  width: '3rem',
+                  background: 'linear-gradient(to right, #c9a84c, transparent)',
+                }}
               />
 
-              {/* Body Text */}
+              {/* Body text */}
               <p
                 className="leading-relaxed"
                 style={{
                   fontFamily: 'var(--font-body, Inter, sans-serif)',
                   fontSize: '0.9375rem',
                   color: '#888888',
-                  lineHeight: 1.75,
+                  lineHeight: 1.78,
                 }}
               >
                 {pillar.body}
