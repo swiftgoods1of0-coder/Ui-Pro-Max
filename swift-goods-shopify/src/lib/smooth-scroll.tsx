@@ -8,8 +8,9 @@ import React, {
   useCallback,
   type ReactNode,
 } from 'react'
-import Lenis from 'lenis'
 import gsap from 'gsap'
+// Type-only import — no runtime module evaluation during SSR
+import type Lenis from 'lenis'
 
 // ============================================================
 // LENIS CONTEXT
@@ -43,122 +44,89 @@ const LenisContext = createContext<LenisContextValue>({
 // ============================================================
 export function SmoothScrollProvider({ children }: { children: ReactNode }) {
   const lenisRef = useRef<Lenis | null>(null)
-  const rafRef = useRef<number | null>(null)
+  const rafRef   = useRef<number | null>(null)
 
   useEffect(() => {
-    // Initialize Lenis
-    const lenis = new Lenis({
-      duration: 1.4,
-      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      orientation: 'vertical',
-      gestureOrientation: 'vertical',
-      smoothWheel: true,
-      wheelMultiplier: 1,
-      touchMultiplier: 2,
-      infinite: false,
-    })
+    // Dynamic import keeps Lenis out of the SSR bundle entirely —
+    // Lenis 1.3.x throws when evaluated in a Node.js context.
+    let lenis: Lenis | null = null
+    let mqList: MediaQueryList | null = null
+    let mqHandler: ((e: MediaQueryListEvent) => void) | null = null
+    let gsapTickerFn: ((time: number) => void) | null = null
 
-    lenisRef.current = lenis
+    import('lenis')
+      .then(({ default: LenisClass }) => {
+        lenis = new (LenisClass as unknown as new (opts: Record<string, unknown>) => Lenis)({
+          duration: 1.4,
+          easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+          orientation: 'vertical',
+          gestureOrientation: 'vertical',
+          smoothWheel: true,
+          wheelMultiplier: 1,
+          touchMultiplier: 2,
+          infinite: false,
+        })
 
-    // GSAP ticker integration for synchronized animations
-    gsap.ticker.add((time) => {
-      lenis.raf(time * 1000)
-    })
-    gsap.ticker.lagSmoothing(0)
+        lenisRef.current = lenis
 
-    // RAF loop
-    function raf(time: number) {
-      lenis.raf(time)
-      rafRef.current = requestAnimationFrame(raf)
-    }
+        // GSAP ticker integration — save ref for cleanup
+        gsapTickerFn = (time: number) => lenis?.raf(time * 1000)
+        gsap.ticker.add(gsapTickerFn)
+        gsap.ticker.lagSmoothing(0)
 
-    // We use GSAP ticker as the primary loop, but keep RAF as fallback
-    // Comment the line below if you want pure RAF without GSAP
-    // rafRef.current = requestAnimationFrame(raf)
+        // Accessibility: pause on reduced motion
+        mqList = window.matchMedia('(prefers-reduced-motion: reduce)')
+        if (mqList.matches) lenis.stop()
 
-    // Accessibility: pause on reduced motion
-    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
-    if (mediaQuery.matches) {
-      lenis.stop()
-    }
+        mqHandler = (e: MediaQueryListEvent) => {
+          if (e.matches) lenis?.stop()
+          else           lenis?.start()
+        }
+        mqList.addEventListener('change', mqHandler)
 
-    const handleMediaChange = (e: MediaQueryListEvent) => {
-      if (e.matches) {
-        lenis.stop()
-      } else {
-        lenis.start()
-      }
-    }
-
-    mediaQuery.addEventListener('change', handleMediaChange)
-
-    // Expose lenis on window for debugging
-    if (process.env.NODE_ENV === 'development') {
-      ;(window as unknown as Record<string, unknown>).lenis = lenis
-    }
+        if (process.env.NODE_ENV === 'development') {
+          ;(window as unknown as Record<string, unknown>).lenis = lenis
+        }
+      })
+      .catch((err) => {
+        console.warn('[Swift Goods] Lenis failed to initialise:', err)
+      })
 
     return () => {
-      // Cleanup
-      if (rafRef.current) {
-        cancelAnimationFrame(rafRef.current)
-      }
-      gsap.ticker.remove((time) => {
-        lenis.raf(time * 1000)
-      })
-      mediaQuery.removeEventListener('change', handleMediaChange)
-      lenis.destroy()
+      if (rafRef.current) cancelAnimationFrame(rafRef.current)
+      if (gsapTickerFn)   gsap.ticker.remove(gsapTickerFn)
+      if (mqList && mqHandler) mqList.removeEventListener('change', mqHandler)
+      lenisRef.current?.destroy()
       lenisRef.current = null
     }
   }, [])
 
   const scrollTo = useCallback(
-    (
-      target: string | number | HTMLElement,
-      options?: LenisScrollToOptions
-    ) => {
-      if (lenisRef.current) {
-        lenisRef.current.scrollTo(target as string | number | HTMLElement, options)
-      }
+    (target: string | number | HTMLElement, options?: LenisScrollToOptions) => {
+      lenisRef.current?.scrollTo(target as string | number | HTMLElement, options)
     },
     []
   )
 
-  const stop = useCallback(() => {
-    lenisRef.current?.stop()
-  }, [])
-
-  const start = useCallback(() => {
-    lenisRef.current?.start()
-  }, [])
+  const stop  = useCallback(() => { lenisRef.current?.stop()  }, [])
+  const start = useCallback(() => { lenisRef.current?.start() }, [])
 
   return (
-    <LenisContext.Provider
-      value={{
-        lenis: lenisRef.current,
-        scrollTo,
-        stop,
-        start,
-      }}
-    >
+    <LenisContext.Provider value={{ lenis: lenisRef.current, scrollTo, stop, start }}>
       {children}
     </LenisContext.Provider>
   )
 }
 
 // ============================================================
-// USE LENIS HOOK
+// HOOKS
 // ============================================================
 export function useLenis() {
   const context = useContext(LenisContext)
-  if (!context) {
-    throw new Error('useLenis must be used within a SmoothScrollProvider')
-  }
+  if (!context) throw new Error('useLenis must be used within a SmoothScrollProvider')
   return context
 }
 
-// ============================================================
-// USE SCROLL TO HOOK (convenience)
-// ============================================================
 export function useScrollTo() {
   const { scrollTo } = useLenis()
   return scrollTo
