@@ -30,10 +30,10 @@ export function FloatingCTA() {
         >
           {/* Pulsing availability dot */}
           <span className="relative flex h-2 w-2 shrink-0">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-60" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-white" />
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-60" />
+            <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
           </span>
-          Start Project
+          <span>2 spots left — Start Project</span>
         </motion.a>
       )}
     </AnimatePresence>

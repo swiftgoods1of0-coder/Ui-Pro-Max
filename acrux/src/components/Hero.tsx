@@ -58,6 +58,9 @@ export function Hero() {
     <section className="relative flex flex-col items-center justify-center overflow-hidden" id="hero"
       style={{ minHeight: '100svh' }}>
 
+      {/* Dot-grid texture */}
+      <div className="absolute inset-0 z-[1] pointer-events-none dot-grid opacity-[0.028]" />
+
       {/* Gradient overlay — centre scrim + edge vignette */}
       <div className="absolute inset-0 z-[2] pointer-events-none"
         style={{
@@ -179,6 +182,22 @@ export function Hero() {
               )}
             </div>
           ))}
+        </motion.div>
+
+        {/* Scarcity signal */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 2.7 }}
+          className="mt-8 flex items-center justify-center gap-2"
+        >
+          <span className="relative flex h-1.5 w-1.5">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-60" />
+            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-400" />
+          </span>
+          <span className="text-[10px] tracking-[0.25em] uppercase font-medium" style={{ color: 'rgba(130,200,140,0.85)' }}>
+            2 project slots remaining this quarter
+          </span>
         </motion.div>
       </div>
 

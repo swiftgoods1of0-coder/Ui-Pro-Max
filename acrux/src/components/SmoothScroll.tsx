@@ -25,7 +25,20 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
     gsap.ticker.add(tickerFn)
     gsap.ticker.lagSmoothing(0)
 
+    // Smooth anchor-link scroll via Lenis
+    const onClick = (e: MouseEvent) => {
+      const anchor = (e.target as Element).closest<HTMLAnchorElement>('a[href^="#"]')
+      if (!anchor) return
+      const id = anchor.getAttribute('href')!.slice(1)
+      const target = document.getElementById(id)
+      if (!target) return
+      e.preventDefault()
+      lenis.scrollTo(target, { offset: -64, duration: 1.4 })
+    }
+    document.addEventListener('click', onClick)
+
     return () => {
+      document.removeEventListener('click', onClick)
       gsap.ticker.remove(tickerFn)
       lenis.destroy()
     }

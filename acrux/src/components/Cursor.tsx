@@ -5,9 +5,11 @@ import { motion, useSpring, useMotionValue } from 'framer-motion'
 
 type CursorVariant = 'default' | 'pointer' | 'view'
 
+interface TrailPoint { x: number; y: number; t: number }
+
 export function Cursor() {
-  const [visible, setVisible]   = useState(false)
-  const [variant, setVariant]   = useState<CursorVariant>('default')
+  const [visible,  setVisible]  = useState(false)
+  const [variant,  setVariant]  = useState<CursorVariant>('default')
   const [clicking, setClicking] = useState(false)
 
   const rawX = useMotionValue(0)
@@ -17,11 +19,48 @@ export function Cursor() {
   const dotY  = useSpring(rawY, { stiffness: 750, damping: 34 })
   const ringX = useSpring(rawX, { stiffness: 165, damping: 22 })
   const ringY = useSpring(rawY, { stiffness: 165, damping: 22 })
-  // Spotlight — very slow/lazy
-  const spotX = useSpring(rawX, { stiffness: 42, damping: 14 })
-  const spotY = useSpring(rawY, { stiffness: 42, damping: 14 })
+  const spotX = useSpring(rawX, { stiffness: 42,  damping: 14 })
+  const spotY = useSpring(rawY, { stiffness: 42,  damping: 14 })
 
   const activeMagnetic = useRef<HTMLElement | null>(null)
+
+  // Trail canvas
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+  const trailRef  = useRef<TrailPoint[]>([])
+  const rafRef    = useRef<number>(0)
+
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+    const resize = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight }
+    resize()
+    window.addEventListener('resize', resize)
+
+    const TRAIL_MS = 480
+
+    const draw = () => {
+      const ctx = canvas.getContext('2d')
+      if (!ctx) return
+      ctx.clearRect(0, 0, canvas.width, canvas.height)
+      const now = Date.now()
+      trailRef.current = trailRef.current.filter(p => now - p.t < TRAIL_MS)
+      trailRef.current.forEach(pt => {
+        const age   = now - pt.t
+        const ratio = 1 - age / TRAIL_MS
+        ctx.beginPath()
+        ctx.arc(pt.x, pt.y, Math.max(0.1, ratio * 3.5), 0, Math.PI * 2)
+        ctx.fillStyle = `rgba(60,130,255,${ratio * 0.28})`
+        ctx.fill()
+      })
+      rafRef.current = requestAnimationFrame(draw)
+    }
+    draw()
+
+    return () => {
+      window.removeEventListener('resize', resize)
+      cancelAnimationFrame(rafRef.current)
+    }
+  }, [])
 
   useEffect(() => {
     const onMove = (e: MouseEvent) => {
@@ -29,7 +68,10 @@ export function Cursor() {
       rawY.set(e.clientY)
       setVisible(true)
 
-      const target = e.target as Element
+      trailRef.current.push({ x: e.clientX, y: e.clientY, t: Date.now() })
+      if (trailRef.current.length > 24) trailRef.current.shift()
+
+      const target    = e.target as Element
       const magnetEl  = target.closest<HTMLElement>('[data-magnetic]')
       const isView    = !!target.closest('[data-cursor-view]')
       const isPointer = !!target.closest('a, button, [data-magnetic], [role="button"]')
@@ -82,38 +124,29 @@ export function Cursor() {
 
   return (
     <>
-      {/* ── Page spotlight — large lazy ambient light ── */}
+      {/* ── Particle trail canvas ── */}
+      <canvas
+        ref={canvasRef}
+        className="fixed inset-0 pointer-events-none"
+        style={{ zIndex: 9994 }}
+      />
+
+      {/* ── Page spotlight ── */}
       <motion.div
         className="fixed top-0 left-0 pointer-events-none"
-        style={{
-          x: spotX,
-          y: spotY,
-          translateX: '-50%',
-          translateY: '-50%',
-          zIndex: 2,
-          mixBlendMode: 'screen',
-        }}
+        style={{ x: spotX, y: spotY, translateX: '-50%', translateY: '-50%', zIndex: 9995, mixBlendMode: 'screen' }}
         animate={{ opacity: visible ? 1 : 0 }}
         transition={{ duration: 1.2 }}
       >
-        <div
-          style={{
-            width: 900,
-            height: 900,
-            borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(20,60,220,0.09) 0%, rgba(0,30,120,0.03) 45%, transparent 70%)',
-          }}
-        />
+        <div style={{ width: 900, height: 900, borderRadius: '50%', background: 'radial-gradient(circle, rgba(20,60,220,0.09) 0%, rgba(0,30,120,0.03) 45%, transparent 70%)' }} />
       </motion.div>
 
       {/* ── Outer ring ── */}
       <motion.div
         className="fixed top-0 left-0 pointer-events-none"
         style={{
-          x: ringX,
-          y: ringY,
-          translateX: '-50%',
-          translateY: '-50%',
+          x: ringX, y: ringY,
+          translateX: '-50%', translateY: '-50%',
           zIndex: 9997,
           mixBlendMode: variant === 'view' ? 'normal' : 'difference',
         }}

@@ -336,6 +336,12 @@ p {
   filter: drop-shadow(0 0 32px rgba(0, 140, 255, 0.5)) drop-shadow(0 2px 18px rgba(0, 0, 0, 0.98));
 }
 
+/* ─── Dot-grid background ─── */
+.dot-grid {
+  background-image: radial-gradient(circle, rgba(100, 160, 255, 0.18) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
 /* ─── Utility ─── */
 .section {
   padding: 7rem 0;

@@ -4,6 +4,25 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Image from 'next/image'
 
+function LiveClock() {
+  const [time, setTime] = useState('')
+  useEffect(() => {
+    const tick = () => {
+      setTime(new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true }))
+    }
+    tick()
+    const id = setInterval(tick, 1000)
+    return () => clearInterval(id)
+  }, [])
+  if (!time) return null
+  return (
+    <span className="hidden lg:flex items-center gap-1.5 font-mono text-[10px] tracking-[0.18em] text-[var(--color-muted)]">
+      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block" />
+      {time}
+    </span>
+  )
+}
+
 const NAV_LINKS = [
   { label: 'Services',   href: '#services',   id: 'services'   },
   { label: 'Portfolio',  href: '#portfolio',  id: 'portfolio'  },
@@ -92,6 +111,7 @@ export function Navigation() {
 
           {/* CTA + hamburger */}
           <div className="flex items-center gap-4">
+            <LiveClock />
             <motion.a
               href="#contact"
               data-magnetic

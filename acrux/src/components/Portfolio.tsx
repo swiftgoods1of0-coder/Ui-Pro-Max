@@ -2,6 +2,7 @@
 
 import { useRef, useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
+import Link from 'next/link'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
@@ -244,40 +245,9 @@ function MockupMarketing() {
 // ─── Data ─────────────────────────────────────────────────────────
 const MOCKUPS = [MockupSaaS, MockupEcommerce, MockupBrand, MockupMarketing]
 
-const PROJECTS = [
-  {
-    id: '01', num: 1,
-    title: 'SaaS Platforms',
-    type: 'Web Applications · Dashboards',
-    desc: 'End-to-end product design and engineering. From onboarding flows to complex data dashboards — built to retain, convert, and scale.',
-    tags: ['Next.js', 'TypeScript', 'Real-time Data', 'Auth Systems'],
-    accent: '#0066ff',
-  },
-  {
-    id: '02', num: 2,
-    title: 'Luxury E-Commerce',
-    type: 'Premium Retail · DTC Brands',
-    desc: 'For brands where presentation is everything. Shopping experiences that match the quality of the product and significantly lift revenue.',
-    tags: ['Shopify', '3D Product Views', 'Custom CMS', 'CRO'],
-    accent: '#cc8800',
-  },
-  {
-    id: '03', num: 3,
-    title: 'Brand Identities',
-    type: 'Visual Identity · Design Systems',
-    desc: 'Complete brand systems from concept to launch. Identities that establish authority in competitive markets and scale across every touchpoint.',
-    tags: ['Brand Strategy', 'Design System', 'Typography', 'Motion'],
-    accent: '#4488ff',
-  },
-  {
-    id: '04', num: 4,
-    title: 'Marketing Sites',
-    type: 'Landing Pages · Lead Generation',
-    desc: 'High-converting marketing sites built for growth — engineered with conversion psychology and scroll-triggered storytelling.',
-    tags: ['Next.js', 'GSAP', 'Framer Motion', 'SEO'],
-    accent: '#00aaff',
-  },
-]
+import { PROJECTS as PROJECT_DATA } from '@/lib/projects'
+
+const PROJECTS = PROJECT_DATA.map(p => ({ ...p }))
 
 // ─── Horizontal card (desktop) ────────────────────────────────────
 function HCard({ project, index }: { project: typeof PROJECTS[0]; index: number }) {
@@ -317,12 +287,14 @@ function HCard({ project, index }: { project: typeof PROJECTS[0]; index: number 
             ))}
           </div>
         </div>
-        <div
-          className="shrink-0 w-11 h-11 rounded-full border border-[var(--color-border)] flex items-center justify-center transition-all duration-300 hover:border-[var(--color-border-hover)]"
+        <Link
+          href={`/work/${project.slug}`}
+          className="shrink-0 w-11 h-11 rounded-full border border-[var(--color-border)] flex items-center justify-center transition-all duration-300 hover:border-[var(--color-border-hover)] hover:bg-[rgba(0,102,255,0.1)]"
           style={{ color: 'rgba(140,170,200,0.7)' }}
+          onClick={e => e.stopPropagation()}
         >
           <span className="text-sm">→</span>
-        </div>
+        </Link>
       </div>
     </div>
   )
