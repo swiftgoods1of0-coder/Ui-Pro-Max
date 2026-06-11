@@ -1,6 +1,6 @@
 {
-  "buildCommand": "cd acrux && npm run build",
-  "outputDirectory": "acrux/.next",
-  "installCommand": "cd acrux && npm install --legacy-peer-deps",
+  "buildCommand": "cd swift-goods-shopify && npm install --legacy-peer-deps && npm run build",
+  "outputDirectory": "swift-goods-shopify/.next",
+  "installCommand": "echo 'install handled in buildCommand'",
   "framework": "nextjs"
 }
