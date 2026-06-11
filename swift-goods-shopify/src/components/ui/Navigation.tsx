@@ -451,10 +451,8 @@ function MobileMenu({ isOpen, onClose, cartCount }: MobileMenuProps) {
     const prev = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
     return () => {
-      const timer = setTimeout(() => {
-        document.body.style.overflow = prev;
-      }, 450);
-      return () => clearTimeout(timer);
+      // Delay re-enabling scroll until after the exit animation (450ms)
+      setTimeout(() => { document.body.style.overflow = prev; }, 450);
     };
   }, [isOpen]);
 

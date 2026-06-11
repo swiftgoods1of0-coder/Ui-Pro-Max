@@ -54,7 +54,7 @@ export default function SignatureMoment() {
   const thisIsRef     = useRef<HTMLHeadingElement>(null)
   const brandNameRef  = useRef<HTMLHeadingElement>(null)
   const statsRef      = useRef<HTMLDivElement>(null)
-  const quoteRef      = useRef<HTMLBlockquoteElement>(null)
+  const quoteRef      = useRef<HTMLQuoteElement>(null)
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger)
