@@ -1,10 +1,9 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import type { ReactNode } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-gsap.registerPlugin(ScrollTrigger);
 
 // ---------------------------------------------------------------------------
 // Social icon SVGs (inline, 20x20)
@@ -147,7 +146,7 @@ const socialLinks: SocialLink[] = [
 // Sub-components
 // ---------------------------------------------------------------------------
 
-const ColumnHeading = ({ children }: { children: React.ReactNode }) => (
+const ColumnHeading = ({ children }: { children: ReactNode }) => (
   <h3
     style={{
       fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)',
@@ -164,7 +163,7 @@ const ColumnHeading = ({ children }: { children: React.ReactNode }) => (
   </h3>
 );
 
-const NavLink = ({ href, children }: { href: string; children: React.ReactNode }) => (
+const NavLink = ({ href, children }: { href: string; children: ReactNode }) => (
   <li>
     <a
       href={href}
@@ -202,6 +201,7 @@ export default function Footer() {
   const headlineRef = useRef<HTMLHeadingElement>(null);
 
   useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
     const headline = headlineRef.current;
     if (!headline) return;
 

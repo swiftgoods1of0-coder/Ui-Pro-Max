@@ -313,31 +313,33 @@ function CartButton({ count }: { count: number }) {
       onMouseLeave={() => setHovered(false)}
     >
       <CartIcon />
-      {/* Badge always shown; shows "0" when empty */}
-      <span
-        aria-hidden="true"
-        style={{
-          position: 'absolute',
-          top: '-4px',
-          right: '-4px',
-          backgroundColor: COLORS.gold,
-          color: COLORS.black,
-          borderRadius: '50%',
-          width: '16px',
-          height: '16px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          fontSize: '9px',
-          fontFamily: 'var(--font-body, Inter, sans-serif)',
-          fontWeight: 700,
-          lineHeight: 1,
-          pointerEvents: 'none',
-          letterSpacing: 0,
-        }}
-      >
-        {count > 99 ? '99+' : count}
-      </span>
+      {/* Badge only rendered when cart has items */}
+      {count > 0 && (
+        <span
+          aria-hidden="true"
+          style={{
+            position: 'absolute',
+            top: '-4px',
+            right: '-4px',
+            backgroundColor: COLORS.gold,
+            color: COLORS.black,
+            borderRadius: '50%',
+            width: '16px',
+            height: '16px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: '9px',
+            fontFamily: 'var(--font-body, Inter, sans-serif)',
+            fontWeight: 700,
+            lineHeight: 1,
+            pointerEvents: 'none',
+            letterSpacing: 0,
+          }}
+        >
+          {count > 99 ? '99+' : count}
+        </span>
+      )}
     </a>
   );
 }
@@ -441,11 +443,18 @@ interface MobileMenuProps {
 }
 
 function MobileMenu({ isOpen, onClose, cartCount }: MobileMenuProps) {
-  // Lock body scroll while menu is open
+  // Lock body scroll while menu is open.
+  // Delay the unlock by the exit animation duration (450ms) so scroll
+  // doesn't re-enable while the overlay is still visually covering the screen.
   useEffect(() => {
-    document.body.style.overflow = isOpen ? 'hidden' : '';
+    if (!isOpen) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
     return () => {
-      document.body.style.overflow = '';
+      const timer = setTimeout(() => {
+        document.body.style.overflow = prev;
+      }, 450);
+      return () => clearTimeout(timer);
     };
   }, [isOpen]);
 
@@ -623,14 +632,13 @@ export default function Navigation({ cartCount = 0 }: NavigationProps) {
   }, [handleScroll]);
 
   // ---- GSAP mount reveal: slides nav down from y:-100 → y:0 ---------------
+  // Initial opacity set via gsap.set (not JSX style) so React re-renders
+  // cannot override the animated value after the tween completes.
   useEffect(() => {
     if (!navRef.current) return;
+    gsap.set(navRef.current, { opacity: 0 });
     const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
-    tl.fromTo(
-      navRef.current,
-      { y: -100, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.85, delay: 0.1, clearProps: 'opacity' }
-    );
+    tl.to(navRef.current, { y: 0, opacity: 1, duration: 0.85, delay: 0.1, clearProps: 'opacity,y' });
     return () => { tl.kill(); };
   }, []);
 
@@ -665,8 +673,8 @@ export default function Navigation({ cartCount = 0 }: NavigationProps) {
           alignItems: 'center',
           justifyContent: 'space-between',
           padding: '0 2rem',
-          // opacity starts at 0; GSAP will animate to 1
-          opacity: 0,
+          // opacity is set to 0 via gsap.set in useEffect, not here,
+          // so React re-renders cannot clobber GSAP's animated value.
           // Glass-dark backdrop on scroll
           backgroundColor: scrolled ? 'rgba(10,10,10,0.78)' : 'transparent',
           backdropFilter: scrolled ? 'blur(18px) saturate(180%)' : 'none',

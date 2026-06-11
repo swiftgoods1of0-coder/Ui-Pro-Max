@@ -1,266 +1,356 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
-import Image from 'next/image'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+interface ParticleConfig {
+  id: number
+  top: string
+  left: string
+  size: number
+  animDelay: string
+  animDuration: string
+}
+
+// 20 deterministic floating gold particles
+const PARTICLES: ParticleConfig[] = [
+  { id: 1,  top: '7%',  left: '11%', size: 4, animDelay: '0s',    animDuration: '6.2s' },
+  { id: 2,  top: '14%', left: '79%', size: 3, animDelay: '1.1s',  animDuration: '7.5s' },
+  { id: 3,  top: '21%', left: '44%', size: 5, animDelay: '0.5s',  animDuration: '5.8s' },
+  { id: 4,  top: '34%', left: '7%',  size: 3, animDelay: '2.1s',  animDuration: '8.0s' },
+  { id: 5,  top: '41%', left: '90%', size: 4, animDelay: '0.8s',  animDuration: '6.7s' },
+  { id: 6,  top: '54%', left: '23%', size: 2, animDelay: '1.8s',  animDuration: '7.2s' },
+  { id: 7,  top: '61%', left: '64%', size: 3, animDelay: '0.3s',  animDuration: '5.5s' },
+  { id: 8,  top: '69%', left: '39%', size: 5, animDelay: '2.5s',  animDuration: '8.3s' },
+  { id: 9,  top: '77%', left: '83%', size: 2, animDelay: '1.4s',  animDuration: '6.0s' },
+  { id: 10, top: '84%', left: '6%',  size: 4, animDelay: '0.9s',  animDuration: '7.8s' },
+  { id: 11, top: '11%', left: '56%', size: 2, animDelay: '3.0s',  animDuration: '5.2s' },
+  { id: 12, top: '27%', left: '31%', size: 3, animDelay: '1.6s',  animDuration: '8.6s' },
+  { id: 13, top: '46%', left: '53%', size: 2, animDelay: '2.8s',  animDuration: '6.4s' },
+  { id: 14, top: '64%', left: '16%', size: 4, animDelay: '0.7s',  animDuration: '7.0s' },
+  { id: 15, top: '71%', left: '71%', size: 3, animDelay: '2.2s',  animDuration: '5.9s' },
+  { id: 16, top: '5%',  left: '87%', size: 2, animDelay: '1.3s',  animDuration: '8.1s' },
+  { id: 17, top: '32%', left: '61%', size: 5, animDelay: '0.4s',  animDuration: '6.8s' },
+  { id: 18, top: '49%', left: '4%',  size: 3, animDelay: '3.2s',  animDuration: '7.3s' },
+  { id: 19, top: '87%', left: '49%', size: 2, animDelay: '1.9s',  animDuration: '5.7s' },
+  { id: 20, top: '19%', left: '19%', size: 4, animDelay: '0.6s',  animDuration: '8.4s' },
+]
+
+interface StatItem {
+  value: string
+  label: string
+}
+
+const STATS: StatItem[] = [
+  { value: '2024', label: 'ESTABLISHED' },
+  { value: '∞',    label: 'COMFORT LEVELS' },
+  { value: '01',   label: 'PHILOSOPHY' },
+]
 
 export default function SignatureMoment() {
-  const sectionRef = useRef<HTMLElement>(null)
-  const emblemRef = useRef<HTMLDivElement>(null)
-  const headline1Ref = useRef<HTMLHeadingElement>(null)
-  const headline2Ref = useRef<HTMLHeadingElement>(null)
-  const statsRef = useRef<HTMLDivElement>(null)
-  const quoteRef = useRef<HTMLDivElement>(null)
-  const bgImageRef = useRef<HTMLDivElement>(null)
+  const sectionRef    = useRef<HTMLElement>(null)
+  const emblemRef     = useRef<HTMLDivElement>(null)
+  const thisIsRef     = useRef<HTMLHeadingElement>(null)
+  const brandNameRef  = useRef<HTMLHeadingElement>(null)
+  const statsRef      = useRef<HTMLDivElement>(null)
+  const quoteRef      = useRef<HTMLBlockquoteElement>(null)
 
   useEffect(() => {
-    let ctx: any
-    ;(async () => {
-      const gsap = (await import('gsap')).default
-      const { ScrollTrigger } = await import('gsap/ScrollTrigger')
-      gsap.registerPlugin(ScrollTrigger)
+    gsap.registerPlugin(ScrollTrigger)
 
-      ctx = gsap.context(() => {
-        // Parallax dimming on bg image
-        gsap.to(bgImageRef.current, {
-          opacity: 0.06,
+    const ctx = gsap.context(() => {
+      // Pin the section for a cinematic scroll-driven reveal
+      ScrollTrigger.create({
+        trigger: sectionRef.current,
+        start: 'top top',
+        end: '+=120%',
+        pin: true,
+        pinSpacing: true,
+      })
+
+      // Emblem: scale 0.8 → 1.2 scrubbed on scroll
+      gsap.fromTo(
+        emblemRef.current,
+        { scale: 0.8, opacity: 0 },
+        {
+          scale: 1.2,
+          opacity: 1,
+          ease: 'power2.out',
           scrollTrigger: {
             trigger: sectionRef.current,
-            start: 'top bottom',
-            end: 'center center',
-            scrub: true,
+            start: 'top 90%',
+            end:   'top 20%',
+            scrub: 1.2,
           },
-        })
+        }
+      )
 
-        // Emblem scale breathe
-        gsap.fromTo(
-          emblemRef.current,
-          { scale: 0.7, opacity: 0 },
-          {
-            scale: 1,
-            opacity: 1,
-            duration: 1.4,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: sectionRef.current,
-              start: 'top 70%',
-              toggleActions: 'play none none reverse',
-            },
-          }
-        )
+      // "THIS IS" slides in from left on scroll
+      gsap.fromTo(
+        thisIsRef.current,
+        { x: -120, opacity: 0 },
+        {
+          x: 0,
+          opacity: 1,
+          duration: 1.1,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top 78%',
+            toggleActions: 'play none none none',
+          },
+        }
+      )
 
-        // Headlines fly in from opposite sides
-        gsap.fromTo(
-          headline1Ref.current,
-          { opacity: 0, x: -80 },
-          {
-            opacity: 1,
-            x: 0,
-            duration: 1,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: headline1Ref.current,
-              start: 'top 80%',
-              toggleActions: 'play none none reverse',
-            },
-          }
-        )
+      // "Swift Goods." slides in from right on scroll
+      gsap.fromTo(
+        brandNameRef.current,
+        { x: 120, opacity: 0 },
+        {
+          x: 0,
+          opacity: 1,
+          duration: 1.1,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top 78%',
+            toggleActions: 'play none none none',
+          },
+        }
+      )
 
+      // Stats stagger up on scroll
+      if (statsRef.current) {
+        const statEls = statsRef.current.querySelectorAll<HTMLElement>('.stat-item')
         gsap.fromTo(
-          headline2Ref.current,
-          { opacity: 0, x: 80 },
+          statEls,
+          { y: 40, opacity: 0 },
           {
-            opacity: 1,
-            x: 0,
-            duration: 1,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: headline2Ref.current,
-              start: 'top 80%',
-              toggleActions: 'play none none reverse',
-            },
-          }
-        )
-
-        // Stats stagger up
-        gsap.fromTo(
-          '.sig-stat',
-          { opacity: 0, y: 40 },
-          {
-            opacity: 1,
             y: 0,
-            duration: 0.8,
+            opacity: 1,
+            duration: 0.75,
+            ease: 'power3.out',
             stagger: 0.15,
-            ease: 'power2.out',
             scrollTrigger: {
               trigger: statsRef.current,
-              start: 'top 80%',
-              toggleActions: 'play none none reverse',
-            },
-          }
-        )
-
-        // Quote fade
-        gsap.fromTo(
-          quoteRef.current,
-          { opacity: 0, y: 30 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 1,
-            ease: 'power2.out',
-            scrollTrigger: {
-              trigger: quoteRef.current,
               start: 'top 85%',
-              toggleActions: 'play none none reverse',
+              toggleActions: 'play none none none',
             },
           }
         )
-      }, sectionRef)
-    })()
+      }
 
-    return () => ctx?.revert()
+      // Blockquote fade up
+      gsap.fromTo(
+        quoteRef.current,
+        { y: 30, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.9,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: quoteRef.current,
+            start: 'top 88%',
+            toggleActions: 'play none none none',
+          },
+        }
+      )
+    }, sectionRef)
+
+    return () => {
+      ctx.revert()
+    }
   }, [])
-
-  // Floating particles
-  const particles = Array.from({ length: 24 }, (_, i) => ({
-    id: i,
-    left: `${5 + (i * 397) % 90}%`,
-    top: `${5 + (i * 263) % 90}%`,
-    size: 2 + (i % 3),
-    delay: (i * 0.4) % 4,
-    duration: 3 + (i % 3),
-    opacity: 0.15 + (i % 4) * 0.08,
-  }))
 
   return (
     <section
-      id="signature"
       ref={sectionRef}
-      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#050505] py-32"
+      id="signature"
+      className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden"
+      style={{ background: '#050505' }}
     >
-
-      {/* Real brand photo — very dim, acts as texture */}
-      <div ref={bgImageRef} className="absolute inset-0 opacity-[0.08]">
-        <Image
-          src="/brand/sg-campaign-01.jpeg"
-          alt="Swift Goods"
-          fill
-          className="object-cover object-center"
-        />
-        <div className="absolute inset-0 bg-[#050505]/80" />
-      </div>
-
-      {/* Radial depth glow */}
+      {/* Radial gradient: warm gold centre → void edge */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          background: 'radial-gradient(ellipse 80% 60% at 50% 50%, rgba(201,168,76,0.04) 0%, transparent 70%)',
+          background:
+            'radial-gradient(ellipse 80% 70% at center, #1a1500 0%, #050505 72%)',
         }}
       />
 
-      {/* CSS floating particles */}
-      {particles.map((p) => (
+      {/* 20 floating gold particle dots */}
+      {PARTICLES.map((p) => (
         <div
           key={p.id}
-          className="absolute rounded-full bg-[#c9a84c]"
+          className="absolute rounded-full pointer-events-none"
           style={{
-            left: p.left,
             top: p.top,
-            width: `${p.size}px`,
+            left: p.left,
+            width:  `${p.size}px`,
             height: `${p.size}px`,
-            opacity: p.opacity,
-            animation: `float ${p.duration}s ease-in-out ${p.delay}s infinite alternate`,
+            background: 'rgba(201,168,76,0.55)',
+            boxShadow: `0 0 ${p.size * 2}px rgba(201,168,76,0.28)`,
+            animation: `sg-sig-particle ${p.animDuration} ease-in-out ${p.animDelay} infinite alternate`,
           }}
         />
       ))}
 
-      {/* Main content */}
-      <div className="relative z-10 text-center px-8 max-w-5xl mx-auto w-full">
+      {/* Central content */}
+      <div className="relative z-10 flex flex-col items-center text-center px-6 max-w-5xl mx-auto w-full">
 
-        {/* Emblem */}
-        <div ref={emblemRef} className="mb-16 flex justify-center opacity-0">
-          <div className="relative">
-            {/* Outer rotating ring */}
-            <div
-              className="absolute -inset-6 rounded-full border border-[#c9a84c]/10"
-              style={{ animation: 'spin 25s linear infinite' }}
-            />
-            {/* Middle ring */}
-            <div
-              className="absolute -inset-3 rounded-full border border-[#c9a84c]/15"
-              style={{ animation: 'spin 15s linear infinite reverse' }}
-            />
-            {/* Inner container */}
-            <div className="w-36 h-36 rounded-full border border-[#c9a84c]/20 flex items-center justify-center bg-[#0a0a0a]">
-              <Image
-                src="/brand/sg-emblem.png"
-                alt="Swift Goods Emblem"
-                width={80}
-                height={80}
-                className="invert opacity-80"
-              />
-            </div>
+        {/* SG Emblem — 48×48 Tailwind (w-48 h-48 = 192px) */}
+        <div ref={emblemRef} className="relative mb-14 opacity-0 w-48 h-48 flex-shrink-0">
+          {/* Outer border circle */}
+          <div
+            className="absolute inset-0 rounded-full"
+            style={{ border: '1px solid rgba(201,168,76,0.2)' }}
+          />
+          {/* Rotating outer ring */}
+          <div
+            className="absolute inset-2 rounded-full"
+            style={{
+              border: '1px solid rgba(201,168,76,0.15)',
+              borderTopColor: 'rgba(201,168,76,0.7)',
+              animation: 'sg-spin-cw 20s linear infinite',
+            }}
+          />
+          {/* Counter-rotating inner ring */}
+          <div
+            className="absolute inset-7 rounded-full"
+            style={{
+              border: '1px solid rgba(201,168,76,0.08)',
+              borderBottomColor: 'rgba(201,168,76,0.4)',
+              animation: 'sg-spin-ccw 14s linear infinite',
+            }}
+          />
+          {/* SG lettering */}
+          <div className="absolute inset-0 flex items-center justify-center">
+            <span
+              className="leading-none select-none"
+              style={{
+                fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)',
+                fontSize: '3.75rem',
+                letterSpacing: '0.1em',
+                background: 'linear-gradient(135deg, #c9a84c, #e6c870, #c8aa8a)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+              }}
+            >
+              SG
+            </span>
           </div>
         </div>
 
-        {/* THIS IS */}
+        {/* "THIS IS" — font-impact, massive, slides from left */}
         <h2
-          ref={headline1Ref}
-          style={{ fontFamily: 'var(--font-impact)' }}
-          className="text-[12vw] md:text-[9vw] text-[#f5f5f5] leading-none tracking-widest mb-2 opacity-0"
+          ref={thisIsRef}
+          className="opacity-0 leading-none tracking-widest select-none"
+          style={{
+            fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)',
+            fontSize: 'clamp(3rem, 9vw, 8.5rem)',
+            color: '#f5f5f5',
+          }}
         >
           THIS IS
         </h2>
 
-        {/* Swift Goods. */}
+        {/* "Swift Goods." — font-display italic, gradient gold, slides from right */}
         <h2
-          ref={headline2Ref}
+          ref={brandNameRef}
+          className="opacity-0 leading-none mb-14 select-none"
           style={{
-            fontFamily: 'var(--font-display)',
+            fontFamily: 'var(--font-display, "Cormorant Garamond", serif)',
+            fontSize: 'clamp(2.8rem, 8vw, 7.5rem)',
+            fontStyle: 'italic',
             background: 'linear-gradient(135deg, #c9a84c, #e6c870, #c8aa8a)',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
             backgroundClip: 'text',
           }}
-          className="text-[9vw] md:text-[7vw] font-light italic leading-none mb-16 opacity-0"
         >
           Swift Goods.
         </h2>
 
-        {/* Divider */}
-        <div className="w-px h-16 bg-gradient-to-b from-transparent via-[#c9a84c]/40 to-transparent mx-auto mb-16" />
+        {/* Vertical gold separator */}
+        <div
+          className="w-px h-14 mb-14"
+          style={{
+            background:
+              'linear-gradient(to bottom, transparent, rgba(201,168,76,0.45), transparent)',
+          }}
+        />
 
-        {/* Stats */}
-        <div ref={statsRef} className="grid grid-cols-3 gap-8 border-t border-[#1e1e1e] pt-12 mb-16">
-          {[
-            { value: '2024', label: 'ESTABLISHED' },
-            { value: '∞', label: 'COMFORT LEVELS' },
-            { value: '01', label: 'PHILOSOPHY' },
-          ].map((stat) => (
-            <div key={stat.label} className="sig-stat opacity-0">
-              <div
-                style={{ fontFamily: 'var(--font-impact)' }}
-                className="text-5xl md:text-6xl text-[#c9a84c] mb-2"
+        {/* Stats row */}
+        <div
+          ref={statsRef}
+          className="flex flex-col sm:flex-row items-center justify-center gap-10 sm:gap-20 mb-16 w-full"
+          style={{
+            borderTop: '1px solid rgba(255,255,255,0.04)',
+            paddingTop: '3rem',
+          }}
+        >
+          {STATS.map((stat) => (
+            <div
+              key={stat.label}
+              className="stat-item opacity-0 flex flex-col items-center gap-2"
+            >
+              <span
+                className="leading-none"
+                style={{
+                  fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)',
+                  fontSize: 'clamp(2.2rem, 4vw, 3.5rem)',
+                  letterSpacing: '0.06em',
+                  background: 'linear-gradient(135deg, #c9a84c, #e6c870, #c8aa8a)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                }}
               >
                 {stat.value}
-              </div>
-              <div className="label-luxury text-[#555555]">{stat.label}</div>
+              </span>
+              <span
+                className="text-[10px] tracking-[0.4em] uppercase"
+                style={{
+                  color: '#555555',
+                  fontFamily: 'var(--font-body, Inter, sans-serif)',
+                }}
+              >
+                {stat.label}
+              </span>
             </div>
           ))}
         </div>
 
-        {/* Quote */}
-        <div ref={quoteRef} className="opacity-0">
-          <blockquote
-            style={{ fontFamily: 'var(--font-display)' }}
-            className="italic text-xl md:text-2xl text-[#555555] max-w-2xl mx-auto leading-relaxed"
-          >
-            "The most powerful thing you can wear is something{' '}
-            <span className="text-[#888888]">built for you.</span>"
-          </blockquote>
-        </div>
-
+        {/* Blockquote */}
+        <blockquote
+          ref={quoteRef}
+          className="opacity-0 max-w-2xl mx-auto"
+          style={{
+            fontFamily: 'var(--font-display, "Cormorant Garamond", serif)',
+            fontSize: 'clamp(1.05rem, 2vw, 1.4rem)',
+            fontStyle: 'italic',
+            color: '#555555',
+            lineHeight: 1.74,
+            letterSpacing: '0.03em',
+          }}
+        >
+          &ldquo;The most powerful thing you can wear is something built for you.&rdquo;
+        </blockquote>
       </div>
+
+      {/* Keyframes */}
+      <style>{`
+        @keyframes sg-sig-particle {
+          0%   { transform: translateY(0px)   scale(1);   opacity: 0.35; }
+          50%  { transform: translateY(-20px) scale(1.3); opacity: 0.8;  }
+          100% { transform: translateY(0px)   scale(1);   opacity: 0.35; }
+        }
+        @keyframes sg-spin-cw  { from { transform: rotate(0deg);   } to { transform: rotate(360deg);  } }
+        @keyframes sg-spin-ccw { from { transform: rotate(0deg);   } to { transform: rotate(-360deg); } }
+      `}</style>
     </section>
   )
 }

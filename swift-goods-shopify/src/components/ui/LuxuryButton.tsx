@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, useCallback } from 'react';
+import React, { useRef, useCallback, useEffect } from 'react';
 import Link from 'next/link';
 import gsap from 'gsap';
 
@@ -224,7 +224,7 @@ function triggerRipple(
   container: HTMLElement,
   clientX: number,
   clientY: number
-) {
+): gsap.core.Tween {
   const rect = container.getBoundingClientRect();
   const x = clientX - rect.left;
   const y = clientY - rect.top;
@@ -239,7 +239,7 @@ function triggerRipple(
 
   container.appendChild(ripple);
 
-  gsap.to(ripple, {
+  return gsap.to(ripple, {
     scale: 3,
     opacity: 0,
     duration: 0.7,
@@ -267,14 +267,13 @@ export function LuxuryButton({
   disabled = false,
   'data-cursor': dataCursor,
 }: LuxuryButtonProps) {
-  // Inject CSS on first render (client-only, idempotent)
-  const stylesInjected = useRef(false);
-  if (!stylesInjected.current) {
-    injectStyles();
-    stylesInjected.current = true;
-  }
+  // Inject CSS after mount — never during render (SSR-safe, Strict-Mode-safe)
+  useEffect(() => { injectStyles(); }, []);
 
   const containerRef = useRef<HTMLElement>(null);
+  // Track in-flight ripple tweens so we can kill them on unmount
+  const rippleTweens = useRef<gsap.core.Tween[]>([]);
+  useEffect(() => () => { rippleTweens.current.forEach((t) => t.kill()); }, []);
 
   // ── Class composition ────────────────────────────────────────────────────
   const variantClass = `lb-${variant}`;
@@ -297,12 +296,13 @@ export function LuxuryButton({
   const handleClick = useCallback(
     (e: React.MouseEvent) => {
       if (disabled || loading) return;
-
       const el = containerRef.current;
       if (el) {
-        triggerRipple(el, e.clientX, e.clientY);
+        const tween = triggerRipple(el, e.clientX, e.clientY);
+        rippleTweens.current.push(tween);
+        // Prune completed tweens to prevent unbounded growth
+        rippleTweens.current = rippleTweens.current.filter((t) => t.isActive());
       }
-
       onClick?.(e);
     },
     [disabled, loading, onClick]
