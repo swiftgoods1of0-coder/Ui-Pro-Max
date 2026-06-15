@@ -14,6 +14,8 @@ import {
   ArrowRight,
   CheckCircle,
   Send,
+  Loader2,
+  AlertCircle,
 } from 'lucide-react'
 
 const FadeUp = ({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) => (
@@ -76,26 +78,49 @@ export default function FleetPrograms() {
   const [formData, setFormData] = useState({
     name: '',
     company: '',
+    email: '',
     fleetSize: '',
   })
   const [submitted, setSubmitted] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }))
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setSubmitted(true)
+    setIsLoading(true)
+    setError(null)
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.name,
+          company: formData.company,
+          email: formData.email,
+          fleetSize: formData.fleetSize,
+          service: 'Fleet Program Inquiry',
+          message: `Fleet Program Inquiry from ${formData.company || formData.name}. Fleet size: ${formData.fleetSize || 'Not specified'}.`,
+        }),
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || 'Something went wrong. Please try again.')
+      setSubmitted(true)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Something went wrong. Please try again or call us directly.')
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
     <section id="fleet-programs" className="py-24 bg-charcoal-800 relative overflow-hidden" aria-label="Fleet programs">
-      {/* Background accents */}
       <div className="absolute top-0 right-0 w-[500px] h-[500px] rounded-full bg-brand/5 blur-[100px] pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-[300px] h-[300px] rounded-full bg-charcoal-800/20 blur-[80px] pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[300px] h-[300px] rounded-full bg-charcoal-900/20 blur-[80px] pointer-events-none" />
 
-      {/* Subtle grid */}
       <div
         className="absolute inset-0 opacity-10"
         style={{
@@ -122,7 +147,6 @@ export default function FleetPrograms() {
               </p>
             </FadeUp>
 
-            {/* Feature list */}
             <div className="space-y-4">
               {programFeatures.map((feature, i) => {
                 const Icon = feature.icon
@@ -133,8 +157,8 @@ export default function FleetPrograms() {
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true, margin: '-20px' }}
                     transition={{ duration: 0.5, delay: i * 0.06, ease: [0.22, 1, 0.36, 1] }}
-                    className="flex items-start gap-4 p-4 rounded-xl bg-charcoal-800/50 border border-charcoal-700/50
-                      hover:border-brand/30 hover:bg-charcoal-800/70 transition-all duration-300 group"
+                    className="flex items-start gap-4 p-4 rounded-xl bg-charcoal-900/50 border border-charcoal-700/50
+                      hover:border-brand/30 hover:bg-charcoal-900/70 transition-all duration-300 group"
                   >
                     <div className="w-9 h-9 rounded-lg bg-brand/10 border border-brand/20 flex items-center justify-center flex-shrink-0 group-hover:bg-brand/20 transition-colors">
                       <Icon className="w-4 h-4 text-brand" />
@@ -152,7 +176,7 @@ export default function FleetPrograms() {
             </div>
           </div>
 
-          {/* Right: Get Started Card */}
+          {/* Right: Inquiry Card */}
           <div className="lg:sticky lg:top-24">
             <motion.div
               initial={{ opacity: 0, x: 50 }}
@@ -162,17 +186,16 @@ export default function FleetPrograms() {
               className="glass rounded-2xl border border-white/10 overflow-hidden shadow-[0_40px_80px_rgba(0,0,0,0.4)]"
             >
               {/* Card header */}
-              <div className="bg-gradient-to-r from-brand to-brand-dark-dark px-6 py-5">
-                <div className="text-white/80 text-xs font-bold uppercase tracking-widest mb-1">
+              <div className="bg-gradient-to-r from-brand to-brand-dark px-6 py-5">
+                <div className="text-charcoal-900/70 text-xs font-bold uppercase tracking-widest mb-1">
                   Fleet Program Inquiry
                 </div>
-                <h3 className="text-white text-2xl font-bold">Get Started Today</h3>
-                <p className="text-white/80 text-sm mt-1">
+                <h3 className="text-charcoal-900 text-2xl font-bold">Get Started Today</h3>
+                <p className="text-charcoal-900/70 text-sm mt-1">
                   Tell us about your fleet and we&rsquo;ll put together a program that fits.
                 </p>
               </div>
 
-              {/* Form */}
               <div className="p-6">
                 {!submitted ? (
                   <form onSubmit={handleSubmit} className="space-y-4">
@@ -209,6 +232,22 @@ export default function FleetPrograms() {
                     </div>
 
                     <div>
+                      <label htmlFor="fp-email" className="form-label">
+                        Email Address <span className="text-brand">*</span>
+                      </label>
+                      <input
+                        id="fp-email"
+                        name="email"
+                        type="email"
+                        required
+                        placeholder="john@company.com"
+                        value={formData.email}
+                        onChange={handleChange}
+                        className="form-input"
+                      />
+                    </div>
+
+                    <div>
                       <label htmlFor="fp-fleet-size" className="form-label">
                         Fleet Size <span className="text-brand">*</span>
                       </label>
@@ -220,23 +259,36 @@ export default function FleetPrograms() {
                         onChange={handleChange}
                         className="form-input"
                       >
-                        <option value="" disabled>
-                          Select fleet size...
-                        </option>
+                        <option value="">Select fleet size...</option>
                         {fleetSizes.map((size) => (
-                          <option key={size} value={size}>
-                            {size}
-                          </option>
+                          <option key={size} value={size}>{size}</option>
                         ))}
                       </select>
                     </div>
 
+                    {error && (
+                      <div className="flex items-center gap-2 p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
+                        <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                        {error}
+                      </div>
+                    )}
+
                     <button
                       type="submit"
                       className="btn-brand w-full justify-center mt-2"
+                      disabled={isLoading}
                     >
-                      <Send className="w-4 h-4" />
-                      Request Fleet Program Info
+                      {isLoading ? (
+                        <>
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                          Sending...
+                        </>
+                      ) : (
+                        <>
+                          <Send className="w-4 h-4" />
+                          Request Fleet Program Info
+                        </>
+                      )}
                     </button>
 
                     <p className="text-slate-500 text-xs text-center leading-relaxed">
@@ -248,9 +300,14 @@ export default function FleetPrograms() {
                   </form>
                 ) : (
                   <div className="py-8 text-center space-y-4">
-                    <div className="w-14 h-14 rounded-full bg-brand/20 flex items-center justify-center mx-auto">
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ type: 'spring', damping: 15, stiffness: 200 }}
+                      className="w-14 h-14 rounded-full bg-brand/20 flex items-center justify-center mx-auto"
+                    >
                       <CheckCircle className="w-8 h-8 text-brand" />
-                    </div>
+                    </motion.div>
                     <div>
                       <div className="text-white font-bold text-lg mb-1">Request Received!</div>
                       <div className="text-slate-400 text-sm leading-relaxed">
@@ -260,24 +317,22 @@ export default function FleetPrograms() {
                     </div>
                     <div className="text-slate-500 text-xs">
                       Questions? Call{' '}
-                      <a href="tel:7172083600" className="text-brand">
-                        717-208-3600
-                      </a>
+                      <a href="tel:7172083600" className="text-brand">717-208-3600</a>
                     </div>
                   </div>
                 )}
               </div>
 
               {/* Benefits strip */}
-              <div className="border-t border-white/10 px-6 py-4 bg-charcoal-800/50">
+              <div className="border-t border-white/10 px-6 py-4 bg-charcoal-900/50">
                 <div className="flex items-center justify-between gap-4">
                   {[
-                    { label: 'No Setup Fee', icon: '✓' },
-                    { label: 'Fast Response', icon: '✓' },
-                    { label: 'Custom Plans', icon: '✓' },
-                  ].map(({ label, icon }) => (
+                    { label: 'No Setup Fee' },
+                    { label: 'Fast Response' },
+                    { label: 'Custom Plans' },
+                  ].map(({ label }) => (
                     <div key={label} className="flex items-center gap-1.5 text-xs text-slate-400">
-                      <span className="text-brand font-bold">{icon}</span>
+                      <CheckCircle className="w-3.5 h-3.5 text-brand flex-shrink-0" />
                       {label}
                     </div>
                   ))}
@@ -285,7 +340,6 @@ export default function FleetPrograms() {
               </div>
             </motion.div>
 
-            {/* Arrow CTA below card */}
             <FadeUp delay={0.3}>
               <a
                 href="#contact"

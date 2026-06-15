@@ -168,7 +168,7 @@ export default function TrailerDepartment() {
               className="bg-charcoal-800 border border-charcoal-700 rounded-xl overflow-hidden"
             >
               {/* Card top border accent */}
-              <div className="h-1 bg-gradient-to-r from-brand to-brand-dark-dark" />
+              <div className="h-1 bg-gradient-to-r from-brand to-brand-dark" />
               <div className="p-6">
                 <div className="flex items-center gap-3 mb-5">
                   <div className="w-9 h-9 rounded-lg bg-brand/20 flex items-center justify-center">
@@ -230,41 +230,28 @@ export default function TrailerDepartment() {
               </div>
             </motion.div>
 
-            {/* Map placeholder */}
+            {/* Google Maps embed */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className="relative rounded-xl overflow-hidden border border-charcoal-700"
+              className="rounded-xl overflow-hidden border border-charcoal-700"
               style={{ height: '180px' }}
-              data-placeholder="LancasterMap.jpg"
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-charcoal-900 to-steel" />
-              <div
-                className="absolute inset-0 opacity-20"
+              <iframe
+                src="https://maps.google.com/maps?q=480+Running+Pump+Road,+Lancaster,+PA+17601&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                width="100%"
+                height="180"
                 style={{
-                  backgroundImage:
-                    'linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px)',
-                  backgroundSize: '30px 30px',
+                  border: 0,
+                  filter: 'invert(90%) hue-rotate(180deg) saturate(0.8) contrast(0.85)',
                 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="OTC Fleet Services - Lancaster Location"
               />
-              <div className="absolute inset-0 flex flex-col items-center justify-center gap-2">
-                <MapPin className="w-8 h-8 text-brand opacity-60" />
-                <div className="text-center">
-                  <div className="text-white text-sm font-medium">480 Running Pump Road</div>
-                  <div className="text-slate-400 text-xs">Lancaster, PA 17601</div>
-                </div>
-                <a
-                  href="https://maps.google.com/?q=480+Running+Pump+Road+Lancaster+PA+17601"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-brand text-xs hover:text-brand-light transition-colors flex items-center gap-1 mt-1"
-                >
-                  Open in Google Maps
-                  <ExternalLink className="w-3 h-3" />
-                </a>
-              </div>
             </motion.div>
           </div>
         </div>

@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import './globals.css'
 import Navigation from './components/Navigation'
 import FloatingCTA from './components/FloatingCTA'
+import ScrollToTop from './components/ScrollToTop'
 
 export const metadata: Metadata = {
   title: 'OTC Fleet Services | Fleet Repair, Maintenance & Trailer Service in Lancaster & Berks County PA',
@@ -170,6 +171,7 @@ export default function RootLayout({
         <Navigation />
         <main>{children}</main>
         <FloatingCTA />
+        <ScrollToTop />
       </body>
     </html>
   )

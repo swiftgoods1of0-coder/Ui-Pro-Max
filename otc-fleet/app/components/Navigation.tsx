@@ -18,32 +18,42 @@ const navLinks = [
 export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileOpen, setIsMobileOpen] = useState(false)
+  const [activeSection, setActiveSection] = useState('hero')
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20)
-    }
+    const handleScroll = () => setIsScrolled(window.scrollY > 20)
     window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
   useEffect(() => {
-    if (isMobileOpen) {
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = ''
-    }
-    return () => {
-      document.body.style.overflow = ''
-    }
+    const ids = navLinks.map((l) => l.href.replace('#', ''))
+    const observers: IntersectionObserver[] = []
+
+    ids.forEach((id) => {
+      const el = document.getElementById(id)
+      if (!el) return
+      const obs = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) setActiveSection(id)
+        },
+        { threshold: 0.25, rootMargin: '-64px 0px -35% 0px' }
+      )
+      obs.observe(el)
+      observers.push(obs)
+    })
+
+    return () => observers.forEach((o) => o.disconnect())
+  }, [])
+
+  useEffect(() => {
+    document.body.style.overflow = isMobileOpen ? 'hidden' : ''
+    return () => { document.body.style.overflow = '' }
   }, [isMobileOpen])
 
   const handleNavClick = (href: string) => {
     setIsMobileOpen(false)
-    const element = document.querySelector(href)
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' })
-    }
+    document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' })
   }
 
   return (
@@ -54,17 +64,18 @@ export default function Navigation() {
         transition={{ duration: 0.5, ease: 'easeOut' }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           isScrolled
-            ? 'backdrop-blur-md bg-charcoal-800/95 border-b border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.5)]'
-            : 'backdrop-blur-md bg-charcoal-800/80 border-b border-white/5'
+            ? 'backdrop-blur-md bg-charcoal-900/95 border-b border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.5)]'
+            : 'backdrop-blur-md bg-charcoal-900/80 border-b border-white/5'
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16 lg:h-18">
+          <div className="flex items-center justify-between h-16 lg:h-[72px]">
+
             {/* Logo */}
             <a
               href="#hero"
               onClick={(e) => { e.preventDefault(); handleNavClick('#hero') }}
-              className="flex items-center gap-2 group"
+              className="flex items-center gap-2 group flex-shrink-0"
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
@@ -81,31 +92,27 @@ export default function Navigation() {
                 }}
               />
               <div className="items-center gap-0.5" style={{ display: 'none' }}>
-                <span className="text-white font-bold text-lg lg:text-xl tracking-tight">
-                  OTC Fleet
-                </span>
-                <span
-                  className="w-1.5 h-1.5 rounded-full bg-brand ml-0.5 mt-0 inline-block"
-                  aria-hidden="true"
-                />
-                <span className="hidden sm:block text-slate-400 text-sm font-normal border-l border-white/20 pl-2 ml-1">
-                  Services
-                </span>
+                <span className="text-white font-bold text-lg lg:text-xl tracking-tight">OTC Fleet</span>
+                <span className="w-1.5 h-1.5 rounded-full bg-brand ml-0.5 mt-0 inline-block" aria-hidden="true" />
+                <span className="hidden sm:block text-slate-400 text-sm font-normal border-l border-white/20 pl-2 ml-1">Services</span>
               </div>
             </a>
 
             {/* Desktop Navigation */}
-            <nav className="hidden lg:flex items-center gap-1" aria-label="Main navigation">
-              {navLinks.map((link) => (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  onClick={(e) => { e.preventDefault(); handleNavClick(link.href) }}
-                  className="nav-link px-3 py-2 rounded-md hover:bg-white/5"
-                >
-                  {link.label}
-                </a>
-              ))}
+            <nav className="hidden lg:flex items-center gap-0.5" aria-label="Main navigation">
+              {navLinks.map((link) => {
+                const isActive = activeSection === link.href.replace('#', '')
+                return (
+                  <a
+                    key={link.label}
+                    href={link.href}
+                    onClick={(e) => { e.preventDefault(); handleNavClick(link.href) }}
+                    className={`nav-link px-3 py-2 rounded-md hover:bg-white/5 ${isActive ? 'nav-link-active' : ''}`}
+                  >
+                    {link.label}
+                  </a>
+                )
+              })}
             </nav>
 
             {/* Right Side Actions */}
@@ -163,7 +170,7 @@ export default function Navigation() {
         </div>
       </motion.header>
 
-      {/* Mobile Menu Overlay */}
+      {/* Mobile Backdrop */}
       <AnimatePresence>
         {isMobileOpen && (
           <motion.div
@@ -174,11 +181,12 @@ export default function Navigation() {
             className="fixed inset-0 z-40 lg:hidden"
             onClick={() => setIsMobileOpen(false)}
           >
-            <div className="absolute inset-0 bg-charcoal-800/60 backdrop-blur-sm" />
+            <div className="absolute inset-0 bg-charcoal-900/70 backdrop-blur-sm" />
           </motion.div>
         )}
       </AnimatePresence>
 
+      {/* Mobile Menu Drawer */}
       <AnimatePresence>
         {isMobileOpen && (
           <motion.div
@@ -186,9 +194,9 @@ export default function Navigation() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: '100%' }}
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed top-0 right-0 bottom-0 z-50 w-80 max-w-[90vw] bg-charcoal-800 border-l border-white/10 lg:hidden flex flex-col"
+            className="fixed top-0 right-0 bottom-0 z-50 w-80 max-w-[90vw] bg-charcoal-900 border-l border-white/10 lg:hidden flex flex-col"
           >
-            {/* Mobile Menu Header */}
+            {/* Header */}
             <div className="flex items-center justify-between px-6 py-5 border-b border-white/10">
               <div className="flex items-center gap-1">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -208,7 +216,6 @@ export default function Navigation() {
                 <div className="items-center gap-1" style={{ display: 'none' }}>
                   <span className="text-white font-bold text-lg">OTC Fleet</span>
                   <span className="w-1.5 h-1.5 rounded-full bg-brand ml-0.5 inline-block" />
-                  <span className="text-slate-400 text-sm ml-1">Services</span>
                 </div>
               </div>
               <button
@@ -220,31 +227,40 @@ export default function Navigation() {
               </button>
             </div>
 
-            {/* Mobile Nav Links */}
+            {/* Nav Links */}
             <nav className="flex-1 overflow-y-auto px-4 py-6" aria-label="Mobile navigation">
               <div className="space-y-1">
-                {navLinks.map((link, i) => (
-                  <motion.a
-                    key={link.label}
-                    href={link.href}
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.05 + 0.1 }}
-                    onClick={(e) => { e.preventDefault(); handleNavClick(link.href) }}
-                    className="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-300 hover:text-white hover:bg-white/5 transition-all duration-200 group"
-                  >
-                    <span className="w-1.5 h-1.5 rounded-full bg-brand/50 group-hover:bg-brand transition-colors" />
-                    <span className="font-medium">{link.label}</span>
-                  </motion.a>
-                ))}
+                {navLinks.map((link, i) => {
+                  const isActive = activeSection === link.href.replace('#', '')
+                  return (
+                    <motion.a
+                      key={link.label}
+                      href={link.href}
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: i * 0.04 + 0.1 }}
+                      onClick={(e) => { e.preventDefault(); handleNavClick(link.href) }}
+                      className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 group ${
+                        isActive
+                          ? 'bg-brand/10 border border-brand/20 text-brand'
+                          : 'text-slate-300 hover:text-white hover:bg-white/5 border border-transparent'
+                      }`}
+                    >
+                      <span className={`w-1.5 h-1.5 rounded-full transition-colors ${
+                        isActive ? 'bg-brand' : 'bg-brand/40 group-hover:bg-brand'
+                      }`} />
+                      <span className="font-medium">{link.label}</span>
+                    </motion.a>
+                  )
+                })}
               </div>
             </nav>
 
             {/* Mobile CTA */}
-            <div className="px-4 py-6 border-t border-white/10 space-y-3">
+            <div className="px-4 py-6 border-t border-white/10 space-y-2">
               <a
                 href="tel:7172083600"
-                className="flex items-center gap-3 px-4 py-3 rounded-lg bg-charcoal-800 hover:bg-charcoal-800 transition-colors text-white"
+                className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/5 transition-colors text-white"
               >
                 <div className="w-8 h-8 rounded-full bg-brand/20 flex items-center justify-center">
                   <Phone className="w-4 h-4 text-brand" />
@@ -256,7 +272,7 @@ export default function Navigation() {
               </a>
               <a
                 href="tel:6103744077"
-                className="flex items-center gap-3 px-4 py-3 rounded-lg bg-charcoal-800 hover:bg-charcoal-800 transition-colors text-white"
+                className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/5 transition-colors text-white"
               >
                 <div className="w-8 h-8 rounded-full bg-brand/20 flex items-center justify-center">
                   <Phone className="w-4 h-4 text-brand" />
@@ -269,7 +285,7 @@ export default function Navigation() {
               <a
                 href="#contact"
                 onClick={(e) => { e.preventDefault(); handleNavClick('#contact') }}
-                className="btn-brand w-full justify-center"
+                className="btn-brand w-full justify-center mt-1"
               >
                 Schedule Service
               </a>

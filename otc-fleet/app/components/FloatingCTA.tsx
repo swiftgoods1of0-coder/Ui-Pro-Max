@@ -31,7 +31,7 @@ export default function FloatingCTA() {
           aria-label="Mobile call to action bar"
         >
           {/* Orange gradient top line */}
-          <div className="h-0.5 bg-gradient-to-r from-brand-dark via-brand to-brand-dark-dark-dark" />
+          <div className="h-0.5 bg-gradient-to-r from-brand-dark via-brand to-brand-dark" />
 
           <div
             className="grid grid-cols-2"
@@ -41,7 +41,7 @@ export default function FloatingCTA() {
             <a
               href="tel:7172083600"
               className="flex items-center justify-center gap-2 py-4 font-bold text-sm transition-all duration-200 active:scale-95"
-              style={{ backgroundColor: '#FFD400', color: '#ffffff' }}
+              style={{ backgroundColor: '#FFD400', color: '#111111' }}
               aria-label="Call Lancaster location at 717-208-3600"
             >
               <Phone className="w-4 h-4" />

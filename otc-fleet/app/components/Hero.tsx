@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Phone, Calendar, ChevronDown, CheckCircle, ArrowRight, Shield, Truck, BarChart2, Clock } from 'lucide-react'
+import { Phone, Calendar, ChevronDown, CheckCircle, ArrowRight, Shield, Truck, BarChart2, Clock, Wrench, ClipboardCheck, Box, Snowflake } from 'lucide-react'
 
 const FadeUp = ({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) => (
   <motion.div
@@ -21,12 +21,12 @@ const trustBadges = [
 ]
 
 const floatingCardServices = [
-  { icon: '🔧', label: 'Fleet Repairs' },
-  { icon: '📋', label: 'DOT Inspections' },
-  { icon: '📅', label: 'PM Programs' },
-  { icon: '🚛', label: 'Mobile Units' },
-  { icon: '🚌', label: 'Trailer Service' },
-  { icon: '❄️', label: 'Snow Equipment' },
+  { icon: Wrench, label: 'Fleet Repairs' },
+  { icon: ClipboardCheck, label: 'DOT Inspections' },
+  { icon: Calendar, label: 'PM Programs' },
+  { icon: Truck, label: 'Mobile Units' },
+  { icon: Box, label: 'Trailer Service' },
+  { icon: Snowflake, label: 'Snow Equipment' },
 ]
 
 export default function Hero() {
@@ -196,12 +196,14 @@ export default function Hero() {
 
                 {/* Service grid */}
                 <div className="grid grid-cols-3 gap-3 mb-5">
-                  {floatingCardServices.map(({ icon, label }) => (
+                  {floatingCardServices.map(({ icon: Icon, label }) => (
                     <div
                       key={label}
-                      className="bg-charcoal-800/80 rounded-lg p-3 text-center hover:bg-charcoal-800/80 transition-colors group"
+                      className="bg-charcoal-800/80 rounded-lg p-3 text-center hover:bg-charcoal-700/60 transition-colors group"
                     >
-                      <div className="text-2xl mb-1">{icon}</div>
+                      <div className="flex justify-center mb-1.5">
+                        <Icon className="w-5 h-5 text-brand" />
+                      </div>
                       <div className="text-slate-400 text-xs font-medium group-hover:text-slate-300 transition-colors">
                         {label}
                       </div>

@@ -9,6 +9,18 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        brand: {
+          DEFAULT: '#FFD400',
+          dark: '#e6bf00',
+          light: '#FFE033',
+        },
+        charcoal: {
+          950: '#0a0a0a',
+          900: '#111111',
+          800: '#1a1a1a',
+          700: '#222222',
+          600: '#2d2d2d',
+        },
         navy: {
           950: '#040d1a',
           900: '#0a1628',
@@ -16,13 +28,6 @@ const config: Config = {
           700: '#112244',
           600: '#1a3366',
           500: '#1e40af',
-        },
-        orange: {
-          DEFAULT: '#f97316',
-          dark: '#ea580c',
-          400: '#fb923c',
-          500: '#f97316',
-          600: '#ea580c',
         },
         steel: '#1e293b',
       },
@@ -43,9 +48,9 @@ const config: Config = {
       animation: {
         'fade-up': 'fadeUp 0.6s ease-out forwards',
         'slide-in': 'slideIn 0.5s ease-out forwards',
-        'counter': 'counter 2s ease-out forwards',
         'float': 'float 3s ease-in-out infinite',
         'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'spin-slow': 'spin 3s linear infinite',
       },
       keyframes: {
         fadeUp: {
@@ -62,7 +67,7 @@ const config: Config = {
         },
       },
       boxShadow: {
-        'glow-orange': '0 0 30px rgba(249,115,22,0.3)',
+        'glow-brand': '0 0 30px rgba(255,212,0,0.25)',
         'glow-navy': '0 0 30px rgba(10,22,40,0.5)',
         'card-hover': '0 20px 60px rgba(0,0,0,0.4)',
       },

@@ -14,6 +14,8 @@ import {
   FileText,
   Briefcase,
   Shield,
+  Loader2,
+  AlertCircle,
 } from 'lucide-react'
 
 const FadeUp = ({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) => (
@@ -104,6 +106,8 @@ export default function Contact() {
     message: '',
   })
   const [submitted, setSubmitted] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
@@ -111,15 +115,33 @@ export default function Contact() {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }))
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setSubmitted(true)
+    setIsLoading(true)
+    setError(null)
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || 'Something went wrong. Please try again.')
+      setSubmitted(true)
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : 'Something went wrong. Please try again or call us directly.'
+      )
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
-    <section id="contact" className="py-24 bg-charcoal-800" aria-label="Contact OTC Fleet Services">
-      {/* Top accent */}
-      <div className="absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-brand/40 to-transparent" />
+    <section id="contact" className="relative py-24 bg-charcoal-800" aria-label="Contact OTC Fleet Services">
+      <div className="absolute left-0 right-0 top-0 h-px bg-gradient-to-r from-transparent via-brand/40 to-transparent" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
@@ -138,7 +160,7 @@ export default function Contact() {
         </FadeUp>
 
         <div className="grid lg:grid-cols-3 gap-8 lg:gap-10">
-          {/* Left: Location info cards */}
+          {/* Left: Location cards + quick links */}
           <div className="space-y-5">
             {/* Lancaster */}
             <motion.div
@@ -146,9 +168,9 @@ export default function Contact() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
-              className="bg-charcoal-800 border border-charcoal-700 rounded-xl overflow-hidden"
+              className="bg-charcoal-900 border border-charcoal-700 rounded-xl overflow-hidden"
             >
-              <div className="h-1 bg-gradient-to-r from-brand to-brand-dark-dark-dark" />
+              <div className="h-1 bg-gradient-to-r from-brand to-brand-dark" />
               <div className="p-5">
                 <div className="text-brand text-xs font-bold uppercase tracking-widest mb-3">
                   Lancaster Location
@@ -190,9 +212,9 @@ export default function Contact() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="bg-charcoal-800 border border-charcoal-700 rounded-xl overflow-hidden"
+              className="bg-charcoal-900 border border-charcoal-700 rounded-xl overflow-hidden"
             >
-              <div className="h-1 bg-gradient-to-r from-charcoal-900 to-charcoal-950" />
+              <div className="h-1 bg-gradient-to-r from-brand to-brand-dark" />
               <div className="p-5">
                 <div className="text-brand text-xs font-bold uppercase tracking-widest mb-3">
                   Berks County Location
@@ -227,17 +249,17 @@ export default function Contact() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.15 }}
-              className="bg-charcoal-800 border border-charcoal-700 rounded-xl p-5"
+              className="bg-charcoal-900 border border-charcoal-700 rounded-xl p-5"
             >
               <div className="text-white font-bold text-sm mb-4">Quick Links</div>
-              <div className="space-y-2">
+              <div className="space-y-1">
                 {quickLinks.map(({ icon: Icon, label, href, description }) => (
                   <a
                     key={label}
                     href={href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-charcoal-800 transition-colors group"
+                    className="flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-white/5 transition-colors group"
                   >
                     <Icon className="w-4 h-4 text-brand/70 group-hover:text-brand flex-shrink-0 transition-colors" />
                     <div className="flex-1 min-w-0">
@@ -253,17 +275,17 @@ export default function Contact() {
             </motion.div>
           </div>
 
-          {/* Center: Contact form */}
+          {/* Center: Form + Map */}
           <div className="lg:col-span-2">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7 }}
-              className="bg-charcoal-800 border border-charcoal-700 rounded-2xl overflow-hidden shadow-[0_30px_60px_rgba(0,0,0,0.3)]"
+              className="bg-charcoal-900 border border-charcoal-700 rounded-2xl overflow-hidden shadow-[0_30px_60px_rgba(0,0,0,0.3)]"
             >
               {/* Form header */}
-              <div className="px-6 py-5 border-b border-charcoal-700 bg-charcoal-800/50">
+              <div className="px-6 py-5 border-b border-charcoal-700">
                 <h3 className="text-white text-xl font-bold">Send Us a Message</h3>
                 <p className="text-slate-400 text-sm mt-1">
                   Fill out the form and a member of our team will respond within one business day.
@@ -273,7 +295,6 @@ export default function Contact() {
               <div className="p-6">
                 {!submitted ? (
                   <form onSubmit={handleSubmit} className="space-y-5" aria-label="Contact form">
-                    {/* Row 1: Name + Company */}
                     <div className="grid sm:grid-cols-2 gap-4">
                       <div>
                         <label htmlFor="contact-name" className="form-label">
@@ -306,7 +327,6 @@ export default function Contact() {
                       </div>
                     </div>
 
-                    {/* Row 2: Email + Phone */}
                     <div className="grid sm:grid-cols-2 gap-4">
                       <div>
                         <label htmlFor="contact-email" className="form-label">
@@ -339,7 +359,6 @@ export default function Contact() {
                       </div>
                     </div>
 
-                    {/* Row 3: Fleet size + Service */}
                     <div className="grid sm:grid-cols-2 gap-4">
                       <div>
                         <label htmlFor="contact-fleet-size" className="form-label">
@@ -352,13 +371,9 @@ export default function Contact() {
                           onChange={handleChange}
                           className="form-input"
                         >
-                          <option value="" disabled>
-                            Select size...
-                          </option>
+                          <option value="">Select size...</option>
                           {fleetSizes.map((size) => (
-                            <option key={size} value={size}>
-                              {size}
-                            </option>
+                            <option key={size} value={size}>{size}</option>
                           ))}
                         </select>
                       </div>
@@ -373,19 +388,14 @@ export default function Contact() {
                           onChange={handleChange}
                           className="form-input"
                         >
-                          <option value="" disabled>
-                            Select service...
-                          </option>
+                          <option value="">Select service...</option>
                           {serviceTypes.map((svc) => (
-                            <option key={svc} value={svc}>
-                              {svc}
-                            </option>
+                            <option key={svc} value={svc}>{svc}</option>
                           ))}
                         </select>
                       </div>
                     </div>
 
-                    {/* Row 4: Location */}
                     <div>
                       <label htmlFor="contact-location" className="form-label">
                         Preferred Location / Service Type
@@ -397,18 +407,13 @@ export default function Contact() {
                         onChange={handleChange}
                         className="form-input"
                       >
-                        <option value="" disabled>
-                          Select location or service type...
-                        </option>
+                        <option value="">Select location or service type...</option>
                         {locationOptions.map((loc) => (
-                          <option key={loc} value={loc}>
-                            {loc}
-                          </option>
+                          <option key={loc} value={loc}>{loc}</option>
                         ))}
                       </select>
                     </div>
 
-                    {/* Row 5: Message */}
                     <div>
                       <label htmlFor="contact-message" className="form-label">
                         Message <span className="text-brand">*</span>
@@ -425,22 +430,41 @@ export default function Contact() {
                       />
                     </div>
 
-                    {/* Submit */}
-                    <button type="submit" className="btn-brand w-full justify-center">
-                      <Send className="w-4 h-4" />
-                      Send Message
+                    {error && (
+                      <div className="flex items-center gap-2 p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
+                        <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                        {error}
+                      </div>
+                    )}
+
+                    <button type="submit" className="btn-brand w-full justify-center" disabled={isLoading}>
+                      {isLoading ? (
+                        <>
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                          Sending...
+                        </>
+                      ) : (
+                        <>
+                          <Send className="w-4 h-4" />
+                          Send Message
+                        </>
+                      )}
                     </button>
 
                     <p className="text-slate-600 text-xs text-center">
-                      By submitting this form, you agree to be contacted by OTC Fleet Services regarding
-                      your inquiry.
+                      By submitting this form, you agree to be contacted by OTC Fleet Services regarding your inquiry.
                     </p>
                   </form>
                 ) : (
                   <div className="py-16 text-center space-y-5">
-                    <div className="w-16 h-16 rounded-full bg-brand/20 flex items-center justify-center mx-auto">
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ type: 'spring', damping: 15, stiffness: 200 }}
+                      className="w-16 h-16 rounded-full bg-brand/20 flex items-center justify-center mx-auto"
+                    >
                       <CheckCircle className="w-9 h-9 text-brand" />
-                    </div>
+                    </motion.div>
                     <div>
                       <div className="text-white font-bold text-2xl mb-2">Message Sent!</div>
                       <div className="text-slate-400 text-base leading-relaxed max-w-md mx-auto">
@@ -466,41 +490,28 @@ export default function Contact() {
               </div>
             </motion.div>
 
-            {/* Map placeholder */}
+            {/* Google Maps embed */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="mt-5 relative rounded-xl overflow-hidden border border-charcoal-700"
-              style={{ height: '200px' }}
-              data-placeholder="GoogleMap-Lancaster.jpg"
+              className="mt-5 rounded-xl overflow-hidden border border-charcoal-700"
+              style={{ height: '220px' }}
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-charcoal-900 to-steel" />
-              <div
-                className="absolute inset-0 opacity-20"
+              <iframe
+                src="https://maps.google.com/maps?q=480+Running+Pump+Road,+Lancaster,+PA+17601&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                width="100%"
+                height="220"
                 style={{
-                  backgroundImage:
-                    'linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)',
-                  backgroundSize: '25px 25px',
+                  border: 0,
+                  filter: 'invert(90%) hue-rotate(180deg) saturate(0.8) contrast(0.85)',
                 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="OTC Fleet Services - Lancaster Location"
               />
-              <div className="absolute inset-0 flex flex-col items-center justify-center gap-2">
-                <MapPin className="w-8 h-8 text-brand opacity-70" />
-                <div className="text-center">
-                  <div className="text-white text-sm font-semibold">OTC Fleet Services – Lancaster</div>
-                  <div className="text-slate-400 text-xs">480 Running Pump Road, Lancaster, PA 17601</div>
-                </div>
-                <a
-                  href="https://maps.google.com/?q=480+Running+Pump+Road+Lancaster+PA+17601"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-brand text-xs hover:text-brand-light transition-colors flex items-center gap-1 mt-1"
-                >
-                  Open in Google Maps
-                  <ExternalLink className="w-3 h-3" />
-                </a>
-              </div>
             </motion.div>
           </div>
         </div>

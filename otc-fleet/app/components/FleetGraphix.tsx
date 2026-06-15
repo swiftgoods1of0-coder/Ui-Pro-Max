@@ -212,7 +212,7 @@ export default function FleetGraphix() {
         {/* Bottom value prop */}
         <FadeUp delay={0.4}>
           <div className="mt-16 p-6 lg:p-8 rounded-2xl bg-charcoal-800/40 border border-charcoal-700 relative overflow-hidden">
-            <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-brand to-brand-dark-dark rounded-l-2xl" />
+            <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-brand to-brand-dark rounded-l-2xl" />
             <div className="grid md:grid-cols-3 gap-6 pl-4">
               <div>
                 <div className="text-brand font-bold text-sm uppercase tracking-wider mb-2">

@@ -276,7 +276,7 @@ export default function Footer() {
               >
                 Terms of Service
               </a>
-              <span className="text-charcoal-800">|</span>
+              <span className="text-slate-700">·</span>
               <a
                 href="https://www.otcfleet.com/privacy"
                 target="_blank"
@@ -285,7 +285,7 @@ export default function Footer() {
               >
                 Privacy Policy
               </a>
-              <span className="text-charcoal-800">|</span>
+              <span className="text-slate-700">·</span>
               <a
                 href="https://www.otcfleet.com/warranty"
                 target="_blank"
