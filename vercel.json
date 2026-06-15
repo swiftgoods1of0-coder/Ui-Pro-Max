@@ -1,6 +1,6 @@
 {
-  "buildCommand": "cd swift-goods-shopify && npm install --legacy-peer-deps && npm run build",
-  "outputDirectory": "swift-goods-shopify/.next",
+  "buildCommand": "cd otc-fleet && npm install && npm run build",
+  "outputDirectory": "otc-fleet/.next",
   "installCommand": "echo 'install handled in buildCommand'",
   "framework": "nextjs"
 }
