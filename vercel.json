@@ -1,6 +1,5 @@
 {
   "buildCommand": "cd otc-fleet && npm install && npm run build",
   "outputDirectory": "otc-fleet/.next",
-  "installCommand": "echo 'install handled in buildCommand'",
-  "framework": "nextjs"
+  "installCommand": "echo skip"
 }
