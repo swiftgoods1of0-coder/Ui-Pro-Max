@@ -44,7 +44,7 @@ const CustomCursor = dynamic(
 // METADATA
 // ============================================================
 export const metadata: Metadata = {
-  metadataBase: new URL('https://swiftgoodsclothing.com'),
+  metadataBase: new URL('https://swiftgoodsclothingbrand.com'),
   title: {
     default: 'Swift Goods | Comfort Is Luxury',
     template: '%s | Swift Goods',
@@ -61,13 +61,13 @@ export const metadata: Metadata = {
     'high fashion',
     'comfort is luxury',
   ],
-  authors: [{ name: 'Swift Goods', url: 'https://swiftgoodsclothing.com' }],
+  authors: [{ name: 'Swift Goods', url: 'https://swiftgoodsclothingbrand.com' }],
   creator: 'Swift Goods',
   publisher: 'Swift Goods',
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://swiftgoodsclothing.com',
+    url: 'https://swiftgoodsclothingbrand.com',
     siteName: 'Swift Goods',
     title: 'Swift Goods | Comfort Is Luxury',
     description:
