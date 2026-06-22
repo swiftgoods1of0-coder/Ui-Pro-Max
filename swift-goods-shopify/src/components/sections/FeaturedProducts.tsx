@@ -1,6 +1,7 @@
 'use client'
 
 import { useRef } from 'react'
+import Image from 'next/image'
 import { motion } from 'framer-motion'
 import LuxuryButton from '@/components/ui/LuxuryButton'
 
@@ -50,13 +51,13 @@ function ProductCard({ product, index }: ProductCardProps) {
         style={{ aspectRatio: '3/4', background: '#0a0a0a' }}
       >
         {/* Product image — scales to 110% on hover */}
-        <img
+        <Image
           src={product.image}
           alt={product.title}
-          className="w-full h-full object-cover transition-transform duration-[600ms] ease-out group-hover:scale-110"
-          loading="lazy"
-          width={600}
-          height={800}
+          fill
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          className="object-cover transition-transform duration-[600ms] ease-out group-hover:scale-110"
+          unoptimized
         />
 
         {/* Dark hover overlay */}

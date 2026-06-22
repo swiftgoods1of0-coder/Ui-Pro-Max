@@ -13,100 +13,97 @@ export default function LiquidBackground() {
 
     let animId: number
     let time = 0
-    let mouse = { x: 0.5, y: 0.5 }
+    const mouse = { x: 0.5, y: 0.5, tx: 0.5, ty: 0.5 }
 
     const onMouseMove = (e: MouseEvent) => {
-      mouse.x = e.clientX / window.innerWidth
-      mouse.y = e.clientY / window.innerHeight
+      mouse.tx = e.clientX / window.innerWidth
+      mouse.ty = e.clientY / window.innerHeight
     }
     window.addEventListener('mousemove', onMouseMove, { passive: true })
 
-    const resize = () => {
-      canvas.width = Math.floor(window.innerWidth * 0.5)
-      canvas.height = Math.floor(window.innerHeight * 0.5)
-    }
-    resize()
-    window.addEventListener('resize', resize)
+    // Work at very low resolution — the noise is stretched to fill viewport
+    const W = 96
+    const H = 64
+    canvas.width = W
+    canvas.height = H
 
-    // Simple value noise (hash-based, no external deps)
-    function hash(x: number, y: number): number {
-      let h = (x * 374761393 + y * 668265263) | 0
-      h = (h ^ (h >> 13)) * 1274126177
-      return ((h ^ (h >> 16)) & 0xffff) / 0xffff
+    // Pre-compute a static noise texture (256x256 tileable)
+    const NOISE_SIZE = 256
+    const noiseData = new Float32Array(NOISE_SIZE * NOISE_SIZE)
+    for (let i = 0; i < noiseData.length; i++) {
+      noiseData[i] = Math.random()
     }
 
-    function smoothNoise(x: number, y: number): number {
-      const ix = Math.floor(x)
-      const iy = Math.floor(y)
-      const fx = x - ix
-      const fy = y - iy
+    function sampleNoise(x: number, y: number): number {
+      const ix = ((Math.floor(x) % NOISE_SIZE) + NOISE_SIZE) % NOISE_SIZE
+      const iy = ((Math.floor(y) % NOISE_SIZE) + NOISE_SIZE) % NOISE_SIZE
+      const fx = x - Math.floor(x)
+      const fy = y - Math.floor(y)
       const ux = fx * fx * (3 - 2 * fx)
       const uy = fy * fy * (3 - 2 * fy)
+
+      const ix1 = (ix + 1) % NOISE_SIZE
+      const iy1 = (iy + 1) % NOISE_SIZE
+
       return (
-        hash(ix, iy) * (1 - ux) * (1 - uy) +
-        hash(ix + 1, iy) * ux * (1 - uy) +
-        hash(ix, iy + 1) * (1 - ux) * uy +
-        hash(ix + 1, iy + 1) * ux * uy
+        noiseData[iy * NOISE_SIZE + ix] * (1 - ux) * (1 - uy) +
+        noiseData[iy * NOISE_SIZE + ix1] * ux * (1 - uy) +
+        noiseData[iy1 * NOISE_SIZE + ix] * (1 - ux) * uy +
+        noiseData[iy1 * NOISE_SIZE + ix1] * ux * uy
       )
     }
 
     function fbm(x: number, y: number): number {
-      return (
-        smoothNoise(x, y) * 0.5 +
-        smoothNoise(x * 2, y * 2) * 0.25 +
-        smoothNoise(x * 4, y * 4) * 0.125
-      )
+      return sampleNoise(x, y) * 0.5 + sampleNoise(x * 2.1, y * 2.1) * 0.3 + sampleNoise(x * 4.3, y * 4.3) * 0.2
     }
 
-    // Draw at ~30fps
-    let last = 0
+    const imageData = ctx.createImageData(W, H)
+    const data = imageData.data
+
+    let lastFrame = 0
 
     function draw(ts: number) {
       animId = requestAnimationFrame(draw)
-      if (ts - last < 33) return // ~30fps cap
-      last = ts
-      time += 0.0003
 
-      const w = canvas!.width
-      const h = canvas!.height
-      const imageData = ctx!.createImageData(w, h)
-      const data = imageData.data
+      // Cap at ~24fps
+      if (ts - lastFrame < 42) return
+      lastFrame = ts
 
-      const mx = mouse.x
-      const my = mouse.y
+      time += 0.004
 
-      for (let y = 0; y < h; y++) {
-        for (let x = 0; x < w; x++) {
-          // Mouse displacement subtly warps the noise field (max ~30px at 0.5x scale = 15 noise-space units)
-          const dx = (x / w - mx) * 0.15
-          const dy = (y / h - my) * 0.15
-          const nx = x / w * 3 + time + dx
-          const ny = y / h * 3 + time * 0.7 + dy
+      // Smooth mouse interpolation
+      mouse.x += (mouse.tx - mouse.x) * 0.03
+      mouse.y += (mouse.ty - mouse.y) * 0.03
+
+      const mx = mouse.x * 0.4
+      const my = mouse.y * 0.4
+
+      for (let y = 0; y < H; y++) {
+        for (let x = 0; x < W; x++) {
+          const nx = x * 0.08 + time + mx
+          const ny = y * 0.08 + time * 0.6 + my
           const n = fbm(nx, ny)
-          // Map noise 0..1 to dark range 5..13 (#050505 to #0d0d0d)
-          const v = Math.round(5 + n * 8)
-          const i = (y * w + x) * 4
+          // Map to dark range: 5–14 (#050505 to #0e0e0e)
+          const v = 5 + (n * 9) | 0
+          const i = (y * W + x) << 2
           data[i] = v
           data[i + 1] = v
           data[i + 2] = v
           data[i + 3] = 255
         }
       }
+
       ctx!.putImageData(imageData, 0, 0)
 
-      // Gold shimmer lines — 3 faint horizontal waves drifting upward
+      // Gold shimmer — 3 faint horizontal bezier curves
+      ctx!.lineWidth = 0.5
+      ctx!.strokeStyle = 'rgba(201,168,76,0.04)'
       for (let l = 0; l < 3; l++) {
-        const yPos = ((time * 80 + l * (h / 3)) % h)
-        const amplitude = Math.sin(time * 2 + l) * 4
+        const yOff = ((time * 6 + l * (H / 3)) % H)
+        const amp = Math.sin(time * 1.5 + l * 2.1) * 2
         ctx!.beginPath()
-        ctx!.moveTo(0, yPos + amplitude)
-        ctx!.bezierCurveTo(
-          w * 0.33, yPos + amplitude * 1.5,
-          w * 0.66, yPos - amplitude,
-          w, yPos + amplitude * 0.5
-        )
-        ctx!.strokeStyle = 'rgba(201,168,76,0.03)'
-        ctx!.lineWidth = 1
+        ctx!.moveTo(0, yOff + amp)
+        ctx!.bezierCurveTo(W * 0.33, yOff + amp * 1.5, W * 0.66, yOff - amp, W, yOff + amp * 0.5)
         ctx!.stroke()
       }
     }
@@ -116,13 +113,13 @@ export default function LiquidBackground() {
     return () => {
       cancelAnimationFrame(animId)
       window.removeEventListener('mousemove', onMouseMove)
-      window.removeEventListener('resize', resize)
     }
   }, [])
 
   return (
     <canvas
       ref={canvasRef}
+      aria-hidden="true"
       style={{
         position: 'fixed',
         inset: 0,

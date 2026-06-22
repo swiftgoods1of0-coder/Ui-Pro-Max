@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import type { ReactNode } from 'react';
+import Link from 'next/link';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -165,7 +166,7 @@ const ColumnHeading = ({ children }: { children: ReactNode }) => (
 
 const NavLink = ({ href, children }: { href: string; children: ReactNode }) => (
   <li>
-    <a
+    <Link
       href={href}
       className="footer-nav-link"
       style={{
@@ -189,7 +190,7 @@ const NavLink = ({ href, children }: { href: string; children: ReactNode }) => (
       }}
     >
       {children}
-    </a>
+    </Link>
   </li>
 );
 
@@ -471,7 +472,7 @@ export default function Footer() {
                   gap: '1rem',
                 }}
               >
-                <a
+                <Link
                   href={item.href}
                   style={{
                     fontSize: '0.75rem',
@@ -489,7 +490,7 @@ export default function Footer() {
                   }}
                 >
                   {item.label}
-                </a>
+                </Link>
                 {idx < arr.length - 1 && (
                   <span
                     aria-hidden="true"

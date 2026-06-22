@@ -3,6 +3,8 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import gsap from 'gsap';
+import Link from 'next/link';
+import Image from 'next/image';
 
 // ---------------------------------------------------------------------------
 // Types & Interfaces
@@ -131,7 +133,7 @@ function LogoText() {
   const [hovered, setHovered] = useState(false);
 
   return (
-    <a
+    <Link
       href="/"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
@@ -146,12 +148,12 @@ function LogoText() {
       }}
     >
       {/* Winged S emblem */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
+      <Image
         src="/brand/sg-emblem.png"
         alt="Swift Goods"
         width={28}
         height={22}
+        unoptimized
         style={{
           filter: hovered
             ? 'invert(1) sepia(1) saturate(2) hue-rotate(5deg) brightness(1.1)'
@@ -177,7 +179,7 @@ function LogoText() {
       >
         SWIFT GOODS
       </span>
-    </a>
+    </Link>
   );
 }
 
@@ -189,7 +191,7 @@ function DesktopNavLink({ link }: { link: NavLink }) {
   const [hovered, setHovered] = useState(false);
 
   return (
-    <a
+    <Link
       href={link.href}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
@@ -223,7 +225,7 @@ function DesktopNavLink({ link }: { link: NavLink }) {
           transition: `width 400ms ${LUXURY_EASE_OUT}`,
         }}
       />
-    </a>
+    </Link>
   );
 }
 
@@ -259,7 +261,7 @@ function IconButton({ onClick, href, ariaLabel, children }: IconButtonProps) {
 
   if (href) {
     return (
-      <a
+      <Link
         href={href}
         aria-label={ariaLabel}
         style={{ ...sharedStyle, textDecoration: 'none' }}
@@ -267,7 +269,7 @@ function IconButton({ onClick, href, ariaLabel, children }: IconButtonProps) {
         onMouseLeave={() => setHovered(false)}
       >
         {children}
-      </a>
+      </Link>
     );
   }
 
@@ -293,7 +295,7 @@ function CartButton({ count }: { count: number }) {
   const [hovered, setHovered] = useState(false);
 
   return (
-    <a
+    <Link
       href="/cart"
       aria-label={`Cart, ${count} item${count !== 1 ? 's' : ''}`}
       style={{
@@ -340,7 +342,7 @@ function CartButton({ count }: { count: number }) {
           {count > 99 ? '99+' : count}
         </span>
       )}
-    </a>
+    </Link>
   );
 }
 
@@ -402,7 +404,7 @@ function MobileLinkItem({ link, onClose }: { link: NavLink; onClose: () => void 
 
   return (
     <motion.div variants={mobileLinkVariants} style={{ textAlign: 'center' }}>
-      <a
+      <Link
         href={link.href}
         onClick={onClose}
         onMouseEnter={() => setHovered(true)}
@@ -427,7 +429,7 @@ function MobileLinkItem({ link, onClose }: { link: NavLink; onClose: () => void 
         }}
       >
         {link.label}
-      </a>
+      </Link>
     </motion.div>
   );
 }
@@ -558,7 +560,7 @@ function MobileMenu({ isOpen, onClose, cartCount }: MobileMenuProps) {
 
           {/* Cart row */}
           <motion.div variants={mobileLinkVariants}>
-            <a
+            <Link
               href="/cart"
               onClick={onClose}
               style={{
@@ -575,7 +577,7 @@ function MobileMenu({ isOpen, onClose, cartCount }: MobileMenuProps) {
             >
               <CartIcon size={18} />
               <span>CART {cartCount > 0 ? `(${cartCount})` : '(0)'}</span>
-            </a>
+            </Link>
           </motion.div>
 
           {/* Brand tagline */}

@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import gsap from 'gsap'
@@ -180,11 +181,14 @@ export default function CollectionGrid({ products }: CollectionGridProps) {
                 <Link href={`/products/${product.handle}`} className="block w-full h-full">
                   {/* Product image — aspect-ratio overflow-hidden + hover scale */}
                   <div className="absolute inset-0 overflow-hidden">
-                    <img
+                    <Image
                       src={imageUrl}
                       alt={product.title}
-                      className="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-110"
+                      fill
+                      sizes={isLarge ? '(max-width: 1024px) 100vw, 50vw' : '(max-width: 640px) 50vw, 25vw'}
+                      className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-110"
                       loading={index < 4 ? 'eager' : 'lazy'}
+                      unoptimized
                     />
                   </div>
 
