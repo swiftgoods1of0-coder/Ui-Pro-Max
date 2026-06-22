@@ -1,6 +1,7 @@
 'use client'
 
 import { useRef } from 'react'
+import Link from 'next/link'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 import LuxuryButton from '@/components/ui/LuxuryButton'
@@ -29,6 +30,7 @@ interface ProductCardProps {
 
 function ProductCard({ product, index }: ProductCardProps) {
   return (
+    <Link href={`/products/${product.handle}`} className="block">
     <motion.article
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -206,6 +208,7 @@ function ProductCard({ product, index }: ProductCardProps) {
         </div>
       </div>
     </motion.article>
+    </Link>
   )
 }
 
