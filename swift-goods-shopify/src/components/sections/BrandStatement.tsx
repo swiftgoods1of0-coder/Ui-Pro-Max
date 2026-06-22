@@ -37,12 +37,12 @@ export default function BrandStatement() {
       // Label scroll animation
       gsap.fromTo(
         labelRef.current,
-        { opacity: 0, y: 24 },
+        { clipPath: 'inset(0 100% 0 0)', opacity: 0 },
         {
+          clipPath: 'inset(0 0% 0 0)',
           opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: 'power3.out',
+          duration: 0.75,
+          ease: 'power2.out',
           scrollTrigger: {
             trigger: labelRef.current,
             start: 'top 88%',
@@ -56,13 +56,14 @@ export default function BrandStatement() {
         const words = quoteRef.current.querySelectorAll<HTMLElement>('.quote-word')
         gsap.fromTo(
           words,
-          { opacity: 0, y: 60 },
+          { clipPath: 'inset(0 100% 0 0)', opacity: 0, y: 10 },
           {
+            clipPath: 'inset(0 0% 0 0)',
             opacity: 1,
             y: 0,
-            duration: 0.75,
-            ease: 'power3.out',
-            stagger: 0.055,
+            duration: 0.7,
+            ease: 'power2.out',
+            stagger: 0.04,
             scrollTrigger: {
               trigger: quoteRef.current,
               start: 'top 82%',
@@ -77,13 +78,13 @@ export default function BrandStatement() {
         const items = pillarsRef.current.querySelectorAll<HTMLElement>('.pillar-item')
         gsap.fromTo(
           items,
-          { opacity: 0, y: 50 },
+          { clipPath: 'inset(0 0 100% 0)', opacity: 0 },
           {
+            clipPath: 'inset(0 0 0% 0)',
             opacity: 1,
-            y: 0,
             duration: 0.85,
             ease: 'power3.out',
-            stagger: 0.18,
+            stagger: 0.15,
             scrollTrigger: {
               trigger: pillarsRef.current,
               start: 'top 82%',
@@ -139,10 +140,10 @@ export default function BrandStatement() {
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-16 py-32 w-full">
 
         {/* "THE PHILOSOPHY" label */}
-        <div className="mb-16" ref={labelRef}>
+        <div className="mb-16">
           <div
-            className="opacity-0 inline-flex items-center gap-4"
-            style={{ opacity: 0 }}
+            ref={labelRef}
+            className="inline-flex items-center gap-4"
           >
             <span
               className="block w-14 h-px"
