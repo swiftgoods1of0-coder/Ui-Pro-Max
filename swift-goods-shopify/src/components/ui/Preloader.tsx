@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
-import Image from 'next/image'
 import gsap from 'gsap'
 
 interface PreloaderProps {
@@ -11,7 +10,7 @@ interface PreloaderProps {
 export default function Preloader({ onComplete }: PreloaderProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const emblemRef = useRef<HTMLDivElement>(null)
-  const sgTextRef = useRef<HTMLDivElement>(null)
+  const sgTextRef = useRef<HTMLSpanElement>(null)
   const brandRef = useRef<HTMLParagraphElement>(null)
   const taglineRef = useRef<HTMLParagraphElement>(null)
   const progressRef = useRef<HTMLDivElement>(null)
@@ -19,7 +18,6 @@ export default function Preloader({ onComplete }: PreloaderProps) {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Initial states
       gsap.set(sgTextRef.current, { opacity: 0 })
       gsap.set(brandRef.current, {
         opacity: 0,
@@ -30,23 +28,16 @@ export default function Preloader({ onComplete }: PreloaderProps) {
 
       const tl = gsap.timeline({
         onComplete: () => {
-          // Give the exit animation time to complete before unmounting
           setTimeout(onComplete, 50)
         },
       })
 
-      // Progress bar fills 0% → 100% over 2.2s (starts immediately)
       tl.to(
         progressRef.current,
-        {
-          scaleX: 1,
-          duration: 2.2,
-          ease: 'none',
-        },
+        { scaleX: 1, duration: 2.2, ease: 'none' },
         0
       )
 
-      // Counter counts 0 → 100 over 2.2s (starts immediately)
       tl.to(
         { val: 0 },
         {
@@ -63,49 +54,13 @@ export default function Preloader({ onComplete }: PreloaderProps) {
         0
       )
 
-      // SG emblem text fades in at 0.3s
-      tl.to(
-        sgTextRef.current,
-        {
-          opacity: 1,
-          duration: 0.5,
-          ease: 'power2.out',
-        },
-        0.3
-      )
+      tl.to(sgTextRef.current, { opacity: 1, duration: 0.5, ease: 'power2.out' }, 0.3)
+      tl.to(brandRef.current, { opacity: 1, clipPath: 'inset(0 0% 0 0)', duration: 0.5, ease: 'power3.out' }, 0.6)
+      tl.to(taglineRef.current, { opacity: 1, duration: 0.4, ease: 'power2.out' }, 0.9)
 
-      // "SWIFT GOODS" text reveal at 0.6s
-      tl.to(
-        brandRef.current,
-        {
-          opacity: 1,
-          clipPath: 'inset(0 0% 0 0)',
-          duration: 0.5,
-          ease: 'power3.out',
-        },
-        0.6
-      )
-
-      // Tagline fades in at 0.9s
-      tl.to(
-        taglineRef.current,
-        {
-          opacity: 1,
-          duration: 0.4,
-          ease: 'power2.out',
-        },
-        0.9
-      )
-
-      // EXIT at 2.4s — slide the container up + blur
       tl.to(
         containerRef.current,
-        {
-          y: '-100%',
-          filter: 'blur(8px)',
-          duration: 0.75,
-          ease: 'power3.inOut',
-        },
+        { y: '-100%', filter: 'blur(8px)', duration: 0.75, ease: 'power3.inOut' },
         2.4
       )
     }, containerRef)
@@ -130,7 +85,7 @@ export default function Preloader({ onComplete }: PreloaderProps) {
         willChange: 'transform, filter',
       }}
     >
-      {/* ── Counter (top-right) ─────────────────────────────────── */}
+      {/* Counter */}
       <div
         style={{
           position: 'absolute',
@@ -146,60 +101,52 @@ export default function Preloader({ onComplete }: PreloaderProps) {
         <span ref={counterRef}>000</span>
       </div>
 
-      {/* ── Signature Logo ────────────────────────────────────── */}
+      {/* Emblem */}
       <div ref={emblemRef} style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        {/* Outer ring — spins CW 12s */}
+        {/* Outer ring */}
         <div
           style={{
             position: 'absolute',
-            width: '220px',
-            height: '220px',
+            width: '180px',
+            height: '180px',
             borderRadius: '50%',
             border: '1px solid rgba(201,168,76,0.5)',
             borderTopColor: 'rgba(201,168,76,1)',
             animation: 'sg-spin-cw 12s linear infinite',
           }}
         />
-
-        {/* Inner ring — spins CCW 8s */}
+        {/* Inner ring */}
         <div
           style={{
             position: 'absolute',
-            width: '140px',
-            height: '140px',
+            width: '110px',
+            height: '110px',
             borderRadius: '50%',
             border: '1px solid transparent',
             borderBottomColor: 'rgba(201,168,76,0.6)',
             animation: 'sg-spin-ccw 8s linear infinite',
           }}
         />
-
-        {/* Signature logo — transparent PNG, gold-tinted */}
-        <div
+        {/* SG monogram — pure CSS, no images */}
+        <span
           ref={sgTextRef}
           style={{
-            width: '200px',
-            height: '100px',
-            position: 'relative',
+            fontFamily: 'var(--font-impact), "Bebas Neue", sans-serif',
+            fontSize: '4rem',
+            lineHeight: 1,
+            background: 'linear-gradient(135deg, #c9a84c, #e6c870, #c8aa8a)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
             userSelect: 'none',
+            letterSpacing: '0.05em',
           }}
         >
-          <Image
-            src="/brand/sg-signature-logo.png"
-            alt="Swift Goods"
-            fill
-            sizes="200px"
-            style={{
-              objectFit: 'contain',
-              filter: 'sepia(1) saturate(3) hue-rotate(15deg) brightness(0.9)',
-            }}
-            priority
-            unoptimized
-          />
-        </div>
+          SG
+        </span>
       </div>
 
-      {/* ── Brand name ──────────────────────────────────────────── */}
+      {/* Brand name */}
       <p
         ref={brandRef}
         style={{
@@ -216,7 +163,7 @@ export default function Preloader({ onComplete }: PreloaderProps) {
         SWIFT GOODS
       </p>
 
-      {/* ── Tagline ─────────────────────────────────────────────── */}
+      {/* Tagline */}
       <p
         ref={taglineRef}
         style={{
@@ -232,7 +179,7 @@ export default function Preloader({ onComplete }: PreloaderProps) {
         COMFORT IS LUXURY.
       </p>
 
-      {/* ── Progress bar (bottom) ───────────────────────────────── */}
+      {/* Progress bar */}
       <div
         style={{
           position: 'absolute',

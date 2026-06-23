@@ -6,15 +6,12 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import LuxuryButton from '@/components/ui/LuxuryButton'
 
-// ─── Data ────────────────────────────────────────────────────────────────────
-
 interface LookbookSlide {
   id: string
   src: string
   alt: string
   collection: string
   href: string
-  aspect: 'landscape' | 'portrait'
 }
 
 const SLIDES: LookbookSlide[] = [
@@ -24,7 +21,6 @@ const SLIDES: LookbookSlide[] = [
     alt: 'Two guys with red Supra at sunset',
     collection: 'SUPRA SESSIONS',
     href: '/collections/supra-sessions',
-    aspect: 'landscape',
   },
   {
     id: '02',
@@ -32,7 +28,6 @@ const SLIDES: LookbookSlide[] = [
     alt: 'Solo portrait, black hoodie stepping out of car',
     collection: 'NOIR ESSENTIALS',
     href: '/collections/noir-essentials',
-    aspect: 'portrait',
   },
   {
     id: '03',
@@ -40,7 +35,6 @@ const SLIDES: LookbookSlide[] = [
     alt: 'Solo, cream hoodie stepping out of car',
     collection: 'CREAM COLLECTION',
     href: '/collections/cream',
-    aspect: 'landscape',
   },
   {
     id: '04',
@@ -48,7 +42,6 @@ const SLIDES: LookbookSlide[] = [
     alt: 'Two guys against concrete brick wall',
     collection: 'CONCRETE CULTURE',
     href: '/collections/concrete-culture',
-    aspect: 'portrait',
   },
   {
     id: '05',
@@ -56,87 +49,89 @@ const SLIDES: LookbookSlide[] = [
     alt: 'Night shot on car with dramatic lighting',
     collection: 'AFTER DARK',
     href: '/collections/after-dark',
-    aspect: 'landscape',
   },
 ]
 
-// ─── Component ───────────────────────────────────────────────────────────────
-
 export default function Lookbook() {
   const sectionRef = useRef<HTMLElement>(null)
-  const trackRef = useRef<HTMLDivElement>(null)
-  const progressRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger)
 
     const ctx = gsap.context(() => {
-      const track = trackRef.current
-      const section = sectionRef.current
-      if (!track || !section) return
+      const cards = sectionRef.current?.querySelectorAll<HTMLElement>('.lb-card')
+      if (!cards) return
 
-      const totalScroll = track.scrollWidth - window.innerWidth
+      cards.forEach((card) => {
+        const img = card.querySelector('.lb-card-img')
+        const overlay = card.querySelector('.lb-card-overlay')
 
-      const st = ScrollTrigger.create({
-        trigger: section,
-        start: 'top top',
-        end: () => `+=${totalScroll}`,
-        pin: true,
-        scrub: true,
-        invalidateOnRefresh: true,
-        onUpdate: (self) => {
-          if (progressRef.current) {
-            progressRef.current.style.width = `${self.progress * 100}%`
-          }
-        },
-      })
+        if (img) {
+          gsap.from(img, {
+            scale: 1.15,
+            opacity: 0,
+            duration: 1.2,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: card,
+              start: 'top 85%',
+              toggleActions: 'play none none none',
+            },
+          })
+        }
 
-      gsap.to(track, {
-        x: () => -totalScroll,
-        ease: 'none',
-        scrollTrigger: st,
+        if (overlay) {
+          gsap.from(overlay, {
+            opacity: 0,
+            y: 30,
+            duration: 0.8,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: card,
+              start: 'top 75%',
+              toggleActions: 'play none none none',
+            },
+          })
+        }
       })
     }, sectionRef)
 
-    return () => {
-      ctx.revert()
-    }
+    return () => ctx.revert()
   }, [])
 
   return (
-    <>
-      <section
-        ref={sectionRef}
-        id="lookbook"
-        className="sg-lookbook-section"
-      >
-        {/* ── Scrolling track ──────────────────────────────────────────── */}
-        <div ref={trackRef} className="sg-lookbook-track">
-
-          {/* ── Title panel ────────────────────────────────────────────── */}
-          <div className="sg-lookbook-title-panel">
-            {/* Gold label with line */}
-            <div className="sg-lookbook-label-row">
-              <span className="sg-lookbook-label-line" />
-              <span
-                style={{
-                  fontFamily: 'var(--font-body, Inter, sans-serif)',
-                  fontSize: '11px',
-                  letterSpacing: '0.42em',
-                  textTransform: 'uppercase',
-                  color: '#c9a84c',
-                  fontWeight: 500,
-                }}
-              >
-                THE LOOKBOOK
-              </span>
-            </div>
-
-            {/* Big heading */}
+    <section
+      ref={sectionRef}
+      id="lookbook"
+      style={{ background: '#050505' }}
+      className="py-24"
+    >
+      <div className="max-w-7xl mx-auto px-6 lg:px-12">
+        {/* Header */}
+        <div className="mb-16">
+          <div className="inline-flex items-center gap-4 mb-6">
+            <span
+              className="block w-12 h-px"
+              style={{ background: 'linear-gradient(to right, #c9a84c, transparent)' }}
+            />
+            <span
+              style={{
+                fontFamily: 'var(--font-body, Inter, sans-serif)',
+                fontSize: '11px',
+                letterSpacing: '0.42em',
+                textTransform: 'uppercase',
+                color: '#c9a84c',
+                fontWeight: 500,
+              }}
+            >
+              THE LOOKBOOK
+            </span>
+          </div>
+          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
             <h2
               style={{
                 fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)',
-                fontSize: 'clamp(4rem, 10vw, 9rem)',
+                fontSize: 'clamp(3rem, 7vw, 6.5rem)',
                 color: '#f5f5f5',
                 lineHeight: 0.95,
                 letterSpacing: '0.04em',
@@ -144,112 +139,109 @@ export default function Lookbook() {
                 margin: 0,
               }}
             >
-              CAMPAIGN
-              <br />
-              2025
+              CAMPAIGN 2025
             </h2>
-
-            {/* Body text */}
             <p
+              className="max-w-xs lg:text-right"
               style={{
                 fontFamily: 'var(--font-display, "Cormorant Garamond", serif)',
-                fontSize: '1.15rem',
+                fontSize: '1.1rem',
                 fontStyle: 'italic',
                 color: '#666',
-                maxWidth: '340px',
                 lineHeight: 1.65,
-                marginTop: '1.5rem',
+                margin: 0,
               }}
             >
-              Five frames. One story. Scroll to explore the world of Swift Goods.
+              Five frames. One story. Explore the world of Swift Goods.
             </p>
-
-            {/* Scroll hint */}
-            <div
-              style={{
-                marginTop: '2.5rem',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.75rem',
-              }}
-            >
-              <span
-                style={{
-                  fontFamily: 'var(--font-body, Inter, sans-serif)',
-                  fontSize: '10px',
-                  letterSpacing: '0.38em',
-                  textTransform: 'uppercase',
-                  color: '#c9a84c',
-                }}
-              >
-                SCROLL TO EXPLORE
-              </span>
-              <span
-                style={{
-                  display: 'inline-block',
-                  width: '32px',
-                  height: '1px',
-                  background: 'linear-gradient(to right, #c9a84c, transparent)',
-                }}
-              />
-            </div>
           </div>
+        </div>
 
-          {/* ── Photo panels ───────────────────────────────────────────── */}
-          {SLIDES.map((slide) => (
-            <div key={slide.id} className="sg-lookbook-panel">
-              {/* Panel number */}
-              <span className="sg-lookbook-panel-num">{slide.id}</span>
-
-              {/* Photo container with hover scale */}
+        {/* Masonry grid — alternating large/small */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {SLIDES.map((slide, idx) => {
+            const isWide = idx === 0 || idx === 4
+            return (
               <div
-                className="sg-lookbook-photo-wrap"
+                key={slide.id}
+                className={`lb-card group relative overflow-hidden cursor-pointer ${
+                  isWide ? 'md:col-span-2' : ''
+                }`}
                 style={{
-                  aspectRatio: slide.aspect === 'portrait' ? '4 / 5' : '3 / 4',
+                  height: isWide ? 'clamp(400px, 50vw, 600px)' : 'clamp(350px, 45vw, 520px)',
                 }}
               >
-                <Image
-                  src={slide.src}
-                  alt={slide.alt}
-                  fill
-                  sizes="(max-width: 768px) 90vw, 70vw"
-                  style={{ objectFit: 'cover' }}
-                  priority={slide.id === '01'}
-                />
-              </div>
+                <div className="lb-card-img absolute inset-0">
+                  <Image
+                    src={slide.src}
+                    alt={slide.alt}
+                    fill
+                    sizes={isWide ? '100vw' : '(max-width: 768px) 100vw, 50vw'}
+                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                  />
+                </div>
 
-              {/* Caption area */}
-              <div className="sg-lookbook-caption">
-                <div className="sg-lookbook-caption-line" />
-                <h3
+                {/* Gradient overlay */}
+                <div
+                  className="absolute inset-0 transition-opacity duration-500 group-hover:opacity-80"
                   style={{
-                    fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)',
-                    fontSize: '1.5rem',
-                    color: '#f5f5f5',
-                    letterSpacing: '0.12em',
-                    textTransform: 'uppercase',
-                    margin: 0,
-                    lineHeight: 1.2,
+                    opacity: 0.6,
+                    background: 'linear-gradient(to top, rgba(5,5,5,0.95) 0%, rgba(5,5,5,0.3) 40%, transparent 70%)',
                   }}
-                >
-                  {slide.collection}
-                </h3>
-                <LuxuryButton variant="ghost" size="sm" href={slide.href}>
-                  VIEW COLLECTION
-                </LuxuryButton>
+                />
+
+                {/* Gold border on hover */}
+                <div
+                  className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                  style={{ border: '1px solid rgba(201,168,76,0.3)' }}
+                />
+
+                {/* Content */}
+                <div className="lb-card-overlay absolute bottom-0 left-0 right-0 p-6 md:p-8 z-10">
+                  <span
+                    className="block mb-2"
+                    style={{
+                      fontFamily: 'var(--font-body, Inter, sans-serif)',
+                      fontSize: '10px',
+                      letterSpacing: '0.35em',
+                      color: 'rgba(201,168,76,0.6)',
+                    }}
+                  >
+                    {slide.id}
+                  </span>
+                  <h3
+                    style={{
+                      fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)',
+                      fontSize: isWide ? 'clamp(1.8rem, 3vw, 2.5rem)' : 'clamp(1.4rem, 2.5vw, 2rem)',
+                      color: '#f5f5f5',
+                      letterSpacing: '0.12em',
+                      textTransform: 'uppercase',
+                      margin: 0,
+                      marginBottom: '0.75rem',
+                      lineHeight: 1.2,
+                    }}
+                  >
+                    {slide.collection}
+                  </h3>
+                  <LuxuryButton variant="ghost" size="sm" href={slide.href}>
+                    VIEW COLLECTION
+                  </LuxuryButton>
+                </div>
               </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
+      </div>
 
-        {/* ── Progress bar at bottom of pinned section ─────────────────── */}
-        <div className="sg-lookbook-progress-bar">
-          <div ref={progressRef} className="sg-lookbook-progress-fill" />
-        </div>
-      </section>
-
-      {/* ── Marquee brand quote banner — outside the pinned section ───── */}
-      <div className="sg-lookbook-marquee-wrap">
+      {/* Marquee */}
+      <div
+        className="mt-20 overflow-hidden"
+        style={{
+          borderTop: '1px solid rgba(201,168,76,0.08)',
+          borderBottom: '1px solid rgba(201,168,76,0.08)',
+          padding: '1.25rem 0',
+        }}
+      >
         <div
           style={{
             display: 'flex',
@@ -301,6 +293,6 @@ export default function Lookbook() {
           ))}
         </div>
       </div>
-    </>
+    </section>
   )
 }
