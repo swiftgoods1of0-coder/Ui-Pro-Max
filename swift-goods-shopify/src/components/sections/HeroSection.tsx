@@ -6,10 +6,13 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import LuxuryButton from '@/components/ui/LuxuryButton'
 
-const HeroScene = dynamic(() => import('@/components/three/HeroScene'), {
-  ssr: false,
-  loading: () => <div className="absolute inset-0" style={{ background: '#050505' }} />,
-})
+const HeroScene = dynamic(
+  () => import('@/components/three/HeroScene').catch(() => ({ default: () => null })),
+  {
+    ssr: false,
+    loading: () => <div className="absolute inset-0" style={{ background: '#050505' }} />,
+  }
+)
 
 export default function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null)

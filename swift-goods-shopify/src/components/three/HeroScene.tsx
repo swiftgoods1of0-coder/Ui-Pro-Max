@@ -2,9 +2,18 @@
 
 import { Canvas } from '@react-three/fiber'
 import { Environment, AdaptiveDpr, PerformanceMonitor } from '@react-three/drei'
-import { Suspense, useRef, useState, useCallback } from 'react'
+import { Suspense, useRef, useState, useCallback, useEffect } from 'react'
 import SwiftEmblem from './SwiftEmblem'
 import ParticleSystem from './ParticleSystem'
+
+function isWebGLAvailable(): boolean {
+  try {
+    const canvas = document.createElement('canvas')
+    return !!(canvas.getContext('webgl2') || canvas.getContext('webgl'))
+  } catch {
+    return false
+  }
+}
 
 interface HeroSceneProps {
   className?: string
@@ -14,6 +23,12 @@ export default function HeroScene({ className }: HeroSceneProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const [mouse, setMouse] = useState({ x: 0, y: 0 })
   const [dpr, setDpr] = useState(1.5)
+  const [webGLSupported, setWebGLSupported] = useState(true)
+  const [hasError, setHasError] = useState(false)
+
+  useEffect(() => {
+    if (!isWebGLAvailable()) setWebGLSupported(false)
+  }, [])
 
   const handlePointerMove = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
     if (!containerRef.current) return
@@ -26,6 +41,8 @@ export default function HeroScene({ className }: HeroSceneProps) {
   const handlePointerLeave = useCallback(() => {
     setMouse({ x: 0, y: 0 })
   }, [])
+
+  if (!webGLSupported || hasError) return null
 
   return (
     <div
@@ -46,6 +63,8 @@ export default function HeroScene({ className }: HeroSceneProps) {
         dpr={[1, 2]}
         camera={{ position: [0, 0, 5], fov: 45, near: 0.1, far: 100 }}
         style={{ background: 'transparent' }}
+        onCreated={() => {}}
+        fallback={null}
       >
         <PerformanceMonitor
           onDecline={() => setDpr(1)}
@@ -53,10 +72,8 @@ export default function HeroScene({ className }: HeroSceneProps) {
         >
           <AdaptiveDpr pixelated />
 
-          {/* Dramatic chrome lighting setup */}
           <ambientLight intensity={0.15} color="#111111" />
 
-          {/* Key light - platinum white from top-right-front */}
           <pointLight
             position={[10, 10, 10]}
             intensity={2}
@@ -65,7 +82,6 @@ export default function HeroScene({ className }: HeroSceneProps) {
             distance={50}
           />
 
-          {/* Gold fill light - lower left */}
           <pointLight
             position={[-10, -5, 5]}
             intensity={1}
@@ -74,7 +90,6 @@ export default function HeroScene({ className }: HeroSceneProps) {
             distance={50}
           />
 
-          {/* Cool blue rim - below and behind */}
           <pointLight
             position={[0, -10, -10]}
             intensity={0.8}
@@ -83,7 +98,6 @@ export default function HeroScene({ className }: HeroSceneProps) {
             distance={50}
           />
 
-          {/* Top highlight - pure white */}
           <pointLight
             position={[5, 5, -5]}
             intensity={1.5}
@@ -92,7 +106,6 @@ export default function HeroScene({ className }: HeroSceneProps) {
             distance={50}
           />
 
-          {/* Subtle warm back light */}
           <pointLight
             position={[-5, 3, -8]}
             intensity={0.6}

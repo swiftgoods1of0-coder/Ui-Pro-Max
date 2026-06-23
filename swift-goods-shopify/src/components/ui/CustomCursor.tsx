@@ -181,7 +181,11 @@ export default function CustomCursor() {
   }, [animate, applyState, detectState]);
 
   // -- Don't render anything on touch devices --------------------------------
-  if (typeof window !== 'undefined' && isTouchDevice()) return null;
+  const [isTouch, setIsTouch] = useState(false);
+  useEffect(() => {
+    if (isTouchDevice()) setIsTouch(true);
+  }, []);
+  if (isTouch) return null;
 
   // ---------------------------------------------------------------------------
   // Derived styles from cursorState

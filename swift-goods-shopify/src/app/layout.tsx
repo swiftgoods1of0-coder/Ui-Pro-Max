@@ -36,7 +36,7 @@ const inter = Inter({
 // DYNAMIC IMPORTS (client-only)
 // ============================================================
 const CustomCursor = dynamic(
-  () => import('@/components/ui/CustomCursor'),
+  () => import('@/components/ui/CustomCursor').catch(() => ({ default: () => null })),
   { ssr: false }
 )
 
