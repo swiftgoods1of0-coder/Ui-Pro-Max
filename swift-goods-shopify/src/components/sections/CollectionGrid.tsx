@@ -84,7 +84,7 @@ export default function CollectionGrid({ products }: CollectionGridProps) {
     <section
       ref={sectionRef}
       id="shop"
-      className="py-32"
+      className="pt-32 pb-16"
       style={{ background: '#0a0a0a' }}
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-12">

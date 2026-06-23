@@ -965,3 +965,9 @@ button:focus-visible {
     display: none !important;
   }
 }
+
+@media (max-width: 640px) {
+  .announcement-hide-mobile {
+    display: none !important;
+  }
+}
