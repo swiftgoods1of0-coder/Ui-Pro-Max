@@ -24,10 +24,10 @@ interface NavigationProps {
 // ---------------------------------------------------------------------------
 
 const NAV_LINKS: NavLink[] = [
-  { label: 'COLLECTION', href: '/collection' },
+  { label: 'SHOP', href: '/collections' },
+  { label: 'NEW ARRIVALS', href: '/collections/new-arrivals' },
   { label: 'LOOKBOOK', href: '/lookbook' },
   { label: 'BRAND', href: '/brand' },
-  { label: 'EXCLUSIVE', href: '/exclusive' },
 ];
 
 const COLORS = {
@@ -657,13 +657,42 @@ export default function Navigation({ cartCount = 0 }: NavigationProps) {
   // ---- Render --------------------------------------------------------------
   return (
     <>
+      {/* Announcement bar */}
+      <div
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          zIndex: 101,
+          height: '32px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '2rem',
+          backgroundColor: '#c9a84c',
+          fontFamily: 'var(--font-body, Inter, sans-serif)',
+          fontSize: '0.6875rem',
+          fontWeight: 500,
+          letterSpacing: '0.15em',
+          textTransform: 'uppercase',
+          color: '#0a0a0a',
+        }}
+      >
+        <span>Free Shipping Over $150</span>
+        <span aria-hidden="true" className="announcement-hide-mobile" style={{ opacity: 0.4 }}>|</span>
+        <span className="announcement-hide-mobile">Premium Quality Guaranteed</span>
+        <span aria-hidden="true" className="announcement-hide-mobile" style={{ opacity: 0.4 }}>|</span>
+        <span className="announcement-hide-mobile">Easy Returns</span>
+      </div>
+
       <nav
         ref={navRef}
         role="navigation"
         aria-label="Main navigation"
         style={{
           position: 'fixed',
-          top: 0,
+          top: '32px',
           left: 0,
           right: 0,
           zIndex: 100,

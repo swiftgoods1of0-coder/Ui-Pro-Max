@@ -7,6 +7,7 @@ import SignatureMoment from '@/components/sections/SignatureMoment'
 import Lookbook from '@/components/sections/Lookbook'
 import FeaturedProducts from '@/components/sections/FeaturedProducts'
 import CollectionGrid from '@/components/sections/CollectionGrid'
+import FinalCTA from '@/components/sections/FinalCTA'
 import { MOCK_PRODUCTS, type ShopifyProduct as FullShopifyProduct } from '@/lib/shopify'
 
 // The section components (FeaturedProducts, CollectionGrid) use a simplified
@@ -71,6 +72,7 @@ export default function Home() {
       <SignatureMoment />
       <Lookbook />
       <CollectionGrid products={adaptedProducts} />
+      <FinalCTA />
       <Footer />
     </main>
   )

@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
+import Image from 'next/image'
 import gsap from 'gsap'
 
 interface PreloaderProps {
@@ -10,7 +11,7 @@ interface PreloaderProps {
 export default function Preloader({ onComplete }: PreloaderProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const emblemRef = useRef<HTMLDivElement>(null)
-  const sgTextRef = useRef<HTMLSpanElement>(null)
+  const sgTextRef = useRef<HTMLDivElement>(null)
   const brandRef = useRef<HTMLParagraphElement>(null)
   const taglineRef = useRef<HTMLParagraphElement>(null)
   const progressRef = useRef<HTMLDivElement>(null)
@@ -145,14 +146,14 @@ export default function Preloader({ onComplete }: PreloaderProps) {
         <span ref={counterRef}>000</span>
       </div>
 
-      {/* ── Emblem ──────────────────────────────────────────────── */}
+      {/* ── Signature Logo ────────────────────────────────────── */}
       <div ref={emblemRef} style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         {/* Outer ring — spins CW 12s */}
         <div
           style={{
             position: 'absolute',
-            width: '180px',
-            height: '180px',
+            width: '220px',
+            height: '220px',
             borderRadius: '50%',
             border: '1px solid rgba(201,168,76,0.5)',
             borderTopColor: 'rgba(201,168,76,1)',
@@ -164,8 +165,8 @@ export default function Preloader({ onComplete }: PreloaderProps) {
         <div
           style={{
             position: 'absolute',
-            width: '110px',
-            height: '110px',
+            width: '140px',
+            height: '140px',
             borderRadius: '50%',
             border: '1px solid transparent',
             borderBottomColor: 'rgba(201,168,76,0.6)',
@@ -173,23 +174,27 @@ export default function Preloader({ onComplete }: PreloaderProps) {
           }}
         />
 
-        {/* SG text */}
-        <span
+        {/* Signature logo image */}
+        <div
           ref={sgTextRef}
           style={{
-            fontFamily: 'var(--font-impact), "Bebas Neue", sans-serif',
-            fontSize: '4rem',
-            lineHeight: 1,
-            background: 'linear-gradient(135deg, #c9a84c, #e6c870, #c8aa8a)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text',
+            width: '160px',
+            height: '80px',
+            position: 'relative',
             userSelect: 'none',
-            letterSpacing: '0.05em',
           }}
         >
-          SG
-        </span>
+          <Image
+            src="/brand/sg-signature-logo.jpeg"
+            alt="Swift Goods"
+            fill
+            style={{
+              objectFit: 'contain',
+              filter: 'sepia(1) saturate(2) hue-rotate(15deg) brightness(0.85)',
+            }}
+            priority
+          />
+        </div>
       </div>
 
       {/* ── Brand name ──────────────────────────────────────────── */}
@@ -203,7 +208,7 @@ export default function Preloader({ onComplete }: PreloaderProps) {
           color: '#c9a84c',
           userSelect: 'none',
           textTransform: 'uppercase',
-          paddingRight: '0.5em', /* compensate for letter-spacing on last char */
+          paddingRight: '0.5em',
         }}
       >
         SWIFT GOODS

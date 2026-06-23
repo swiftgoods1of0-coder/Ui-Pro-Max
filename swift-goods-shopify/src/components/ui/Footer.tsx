@@ -1,8 +1,9 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -85,32 +86,70 @@ const TikTokIcon = () => (
 );
 
 // ---------------------------------------------------------------------------
+// Trust signal icons (inline SVGs, 28x28)
+// ---------------------------------------------------------------------------
+
+const ShippingIcon = () => (
+  <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M2 7h15v12H2V7z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+    <path d="M17 11h5l4 4v4h-9V11z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+    <circle cx="7" cy="21" r="2" stroke="currentColor" strokeWidth="1.5" />
+    <circle cx="21" cy="21" r="2" stroke="currentColor" strokeWidth="1.5" />
+  </svg>
+);
+
+const QualityIcon = () => (
+  <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M14 2l3.5 7 7.5 1-5.5 5.5 1.3 7.5L14 19.5 7.2 23l1.3-7.5L3 10l7.5-1L14 2z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+  </svg>
+);
+
+const ReturnsIcon = () => (
+  <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M4 14a10 10 0 0118-6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    <path d="M24 14a10 10 0 01-18 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    <path d="M22 4v4h-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M6 24v-4h4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
+const SecureIcon = () => (
+  <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <rect x="5" y="12" width="18" height="13" rx="2" stroke="currentColor" strokeWidth="1.5" />
+    <path d="M9 12V8a5 5 0 0110 0v4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    <circle cx="14" cy="18.5" r="1.5" fill="currentColor" />
+    <line x1="14" y1="20" x2="14" y2="22" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+  </svg>
+);
+
+// ---------------------------------------------------------------------------
 // Data
 // ---------------------------------------------------------------------------
 
-interface NavLink {
+interface FooterNavLink {
   label: string;
   href: string;
 }
 
 interface FooterColumn {
   heading: string;
-  links: NavLink[];
+  links: FooterNavLink[];
 }
 
 const footerColumns: FooterColumn[] = [
   {
-    heading: 'Collection',
+    heading: 'SHOP',
     links: [
       { label: 'New Arrivals', href: '/collections/new-arrivals' },
-      { label: 'Essentials', href: '/collections/essentials' },
-      { label: 'Outerwear', href: '/collections/outerwear' },
+      { label: 'Hoodies', href: '/collections/hoodies' },
+      { label: 'Joggers', href: '/collections/joggers' },
+      { label: 'Sets', href: '/collections/sets' },
       { label: 'Accessories', href: '/collections/accessories' },
       { label: 'Sale', href: '/collections/sale' },
     ],
   },
   {
-    heading: 'Brand',
+    heading: 'BRAND',
     links: [
       { label: 'Our Story', href: '/pages/our-story' },
       { label: 'Sustainability', href: '/pages/sustainability' },
@@ -119,7 +158,7 @@ const footerColumns: FooterColumn[] = [
     ],
   },
   {
-    heading: 'Support',
+    heading: 'SUPPORT',
     links: [
       { label: 'FAQ', href: '/pages/faq' },
       { label: 'Shipping & Returns', href: '/pages/shipping-returns' },
@@ -138,9 +177,22 @@ interface SocialLink {
 
 const socialLinks: SocialLink[] = [
   { label: 'Instagram', href: 'https://instagram.com/swiftgoods', Icon: InstagramIcon },
+  { label: 'TikTok', href: 'https://tiktok.com/@swiftgoods', Icon: TikTokIcon },
   { label: 'Twitter / X', href: 'https://x.com/swiftgoods', Icon: TwitterXIcon },
   { label: 'Pinterest', href: 'https://pinterest.com/swiftgoods', Icon: PinterestIcon },
-  { label: 'TikTok', href: 'https://tiktok.com/@swiftgoods', Icon: TikTokIcon },
+];
+
+interface TrustSignal {
+  Icon: () => JSX.Element;
+  title: string;
+  subtitle: string;
+}
+
+const trustSignals: TrustSignal[] = [
+  { Icon: ShippingIcon, title: 'FREE SHIPPING', subtitle: 'On orders over $150' },
+  { Icon: QualityIcon, title: 'PREMIUM QUALITY', subtitle: 'Luxury materials & craft' },
+  { Icon: ReturnsIcon, title: 'EASY RETURNS', subtitle: '30-day hassle-free returns' },
+  { Icon: SecureIcon, title: 'SECURE CHECKOUT', subtitle: 'Encrypted & protected' },
 ];
 
 // ---------------------------------------------------------------------------
@@ -158,20 +210,20 @@ const ColumnHeading = ({ children }: { children: ReactNode }) => (
       marginBottom: '1.25rem',
       fontSize: '0.8125rem',
       textTransform: 'uppercase',
+      marginTop: 0,
     }}
   >
     {children}
   </h3>
 );
 
-const NavLink = ({ href, children }: { href: string; children: ReactNode }) => (
+const FooterLink = ({ href, children }: { href: string; children: ReactNode }) => (
   <li>
     <Link
       href={href}
-      className="footer-nav-link"
       style={{
         display: 'inline-block',
-        color: '#f5f5f5',
+        color: '#999',
         textDecoration: 'none',
         fontSize: '0.875rem',
         lineHeight: '1.6',
@@ -185,7 +237,7 @@ const NavLink = ({ href, children }: { href: string; children: ReactNode }) => (
       }}
       onMouseLeave={(e) => {
         const el = e.currentTarget;
-        el.style.color = '#f5f5f5';
+        el.style.color = '#999';
         el.style.transform = 'translateX(0)';
       }}
     >
@@ -199,134 +251,332 @@ const NavLink = ({ href, children }: { href: string; children: ReactNode }) => (
 // ---------------------------------------------------------------------------
 
 export default function Footer() {
-  const headlineRef = useRef<HTMLHeadingElement>(null);
+  const footerRef = useRef<HTMLElement>(null);
+  const emailSectionRef = useRef<HTMLDivElement>(null);
+  const trustBarRef = useRef<HTMLDivElement>(null);
+  const [email, setEmail] = useState('');
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
-    const headline = headlineRef.current;
-    if (!headline) return;
 
     const ctx = gsap.context(() => {
-      gsap.fromTo(
-        headline,
-        { y: 80, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 1.1,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: headline,
-            start: 'top 90%',
-            end: 'top 50%',
-            toggleActions: 'play none none none',
+      // Animate the signature logo and email section
+      const emailSection = emailSectionRef.current;
+      if (emailSection) {
+        const logo = emailSection.querySelector('[data-animate="logo"]');
+        const heading = emailSection.querySelector('[data-animate="heading"]');
+        const subtitle = emailSection.querySelector('[data-animate="subtitle"]');
+        const form = emailSection.querySelector('[data-animate="form"]');
+
+        if (logo) {
+          gsap.fromTo(
+            logo,
+            { opacity: 0, scale: 0.9 },
+            {
+              opacity: 1,
+              scale: 1,
+              duration: 1.2,
+              ease: 'power3.out',
+              scrollTrigger: {
+                trigger: emailSection,
+                start: 'top 85%',
+                toggleActions: 'play none none none',
+              },
+            },
+          );
+        }
+
+        if (heading) {
+          gsap.fromTo(
+            heading,
+            { opacity: 0, y: 30 },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.9,
+              ease: 'power3.out',
+              delay: 0.2,
+              scrollTrigger: {
+                trigger: emailSection,
+                start: 'top 85%',
+                toggleActions: 'play none none none',
+              },
+            },
+          );
+        }
+
+        if (subtitle) {
+          gsap.fromTo(
+            subtitle,
+            { opacity: 0, y: 20 },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.8,
+              ease: 'power3.out',
+              delay: 0.35,
+              scrollTrigger: {
+                trigger: emailSection,
+                start: 'top 85%',
+                toggleActions: 'play none none none',
+              },
+            },
+          );
+        }
+
+        if (form) {
+          gsap.fromTo(
+            form,
+            { opacity: 0, y: 20 },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.8,
+              ease: 'power3.out',
+              delay: 0.5,
+              scrollTrigger: {
+                trigger: emailSection,
+                start: 'top 85%',
+                toggleActions: 'play none none none',
+              },
+            },
+          );
+        }
+      }
+
+      // Animate trust bar items
+      const trustBar = trustBarRef.current;
+      if (trustBar) {
+        const items = trustBar.querySelectorAll('[data-animate="trust-item"]');
+        gsap.fromTo(
+          items,
+          { opacity: 0, y: 20 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.6,
+            ease: 'power2.out',
+            stagger: 0.1,
+            scrollTrigger: {
+              trigger: trustBar,
+              start: 'top 90%',
+              toggleActions: 'play none none none',
+            },
           },
-        },
-      );
-    });
+        );
+      }
+    }, footerRef);
 
     return () => ctx.revert();
   }, []);
 
+  const handleSubscribe = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Subscription logic placeholder
+    setEmail('');
+  };
+
   return (
     <footer
+      ref={footerRef}
       style={{
-        backgroundColor: '#050505',
+        backgroundColor: '#0a0a0a',
         color: '#f5f5f5',
         position: 'relative',
         overflow: 'hidden',
       }}
     >
-      {/* ------------------------------------------------------------------ */}
-      {/* 1. Thin gold gradient top line                                       */}
-      {/* ------------------------------------------------------------------ */}
+      {/* ================================================================== */}
+      {/* 1. Email Capture Section                                           */}
+      {/* ================================================================== */}
+      <div
+        ref={emailSectionRef}
+        style={{
+          backgroundColor: '#0a0a0a',
+          width: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          textAlign: 'center',
+          paddingTop: '5rem',
+          paddingBottom: '4rem',
+          paddingLeft: '1.5rem',
+          paddingRight: '1.5rem',
+        }}
+      >
+        {/* Signature logo */}
+        <div
+          data-animate="logo"
+          style={{
+            maxWidth: '400px',
+            width: '100%',
+            marginBottom: '2.5rem',
+            opacity: 0,
+          }}
+        >
+          <Image
+            src="/brand/sg-signature-logo.jpeg"
+            alt="Swift Goods Signature"
+            width={400}
+            height={200}
+            style={{
+              width: '100%',
+              height: 'auto',
+              filter: 'sepia(1) saturate(2) hue-rotate(15deg) brightness(0.85)',
+              objectFit: 'contain',
+            }}
+            priority={false}
+          />
+        </div>
+
+        {/* Heading */}
+        <h2
+          data-animate="heading"
+          style={{
+            fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)',
+            fontSize: 'clamp(2rem, 4vw, 3.5rem)',
+            letterSpacing: '0.2em',
+            color: '#f5f5f5',
+            margin: 0,
+            marginBottom: '1rem',
+            opacity: 0,
+          }}
+        >
+          JOIN THE MOVEMENT
+        </h2>
+
+        {/* Subtitle */}
+        <p
+          data-animate="subtitle"
+          style={{
+            fontFamily: 'var(--font-display, "Cormorant Garamond", serif)',
+            fontStyle: 'italic',
+            fontSize: 'clamp(1rem, 1.5vw, 1.25rem)',
+            color: '#888',
+            margin: 0,
+            marginBottom: '2.5rem',
+            maxWidth: '540px',
+            lineHeight: 1.6,
+            opacity: 0,
+          }}
+        >
+          Be the first to know about exclusive drops, limited releases, and members-only offers.
+        </p>
+
+        {/* Email form */}
+        <form
+          data-animate="form"
+          onSubmit={handleSubscribe}
+          style={{
+            display: 'flex',
+            gap: '0',
+            width: '100%',
+            maxWidth: '480px',
+            marginBottom: '1rem',
+            opacity: 0,
+          }}
+        >
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Enter your email"
+            required
+            style={{
+              flex: 1,
+              padding: '0.875rem 1.25rem',
+              backgroundColor: '#111',
+              border: '1px solid #c9a84c',
+              borderRight: 'none',
+              borderRadius: '0',
+              color: '#fff',
+              fontSize: '0.875rem',
+              fontFamily: 'var(--font-body, Inter, sans-serif)',
+              outline: 'none',
+              transition: 'border-color 300ms ease, box-shadow 300ms ease',
+            }}
+            onFocus={(e) => {
+              e.currentTarget.style.borderColor = '#d4b65a';
+              e.currentTarget.style.boxShadow = '0 0 0 1px rgba(201, 168, 76, 0.3)';
+            }}
+            onBlur={(e) => {
+              e.currentTarget.style.borderColor = '#c9a84c';
+              e.currentTarget.style.boxShadow = 'none';
+            }}
+          />
+          <button
+            type="submit"
+            style={{
+              padding: '0.875rem 2rem',
+              backgroundColor: '#c9a84c',
+              color: '#0a0a0a',
+              border: '1px solid #c9a84c',
+              borderRadius: '0',
+              fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)',
+              fontSize: '0.875rem',
+              letterSpacing: '0.15em',
+              cursor: 'pointer',
+              transition: 'background-color 300ms ease, color 300ms ease',
+              whiteSpace: 'nowrap',
+              fontWeight: 600,
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = '#d4b65a';
+              e.currentTarget.style.color = '#000';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = '#c9a84c';
+              e.currentTarget.style.color = '#0a0a0a';
+            }}
+          >
+            SUBSCRIBE
+          </button>
+        </form>
+
+        {/* Fine print */}
+        <p
+          style={{
+            fontSize: '0.6875rem',
+            color: '#555',
+            margin: 0,
+            fontFamily: 'var(--font-body, Inter, sans-serif)',
+          }}
+        >
+          Join 10,000+ members. Unsubscribe anytime.
+        </p>
+      </div>
+
+      {/* ================================================================== */}
+      {/* 2. Gold gradient divider                                           */}
+      {/* ================================================================== */}
       <div
         aria-hidden="true"
         style={{
           height: '2px',
           width: '100%',
           background:
-            'linear-gradient(to right, transparent 0%, #c9a84c 35%, #c9a84c 65%, transparent 100%)',
+            'linear-gradient(to right, transparent 0%, #c9a84c 30%, #d4b65a 50%, #c9a84c 70%, transparent 100%)',
         }}
       />
 
-      {/* ------------------------------------------------------------------ */}
-      {/* 2. Brand statement / hero section                                   */}
-      {/* ------------------------------------------------------------------ */}
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          textAlign: 'center',
-          paddingTop: '5rem',
-          paddingBottom: '3.5rem',
-          paddingLeft: '1.5rem',
-          paddingRight: '1.5rem',
-        }}
-      >
-        {/* Est. label */}
-        <span
-          style={{
-            fontFamily: 'var(--font-display, "Cormorant Garamond", serif)',
-            fontSize: '0.75rem',
-            letterSpacing: '0.35em',
-            color: '#c9a84c',
-            textTransform: 'uppercase',
-            marginBottom: '1.25rem',
-          }}
-        >
-          Est. 2024
-        </span>
-
-        {/* Massive headline */}
-        <h2
-          ref={headlineRef}
-          style={{
-            fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)',
-            fontSize: 'clamp(3rem, 5vw, 8rem)',
-            color: '#f5f5f5',
-            letterSpacing: '0.04em',
-            lineHeight: 1,
-            margin: 0,
-            marginBottom: '2rem',
-            willChange: 'transform, opacity',
-          }}
-        >
-          COMFORT IS LUXURY.
-        </h2>
-
-        {/* Gold divider */}
-        <div
-          aria-hidden="true"
-          style={{
-            height: '1px',
-            width: '60%',
-            background:
-              'linear-gradient(to right, transparent 0%, #c9a84c 30%, #c9a84c 70%, transparent 100%)',
-          }}
-        />
-      </div>
-
-      {/* ------------------------------------------------------------------ */}
-      {/* 3. 4-column grid                                                    */}
-      {/* ------------------------------------------------------------------ */}
+      {/* ================================================================== */}
+      {/* 3. Footer Grid (4 columns)                                         */}
+      {/* ================================================================== */}
       <div
         style={{
           maxWidth: '1280px',
           margin: '0 auto',
           paddingLeft: '2rem',
           paddingRight: '2rem',
-          paddingTop: '2.5rem',
+          paddingTop: '4rem',
           paddingBottom: '4rem',
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
           gap: '3rem',
         }}
       >
-        {/* -- Column 1: Brand / Wordmark + Socials -- */}
+        {/* Column 1: Brand wordmark + tagline + socials */}
         <div>
-          {/* Wordmark */}
           <p
             style={{
               fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)',
@@ -340,7 +590,6 @@ export default function Footer() {
             SWIFT GOODS
           </p>
 
-          {/* Tagline */}
           <p
             style={{
               fontFamily: 'var(--font-display, "Cormorant Garamond", serif)',
@@ -393,7 +642,7 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* -- Columns 2-4: Nav columns -- */}
+        {/* Columns 2-4: SHOP, BRAND, SUPPORT */}
         {footerColumns.map((col) => (
           <div key={col.heading}>
             <ColumnHeading>{col.heading}</ColumnHeading>
@@ -408,30 +657,98 @@ export default function Footer() {
               }}
             >
               {col.links.map((link) => (
-                <NavLink key={link.label} href={link.href}>
+                <FooterLink key={link.label} href={link.href}>
                   {link.label}
-                </NavLink>
+                </FooterLink>
               ))}
             </ul>
           </div>
         ))}
       </div>
 
-      {/* ------------------------------------------------------------------ */}
-      {/* 4. Bottom bar                                                       */}
-      {/* ------------------------------------------------------------------ */}
+      {/* ================================================================== */}
+      {/* 4. Trust Bar                                                       */}
+      {/* ================================================================== */}
       <div
         style={{
-          borderTop: '1px solid #1e1e1e',
-          paddingTop: '1.25rem',
-          paddingBottom: '1.25rem',
+          borderTop: '1px solid #1a1a1a',
+          borderBottom: '1px solid #1a1a1a',
+          backgroundColor: '#0d0d0d',
+        }}
+      >
+        <div
+          ref={trustBarRef}
+          style={{
+            maxWidth: '1280px',
+            margin: '0 auto',
+            paddingTop: '2.5rem',
+            paddingBottom: '2.5rem',
+            paddingLeft: '2rem',
+            paddingRight: '2rem',
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
+            gap: '2rem',
+          }}
+        >
+          {trustSignals.map(({ Icon, title, subtitle }) => (
+            <div
+              key={title}
+              data-animate="trust-item"
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                textAlign: 'center',
+                gap: '0.75rem',
+                opacity: 0,
+              }}
+            >
+              <div style={{ color: '#c9a84c' }}>
+                <Icon />
+              </div>
+              <p
+                style={{
+                  fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)',
+                  fontSize: '0.8125rem',
+                  letterSpacing: '0.15em',
+                  color: '#f5f5f5',
+                  margin: 0,
+                }}
+              >
+                {title}
+              </p>
+              <p
+                style={{
+                  fontFamily: 'var(--font-body, Inter, sans-serif)',
+                  fontSize: '0.6875rem',
+                  color: '#777',
+                  margin: 0,
+                  lineHeight: 1.4,
+                }}
+              >
+                {subtitle}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* ================================================================== */}
+      {/* 5. Bottom Bar                                                      */}
+      {/* ================================================================== */}
+      <div
+        style={{
+          maxWidth: '1280px',
+          margin: '0 auto',
+          paddingTop: '1.5rem',
+          paddingBottom: '1.5rem',
           paddingLeft: '2rem',
           paddingRight: '2rem',
           display: 'flex',
           flexWrap: 'wrap',
           alignItems: 'center',
           justifyContent: 'space-between',
-          gap: '0.75rem',
+          gap: '1rem',
         }}
       >
         {/* Left: copyright */}
@@ -439,14 +756,14 @@ export default function Footer() {
           style={{
             margin: 0,
             fontSize: '0.75rem',
-            color: '#666',
+            color: '#555',
             fontFamily: 'var(--font-body, Inter, sans-serif)',
           }}
         >
-          &copy; 2024 Swift Goods. All rights reserved.
+          &copy; {new Date().getFullYear()} Swift Goods. All rights reserved.
         </p>
 
-        {/* Right: legal links */}
+        {/* Center: legal links */}
         <nav aria-label="Legal navigation">
           <ul
             style={{
@@ -476,7 +793,7 @@ export default function Footer() {
                   href={item.href}
                   style={{
                     fontSize: '0.75rem',
-                    color: '#666',
+                    color: '#555',
                     textDecoration: 'none',
                     fontFamily: 'var(--font-body, Inter, sans-serif)',
                     transition: 'color 300ms ease',
@@ -486,7 +803,7 @@ export default function Footer() {
                     (e.currentTarget as HTMLAnchorElement).style.color = '#c9a84c';
                   }}
                   onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLAnchorElement).style.color = '#666';
+                    (e.currentTarget as HTMLAnchorElement).style.color = '#555';
                   }}
                 >
                   {item.label}
@@ -503,6 +820,37 @@ export default function Footer() {
             ))}
           </ul>
         </nav>
+
+        {/* Right: payment icons placeholder */}
+        <div
+          style={{
+            display: 'flex',
+            gap: '0.5rem',
+            alignItems: 'center',
+          }}
+        >
+          {['Visa', 'Mastercard', 'Amex', 'PayPal', 'Apple Pay'].map((method) => (
+            <span
+              key={method}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: '0.25rem 0.5rem',
+                backgroundColor: '#151515',
+                borderRadius: '3px',
+                fontSize: '0.5625rem',
+                color: '#666',
+                fontFamily: 'var(--font-body, Inter, sans-serif)',
+                letterSpacing: '0.05em',
+                textTransform: 'uppercase',
+                border: '1px solid #222',
+              }}
+            >
+              {method}
+            </span>
+          ))}
+        </div>
       </div>
     </footer>
   );
