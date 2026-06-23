@@ -56,18 +56,17 @@ export default function CollectionGrid({ products }: CollectionGridProps) {
       // Header stagger animate on scroll
       if (headerRef.current) {
         const els = headerRef.current.querySelectorAll<HTMLElement>('.header-el')
-        gsap.fromTo(
+        gsap.from(
           els,
-          { opacity: 0, y: 30 },
           {
-            opacity: 1,
-            y: 0,
+            opacity: 0,
+            y: 30,
             duration: 0.8,
             stagger: 0.1,
             ease: 'power2.out',
             scrollTrigger: {
               trigger: sectionRef.current,
-              start: 'top 82%',
+              start: 'top 85%',
               toggleActions: 'play none none none',
             },
           }
@@ -96,7 +95,7 @@ export default function CollectionGrid({ products }: CollectionGridProps) {
         >
           {/* Left: label + heading */}
           <div>
-            <div className="header-el opacity-0 inline-flex items-center gap-4 mb-4">
+            <div className="header-el inline-flex items-center gap-4 mb-4">
               <span
                 className="block w-10 h-px"
                 style={{ background: 'linear-gradient(to right, #c9a84c, transparent)' }}
@@ -113,7 +112,7 @@ export default function CollectionGrid({ products }: CollectionGridProps) {
               </span>
             </div>
             <h2
-              className="header-el opacity-0 leading-none tracking-widest"
+              className="header-el leading-none tracking-widest"
               style={{
                 fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)',
                 fontSize: 'clamp(2.8rem, 6vw, 5.5rem)',
@@ -125,7 +124,7 @@ export default function CollectionGrid({ products }: CollectionGridProps) {
           </div>
 
           {/* Right: filter chips */}
-          <div className="header-el opacity-0 flex flex-wrap gap-2">
+          <div className="header-el flex flex-wrap gap-2">
             {FILTERS.map((f) => {
               const isActive = activeFilter === f
               return (

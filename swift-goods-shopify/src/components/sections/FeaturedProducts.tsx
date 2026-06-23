@@ -219,7 +219,7 @@ export default function FeaturedProducts({ products }: FeaturedProductsProps) {
     <section
       ref={sectionRef}
       id="collection"
-      className="relative py-32 overflow-hidden"
+      className="relative py-24 overflow-hidden"
       style={{ background: '#111111' }}
     >
       {/* Top accent line */}

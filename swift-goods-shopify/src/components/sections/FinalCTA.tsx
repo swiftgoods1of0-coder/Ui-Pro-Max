@@ -17,75 +17,55 @@ export default function FinalCTA() {
     gsap.registerPlugin(ScrollTrigger)
 
     const ctx = gsap.context(() => {
-      // Label: clip-path reveal from left
-      gsap.fromTo(
-        labelRef.current,
-        { clipPath: 'inset(0 100% 0 0)', opacity: 0 },
-        {
-          clipPath: 'inset(0 0% 0 0)',
-          opacity: 1,
-          duration: 0.9,
-          ease: 'power3.inOut',
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top 65%',
-            toggleActions: 'play none none none',
-          },
+      gsap.from(labelRef.current, {
+        clipPath: 'inset(0 100% 0 0)',
+        opacity: 0,
+        duration: 0.9,
+        ease: 'power3.inOut',
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top 75%',
+          toggleActions: 'play none none none',
         },
-      )
+      })
 
-      // Heading: clip-path reveal from bottom
-      gsap.fromTo(
-        headingRef.current,
-        { clipPath: 'inset(100% 0 0 0)', opacity: 0 },
-        {
-          clipPath: 'inset(0% 0 0 0)',
-          opacity: 1,
-          duration: 1.0,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top 60%',
-            toggleActions: 'play none none none',
-          },
+      gsap.from(headingRef.current, {
+        clipPath: 'inset(100% 0 0 0)',
+        opacity: 0,
+        duration: 1.0,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top 70%',
+          toggleActions: 'play none none none',
         },
-      )
+      })
 
-      // Subtitle: clip-path reveal from left
-      gsap.fromTo(
-        subtitleRef.current,
-        { clipPath: 'inset(0 100% 0 0)', opacity: 0 },
-        {
-          clipPath: 'inset(0 0% 0 0)',
-          opacity: 1,
-          duration: 1.0,
-          delay: 0.2,
-          ease: 'power3.inOut',
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top 55%',
-            toggleActions: 'play none none none',
-          },
+      gsap.from(subtitleRef.current, {
+        clipPath: 'inset(0 100% 0 0)',
+        opacity: 0,
+        duration: 1.0,
+        delay: 0.15,
+        ease: 'power3.inOut',
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top 65%',
+          toggleActions: 'play none none none',
         },
-      )
+      })
 
-      // CTA button: clip-path reveal from left
-      gsap.fromTo(
-        ctaRef.current,
-        { clipPath: 'inset(0 100% 0 0)', opacity: 0 },
-        {
-          clipPath: 'inset(0 0% 0 0)',
-          opacity: 1,
-          duration: 0.8,
-          delay: 0.35,
-          ease: 'power3.inOut',
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top 50%',
-            toggleActions: 'play none none none',
-          },
+      gsap.from(ctaRef.current, {
+        clipPath: 'inset(0 100% 0 0)',
+        opacity: 0,
+        duration: 0.8,
+        delay: 0.25,
+        ease: 'power3.inOut',
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top 60%',
+          toggleActions: 'play none none none',
         },
-      )
+      })
     }, sectionRef)
 
     return () => {
@@ -136,7 +116,7 @@ export default function FinalCTA() {
             {/* Gold label */}
             <span
               ref={labelRef}
-              className="inline-block opacity-0 mb-6"
+              className="inline-block mb-6"
               style={{
                 fontFamily: 'var(--font-body, "Inter", sans-serif)',
                 fontSize: '0.625rem',
@@ -152,7 +132,7 @@ export default function FinalCTA() {
             {/* Heading */}
             <h2
               ref={headingRef}
-              className="opacity-0 mb-6 leading-none"
+              className="mb-6 leading-none"
               style={{
                 fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)',
                 fontSize: 'clamp(3rem, 7vw, 6rem)',
@@ -169,7 +149,7 @@ export default function FinalCTA() {
             {/* Subtitle */}
             <p
               ref={subtitleRef}
-              className="opacity-0 mb-10"
+              className="mb-10"
               style={{
                 fontFamily: 'var(--font-display, "Cormorant Garamond", serif)',
                 fontStyle: 'italic',
@@ -184,7 +164,7 @@ export default function FinalCTA() {
             </p>
 
             {/* CTA button */}
-            <div ref={ctaRef} className="opacity-0">
+            <div ref={ctaRef}>
               <LuxuryButton
                 variant="primary"
                 size="lg"

@@ -8,15 +8,15 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 const PANELS = [
   {
     image: '/brand/sg-supra-duo.jpeg',
-    label: 'GOLDEN HOUR',
+    label: 'THE DROP',
     heading: 'BUILT FOR\nTHE MOMENT',
-    body: 'When the sun dips and the streets empty — that\'s when presence speaks loudest.',
+    body: 'When the sun dips and the streets empty — that\'s when presence speaks loudest. Premium fabrics that move with you.',
   },
   {
     image: '/brand/sg-wall-duo.jpeg',
-    label: 'STREET ARCHITECTURE',
+    label: 'STREET LUXURY',
     heading: 'RAW\nUNCUT',
-    body: 'Concrete walls. Clean lines. No filter necessary when the fit speaks for itself.',
+    body: 'Concrete walls. Clean lines. No filter necessary when the fit speaks for itself. This is what luxury looks like in motion.',
   },
 ]
 

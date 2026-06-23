@@ -174,7 +174,7 @@ export default function Preloader({ onComplete }: PreloaderProps) {
           }}
         />
 
-        {/* Signature logo image */}
+        {/* Signature logo — transparent PNG, gold-tinted */}
         <div
           ref={sgTextRef}
           style={{
@@ -182,17 +182,19 @@ export default function Preloader({ onComplete }: PreloaderProps) {
             height: '100px',
             position: 'relative',
             userSelect: 'none',
-            mixBlendMode: 'screen',
           }}
         >
           <Image
-            src="/brand/sg-signature-logo.jpeg"
+            src="/brand/sg-signature-logo.png"
             alt="Swift Goods"
             fill
+            sizes="200px"
             style={{
               objectFit: 'contain',
+              filter: 'sepia(1) saturate(3) hue-rotate(15deg) brightness(0.9)',
             }}
             priority
+            unoptimized
           />
         </div>
       </div>

@@ -74,6 +74,12 @@ export default function ClientRoot({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     setMounted(true)
+    const timer = setTimeout(() => {
+      import('gsap/ScrollTrigger').then(({ ScrollTrigger }) => {
+        ScrollTrigger.refresh()
+      })
+    }, 500)
+    return () => clearTimeout(timer)
   }, [])
 
   return (

@@ -411,11 +411,10 @@ export default function Footer() {
             maxWidth: '400px',
             width: '100%',
             marginBottom: '2.5rem',
-            opacity: 0,
           }}
         >
           <Image
-            src="/brand/sg-signature-logo.jpeg"
+            src="/brand/sg-signature-logo.png"
             alt="Swift Goods Signature"
             width={400}
             height={200}
@@ -423,9 +422,9 @@ export default function Footer() {
               width: '100%',
               height: 'auto',
               objectFit: 'contain',
-              mixBlendMode: 'screen',
+              filter: 'sepia(1) saturate(3) hue-rotate(15deg) brightness(0.9)',
             }}
-            priority={false}
+            unoptimized
           />
         </div>
 
@@ -439,7 +438,6 @@ export default function Footer() {
             color: '#f5f5f5',
             margin: 0,
             marginBottom: '1rem',
-            opacity: 0,
           }}
         >
           JOIN THE MOVEMENT
@@ -457,7 +455,6 @@ export default function Footer() {
             marginBottom: '2.5rem',
             maxWidth: '540px',
             lineHeight: 1.6,
-            opacity: 0,
           }}
         >
           Be the first to know about exclusive drops, limited releases, and members-only offers.
@@ -473,7 +470,6 @@ export default function Footer() {
             width: '100%',
             maxWidth: '480px',
             marginBottom: '1rem',
-            opacity: 0,
           }}
         >
           <input
@@ -700,7 +696,6 @@ export default function Footer() {
                 alignItems: 'center',
                 textAlign: 'center',
                 gap: '0.75rem',
-                opacity: 0,
               }}
             >
               <div style={{ color: '#c9a84c' }}>

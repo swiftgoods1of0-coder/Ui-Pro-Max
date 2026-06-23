@@ -119,7 +119,8 @@ export default function SignatureMoment() {
     <section
       ref={sectionRef}
       id="signature"
-      className="relative min-h-screen w-full overflow-hidden"
+      className="relative w-full overflow-hidden"
+      style={{ minHeight: '80vh' }}
     >
       {/* ── Desktop layout: left content (45%) | gold divider | right photo (55%) ── */}
       {/* ── Mobile: photo full-width behind content with heavy overlay ── */}
@@ -170,7 +171,7 @@ export default function SignatureMoment() {
       />
 
       {/* Content overlay — positioned left on desktop, centered on mobile */}
-      <div className="relative z-10 min-h-screen flex items-center">
+      <div className="relative z-10 flex items-center" style={{ minHeight: '80vh' }}>
         <div className="w-full lg:w-[45%] px-8 sm:px-12 lg:px-16 xl:px-24 py-24">
           {/* Gold label */}
           <span
