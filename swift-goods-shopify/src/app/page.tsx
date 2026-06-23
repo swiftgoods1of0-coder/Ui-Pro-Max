@@ -2,6 +2,7 @@ import Navigation from '@/components/ui/Navigation'
 import Footer from '@/components/ui/Footer'
 import HeroSection from '@/components/sections/HeroSection'
 import BrandStatement from '@/components/sections/BrandStatement'
+import CampaignEditorial from '@/components/sections/CampaignEditorial'
 import SignatureMoment from '@/components/sections/SignatureMoment'
 import Lookbook from '@/components/sections/Lookbook'
 import FeaturedProducts from '@/components/sections/FeaturedProducts'
@@ -65,6 +66,7 @@ export default function Home() {
       <Navigation />
       <HeroSection />
       <BrandStatement />
+      <CampaignEditorial />
       <FeaturedProducts products={featured} />
       <SignatureMoment />
       <Lookbook />
