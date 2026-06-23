@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from 'next'
 import { Cormorant_Garamond, Bebas_Neue, Inter } from 'next/font/google'
-import dynamic from 'next/dynamic'
 import './globals.css'
 import ClientRoot from '@/components/ui/ClientRoot'
 
@@ -31,14 +30,6 @@ const inter = Inter({
   display: 'swap',
   preload: true,
 })
-
-// ============================================================
-// DYNAMIC IMPORTS (client-only)
-// ============================================================
-const CustomCursor = dynamic(
-  () => import('@/components/ui/CustomCursor').catch(() => ({ default: () => null })),
-  { ssr: false }
-)
 
 // ============================================================
 // METADATA
@@ -136,11 +127,10 @@ export default function RootLayout({
       className={fontVariables}
       suppressHydrationWarning
     >
-      <body className={`${fontVariables} antialiased bg-sg-black text-sg-text`}>
+      <body className={`${fontVariables} antialiased bg-sg-black text-sg-text`} suppressHydrationWarning>
         <ClientRoot>
           {children}
         </ClientRoot>
-        <CustomCursor />
       </body>
     </html>
   )

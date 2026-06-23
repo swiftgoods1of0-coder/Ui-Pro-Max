@@ -8,6 +8,7 @@ import { SmoothScrollProvider } from '@/lib/smooth-scroll'
 const Preloader        = dynamic(() => import('./Preloader').catch(() => ({ default: () => null })),        { ssr: false })
 const LiquidBackground = dynamic(() => import('./LiquidBackground').catch(() => ({ default: () => null })), { ssr: false })
 const CursorTrail      = dynamic(() => import('./CursorTrail').catch(() => ({ default: () => null })),      { ssr: false })
+const CustomCursor     = dynamic(() => import('./CustomCursor').catch(() => ({ default: () => null })),     { ssr: false })
 
 interface ErrorBoundaryState {
   hasError: boolean
@@ -65,6 +66,7 @@ export default function ClientRoot({ children }: { children: ReactNode }) {
           <>
             <LiquidBackground />
             <CursorTrail />
+            <CustomCursor />
           </>
         )}
         {!done && mounted && <Preloader onComplete={() => setDone(true)} />}

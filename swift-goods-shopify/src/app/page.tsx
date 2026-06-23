@@ -46,12 +46,12 @@ function adaptProduct(p: FullShopifyProduct): SectionProduct {
 const adaptedProducts: SectionProduct[] = MOCK_PRODUCTS.map(adaptProduct)
 
 const FeaturedProducts = dynamic(
-  () => import('@/components/sections/FeaturedProducts'),
+  () => import('@/components/sections/FeaturedProducts').catch(() => ({ default: () => null })),
   { ssr: false }
 )
 
 const CollectionGrid = dynamic(
-  () => import('@/components/sections/CollectionGrid'),
+  () => import('@/components/sections/CollectionGrid').catch(() => ({ default: () => null })),
   { ssr: false }
 )
 
