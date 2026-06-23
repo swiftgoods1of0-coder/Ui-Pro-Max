@@ -3,8 +3,14 @@
    Ultra-luxury fashion aesthetic
    ============================================================ */
 
-/* Lenis smooth scroll — must come before Tailwind */
-@import 'lenis/dist/lenis.css';
+/* Lenis smooth scroll */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
 
 @tailwind base;
 @tailwind components;

@@ -1,14 +1,13 @@
 'use client'
 
-import React, { useState, useEffect, Component } from 'react'
+import React, { useState, Component } from 'react'
 import type { ReactNode } from 'react'
 import dynamic from 'next/dynamic'
-import { SmoothScrollProvider } from '@/lib/smooth-scroll'
 
-const Preloader        = dynamic(() => import('./Preloader').catch(() => ({ default: () => null })),        { ssr: false })
-const LiquidBackground = dynamic(() => import('./LiquidBackground').catch(() => ({ default: () => null })), { ssr: false })
-const CursorTrail      = dynamic(() => import('./CursorTrail').catch(() => ({ default: () => null })),      { ssr: false })
-const CustomCursor     = dynamic(() => import('./CustomCursor').catch(() => ({ default: () => null })),     { ssr: false })
+const Preloader = dynamic(
+  () => import('./Preloader'),
+  { ssr: false }
+)
 
 interface ErrorBoundaryState {
   hasError: boolean
@@ -55,25 +54,11 @@ class ErrorBoundary extends Component<{ children: ReactNode }, ErrorBoundaryStat
 
 export default function ClientRoot({ children }: { children: ReactNode }) {
   const [done, setDone] = useState(false)
-  const [mounted, setMounted] = useState(false)
-
-  useEffect(() => { setMounted(true) }, [])
 
   return (
-    <div id="sg-app">
-      <ErrorBoundary>
-        <SmoothScrollProvider>
-          {mounted && (
-            <>
-              <LiquidBackground />
-              <CursorTrail />
-              <CustomCursor />
-            </>
-          )}
-          {!done && mounted && <Preloader onComplete={() => setDone(true)} />}
-          {children}
-        </SmoothScrollProvider>
-      </ErrorBoundary>
-    </div>
+    <ErrorBoundary>
+      {!done && <Preloader onComplete={() => setDone(true)} />}
+      {children}
+    </ErrorBoundary>
   )
 }

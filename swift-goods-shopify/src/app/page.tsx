@@ -1,10 +1,11 @@
-import dynamic from 'next/dynamic'
 import Navigation from '@/components/ui/Navigation'
 import Footer from '@/components/ui/Footer'
 import HeroSection from '@/components/sections/HeroSection'
 import BrandStatement from '@/components/sections/BrandStatement'
 import SignatureMoment from '@/components/sections/SignatureMoment'
 import Lookbook from '@/components/sections/Lookbook'
+import FeaturedProducts from '@/components/sections/FeaturedProducts'
+import CollectionGrid from '@/components/sections/CollectionGrid'
 import { MOCK_PRODUCTS, type ShopifyProduct as FullShopifyProduct } from '@/lib/shopify'
 
 // The section components (FeaturedProducts, CollectionGrid) use a simplified
@@ -44,16 +45,6 @@ function adaptProduct(p: FullShopifyProduct): SectionProduct {
 }
 
 const adaptedProducts: SectionProduct[] = MOCK_PRODUCTS.map(adaptProduct)
-
-const FeaturedProducts = dynamic(
-  () => import('@/components/sections/FeaturedProducts').catch(() => ({ default: () => null })),
-  { ssr: false }
-)
-
-const CollectionGrid = dynamic(
-  () => import('@/components/sections/CollectionGrid').catch(() => ({ default: () => null })),
-  { ssr: false }
-)
 
 export const metadata = {
   title: 'Swift Goods | Comfort Is Luxury.',
