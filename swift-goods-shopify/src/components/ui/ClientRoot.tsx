@@ -60,18 +60,20 @@ export default function ClientRoot({ children }: { children: ReactNode }) {
   useEffect(() => { setMounted(true) }, [])
 
   return (
-    <ErrorBoundary>
-      <SmoothScrollProvider>
-        {mounted && (
-          <>
-            <LiquidBackground />
-            <CursorTrail />
-            <CustomCursor />
-          </>
-        )}
-        {!done && mounted && <Preloader onComplete={() => setDone(true)} />}
-        {children}
-      </SmoothScrollProvider>
-    </ErrorBoundary>
+    <div id="sg-app">
+      <ErrorBoundary>
+        <SmoothScrollProvider>
+          {mounted && (
+            <>
+              <LiquidBackground />
+              <CursorTrail />
+              <CustomCursor />
+            </>
+          )}
+          {!done && mounted && <Preloader onComplete={() => setDone(true)} />}
+          {children}
+        </SmoothScrollProvider>
+      </ErrorBoundary>
+    </div>
   )
 }

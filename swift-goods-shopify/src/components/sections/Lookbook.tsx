@@ -484,12 +484,6 @@ export default function Lookbook() {
         </div>
       </div>
 
-      <style>{`
-        @keyframes sg-marquee {
-          from { transform: translateX(0); }
-          to   { transform: translateX(-50%); }
-        }
-      `}</style>
     </>
   )
 }

@@ -341,16 +341,6 @@ export default function SignatureMoment() {
         </blockquote>
       </div>
 
-      {/* Keyframes */}
-      <style>{`
-        @keyframes sg-sig-particle {
-          0%   { transform: translateY(0px)   scale(1);   opacity: 0.35; }
-          50%  { transform: translateY(-20px) scale(1.3); opacity: 0.8;  }
-          100% { transform: translateY(0px)   scale(1);   opacity: 0.35; }
-        }
-        @keyframes sg-spin-cw  { from { transform: rotate(0deg);   } to { transform: rotate(360deg);  } }
-        @keyframes sg-spin-ccw { from { transform: rotate(0deg);   } to { transform: rotate(-360deg); } }
-      `}</style>
     </section>
   )
 }

@@ -749,20 +749,6 @@ export default function Navigation({ cartCount = 0 }: NavigationProps) {
         />
       </nav>
 
-      {/* ---- Responsive style overrides ------------------------------------ */}
-      <style>{`
-        @media (max-width: 1023px) {
-          .nav-links-desktop {
-            display: none !important;
-          }
-        }
-        @media (min-width: 1024px) {
-          .hamburger-btn {
-            display: none !important;
-          }
-        }
-      `}</style>
-
       {/* ---- Mobile fullscreen overlay (framer-motion) -------------------- */}
       <MobileMenu
         isOpen={mobileOpen}

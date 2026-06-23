@@ -266,12 +266,6 @@ export default function HeroSection() {
         </div>
       </div>
 
-      <style>{`
-        @keyframes sg-scroll-line {
-          0%   { transform: translateY(-100%); opacity: 1; }
-          100% { transform: translateY(300%);  opacity: 0; }
-        }
-      `}</style>
     </section>
   )
 }
