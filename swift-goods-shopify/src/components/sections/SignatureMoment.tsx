@@ -243,7 +243,7 @@ export default function SignatureMoment() {
               fontVariantCaps: 'small-caps',
             }}
           >
-            &mdash; SWIFT GOODS, EST. 2024
+            &mdash; SWIFT GOODS, EST. 2025
           </p>
         </div>
       </div>

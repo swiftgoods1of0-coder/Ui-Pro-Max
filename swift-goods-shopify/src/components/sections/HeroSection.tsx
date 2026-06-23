@@ -167,7 +167,7 @@ export default function HeroSection() {
                 letterSpacing: '0.35em',
               }}
             >
-              Swift Goods Clothing Brand&nbsp;&nbsp;&middot;&nbsp;&nbsp;Est. 2024
+              Swift Goods Clothing Brand&nbsp;&nbsp;&middot;&nbsp;&nbsp;Est. 2025
             </span>
             <span
               className="block h-px flex-shrink-0"

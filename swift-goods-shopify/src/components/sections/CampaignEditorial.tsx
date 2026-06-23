@@ -70,7 +70,7 @@ export default function CampaignEditorial() {
       {PANELS.map((panel, idx) => (
         <div
           key={panel.label}
-          className={`editorial-panel grid grid-cols-1 lg:grid-cols-2 min-h-screen ${
+          className={`editorial-panel grid grid-cols-1 lg:grid-cols-2 ${
             idx % 2 === 1 ? 'lg:direction-rtl' : ''
           }`}
           style={{ direction: idx % 2 === 1 ? 'rtl' : 'ltr' }}

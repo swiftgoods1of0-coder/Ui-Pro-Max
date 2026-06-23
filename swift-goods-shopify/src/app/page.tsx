@@ -1,7 +1,6 @@
 import Navigation from '@/components/ui/Navigation'
 import Footer from '@/components/ui/Footer'
 import HeroSection from '@/components/sections/HeroSection'
-import BrandStatement from '@/components/sections/BrandStatement'
 import CampaignEditorial from '@/components/sections/CampaignEditorial'
 import SignatureMoment from '@/components/sections/SignatureMoment'
 import Lookbook from '@/components/sections/Lookbook'
@@ -66,7 +65,6 @@ export default function Home() {
     <main className="bg-sg-black min-h-screen overflow-x-hidden">
       <Navigation />
       <HeroSection />
-      <BrandStatement />
       <CampaignEditorial />
       <FeaturedProducts products={featured} />
       <SignatureMoment />

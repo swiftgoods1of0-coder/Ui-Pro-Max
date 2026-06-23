@@ -178,10 +178,11 @@ export default function Preloader({ onComplete }: PreloaderProps) {
         <div
           ref={sgTextRef}
           style={{
-            width: '160px',
-            height: '80px',
+            width: '200px',
+            height: '100px',
             position: 'relative',
             userSelect: 'none',
+            mixBlendMode: 'screen',
           }}
         >
           <Image
@@ -190,7 +191,6 @@ export default function Preloader({ onComplete }: PreloaderProps) {
             fill
             style={{
               objectFit: 'contain',
-              filter: 'sepia(1) saturate(2) hue-rotate(15deg) brightness(0.85)',
             }}
             priority
           />

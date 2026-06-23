@@ -422,8 +422,8 @@ export default function Footer() {
             style={{
               width: '100%',
               height: 'auto',
-              filter: 'sepia(1) saturate(2) hue-rotate(15deg) brightness(0.85)',
               objectFit: 'contain',
+              mixBlendMode: 'screen',
             }}
             priority={false}
           />

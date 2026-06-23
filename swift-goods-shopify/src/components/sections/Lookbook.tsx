@@ -146,7 +146,7 @@ export default function Lookbook() {
             >
               CAMPAIGN
               <br />
-              2024
+              2025
             </h2>
 
             {/* Body text */}
