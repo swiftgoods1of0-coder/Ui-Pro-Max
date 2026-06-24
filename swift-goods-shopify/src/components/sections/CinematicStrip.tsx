@@ -104,6 +104,19 @@ export default function CinematicStrip() {
       className="relative overflow-hidden"
       style={{ background: '#050505' }}
     >
+      {/* Ambient gold glow */}
+      <div
+        className="absolute pointer-events-none"
+        style={{
+          top: '20%',
+          right: '-5%',
+          width: '35%',
+          height: '35%',
+          background: 'radial-gradient(ellipse at center, rgba(201,168,76,0.03) 0%, transparent 65%)',
+          filter: 'blur(80px)',
+        }}
+      />
+
       {/* Section header */}
       <div
         style={{
@@ -143,6 +156,18 @@ export default function CinematicStrip() {
         >
           THE WORLD OF SWIFT GOODS
         </p>
+        {/* Decorative gold corner */}
+        <div
+          className="absolute pointer-events-none"
+          style={{
+            bottom: '-0.5rem',
+            left: '2rem',
+            width: '2rem',
+            height: '2rem',
+            borderBottom: '1px solid rgba(201,168,76,0.3)',
+            borderLeft: '1px solid rgba(201,168,76,0.3)',
+          }}
+        />
       </div>
 
       {/* Scroll indicator — right side */}

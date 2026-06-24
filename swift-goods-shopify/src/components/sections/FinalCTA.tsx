@@ -93,6 +93,20 @@ export default function FinalCTA() {
       className="relative w-full overflow-hidden"
       style={{ minHeight: '70vh' }}
     >
+      {/* Corner brackets */}
+      <div className="absolute hidden lg:block pointer-events-none" style={{ top: '3rem', left: '3rem' }}>
+        <div style={{ width: 40, height: 40, position: 'relative' }}>
+          <div style={{ position: 'absolute', top: 0, left: 0, width: 20, height: 1, background: 'rgba(201,168,76,0.4)' }} />
+          <div style={{ position: 'absolute', top: 0, left: 0, width: 1, height: 20, background: 'rgba(201,168,76,0.4)' }} />
+        </div>
+      </div>
+      <div className="absolute hidden lg:block pointer-events-none" style={{ bottom: '3rem', right: '3rem' }}>
+        <div style={{ width: 40, height: 40, position: 'relative' }}>
+          <div style={{ position: 'absolute', bottom: 0, right: 0, width: 20, height: 1, background: 'rgba(201,168,76,0.4)' }} />
+          <div style={{ position: 'absolute', bottom: 0, right: 0, width: 1, height: 20, background: 'rgba(201,168,76,0.4)' }} />
+        </div>
+      </div>
+
       {/* Background image with parallax */}
       <div ref={bgRef} className="absolute inset-0" style={{ top: '-40px', bottom: '-40px', willChange: 'transform' }}>
         <Image
@@ -122,6 +136,9 @@ export default function FinalCTA() {
             'linear-gradient(to top, rgba(5,5,5,0.6) 0%, transparent 40%)',
         }}
       />
+
+      {/* Gold radial ambient glow */}
+      <div className="absolute z-[3] pointer-events-none" style={{ left: '50%', top: '40%', width: '60%', height: '60%', transform: 'translate(-50%, -50%)', background: 'radial-gradient(ellipse at center, rgba(201,168,76,0.06) 0%, transparent 60%)', filter: 'blur(80px)' }} />
 
       {/* Content — left-aligned */}
       <div className="relative z-10 flex items-center" style={{ minHeight: '70vh' }}>
@@ -164,10 +181,11 @@ export default function FinalCTA() {
                 style={{
                   fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)',
                   fontSize: 'clamp(3rem, 7vw, 6rem)',
-                  color: '#f5f5f5',
+                  color: '#c9a84c',
                   letterSpacing: '0.04em',
                   lineHeight: 0.95,
                   margin: 0,
+                  textShadow: '0 0 60px rgba(201,168,76,0.2)',
                 }}
               />
             </div>
@@ -179,7 +197,7 @@ export default function FinalCTA() {
               style={{
                 fontFamily: 'var(--font-display, "Cormorant Garamond", serif)',
                 fontStyle: 'italic',
-                fontSize: 'clamp(1.1rem, 2vw, 1.4rem)',
+                fontSize: 'clamp(1.2rem, 2vw, 1.5rem)',
                 fontWeight: 300,
                 lineHeight: 1.5,
                 color: 'rgba(245,245,245,0.7)',

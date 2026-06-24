@@ -69,6 +69,7 @@ export default function SocialProof() {
       className="relative overflow-hidden"
       style={{ background: '#050505' }}
     >
+      <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at 50% 30%, rgba(201,168,76,0.03) 0%, transparent 60%)' }} />
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-16 py-28 md:py-36 w-full">
         {/* Label */}
         <div className="mb-6 flex items-center gap-4">
@@ -118,10 +119,12 @@ export default function SocialProof() {
               whileInView="visible"
               viewport={{ once: true, margin: '-40px' }}
               variants={cardVariants}
+              whileHover={{ scale: 1.02, transition: { duration: 0.3 } }}
               style={{
                 background: '#111',
                 border: '1px solid rgba(255,255,255,0.06)',
                 padding: '2rem',
+                transition: 'border-color 0.3s ease',
               }}
             >
               {/* Opening quote mark */}
@@ -195,6 +198,10 @@ export default function SocialProof() {
           ))}
         </div>
 
+        <div className="flex justify-center mb-16">
+          <div style={{ width: 80, height: 1, background: 'linear-gradient(to right, transparent, rgba(201,168,76,0.4), transparent)' }} />
+        </div>
+
         {/* Stat Counters */}
         <div className="grid grid-cols-3 max-w-xl mx-auto text-center gap-8">
           {STATS.map((stat) => (
@@ -207,6 +214,7 @@ export default function SocialProof() {
                   color: '#c9a84c',
                   lineHeight: 1,
                   marginBottom: '0.5rem',
+                  textShadow: '0 0 40px rgba(201,168,76,0.2)',
                 }}
               >
                 {stat.value}

@@ -121,6 +121,7 @@ export default function CampaignEditorial() {
             style={{ direction: 'ltr' }}
           >
             <div className="editorial-label inline-flex items-center gap-3 mb-8 opacity-0">
+              <span style={{ width: 5, height: 5, borderRadius: '50%', background: '#c9a84c', flexShrink: 0, animation: 'pulse-gold 2s ease-in-out infinite' }} />
               <span
                 className="block w-10 h-px"
                 style={{ background: 'linear-gradient(to right, #c9a84c, transparent)' }}
@@ -145,6 +146,7 @@ export default function CampaignEditorial() {
                 letterSpacing: '0.04em',
                 color: '#f5f5f5',
                 whiteSpace: 'pre-line',
+                textShadow: '0 4px 30px rgba(0,0,0,0.3)',
               }}
             >
               {panel.heading}

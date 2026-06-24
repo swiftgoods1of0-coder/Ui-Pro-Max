@@ -132,6 +132,18 @@ export default function SignatureMoment() {
       className="relative w-full overflow-hidden"
       style={{ minHeight: '80vh' }}
     >
+      {/* Ambient gold glow */}
+      <div
+        className="absolute pointer-events-none z-[1]"
+        style={{
+          bottom: '10%',
+          left: '15%',
+          width: '40%',
+          height: '40%',
+          background: 'radial-gradient(ellipse at center, rgba(201,168,76,0.04) 0%, transparent 65%)',
+          filter: 'blur(80px)',
+        }}
+      />
       {/* ── Desktop layout: left content (45%) | gold divider | right photo (55%) ── */}
       {/* ── Mobile: photo full-width behind content with heavy overlay ── */}
 
@@ -210,6 +222,7 @@ export default function SignatureMoment() {
                 lineHeight: 1.25,
                 color: '#f5f5f5',
                 letterSpacing: '-0.01em',
+                textShadow: '0 4px 40px rgba(0,0,0,0.3)',
               }}
             >
               &ldquo;

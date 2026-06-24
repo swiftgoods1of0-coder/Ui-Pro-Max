@@ -86,10 +86,31 @@ export default function CollectionGrid({ products }: CollectionGridProps) {
     <section
       ref={sectionRef}
       id="shop"
-      className="pt-32 pb-16"
+      className="relative pt-32 pb-16 overflow-hidden"
       style={{ background: '#0a0a0a' }}
     >
-      <div className="max-w-7xl mx-auto px-6 lg:px-12">
+      {/* Ambient gold glow */}
+      <div
+        className="absolute pointer-events-none"
+        style={{
+          top: '5%',
+          left: '-8%',
+          width: '45%',
+          height: '45%',
+          background: 'radial-gradient(ellipse at center, rgba(201,168,76,0.03) 0%, transparent 65%)',
+          filter: 'blur(80px)',
+        }}
+      />
+
+      {/* Top accent line */}
+      <div
+        className="absolute top-0 left-0 right-0 h-px"
+        style={{
+          background: 'linear-gradient(to right, transparent, rgba(201,168,76,0.2), transparent)',
+        }}
+      />
+
+      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12">
 
         {/* Asymmetric header */}
         <div
@@ -122,6 +143,7 @@ export default function CollectionGrid({ products }: CollectionGridProps) {
                 fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)',
                 fontSize: 'clamp(2.8rem, 6vw, 5.5rem)',
                 color: '#f5f5f5',
+                textShadow: '0 4px 40px rgba(0,0,0,0.3)',
               }}
             />
           </div>
@@ -139,11 +161,12 @@ export default function CollectionGrid({ products }: CollectionGridProps) {
                   style={{
                     fontFamily: 'var(--font-body, Inter, sans-serif)',
                     fontWeight: 500,
-                    background: isActive ? 'transparent' : 'transparent',
+                    background: isActive ? 'rgba(201,168,76,0.06)' : 'transparent',
                     border: isActive
                       ? '1px solid rgba(201,168,76,0.7)'
                       : '1px solid rgba(255,255,255,0.08)',
                     color: isActive ? '#c9a84c' : '#555555',
+                    boxShadow: isActive ? '0 0 20px rgba(201,168,76,0.08)' : 'none',
                   }}
                   aria-pressed={isActive}
                 >
@@ -177,6 +200,10 @@ export default function CollectionGrid({ products }: CollectionGridProps) {
                 style={{
                   minHeight: isLarge ? '520px' : '280px',
                   background: '#111111',
+                  transition: 'box-shadow 0.5s ease',
+                }}
+                whileHover={{
+                  boxShadow: '0 8px 40px rgba(0,0,0,0.5), 0 0 25px rgba(201,168,76,0.06)',
                 }}
                 data-cursor="product"
               >

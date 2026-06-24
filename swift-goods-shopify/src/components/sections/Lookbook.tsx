@@ -127,9 +127,22 @@ export default function Lookbook() {
       ref={sectionRef}
       id="lookbook"
       style={{ background: '#050505' }}
-      className="py-24"
+      className="relative py-28 overflow-hidden"
     >
-      <div className="max-w-7xl mx-auto px-6 lg:px-12">
+      {/* Ambient gold glow */}
+      <div
+        className="absolute pointer-events-none"
+        style={{
+          top: '10%',
+          right: '-10%',
+          width: '50%',
+          height: '50%',
+          background: 'radial-gradient(ellipse at center, rgba(201,168,76,0.03) 0%, transparent 65%)',
+          filter: 'blur(80px)',
+        }}
+      />
+
+      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12">
         {/* Header */}
         <div className="mb-16">
           <div className="inline-flex items-center gap-4 mb-6">
@@ -162,6 +175,7 @@ export default function Lookbook() {
                 letterSpacing: '0.04em',
                 textTransform: 'uppercase',
                 margin: 0,
+                textShadow: '0 4px 40px rgba(0,0,0,0.3)',
               }}
             />
             <p
@@ -192,6 +206,13 @@ export default function Lookbook() {
                 }`}
                 style={{
                   height: isWide ? 'clamp(400px, 50vw, 600px)' : 'clamp(350px, 45vw, 520px)',
+                  transition: 'box-shadow 0.5s ease',
+                }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLElement).style.boxShadow = '0 12px 50px rgba(0,0,0,0.5), 0 0 30px rgba(201,168,76,0.05)'
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLElement).style.boxShadow = 'none'
                 }}
               >
                 <div className="lb-card-img absolute inset-0">

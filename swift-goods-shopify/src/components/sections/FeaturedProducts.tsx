@@ -56,6 +56,11 @@ function ProductCard({ product, index }: ProductCardProps) {
       style={{
         background: '#111111',
         border: '1px solid rgba(255,255,255,0.06)',
+        transition: 'border-color 0.5s ease, box-shadow 0.5s ease',
+      }}
+      whileHover={{
+        borderColor: 'rgba(201,168,76,0.2)',
+        boxShadow: '0 8px 40px rgba(0,0,0,0.4), 0 0 30px rgba(201,168,76,0.06)',
       }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}

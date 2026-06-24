@@ -167,6 +167,9 @@ export default function HeroSection() {
         }}
       />
 
+      {/* ── Gold radial ambient glow ── */}
+      <div className="absolute z-[5] pointer-events-none" style={{ left: '30%', top: '30%', width: '40%', height: '40%', background: 'radial-gradient(ellipse at center, rgba(201,168,76,0.05) 0%, transparent 70%)', filter: 'blur(80px)' }} />
+
       {/* ── Content layer ── */}
       <div className="absolute inset-0 z-10 flex flex-col items-center justify-center px-6">
         <div className="text-center max-w-5xl mx-auto w-full">
@@ -190,6 +193,7 @@ export default function HeroSection() {
                 fontFamily: 'var(--font-body, Inter, sans-serif)',
                 fontWeight: 500,
                 letterSpacing: '0.35em',
+                textShadow: '0 0 30px rgba(201,168,76,0.15)',
               }}
             >
               Swift Goods Clothing Brand&nbsp;&nbsp;&middot;&nbsp;&nbsp;Est. 2025
@@ -212,7 +216,7 @@ export default function HeroSection() {
               fontSize: 'clamp(2.6rem, 11vw, 10rem)',
               color: '#ffffff',
               letterSpacing: '0.08em',
-              textShadow: '0 4px 60px rgba(0,0,0,0.5), 0 0 120px rgba(0,0,0,0.3)',
+              textShadow: '0 4px 60px rgba(0,0,0,0.5), 0 0 120px rgba(0,0,0,0.3), 0 0 80px rgba(201,168,76,0.08)',
               perspective: '800px',
             }}
           >
@@ -282,7 +286,7 @@ export default function HeroSection() {
         <div
           className="relative w-px overflow-hidden"
           style={{
-            height: '4rem',
+            height: '5rem',
             background: 'rgba(201,168,76,0.12)',
           }}
         >
