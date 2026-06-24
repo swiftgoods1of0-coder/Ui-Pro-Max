@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import gsap from 'gsap';
 import Link from 'next/link';
+import Image from 'next/image';
 
 // ---------------------------------------------------------------------------
 // Types & Interfaces
@@ -146,27 +147,17 @@ function LogoText() {
         userSelect: 'none',
       }}
     >
-      {/* SG monogram */}
-      <span
+      {/* Winged S emblem — transparent PNG, no background */}
+      <Image
+        src="/brand/sg-winged-s-transparent.png"
+        alt=""
+        width={28}
+        height={28}
+        unoptimized
         style={{
-          fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)',
-          fontSize: '1.6rem',
-          lineHeight: 1,
-          letterSpacing: '0.05em',
-          color: hovered ? COLORS.gold : COLORS.text,
-          transition: `color 400ms ${LUXURY_EASE}`,
-        }}
-      >
-        SG
-      </span>
-      {/* Divider */}
-      <span
-        style={{
-          width: '1px',
-          height: '20px',
-          backgroundColor: hovered ? 'rgba(201,168,76,0.5)' : 'rgba(245,245,245,0.15)',
-          transition: `background-color 400ms ${LUXURY_EASE}`,
-          flexShrink: 0,
+          objectFit: 'contain',
+          opacity: hovered ? 0.9 : 0.85,
+          transition: `opacity 400ms ${LUXURY_EASE}`,
         }}
       />
       {/* Wordmark text */}
