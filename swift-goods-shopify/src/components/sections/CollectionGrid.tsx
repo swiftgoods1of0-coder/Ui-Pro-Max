@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { motion } from 'framer-motion'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import SplitTextReveal from '@/components/ui/SplitTextReveal'
 
 interface ShopifyProduct {
   id: string
@@ -111,16 +112,16 @@ export default function CollectionGrid({ products }: CollectionGridProps) {
                 ALL PRODUCTS
               </span>
             </div>
-            <h2
+            <SplitTextReveal
+              text="THE FULL EDIT"
+              tag="h2"
               className="header-el leading-none tracking-widest"
               style={{
                 fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)',
                 fontSize: 'clamp(2.8rem, 6vw, 5.5rem)',
                 color: '#f5f5f5',
               }}
-            >
-              THE FULL EDIT
-            </h2>
+            />
           </div>
 
           {/* Right: filter chips */}

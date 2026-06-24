@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'react'
 import Image from 'next/image'
 import gsap from 'gsap'
 import LuxuryButton from '@/components/ui/LuxuryButton'
+import MagneticElement from '@/components/ui/MagneticElement'
 
 export default function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null)
@@ -35,13 +36,29 @@ export default function HeroSection() {
         0
       )
 
-      // Heading: clip-path reveal from left with delay
-      tl.fromTo(
-        headingRef.current,
-        { clipPath: 'inset(0 100% 0 0)', opacity: 0 },
-        { clipPath: 'inset(0 0% 0 0)', opacity: 1, duration: 1.2, ease: 'power3.inOut' },
-        0.2
-      )
+      // Heading: character-by-character reveal
+      if (headingRef.current) {
+        const chars = headingRef.current.querySelectorAll<HTMLElement>('.hero-char')
+        if (chars.length > 0) {
+          tl.fromTo(
+            chars,
+            { opacity: 0, y: '100%', rotateX: -90 },
+            {
+              opacity: 1, y: '0%', rotateX: 0,
+              duration: 0.8, stagger: 0.025,
+              ease: 'power3.out',
+            },
+            0.2
+          )
+        } else {
+          tl.fromTo(
+            headingRef.current,
+            { clipPath: 'inset(0 100% 0 0)', opacity: 0 },
+            { clipPath: 'inset(0 0% 0 0)', opacity: 1, duration: 1.2, ease: 'power3.inOut' },
+            0.2
+          )
+        }
+      }
 
       // Subtitle: clip-path reveal from bottom
       tl.fromTo(
@@ -186,18 +203,31 @@ export default function HeroSection() {
             />
           </div>
 
-          {/* Headline */}
+          {/* Headline — character-by-character reveal */}
           <h1
             ref={headingRef}
-            className="opacity-0 leading-none tracking-widest uppercase select-none mb-8"
+            className="leading-none tracking-widest uppercase select-none mb-8"
             style={{
               fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)',
               fontSize: 'clamp(3.5rem, 12vw, 10rem)',
               color: '#ffffff',
               textShadow: '0 4px 60px rgba(0,0,0,0.5), 0 0 120px rgba(0,0,0,0.3)',
+              perspective: '800px',
             }}
           >
-            COMFORT IS LUXURY.
+            {'COMFORT IS LUXURY.'.split('').map((char, i) => (
+              <span
+                key={i}
+                className="hero-char"
+                style={{
+                  display: char === ' ' ? 'inline' : 'inline-block',
+                  opacity: 0,
+                  transformOrigin: 'bottom center',
+                }}
+              >
+                {char === ' ' ? ' ' : char}
+              </span>
+            ))}
           </h1>
 
           {/* Subtitle */}
@@ -220,12 +250,16 @@ export default function HeroSection() {
             ref={ctasRef}
             className="opacity-0 flex flex-col sm:flex-row items-center justify-center gap-4"
           >
-            <LuxuryButton variant="primary" href="/collections">
-              SHOP COLLECTION
-            </LuxuryButton>
-            <LuxuryButton variant="ghost" href="#experience">
-              EXPLORE THE EXPERIENCE
-            </LuxuryButton>
+            <MagneticElement strength={0.25} radius={150}>
+              <LuxuryButton variant="primary" href="/collections">
+                SHOP COLLECTION
+              </LuxuryButton>
+            </MagneticElement>
+            <MagneticElement strength={0.25} radius={150}>
+              <LuxuryButton variant="ghost" href="#experience">
+                EXPLORE THE EXPERIENCE
+              </LuxuryButton>
+            </MagneticElement>
           </div>
         </div>
       </div>

@@ -5,6 +5,9 @@ import Image from 'next/image'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import LuxuryButton from '@/components/ui/LuxuryButton'
+import MagneticElement from '@/components/ui/MagneticElement'
+import SplitTextReveal from '@/components/ui/SplitTextReveal'
+import { useScrollVelocity } from '@/hooks/useScrollVelocity'
 
 interface LookbookSlide {
   id: string
@@ -54,6 +57,18 @@ const SLIDES: LookbookSlide[] = [
 
 export default function Lookbook() {
   const sectionRef = useRef<HTMLElement>(null)
+  const velocity = useScrollVelocity()
+
+  useEffect(() => {
+    const cards = sectionRef.current?.querySelectorAll<HTMLElement>('.lb-card-img')
+    if (cards) {
+      const skew = velocity * 2
+      cards.forEach((img) => {
+        img.style.transition = 'transform 200ms ease-out'
+        img.style.transform = `skewY(${skew}deg) scale(${1 + Math.abs(velocity) * 0.03})`
+      })
+    }
+  }, [velocity])
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger)
@@ -136,7 +151,9 @@ export default function Lookbook() {
             </span>
           </div>
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
-            <h2
+            <SplitTextReveal
+              text="CAMPAIGN 2025"
+              tag="h2"
               style={{
                 fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)',
                 fontSize: 'clamp(3rem, 7vw, 6.5rem)',
@@ -146,9 +163,7 @@ export default function Lookbook() {
                 textTransform: 'uppercase',
                 margin: 0,
               }}
-            >
-              CAMPAIGN 2025
-            </h2>
+            />
             <p
               className="max-w-xs lg:text-right"
               style={{
@@ -242,9 +257,11 @@ export default function Lookbook() {
 
         {/* Section CTA */}
         <div className="mt-16 flex justify-center">
-          <LuxuryButton variant="secondary" href="/lookbook">
-            VIEW FULL LOOKBOOK
-          </LuxuryButton>
+          <MagneticElement strength={0.25} radius={160}>
+            <LuxuryButton variant="secondary" href="/lookbook">
+              VIEW FULL LOOKBOOK
+            </LuxuryButton>
+          </MagneticElement>
         </div>
       </div>
 

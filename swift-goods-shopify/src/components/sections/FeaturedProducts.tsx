@@ -5,6 +5,9 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 import LuxuryButton from '@/components/ui/LuxuryButton'
+import MagneticElement from '@/components/ui/MagneticElement'
+import SplitTextReveal from '@/components/ui/SplitTextReveal'
+import { use3DTilt } from '@/hooks/use3DTilt'
 
 interface ShopifyProduct {
   id: string
@@ -30,11 +33,15 @@ interface ProductCardProps {
 
 function ProductCard({ product, index }: ProductCardProps) {
   const [hovered, setHovered] = useState(false)
+  const cardRef = useRef<HTMLElement>(null)
   const hasSecondImage = product.images && product.images.length > 1
+
+  use3DTilt(cardRef, { maxTilt: 6, scale: 1.03, glowColor: 'rgba(201,168,76,0.12)' })
 
   return (
     <Link href={`/products/${product.handle}`} className="block">
     <motion.article
+      ref={cardRef}
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-50px' }}
@@ -275,16 +282,16 @@ export default function FeaturedProducts({ products }: FeaturedProductsProps) {
           </div>
 
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
-            <h2
+            <SplitTextReveal
+              text="LATEST DROPS"
+              tag="h2"
               className="leading-none tracking-widest"
               style={{
                 fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)',
                 fontSize: 'clamp(3rem, 7vw, 6.5rem)',
                 color: '#f5f5f5',
               }}
-            >
-              LATEST DROPS
-            </h2>
+            />
             <div className="max-w-xs lg:text-right">
               <p
                 style={{
@@ -339,9 +346,11 @@ export default function FeaturedProducts({ products }: FeaturedProductsProps) {
           transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
           className="flex justify-center"
         >
-          <LuxuryButton variant="secondary" href="/collections">
-            VIEW ENTIRE COLLECTION
-          </LuxuryButton>
+          <MagneticElement strength={0.25} radius={160}>
+            <LuxuryButton variant="secondary" href="/collections">
+              VIEW ENTIRE COLLECTION
+            </LuxuryButton>
+          </MagneticElement>
         </motion.div>
       </div>
 

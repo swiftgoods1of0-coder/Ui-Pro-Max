@@ -5,6 +5,8 @@ import Image from 'next/image'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import LuxuryButton from '@/components/ui/LuxuryButton'
+import MagneticElement from '@/components/ui/MagneticElement'
+import SplitTextReveal from '@/components/ui/SplitTextReveal'
 
 export default function FinalCTA() {
   const sectionRef = useRef<HTMLElement>(null)
@@ -141,22 +143,34 @@ export default function FinalCTA() {
               LIMITED RELEASE
             </span>
 
-            {/* Heading */}
-            <h2
-              ref={headingRef}
-              className="mb-6 leading-none"
-              style={{
-                fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)',
-                fontSize: 'clamp(3rem, 7vw, 6rem)',
-                color: '#f5f5f5',
-                letterSpacing: '0.04em',
-                lineHeight: 0.95,
-              }}
-            >
-              DON&apos;T JUST WEAR IT.
-              <br />
-              OWN IT.
-            </h2>
+            {/* Heading — split text reveal */}
+            <div ref={headingRef} className="mb-6">
+              <SplitTextReveal
+                text="DON'T JUST WEAR IT."
+                tag="h2"
+                style={{
+                  fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)',
+                  fontSize: 'clamp(3rem, 7vw, 6rem)',
+                  color: '#f5f5f5',
+                  letterSpacing: '0.04em',
+                  lineHeight: 0.95,
+                  margin: 0,
+                }}
+              />
+              <SplitTextReveal
+                text="OWN IT."
+                tag="h2"
+                delay={0.3}
+                style={{
+                  fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)',
+                  fontSize: 'clamp(3rem, 7vw, 6rem)',
+                  color: '#f5f5f5',
+                  letterSpacing: '0.04em',
+                  lineHeight: 0.95,
+                  margin: 0,
+                }}
+              />
+            </div>
 
             {/* Subtitle */}
             <p
@@ -175,16 +189,18 @@ export default function FinalCTA() {
               Premium quality. Limited quantities. Once it&apos;s gone, it&apos;s gone.
             </p>
 
-            {/* CTA button */}
+            {/* CTA button — magnetic */}
             <div ref={ctaRef}>
-              <LuxuryButton
-                variant="primary"
-                size="lg"
-                href="#shop"
-                data-cursor="cta"
-              >
-                SHOP THE COLLECTION
-              </LuxuryButton>
+              <MagneticElement strength={0.3} radius={180}>
+                <LuxuryButton
+                  variant="primary"
+                  size="lg"
+                  href="#shop"
+                  data-cursor="cta"
+                >
+                  SHOP THE COLLECTION
+                </LuxuryButton>
+              </MagneticElement>
             </div>
           </div>
         </div>

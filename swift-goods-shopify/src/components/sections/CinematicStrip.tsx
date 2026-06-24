@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'react'
 import Image from 'next/image'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useScrollVelocity } from '@/hooks/useScrollVelocity'
 
 const FRAMES = [
   {
@@ -36,6 +37,18 @@ const FRAMES = [
 export default function CinematicStrip() {
   const sectionRef = useRef<HTMLElement>(null)
   const trackRef = useRef<HTMLDivElement>(null)
+  const velocity = useScrollVelocity()
+
+  useEffect(() => {
+    const track = trackRef.current
+    if (!track) return
+    const skew = velocity * 3
+    const imgs = track.querySelectorAll<HTMLElement>('.cs-img')
+    imgs.forEach((img) => {
+      img.style.transition = 'transform 200ms ease-out'
+      img.style.transform = `skewY(${skew}deg) scale(${1 + Math.abs(velocity) * 0.05})`
+    })
+  }, [velocity])
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger)

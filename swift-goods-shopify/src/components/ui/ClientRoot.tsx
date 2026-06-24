@@ -25,6 +25,16 @@ const CustomCursor = dynamic(
   { ssr: false }
 )
 
+const GoldParticleField = dynamic(
+  () => import('./GoldParticleField'),
+  { ssr: false }
+)
+
+const ScrollProgressBar = dynamic(
+  () => import('./ScrollProgressBar'),
+  { ssr: false }
+)
+
 interface ErrorBoundaryState {
   hasError: boolean
   error: Error | null
@@ -89,6 +99,8 @@ export default function ClientRoot({ children }: { children: ReactNode }) {
           {mounted && <LiquidBackground />}
           {mounted && <CursorTrail />}
           {mounted && <CustomCursor />}
+          {mounted && <GoldParticleField />}
+          {mounted && <ScrollProgressBar />}
           {!done && <Preloader onComplete={() => setDone(true)} />}
           {children}
         </SmoothScrollProvider>

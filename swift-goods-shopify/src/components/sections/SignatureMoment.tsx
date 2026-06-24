@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'react'
 import Image from 'next/image'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useScrollVelocity } from '@/hooks/useScrollVelocity'
 
 const QUOTE_WORDS = [
   'The', 'most', 'powerful', 'thing', 'you', 'can', 'wear',
@@ -13,10 +14,19 @@ const QUOTE_WORDS = [
 export default function SignatureMoment() {
   const sectionRef = useRef<HTMLElement>(null)
   const photoRef = useRef<HTMLDivElement>(null)
+  const velocity = useScrollVelocity()
   const labelRef = useRef<HTMLSpanElement>(null)
   const quoteRef = useRef<HTMLDivElement>(null)
   const ruleRef = useRef<HTMLDivElement>(null)
   const creditRef = useRef<HTMLParagraphElement>(null)
+
+  useEffect(() => {
+    if (photoRef.current) {
+      const skew = velocity * 2.5
+      photoRef.current.style.transition = 'filter 200ms ease-out'
+      photoRef.current.style.filter = `brightness(${1 - Math.abs(velocity) * 0.15})`
+    }
+  }, [velocity])
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger)
