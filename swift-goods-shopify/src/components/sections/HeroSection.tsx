@@ -206,11 +206,12 @@ export default function HeroSection() {
           {/* Headline — character-by-character reveal */}
           <h1
             ref={headingRef}
-            className="leading-none tracking-widest uppercase select-none mb-8"
+            className="leading-none uppercase select-none mb-8"
             style={{
               fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)',
-              fontSize: 'clamp(3.5rem, 12vw, 10rem)',
+              fontSize: 'clamp(2.6rem, 11vw, 10rem)',
               color: '#ffffff',
+              letterSpacing: '0.08em',
               textShadow: '0 4px 60px rgba(0,0,0,0.5), 0 0 120px rgba(0,0,0,0.3)',
               perspective: '800px',
             }}
