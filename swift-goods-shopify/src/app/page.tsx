@@ -8,6 +8,7 @@ import Lookbook from '@/components/sections/Lookbook'
 import FeaturedProducts from '@/components/sections/FeaturedProducts'
 import CollectionGrid from '@/components/sections/CollectionGrid'
 import FinalCTA from '@/components/sections/FinalCTA'
+import AnimatedDivider from '@/components/ui/AnimatedDivider'
 import { MOCK_PRODUCTS, type ShopifyProduct as FullShopifyProduct } from '@/lib/shopify'
 
 // The section components (FeaturedProducts, CollectionGrid) use a simplified
@@ -62,28 +63,18 @@ export const metadata = {
 export default function Home() {
   const featured = adaptedProducts.slice(0, 6)
 
-  const GoldDivider = () => (
-    <div
-      aria-hidden="true"
-      style={{
-        height: '1px',
-        background: 'linear-gradient(to right, transparent 5%, rgba(201,168,76,0.25) 30%, rgba(201,168,76,0.4) 50%, rgba(201,168,76,0.25) 70%, transparent 95%)',
-      }}
-    />
-  )
-
   return (
     <main className="bg-sg-black min-h-screen overflow-x-hidden">
       <Navigation />
       <HeroSection />
       <CampaignEditorial />
-      <GoldDivider />
+      <AnimatedDivider />
       <FeaturedProducts products={featured} />
       <SignatureMoment />
       <CinematicStrip />
-      <GoldDivider />
+      <AnimatedDivider />
       <Lookbook />
-      <GoldDivider />
+      <AnimatedDivider />
       <CollectionGrid products={adaptedProducts} />
       <FinalCTA />
       <Footer />

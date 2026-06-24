@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import gsap from 'gsap';
 import Link from 'next/link';
 import Image from 'next/image';
+import TextScramble from '@/components/ui/TextScramble';
 
 // ---------------------------------------------------------------------------
 // Types & Interfaces
@@ -190,20 +191,27 @@ function DesktopNavLink({ link }: { link: NavLink }) {
       onMouseLeave={() => setHovered(false)}
       style={{
         position: 'relative',
-        fontFamily: 'var(--font-body, Inter, sans-serif)',
-        fontSize: '0.7rem',
-        fontWeight: 500,
-        letterSpacing: '0.18em',
-        color: hovered ? COLORS.gold : COLORS.platinum,
         textDecoration: 'none',
         paddingBottom: '4px',
-        whiteSpace: 'nowrap',
-        transition: `color 400ms ${LUXURY_EASE}`,
         cursor: 'pointer',
         display: 'inline-block',
       }}
     >
-      {link.label}
+      <TextScramble
+        speed={25}
+        revealDelay={40}
+        style={{
+          fontFamily: 'var(--font-body, Inter, sans-serif)',
+          fontSize: '0.7rem',
+          fontWeight: 500,
+          letterSpacing: '0.18em',
+          color: hovered ? COLORS.gold : COLORS.platinum,
+          whiteSpace: 'nowrap',
+          transition: `color 400ms ${LUXURY_EASE}`,
+        }}
+      >
+        {link.label}
+      </TextScramble>
       {/* Underline slide animation */}
       <span
         aria-hidden="true"

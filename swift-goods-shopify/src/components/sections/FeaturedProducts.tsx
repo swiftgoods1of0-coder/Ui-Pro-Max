@@ -7,6 +7,7 @@ import { motion } from 'framer-motion'
 import LuxuryButton from '@/components/ui/LuxuryButton'
 import MagneticElement from '@/components/ui/MagneticElement'
 import SplitTextReveal from '@/components/ui/SplitTextReveal'
+import MouseSpotlight from '@/components/ui/MouseSpotlight'
 import { use3DTilt } from '@/hooks/use3DTilt'
 
 interface ShopifyProduct {
@@ -240,6 +241,7 @@ export default function FeaturedProducts({ products }: FeaturedProductsProps) {
   const sectionRef = useRef<HTMLElement>(null)
 
   return (
+    <MouseSpotlight color="rgba(201,168,76,0.04)" size={500}>
     <section
       ref={sectionRef}
       id="collection"
@@ -363,5 +365,6 @@ export default function FeaturedProducts({ products }: FeaturedProductsProps) {
         }}
       />
     </section>
+    </MouseSpotlight>
   )
 }

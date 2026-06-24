@@ -7,6 +7,7 @@ import { motion } from 'framer-motion'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import SplitTextReveal from '@/components/ui/SplitTextReveal'
+import MouseSpotlight from '@/components/ui/MouseSpotlight'
 
 interface ShopifyProduct {
   id: string
@@ -81,6 +82,7 @@ export default function CollectionGrid({ products }: CollectionGridProps) {
   }, [])
 
   return (
+    <MouseSpotlight color="rgba(201,168,76,0.035)" size={550}>
     <section
       ref={sectionRef}
       id="shop"
@@ -320,5 +322,6 @@ export default function CollectionGrid({ products }: CollectionGridProps) {
         )}
       </div>
     </section>
+    </MouseSpotlight>
   )
 }

@@ -46,9 +46,9 @@ export default function CampaignEditorial() {
 
         if (img) {
           gsap.fromTo(img,
-            { scale: 1.15, opacity: 0 },
+            { scale: 1.15, clipPath: 'polygon(0 0, 0 0, 0 100%, 0 100%)' },
             {
-              scale: 1, opacity: 1, duration: 1.4, ease: 'power2.out',
+              scale: 1, clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)', duration: 1.6, ease: 'power3.inOut',
               scrollTrigger: { trigger: panel, start: 'top 80%', toggleActions: 'play none none none' },
             }
           )

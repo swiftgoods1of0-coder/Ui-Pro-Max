@@ -791,6 +791,11 @@ button:focus-visible {
   100% { transform: translateY(0px)   scale(1);   opacity: 0.35; }
 }
 
+@keyframes sg-diamond-spin {
+  from { transform: rotate(45deg); }
+  to   { transform: rotate(405deg); }
+}
+
 /* Old lookbook pinned-scroll styles removed — now uses vertical grid */
 
 @media (max-width: 1023px) {

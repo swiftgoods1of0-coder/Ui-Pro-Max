@@ -12,12 +12,14 @@ interface Particle {
   baseOpacity: number
   life: number
   maxLife: number
+  shimmer: number
 }
 
 export default function GoldParticleField() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const mouseRef = useRef({ x: -1000, y: -1000 })
-  const particlesRef = useRef<Particle[]>([])
+  const scrollVelRef = useRef(0)
+  const lastScrollRef = useRef(0)
   const rafRef = useRef<number>(0)
 
   useEffect(() => {
@@ -44,8 +46,15 @@ export default function GoldParticleField() {
     }
     window.addEventListener('mousemove', onMouse)
 
-    // Initialize particles
-    const PARTICLE_COUNT = 80
+    const onScroll = () => {
+      const current = window.scrollY
+      const delta = current - lastScrollRef.current
+      scrollVelRef.current = delta
+      lastScrollRef.current = current
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+
+    const PARTICLE_COUNT = 100
     const particles: Particle[] = []
     for (let i = 0; i < PARTICLE_COUNT; i++) {
       particles.push({
@@ -53,22 +62,33 @@ export default function GoldParticleField() {
         y: Math.random() * h,
         vx: (Math.random() - 0.5) * 0.3,
         vy: (Math.random() - 0.5) * 0.3,
-        size: Math.random() * 2 + 0.5,
+        size: Math.random() * 2.5 + 0.3,
         opacity: 0,
-        baseOpacity: Math.random() * 0.4 + 0.1,
+        baseOpacity: Math.random() * 0.35 + 0.08,
         life: Math.random() * 1000,
-        maxLife: 800 + Math.random() * 400,
+        maxLife: 600 + Math.random() * 600,
+        shimmer: Math.random() * Math.PI * 2,
       })
     }
-    particlesRef.current = particles
+
+    const GOLD_HUES = [
+      [201, 168, 76],
+      [230, 200, 112],
+      [200, 170, 138],
+      [255, 235, 150],
+    ]
 
     const draw = () => {
       ctx.clearRect(0, 0, w, h)
       const mx = mouseRef.current.x
       const my = mouseRef.current.y
+      const sv = scrollVelRef.current
+
+      scrollVelRef.current *= 0.92
 
       for (const p of particles) {
         p.life++
+        p.shimmer += 0.03
         if (p.life > p.maxLife) {
           p.life = 0
           p.x = Math.random() * w
@@ -76,7 +96,6 @@ export default function GoldParticleField() {
           p.opacity = 0
         }
 
-        // Fade in/out
         const lifeRatio = p.life / p.maxLife
         if (lifeRatio < 0.1) {
           p.opacity = (lifeRatio / 0.1) * p.baseOpacity
@@ -86,55 +105,74 @@ export default function GoldParticleField() {
           p.opacity = p.baseOpacity
         }
 
-        // Mouse interaction — particles gently repel from cursor
+        const shimmerMod = 0.7 + 0.3 * Math.sin(p.shimmer)
+        p.opacity *= shimmerMod
+
         const dx = p.x - mx
         const dy = p.y - my
         const dist = Math.sqrt(dx * dx + dy * dy)
-        const interactRadius = 150
+        const interactRadius = 180
 
         if (dist < interactRadius && dist > 0) {
-          const force = (1 - dist / interactRadius) * 0.8
+          const force = (1 - dist / interactRadius) * 0.6
           p.vx += (dx / dist) * force
           p.vy += (dy / dist) * force
-          p.opacity = Math.min(p.baseOpacity + 0.3, 0.7)
+          p.opacity = Math.min(p.baseOpacity + 0.35, 0.75)
         }
 
-        // Damping
-        p.vx *= 0.98
-        p.vy *= 0.98
+        p.vy += sv * 0.008
+        p.vx += sv * 0.002 * (Math.random() - 0.5)
 
-        // Drift
-        p.vx += (Math.random() - 0.5) * 0.02
-        p.vy += (Math.random() - 0.5) * 0.02
+        p.vx *= 0.97
+        p.vy *= 0.97
+
+        p.vx += (Math.random() - 0.5) * 0.015
+        p.vy += (Math.random() - 0.5) * 0.015
 
         p.x += p.vx
         p.y += p.vy
 
-        // Wrap around
         if (p.x < -10) p.x = w + 10
         if (p.x > w + 10) p.x = -10
         if (p.y < -10) p.y = h + 10
         if (p.y > h + 10) p.y = -10
 
-        // Draw
+        const hue = GOLD_HUES[Math.floor(p.shimmer) % GOLD_HUES.length]
         ctx.beginPath()
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2)
-        ctx.fillStyle = `rgba(201, 168, 76, ${p.opacity})`
+        ctx.fillStyle = `rgba(${hue[0]}, ${hue[1]}, ${hue[2]}, ${p.opacity})`
         ctx.fill()
 
-        // Draw connecting lines between nearby particles
-        for (const p2 of particles) {
-          if (p === p2) continue
+        if (p.size > 1.5 && p.opacity > 0.15) {
+          ctx.beginPath()
+          ctx.arc(p.x, p.y, p.size * 3, 0, Math.PI * 2)
+          ctx.fillStyle = `rgba(${hue[0]}, ${hue[1]}, ${hue[2]}, ${p.opacity * 0.08})`
+          ctx.fill()
+        }
+      }
+
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i]
+        for (let j = i + 1; j < particles.length; j++) {
+          const p2 = particles[j]
           const d = Math.sqrt((p.x - p2.x) ** 2 + (p.y - p2.y) ** 2)
-          if (d < 100) {
+          if (d < 120) {
             ctx.beginPath()
             ctx.moveTo(p.x, p.y)
             ctx.lineTo(p2.x, p2.y)
-            ctx.strokeStyle = `rgba(201, 168, 76, ${(1 - d / 100) * 0.06})`
-            ctx.lineWidth = 0.5
+            ctx.strokeStyle = `rgba(201, 168, 76, ${(1 - d / 120) * 0.05})`
+            ctx.lineWidth = 0.4
             ctx.stroke()
           }
         }
+      }
+
+      if (mx > 0 && my > 0) {
+        const gradient = ctx.createRadialGradient(mx, my, 0, mx, my, 100)
+        gradient.addColorStop(0, 'rgba(201, 168, 76, 0.03)')
+        gradient.addColorStop(1, 'rgba(201, 168, 76, 0)')
+        ctx.fillStyle = gradient
+        ctx.fillRect(mx - 100, my - 100, 200, 200)
       }
 
       rafRef.current = requestAnimationFrame(draw)
@@ -146,6 +184,7 @@ export default function GoldParticleField() {
       cancelAnimationFrame(rafRef.current)
       window.removeEventListener('resize', resize)
       window.removeEventListener('mousemove', onMouse)
+      window.removeEventListener('scroll', onScroll)
     }
   }, [])
 
@@ -157,7 +196,7 @@ export default function GoldParticleField() {
         inset: 0,
         zIndex: 1,
         pointerEvents: 'none',
-        opacity: 0.6,
+        opacity: 0.55,
       }}
       aria-hidden="true"
     />
