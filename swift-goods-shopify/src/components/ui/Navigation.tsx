@@ -147,17 +147,17 @@ function LogoText() {
         userSelect: 'none',
       }}
     >
-      {/* Winged S emblem */}
+      {/* Winged S emblem — transparent PNG, no background */}
       <Image
-        src="/brand/sg-emblem.png"
+        src="/brand/sg-emblem-transparent.png"
         alt="Swift Goods"
         width={28}
         height={22}
         unoptimized
         style={{
           filter: hovered
-            ? 'invert(1) sepia(1) saturate(2) hue-rotate(5deg) brightness(1.1)'
-            : 'invert(1)',
+            ? 'brightness(0) invert(1) sepia(1) saturate(3) hue-rotate(5deg) brightness(0.85)'
+            : 'brightness(0) invert(1)',
           transition: `filter 400ms ${LUXURY_EASE}`,
           objectFit: 'contain',
         }}
