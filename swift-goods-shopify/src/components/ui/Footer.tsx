@@ -422,7 +422,7 @@ export default function Footer() {
               width: '100%',
               height: 'auto',
               objectFit: 'contain',
-              filter: 'sepia(1) saturate(3) hue-rotate(15deg) brightness(0.9)',
+              filter: 'grayscale(1) brightness(1.8)',
             }}
             unoptimized
           />
