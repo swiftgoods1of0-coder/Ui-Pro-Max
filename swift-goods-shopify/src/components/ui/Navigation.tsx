@@ -4,7 +4,6 @@ import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import gsap from 'gsap';
 import Link from 'next/link';
-import Image from 'next/image';
 
 // ---------------------------------------------------------------------------
 // Types & Interfaces
@@ -147,19 +146,32 @@ function LogoText() {
         userSelect: 'none',
       }}
     >
-      {/* Winged S emblem — transparent PNG, no background */}
-      <Image
-        src="/brand/sg-emblem-transparent.png"
-        alt="Swift Goods"
-        width={28}
-        height={22}
-        unoptimized
+      {/* SG monogram — pure text, no images */}
+      <span
         style={{
-          filter: hovered
-            ? 'brightness(0) invert(1) sepia(1) saturate(3) hue-rotate(5deg) brightness(0.85)'
-            : 'brightness(0) invert(1)',
-          transition: `filter 400ms ${LUXURY_EASE}`,
-          objectFit: 'contain',
+          fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)',
+          fontSize: '1.6rem',
+          lineHeight: 1,
+          letterSpacing: '0.05em',
+          WebkitBackgroundClip: 'text',
+          backgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+          background: hovered
+            ? `linear-gradient(135deg, ${COLORS.gold} 0%, ${COLORS.goldLight} 45%, ${COLORS.gold} 100%)`
+            : `linear-gradient(135deg, ${COLORS.text} 0%, ${COLORS.text} 100%)`,
+          transition: `background 400ms ${LUXURY_EASE}`,
+        }}
+      >
+        SG
+      </span>
+      {/* Divider */}
+      <span
+        style={{
+          width: '1px',
+          height: '20px',
+          background: hovered ? `rgba(201,168,76,0.5)` : 'rgba(245,245,245,0.15)',
+          transition: `background 400ms ${LUXURY_EASE}`,
+          flexShrink: 0,
         }}
       />
       {/* Wordmark text */}
