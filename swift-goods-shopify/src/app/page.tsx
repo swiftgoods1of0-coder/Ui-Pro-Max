@@ -61,14 +61,27 @@ export const metadata = {
 export default function Home() {
   const featured = adaptedProducts.slice(0, 6)
 
+  const GoldDivider = () => (
+    <div
+      aria-hidden="true"
+      style={{
+        height: '1px',
+        background: 'linear-gradient(to right, transparent 5%, rgba(201,168,76,0.25) 30%, rgba(201,168,76,0.4) 50%, rgba(201,168,76,0.25) 70%, transparent 95%)',
+      }}
+    />
+  )
+
   return (
     <main className="bg-sg-black min-h-screen overflow-x-hidden">
       <Navigation />
       <HeroSection />
       <CampaignEditorial />
+      <GoldDivider />
       <FeaturedProducts products={featured} />
       <SignatureMoment />
+      <GoldDivider />
       <Lookbook />
+      <GoldDivider />
       <CollectionGrid products={adaptedProducts} />
       <FinalCTA />
       <Footer />

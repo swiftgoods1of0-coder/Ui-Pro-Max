@@ -22,18 +22,18 @@ export default function SignatureMoment() {
     gsap.registerPlugin(ScrollTrigger)
 
     const ctx = gsap.context(() => {
-      // Photo: slight parallax on scroll
+      // Photo: parallax on scroll
       gsap.fromTo(
         photoRef.current,
-        { y: -40 },
+        { y: -60 },
         {
-          y: 40,
+          y: 60,
           ease: 'none',
           scrollTrigger: {
             trigger: sectionRef.current,
             start: 'top bottom',
             end: 'bottom top',
-            scrub: 0.6,
+            scrub: 0.4,
           },
         },
       )

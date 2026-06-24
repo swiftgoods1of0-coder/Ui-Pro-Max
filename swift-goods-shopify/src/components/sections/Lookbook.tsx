@@ -78,6 +78,14 @@ export default function Lookbook() {
               toggleActions: 'play none none none',
             },
           })
+          // Parallax drift
+          gsap.fromTo(img,
+            { y: -15 },
+            {
+              y: 15, ease: 'none',
+              scrollTrigger: { trigger: card, start: 'top bottom', end: 'bottom top', scrub: 0.3 },
+            }
+          )
         }
 
         if (overlay) {
@@ -230,6 +238,13 @@ export default function Lookbook() {
               </div>
             )
           })}
+        </div>
+
+        {/* Section CTA */}
+        <div className="mt-16 flex justify-center">
+          <LuxuryButton variant="secondary" href="/lookbook">
+            VIEW FULL LOOKBOOK
+          </LuxuryButton>
         </div>
       </div>
 

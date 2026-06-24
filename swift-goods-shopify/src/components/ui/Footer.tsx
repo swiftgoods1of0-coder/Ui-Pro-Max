@@ -729,7 +729,52 @@ export default function Footer() {
       </div>
 
       {/* ================================================================== */}
-      {/* 5. Bottom Bar                                                      */}
+      {/* 5. Back to Top                                                     */}
+      {/* ================================================================== */}
+      <div style={{ display: 'flex', justifyContent: 'center', padding: '2rem 0 0' }}>
+        <button
+          type="button"
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: '0.5rem',
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            color: '#555',
+            transition: 'color 300ms ease, transform 300ms ease',
+            padding: '0.5rem',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.color = '#c9a84c';
+            e.currentTarget.style.transform = 'translateY(-3px)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.color = '#555';
+            e.currentTarget.style.transform = 'translateY(0)';
+          }}
+          aria-label="Back to top"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M12 19V5M5 12l7-7 7 7" />
+          </svg>
+          <span
+            style={{
+              fontFamily: 'var(--font-body, Inter, sans-serif)',
+              fontSize: '0.5625rem',
+              letterSpacing: '0.3em',
+              textTransform: 'uppercase',
+            }}
+          >
+            BACK TO TOP
+          </span>
+        </button>
+      </div>
+
+      {/* ================================================================== */}
+      {/* 6. Bottom Bar                                                      */}
       {/* ================================================================== */}
       <div
         style={{

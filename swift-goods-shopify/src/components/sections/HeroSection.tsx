@@ -12,9 +12,19 @@ export default function HeroSection() {
   const subtitleRef = useRef<HTMLParagraphElement>(null)
   const ctasRef = useRef<HTMLDivElement>(null)
   const scrollIndicatorRef = useRef<HTMLDivElement>(null)
+  const bgImageRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      // Ken Burns slow zoom on background
+      if (bgImageRef.current) {
+        gsap.fromTo(
+          bgImageRef.current,
+          { scale: 1.0 },
+          { scale: 1.12, duration: 20, ease: 'none', repeat: -1, yoyo: true }
+        )
+      }
+
       const tl = gsap.timeline({ delay: 0.4 })
 
       // Label: clip-path reveal from left
@@ -71,7 +81,7 @@ export default function HeroSection() {
       style={{ height: '100vh', minHeight: '100vh', background: '#050505' }}
     >
       {/* ── Background: Night Supra photograph ── */}
-      <div className="absolute inset-0 z-0">
+      <div ref={bgImageRef} className="absolute inset-0 z-0" style={{ willChange: 'transform' }}>
         <Image
           src="/brand/sg-night-supra.jpeg"
           alt="Swift Goods night scene with Supra"
@@ -81,8 +91,6 @@ export default function HeroSection() {
           sizes="100vw"
           className="object-cover"
           style={{
-            transform: 'scale(1.05)',
-            transition: 'transform 12s cubic-bezier(0.25, 0.1, 0.25, 1)',
             filter: 'brightness(0.7) contrast(1.15) saturate(1.1)',
           }}
         />

@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
@@ -29,6 +29,9 @@ interface ProductCardProps {
 }
 
 function ProductCard({ product, index }: ProductCardProps) {
+  const [hovered, setHovered] = useState(false)
+  const hasSecondImage = product.images && product.images.length > 1
+
   return (
     <Link href={`/products/${product.handle}`} className="block">
     <motion.article
@@ -46,21 +49,35 @@ function ProductCard({ product, index }: ProductCardProps) {
         background: '#111111',
         border: '1px solid rgba(255,255,255,0.06)',
       }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
     >
       {/* Image area */}
       <div
         className="relative overflow-hidden"
         style={{ aspectRatio: '3/4', background: '#0a0a0a' }}
       >
-        {/* Product image — scales to 110% on hover */}
+        {/* Product image — scales to 110% on hover, swaps to second image */}
         <Image
           src={product.image}
           alt={product.title}
           fill
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          className="object-cover transition-transform duration-[600ms] ease-out group-hover:scale-110"
+          className="object-cover transition-all duration-[600ms] ease-out group-hover:scale-110"
+          style={{ opacity: hovered && hasSecondImage ? 0 : 1 }}
           unoptimized
         />
+        {hasSecondImage && (
+          <Image
+            src={product.images![1]}
+            alt={`${product.title} — alternate`}
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            className="object-cover transition-all duration-[600ms] ease-out group-hover:scale-110"
+            style={{ opacity: hovered ? 1 : 0 }}
+            unoptimized
+          />
+        )}
 
         {/* Dark hover overlay */}
         <div
@@ -268,17 +285,42 @@ export default function FeaturedProducts({ products }: FeaturedProductsProps) {
             >
               LATEST DROPS
             </h2>
-            <p
-              className="max-w-xs lg:text-right"
-              style={{
-                fontFamily: 'var(--font-body, Inter, sans-serif)',
-                fontSize: '0.9375rem',
-                color: '#888888',
-                lineHeight: 1.72,
-              }}
-            >
-              Each piece is a study in quiet luxury — where comfort and presence converge at the edge of fashion.
-            </p>
+            <div className="max-w-xs lg:text-right">
+              <p
+                style={{
+                  fontFamily: 'var(--font-body, Inter, sans-serif)',
+                  fontSize: '0.9375rem',
+                  color: '#888888',
+                  lineHeight: 1.72,
+                  margin: 0,
+                  marginBottom: '0.75rem',
+                }}
+              >
+                Each piece is a study in quiet luxury — where comfort and presence converge at the edge of fashion.
+              </p>
+              <div className="flex items-center gap-2 lg:justify-end">
+                <span
+                  style={{
+                    width: '6px',
+                    height: '6px',
+                    borderRadius: '50%',
+                    backgroundColor: '#c9a84c',
+                    animation: 'pulse-gold 2s ease-in-out infinite',
+                    flexShrink: 0,
+                  }}
+                />
+                <span
+                  style={{
+                    fontFamily: 'var(--font-body, Inter, sans-serif)',
+                    fontSize: '0.6875rem',
+                    color: '#555',
+                    letterSpacing: '0.08em',
+                  }}
+                >
+                  Selling fast — limited stock
+                </span>
+              </div>
+            </div>
           </div>
         </motion.div>
 

@@ -8,6 +8,7 @@ import LuxuryButton from '@/components/ui/LuxuryButton'
 
 export default function FinalCTA() {
   const sectionRef = useRef<HTMLElement>(null)
+  const bgRef = useRef<HTMLDivElement>(null)
   const labelRef = useRef<HTMLSpanElement>(null)
   const headingRef = useRef<HTMLHeadingElement>(null)
   const subtitleRef = useRef<HTMLParagraphElement>(null)
@@ -17,6 +18,17 @@ export default function FinalCTA() {
     gsap.registerPlugin(ScrollTrigger)
 
     const ctx = gsap.context(() => {
+      // Parallax on background
+      if (bgRef.current) {
+        gsap.fromTo(bgRef.current,
+          { y: -40 },
+          {
+            y: 40, ease: 'none',
+            scrollTrigger: { trigger: sectionRef.current, start: 'top bottom', end: 'bottom top', scrub: 0.5 },
+          }
+        )
+      }
+
       gsap.from(labelRef.current, {
         clipPath: 'inset(0 100% 0 0)',
         opacity: 0,
@@ -79,8 +91,8 @@ export default function FinalCTA() {
       className="relative w-full overflow-hidden"
       style={{ minHeight: '70vh' }}
     >
-      {/* Background image */}
-      <div className="absolute inset-0">
+      {/* Background image with parallax */}
+      <div ref={bgRef} className="absolute inset-0" style={{ top: '-40px', bottom: '-40px', willChange: 'transform' }}>
         <Image
           src="/brand/sg-solo-cream.jpeg"
           alt="Swift Goods — limited release"

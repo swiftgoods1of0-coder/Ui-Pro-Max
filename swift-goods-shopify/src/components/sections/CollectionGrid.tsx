@@ -178,17 +178,29 @@ export default function CollectionGrid({ products }: CollectionGridProps) {
                 data-cursor="product"
               >
                 <Link href={`/products/${product.handle}`} className="block w-full h-full">
-                  {/* Product image — aspect-ratio overflow-hidden + hover scale */}
+                  {/* Product image with hover swap */}
                   <div className="absolute inset-0 overflow-hidden">
                     <Image
                       src={imageUrl}
                       alt={product.title}
                       fill
                       sizes={isLarge ? '(max-width: 1024px) 100vw, 50vw' : '(max-width: 640px) 50vw, 25vw'}
-                      className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-110"
+                      className="object-cover object-center transition-all duration-700 ease-out group-hover:scale-110"
+                      style={{ opacity: product.images && product.images.length > 1 ? undefined : 1 }}
                       loading={index < 4 ? 'eager' : 'lazy'}
                       unoptimized
                     />
+                    {product.images && product.images.length > 1 && (
+                      <Image
+                        src={product.images[1]}
+                        alt={`${product.title} — alternate`}
+                        fill
+                        sizes={isLarge ? '(max-width: 1024px) 100vw, 50vw' : '(max-width: 640px) 50vw, 25vw'}
+                        className="object-cover object-center transition-all duration-700 ease-out opacity-0 group-hover:opacity-100 group-hover:scale-110"
+                        loading="lazy"
+                        unoptimized
+                      />
+                    )}
                   </div>
 
                   {/* Gradient overlay */}

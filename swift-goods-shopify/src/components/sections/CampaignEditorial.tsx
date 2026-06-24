@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'react'
 import Image from 'next/image'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import LuxuryButton from '@/components/ui/LuxuryButton'
 
 const PANELS = [
   {
@@ -11,12 +12,16 @@ const PANELS = [
     label: 'THE DROP',
     heading: 'BUILT FOR\nTHE MOMENT',
     body: 'When the sun dips and the streets empty — that\'s when presence speaks loudest. Premium fabrics that move with you.',
+    cta: 'SHOP THE DROP',
+    href: '/collections/new-arrivals',
   },
   {
     image: '/brand/sg-wall-duo.jpeg',
     label: 'STREET LUXURY',
     heading: 'RAW\nUNCUT',
     body: 'Concrete walls. Clean lines. No filter necessary when the fit speaks for itself. This is what luxury looks like in motion.',
+    cta: 'EXPLORE COLLECTION',
+    href: '/collections',
   },
 ]
 
@@ -46,10 +51,19 @@ export default function CampaignEditorial() {
               scrollTrigger: { trigger: panel, start: 'top 80%', toggleActions: 'play none none none' },
             }
           )
+          // Parallax on image
+          gsap.fromTo(img,
+            { y: -30 },
+            {
+              y: 30, ease: 'none',
+              scrollTrigger: { trigger: panel, start: 'top bottom', end: 'bottom top', scrub: 0.4 },
+            }
+          )
         }
 
         if (content) {
-          const elements = [label, heading, rule, body].filter(Boolean) as HTMLElement[]
+          const cta = panel.querySelector('.editorial-cta')
+          const elements = [label, heading, rule, body, cta].filter(Boolean) as HTMLElement[]
           gsap.fromTo(elements,
             { clipPath: 'inset(0 0 100% 0)', opacity: 0 },
             {
@@ -152,6 +166,12 @@ export default function CampaignEditorial() {
             >
               {panel.body}
             </p>
+
+            <div className="editorial-cta mt-10 opacity-0">
+              <LuxuryButton variant="ghost" href={panel.href}>
+                {panel.cta}
+              </LuxuryButton>
+            </div>
           </div>
         </div>
       ))}

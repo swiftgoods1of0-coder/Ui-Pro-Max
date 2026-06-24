@@ -612,6 +612,9 @@ export default function Navigation({ cartCount = 0 }: NavigationProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const ticking = useRef(false);
 
+  const [navHidden, setNavHidden] = useState(false);
+  const lastScrollY = useRef(0);
+
   // ---- Scroll tracking (RAF-throttled) -------------------------------------
   const handleScroll = useCallback(() => {
     if (ticking.current) return;
@@ -621,6 +624,15 @@ export default function Navigation({ cartCount = 0 }: NavigationProps) {
       const docH = document.documentElement.scrollHeight - window.innerHeight;
       setScrolled(y > 20);
       setScrollProgress(docH > 0 ? Math.min(100, (y / docH) * 100) : 0);
+
+      // Smart hide: hide on scroll down past 200px, show on scroll up
+      if (y > 200 && y > lastScrollY.current + 5) {
+        setNavHidden(true);
+      } else if (y < lastScrollY.current - 5) {
+        setNavHidden(false);
+      }
+      lastScrollY.current = y;
+
       ticking.current = false;
     });
   }, []);
@@ -670,6 +682,8 @@ export default function Navigation({ cartCount = 0 }: NavigationProps) {
           alignItems: 'center',
           justifyContent: 'center',
           gap: '2rem',
+          transform: navHidden ? 'translateY(-100%)' : 'translateY(0)',
+          transition: `transform 400ms ${LUXURY_EASE}`,
           backgroundColor: '#c9a84c',
           fontFamily: 'var(--font-body, Inter, sans-serif)',
           fontSize: '0.6875rem',
@@ -702,16 +716,14 @@ export default function Navigation({ cartCount = 0 }: NavigationProps) {
           alignItems: 'center',
           justifyContent: 'space-between',
           padding: '0 2rem',
-          // opacity is set to 0 via gsap.set in useEffect, not here,
-          // so React re-renders cannot clobber GSAP's animated value.
-          // Glass-dark backdrop on scroll
+          transform: navHidden ? 'translateY(calc(-100% - 32px))' : 'translateY(0)',
           backgroundColor: scrolled ? 'rgba(10,10,10,0.78)' : 'transparent',
           backdropFilter: scrolled ? 'blur(18px) saturate(180%)' : 'none',
           WebkitBackdropFilter: scrolled ? 'blur(18px) saturate(180%)' : 'none',
           borderBottom: scrolled
             ? `1px solid rgba(201,168,76,0.13)`
             : '1px solid transparent',
-          transition: `background-color 400ms ${LUXURY_EASE}, backdrop-filter 400ms ${LUXURY_EASE}, border-color 400ms ${LUXURY_EASE}`,
+          transition: `background-color 400ms ${LUXURY_EASE}, backdrop-filter 400ms ${LUXURY_EASE}, border-color 400ms ${LUXURY_EASE}, transform 400ms ${LUXURY_EASE}`,
         }}
       >
         {/* ---- LEFT: Logo -------------------------------------------------- */}
