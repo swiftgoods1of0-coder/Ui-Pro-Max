@@ -13,7 +13,7 @@ export default function ProductDrop() {
   const overlayRef = useRef<HTMLDivElement>(null)
   const labelRef = useRef<HTMLDivElement>(null)
   const badgeRef = useRef<HTMLDivElement>(null)
-  const subtitleRef = useRef<HTMLParagraphElement>(null)
+  const subtitleRef = useRef<HTMLDivElement>(null)
   const ctaRef = useRef<HTMLDivElement>(null)
   const stripRef = useRef<HTMLDivElement>(null)
   const counterRef = useRef<HTMLDivElement>(null)
@@ -284,23 +284,38 @@ export default function ProductDrop() {
             />
 
             {/* Subtitle */}
-            <p
+            <div
               ref={subtitleRef}
               className="mb-10"
               style={{
-                fontFamily: 'var(--font-display, "Cormorant Garamond", serif)',
-                fontStyle: 'italic',
-                fontSize: 'clamp(1.1rem, 2vw, 1.4rem)',
-                fontWeight: 300,
-                lineHeight: 1.6,
-                color: 'rgba(245,245,245,0.7)',
-                maxWidth: '400px',
+                maxWidth: '420px',
                 opacity: 0,
               }}
             >
-              Premium mesh-lined shorts built for the streets and beyond.
-              Comfort you can feel. Style they can see.
-            </p>
+              <p
+                style={{
+                  fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)',
+                  fontSize: 'clamp(1rem, 1.8vw, 1.25rem)',
+                  letterSpacing: '0.15em',
+                  color: '#c9a84c',
+                  marginBottom: '0.75rem',
+                }}
+              >
+                Performance. Comfort. Style. Perfected.
+              </p>
+              <p
+                style={{
+                  fontFamily: 'var(--font-display, "Cormorant Garamond", serif)',
+                  fontStyle: 'italic',
+                  fontSize: 'clamp(1rem, 1.8vw, 1.3rem)',
+                  fontWeight: 300,
+                  lineHeight: 1.7,
+                  color: 'rgba(245,245,245,0.6)',
+                }}
+              >
+                Crafted from premium ultra-soft stretch fabric for effortless movement, all-day comfort, and a refined luxury feel wherever the day takes you.
+              </p>
+            </div>
 
             {/* CTA buttons */}
             <div ref={ctaRef} className="flex flex-col sm:flex-row gap-4" style={{ opacity: 0 }}>
