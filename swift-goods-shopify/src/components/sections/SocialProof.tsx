@@ -30,8 +30,6 @@ const TESTIMONIALS: Testimonial[] = [
   },
 ]
 
-const PRESS_NAMES = ['HYPEBEAST', 'COMPLEX', 'GQ', 'HIGHSNOBIETY']
-
 const STATS = [
   { value: '10K+', label: 'Members' },
   { value: '3X', label: 'Sold Out' },
@@ -195,50 +193,6 @@ export default function SocialProof() {
               </p>
             </motion.div>
           ))}
-        </div>
-
-        {/* Press / As Seen In Bar */}
-        <div className="mb-16">
-          <p
-            className="text-center mb-6"
-            style={{
-              fontFamily: 'var(--font-body, Inter, sans-serif)',
-              fontSize: '0.625rem',
-              letterSpacing: '0.3em',
-              textTransform: 'uppercase',
-              color: '#555',
-            }}
-          >
-            As seen in
-          </p>
-          <div className="flex items-center justify-center flex-wrap gap-x-2 gap-y-2">
-            {PRESS_NAMES.map((name, i) => (
-              <span key={name} className="flex items-center gap-2">
-                <span
-                  style={{
-                    fontFamily:
-                      'var(--font-impact, "Bebas Neue", sans-serif)',
-                    fontSize: '1.2rem',
-                    letterSpacing: '0.2em',
-                    color: '#333',
-                  }}
-                >
-                  {name}
-                </span>
-                {i < PRESS_NAMES.length - 1 && (
-                  <span
-                    style={{
-                      color: '#333',
-                      fontSize: '0.5rem',
-                      lineHeight: 1,
-                    }}
-                  >
-                    &bull;
-                  </span>
-                )}
-              </span>
-            ))}
-          </div>
         </div>
 
         {/* Stat Counters */}
