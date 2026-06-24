@@ -6,6 +6,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import SplitTextReveal from '@/components/ui/SplitTextReveal';
+import MagneticElement from '@/components/ui/MagneticElement';
 
 // ---------------------------------------------------------------------------
 // Social icon SVGs (inline, 20x20)
@@ -428,20 +430,21 @@ export default function Footer() {
           />
         </div>
 
-        {/* Heading */}
-        <h2
-          data-animate="heading"
-          style={{
-            fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)',
-            fontSize: 'clamp(2rem, 4vw, 3.5rem)',
-            letterSpacing: '0.2em',
-            color: '#f5f5f5',
-            margin: 0,
-            marginBottom: '1rem',
-          }}
-        >
-          JOIN THE MOVEMENT
-        </h2>
+        {/* Heading — split text reveal */}
+        <div data-animate="heading">
+          <SplitTextReveal
+            text="JOIN THE MOVEMENT"
+            tag="h2"
+            style={{
+              fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)',
+              fontSize: 'clamp(2rem, 4vw, 3.5rem)',
+              letterSpacing: '0.2em',
+              color: '#f5f5f5',
+              margin: 0,
+              marginBottom: '1rem',
+            }}
+          />
+        </div>
 
         {/* Subtitle */}
         <p
@@ -616,7 +619,7 @@ export default function Footer() {
                 aria-label={label}
                 style={{
                   color: '#666',
-                  transition: 'color 300ms ease, transform 300ms ease',
+                  transition: 'color 300ms ease, transform 300ms ease, filter 300ms ease',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -624,12 +627,14 @@ export default function Footer() {
                 onMouseEnter={(e) => {
                   const el = e.currentTarget;
                   el.style.color = '#c9a84c';
-                  el.style.transform = 'translateY(-2px)';
+                  el.style.transform = 'translateY(-3px) scale(1.15)';
+                  el.style.filter = 'drop-shadow(0 0 8px rgba(201,168,76,0.4))';
                 }}
                 onMouseLeave={(e) => {
                   const el = e.currentTarget;
                   el.style.color = '#666';
-                  el.style.transform = 'translateY(0)';
+                  el.style.transform = 'translateY(0) scale(1)';
+                  el.style.filter = 'none';
                 }}
               >
                 <Icon />
@@ -732,6 +737,7 @@ export default function Footer() {
       {/* 5. Back to Top                                                     */}
       {/* ================================================================== */}
       <div style={{ display: 'flex', justifyContent: 'center', padding: '2rem 0 0' }}>
+        <MagneticElement strength={0.3} radius={120}>
         <button
           type="button"
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
@@ -771,6 +777,7 @@ export default function Footer() {
             BACK TO TOP
           </span>
         </button>
+        </MagneticElement>
       </div>
 
       {/* ================================================================== */}

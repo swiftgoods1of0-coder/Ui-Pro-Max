@@ -5,6 +5,7 @@ import Image from 'next/image'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import LuxuryButton from '@/components/ui/LuxuryButton'
+import MagneticElement from '@/components/ui/MagneticElement'
 
 const PANELS = [
   {
@@ -168,9 +169,11 @@ export default function CampaignEditorial() {
             </p>
 
             <div className="editorial-cta mt-10 opacity-0">
-              <LuxuryButton variant="ghost" href={panel.href}>
-                {panel.cta}
-              </LuxuryButton>
+              <MagneticElement strength={0.25} radius={140}>
+                <LuxuryButton variant="ghost" href={panel.href}>
+                  {panel.cta}
+                </LuxuryButton>
+              </MagneticElement>
             </div>
           </div>
         </div>
