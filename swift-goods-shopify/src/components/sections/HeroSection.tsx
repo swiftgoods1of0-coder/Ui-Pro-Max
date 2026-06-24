@@ -83,8 +83,8 @@ export default function HeroSection() {
       {/* ── Background: Night Supra photograph ── */}
       <div ref={bgImageRef} className="absolute inset-0 z-0" style={{ willChange: 'transform' }}>
         <Image
-          src="/brand/sg-night-supra.jpeg"
-          alt="Swift Goods night scene with Supra"
+          src="/brand/sg-parking-lot-night.jpeg"
+          alt="Swift Goods — night session"
           fill
           priority
           quality={90}

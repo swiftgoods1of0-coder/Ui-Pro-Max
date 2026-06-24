@@ -3,6 +3,7 @@ import Footer from '@/components/ui/Footer'
 import HeroSection from '@/components/sections/HeroSection'
 import CampaignEditorial from '@/components/sections/CampaignEditorial'
 import SignatureMoment from '@/components/sections/SignatureMoment'
+import CinematicStrip from '@/components/sections/CinematicStrip'
 import Lookbook from '@/components/sections/Lookbook'
 import FeaturedProducts from '@/components/sections/FeaturedProducts'
 import CollectionGrid from '@/components/sections/CollectionGrid'
@@ -79,6 +80,7 @@ export default function Home() {
       <GoldDivider />
       <FeaturedProducts products={featured} />
       <SignatureMoment />
+      <CinematicStrip />
       <GoldDivider />
       <Lookbook />
       <GoldDivider />

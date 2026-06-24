@@ -94,7 +94,7 @@ export default function FinalCTA() {
       {/* Background image with parallax */}
       <div ref={bgRef} className="absolute inset-0" style={{ top: '-40px', bottom: '-40px', willChange: 'transform' }}>
         <Image
-          src="/brand/sg-solo-cream.jpeg"
+          src="/brand/sg-supra-brown-black.jpeg"
           alt="Swift Goods — limited release"
           fill
           sizes="100vw"
