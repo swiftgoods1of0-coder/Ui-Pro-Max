@@ -814,3 +814,21 @@ button:focus-visible {
     display: none !important;
   }
 }
+
+/* Urgency banner responsive text */
+.urgency-banner-full {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.urgency-banner-short {
+  display: none;
+}
+@media (max-width: 640px) {
+  .urgency-banner-full {
+    display: none !important;
+  }
+  .urgency-banner-short {
+    display: inline !important;
+  }
+}

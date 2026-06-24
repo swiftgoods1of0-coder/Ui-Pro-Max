@@ -35,6 +35,11 @@ const ScrollProgressBar = dynamic(
   { ssr: false }
 )
 
+const UrgencyBanner = dynamic(
+  () => import('./UrgencyBanner'),
+  { ssr: false }
+)
+
 interface ErrorBoundaryState {
   hasError: boolean
   error: Error | null
@@ -101,6 +106,7 @@ export default function ClientRoot({ children }: { children: ReactNode }) {
           {mounted && <CustomCursor />}
           {mounted && <GoldParticleField />}
           {mounted && <ScrollProgressBar />}
+          {mounted && <UrgencyBanner />}
           {!done && <Preloader onComplete={() => setDone(true)} />}
           {children}
         </SmoothScrollProvider>

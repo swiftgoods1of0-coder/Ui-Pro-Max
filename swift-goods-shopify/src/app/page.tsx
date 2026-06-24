@@ -8,6 +8,7 @@ import Lookbook from '@/components/sections/Lookbook'
 import FeaturedProducts from '@/components/sections/FeaturedProducts'
 import CollectionGrid from '@/components/sections/CollectionGrid'
 import FinalCTA from '@/components/sections/FinalCTA'
+import SocialProof from '@/components/sections/SocialProof'
 import ProductDrop from '@/components/sections/ProductDrop'
 import AnimatedDivider from '@/components/ui/AnimatedDivider'
 import { MOCK_PRODUCTS, type ShopifyProduct as FullShopifyProduct } from '@/lib/shopify'
@@ -77,6 +78,8 @@ export default function Home() {
       <CinematicStrip />
       <AnimatedDivider />
       <Lookbook />
+      <AnimatedDivider />
+      <SocialProof />
       <AnimatedDivider />
       <CollectionGrid products={adaptedProducts} />
       <FinalCTA />
