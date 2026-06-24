@@ -8,10 +8,12 @@ import MagneticElement from '@/components/ui/MagneticElement'
 import SplitTextReveal from '@/components/ui/SplitTextReveal'
 
 const FEATURES = [
-  { label: 'MESH-LINED', detail: 'Breathable Interior' },
+  { label: 'ULTRA-SOFT', detail: 'Premium Stretch Fabric' },
   { label: '4-WAY STRETCH', detail: 'Unrestricted Movement' },
   { label: 'QUICK-DRY', detail: 'All-Day Performance' },
 ]
+
+const MARQUEE_TEXT = 'THE SHORTS THAT MOVE — SWIFT GOODS ESSENTIALS — SS25 DROP — COMFORT IS LUXURY — '
 
 export default function ProductDrop() {
   const sectionRef = useRef<HTMLElement>(null)
@@ -28,14 +30,18 @@ export default function ProductDrop() {
   const cornerTLRef = useRef<HTMLDivElement>(null)
   const cornerBRRef = useRef<HTMLDivElement>(null)
   const verticalTextRef = useRef<HTMLDivElement>(null)
+  const editionRef = useRef<HTMLDivElement>(null)
+  const marqueeRef = useRef<HTMLDivElement>(null)
+  const glowRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger)
 
     const ctx = gsap.context(() => {
+      // Video parallax zoom
       if (videoRef.current) {
         gsap.fromTo(videoRef.current,
-          { scale: 1.15 },
+          { scale: 1.18 },
           {
             scale: 1,
             ease: 'none',
@@ -49,6 +55,14 @@ export default function ProductDrop() {
         )
       }
 
+      // Ambient glow pulse
+      if (glowRef.current) {
+        gsap.fromTo(glowRef.current,
+          { opacity: 0.4 },
+          { opacity: 0.7, duration: 4, ease: 'sine.inOut', repeat: -1, yoyo: true }
+        )
+      }
+
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
@@ -57,14 +71,35 @@ export default function ProductDrop() {
         },
       })
 
+      // Corner brackets
       if (cornerTLRef.current && cornerBRRef.current) {
         tl.fromTo([cornerTLRef.current, cornerBRRef.current],
-          { opacity: 0, scale: 0.8 },
-          { opacity: 1, scale: 1, duration: 0.8, ease: 'power2.out', stagger: 0.15 },
+          { opacity: 0, scale: 0.7 },
+          { opacity: 1, scale: 1, duration: 1, ease: 'power2.out', stagger: 0.2 },
           0
         )
       }
 
+      // Floating edition number
+      if (editionRef.current) {
+        tl.fromTo(editionRef.current,
+          { opacity: 0, x: 60 },
+          { opacity: 1, x: 0, duration: 1.4, ease: 'power3.out' },
+          0.2
+        )
+        gsap.to(editionRef.current, {
+          y: -30,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 0.3,
+          },
+        })
+      }
+
+      // Badge
       if (badgeRef.current) {
         tl.fromTo(badgeRef.current,
           { scaleX: 0, opacity: 0 },
@@ -73,6 +108,7 @@ export default function ProductDrop() {
         )
       }
 
+      // Label
       if (labelRef.current) {
         tl.fromTo(labelRef.current,
           { clipPath: 'inset(0 100% 0 0)', opacity: 0 },
@@ -81,6 +117,7 @@ export default function ProductDrop() {
         )
       }
 
+      // Gold rule
       if (stripRef.current) {
         tl.fromTo(stripRef.current,
           { scaleX: 0 },
@@ -89,6 +126,7 @@ export default function ProductDrop() {
         )
       }
 
+      // Description
       if (subtitleRef.current) {
         tl.fromTo(subtitleRef.current,
           { clipPath: 'inset(100% 0 0 0)', opacity: 0 },
@@ -97,15 +135,17 @@ export default function ProductDrop() {
         )
       }
 
+      // Features
       if (featuresRef.current) {
         const items = featuresRef.current.querySelectorAll<HTMLElement>('.feature-item')
         tl.fromTo(items,
           { opacity: 0, x: -20 },
-          { opacity: 1, x: 0, duration: 0.6, stagger: 0.1, ease: 'power2.out' },
+          { opacity: 1, x: 0, duration: 0.6, stagger: 0.12, ease: 'power2.out' },
           0.85
         )
       }
 
+      // Price
       if (priceRef.current) {
         tl.fromTo(priceRef.current,
           { opacity: 0, y: 20 },
@@ -114,6 +154,7 @@ export default function ProductDrop() {
         )
       }
 
+      // CTAs
       if (ctaRef.current) {
         tl.fromTo(ctaRef.current,
           { y: 30, opacity: 0 },
@@ -122,6 +163,7 @@ export default function ProductDrop() {
         )
       }
 
+      // Stock counter
       if (counterRef.current) {
         tl.fromTo(counterRef.current,
           { opacity: 0, y: 10 },
@@ -130,6 +172,7 @@ export default function ProductDrop() {
         )
       }
 
+      // Vertical text
       if (verticalTextRef.current) {
         tl.fromTo(verticalTextRef.current,
           { opacity: 0, y: 40 },
@@ -137,11 +180,21 @@ export default function ProductDrop() {
           0.5
         )
       }
+
+      // Marquee
+      if (marqueeRef.current) {
+        tl.fromTo(marqueeRef.current,
+          { opacity: 0 },
+          { opacity: 1, duration: 1.2, ease: 'power2.out' },
+          0.8
+        )
+      }
     }, sectionRef)
 
     return () => ctx.revert()
   }, [])
 
+  // Video play/pause on visibility
   useEffect(() => {
     const video = videoRef.current
     if (!video) return
@@ -191,20 +244,35 @@ export default function ProductDrop() {
         ref={overlayRef}
         className="absolute inset-0"
         style={{
-          background: 'linear-gradient(to right, rgba(5,5,5,0.92) 0%, rgba(5,5,5,0.75) 30%, rgba(5,5,5,0.35) 55%, rgba(5,5,5,0.1) 80%, transparent 100%)',
+          background: 'linear-gradient(to right, rgba(5,5,5,0.93) 0%, rgba(5,5,5,0.78) 28%, rgba(5,5,5,0.4) 52%, rgba(5,5,5,0.12) 78%, transparent 100%)',
         }}
       />
       <div
         className="absolute inset-0"
         style={{
-          background: 'linear-gradient(to top, rgba(5,5,5,0.85) 0%, transparent 25%, transparent 75%, rgba(5,5,5,0.5) 100%)',
+          background: 'linear-gradient(to top, rgba(5,5,5,0.9) 0%, transparent 22%, transparent 78%, rgba(5,5,5,0.55) 100%)',
         }}
       />
-      {/* Subtle noise texture */}
+
+      {/* Gold radial glow behind text */}
+      <div
+        ref={glowRef}
+        className="absolute pointer-events-none"
+        style={{
+          left: '-5%',
+          top: '25%',
+          width: '55%',
+          height: '55%',
+          background: 'radial-gradient(ellipse at center, rgba(201,168,76,0.06) 0%, rgba(201,168,76,0.02) 40%, transparent 70%)',
+          filter: 'blur(60px)',
+        }}
+      />
+
+      {/* Film grain */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          opacity: 0.025,
+          opacity: 0.02,
           backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.8) 2px, rgba(255,255,255,0.8) 3px)',
           backgroundSize: '100% 4px',
         }}
@@ -215,38 +283,77 @@ export default function ProductDrop() {
         className="absolute left-0 top-0 bottom-0 w-px hidden lg:block"
         style={{
           left: '3rem',
-          background: 'linear-gradient(to bottom, transparent, rgba(201,168,76,0.4) 20%, rgba(201,168,76,0.4) 80%, transparent)',
+          background: 'linear-gradient(to bottom, transparent, rgba(201,168,76,0.45) 15%, rgba(201,168,76,0.45) 85%, transparent)',
         }}
       />
 
-      {/* Decorative corner brackets — luxury lookbook style */}
+      {/* Corner brackets */}
       <div
         ref={cornerTLRef}
         className="absolute hidden lg:block pointer-events-none"
-        style={{ top: '2.5rem', left: '4.5rem', opacity: 0 }}
+        style={{ top: '2rem', left: '4.5rem', opacity: 0 }}
       >
-        <div style={{ width: 40, height: 40, position: 'relative' }}>
-          <div style={{ position: 'absolute', top: 0, left: 0, width: 20, height: 1, background: 'rgba(201,168,76,0.5)' }} />
-          <div style={{ position: 'absolute', top: 0, left: 0, width: 1, height: 20, background: 'rgba(201,168,76,0.5)' }} />
+        <div style={{ width: 50, height: 50, position: 'relative' }}>
+          <div style={{ position: 'absolute', top: 0, left: 0, width: 28, height: 1, background: 'rgba(201,168,76,0.5)' }} />
+          <div style={{ position: 'absolute', top: 0, left: 0, width: 1, height: 28, background: 'rgba(201,168,76,0.5)' }} />
         </div>
       </div>
       <div
         ref={cornerBRRef}
         className="absolute hidden lg:block pointer-events-none"
-        style={{ bottom: '2.5rem', right: '3rem', opacity: 0 }}
+        style={{ bottom: '4.5rem', right: '3rem', opacity: 0 }}
       >
-        <div style={{ width: 40, height: 40, position: 'relative' }}>
-          <div style={{ position: 'absolute', bottom: 0, right: 0, width: 20, height: 1, background: 'rgba(201,168,76,0.5)' }} />
-          <div style={{ position: 'absolute', bottom: 0, right: 0, width: 1, height: 20, background: 'rgba(201,168,76,0.5)' }} />
+        <div style={{ width: 50, height: 50, position: 'relative' }}>
+          <div style={{ position: 'absolute', bottom: 0, right: 0, width: 28, height: 1, background: 'rgba(201,168,76,0.5)' }} />
+          <div style={{ position: 'absolute', bottom: 0, right: 0, width: 1, height: 28, background: 'rgba(201,168,76,0.5)' }} />
         </div>
       </div>
 
-      {/* Vertical side text — right edge */}
+      {/* Giant floating edition number */}
+      <div
+        ref={editionRef}
+        className="absolute hidden lg:block pointer-events-none select-none"
+        style={{
+          right: '6%',
+          top: '50%',
+          transform: 'translateY(-50%)',
+          opacity: 0,
+        }}
+      >
+        <span
+          style={{
+            fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)',
+            fontSize: 'clamp(10rem, 18vw, 20rem)',
+            lineHeight: 0.85,
+            letterSpacing: '-0.02em',
+            color: 'transparent',
+            WebkitTextStroke: '1px rgba(201,168,76,0.12)',
+          }}
+        >
+          01
+        </span>
+        <span
+          className="block"
+          style={{
+            fontFamily: 'var(--font-body, Inter, sans-serif)',
+            fontSize: '0.5rem',
+            letterSpacing: '0.4em',
+            textTransform: 'uppercase',
+            color: 'rgba(201,168,76,0.2)',
+            textAlign: 'right',
+            marginTop: '-1rem',
+          }}
+        >
+          EDITION
+        </span>
+      </div>
+
+      {/* Vertical side text */}
       <div
         ref={verticalTextRef}
         className="absolute hidden lg:flex items-center justify-center pointer-events-none"
         style={{
-          right: '2rem',
+          right: '1.5rem',
           top: '50%',
           transform: 'translateY(-50%) rotate(90deg)',
           transformOrigin: 'center center',
@@ -259,7 +366,7 @@ export default function ProductDrop() {
             fontSize: '0.5rem',
             letterSpacing: '0.5em',
             textTransform: 'uppercase',
-            color: 'rgba(201,168,76,0.3)',
+            color: 'rgba(201,168,76,0.25)',
             whiteSpace: 'nowrap',
           }}
         >
@@ -269,7 +376,7 @@ export default function ProductDrop() {
 
       {/* Content */}
       <div className="relative z-10 flex items-center" style={{ minHeight: '100vh' }}>
-        <div className="w-full max-w-7xl mx-auto px-6 sm:px-10 lg:px-20 py-24">
+        <div className="w-full max-w-7xl mx-auto px-6 sm:px-10 lg:px-20 py-28">
           <div className="max-w-2xl">
 
             {/* "NEW DROP" badge */}
@@ -279,13 +386,13 @@ export default function ProductDrop() {
               style={{ opacity: 0 }}
             >
               <span
-                className="px-4 py-1.5"
+                className="px-5 py-2"
                 style={{
                   background: 'linear-gradient(135deg, #c9a84c, #e6c870)',
                   color: '#050505',
                   fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)',
-                  fontSize: '0.75rem',
-                  letterSpacing: '0.2em',
+                  fontSize: '0.8rem',
+                  letterSpacing: '0.22em',
                   fontWeight: 600,
                 }}
               >
@@ -293,11 +400,11 @@ export default function ProductDrop() {
               </span>
               <span
                 style={{
-                  width: '6px',
-                  height: '6px',
+                  width: '7px',
+                  height: '7px',
                   borderRadius: '50%',
                   background: 'linear-gradient(135deg, #c9a84c, #e6c870)',
-                  boxShadow: '0 0 8px rgba(201,168,76,0.6)',
+                  boxShadow: '0 0 12px rgba(201,168,76,0.7), 0 0 24px rgba(201,168,76,0.3)',
                   animation: 'pulse-gold 2s ease-in-out infinite',
                   flexShrink: 0,
                 }}
@@ -318,11 +425,11 @@ export default function ProductDrop() {
             {/* Gold label */}
             <div
               ref={labelRef}
-              className="inline-flex items-center gap-3 mb-6"
+              className="inline-flex items-center gap-3 mb-8"
               style={{ opacity: 0 }}
             >
               <span
-                className="block w-12 h-px"
+                className="block w-14 h-px"
                 style={{ background: 'linear-gradient(to right, #c9a84c, transparent)' }}
               />
               <span
@@ -330,7 +437,7 @@ export default function ProductDrop() {
                   fontFamily: 'var(--font-body, Inter, sans-serif)',
                   fontSize: '0.625rem',
                   fontWeight: 500,
-                  letterSpacing: '0.4em',
+                  letterSpacing: '0.45em',
                   textTransform: 'uppercase',
                   color: '#c9a84c',
                 }}
@@ -338,12 +445,12 @@ export default function ProductDrop() {
                 SWIFT GOODS ESSENTIALS
               </span>
               <span
-                className="block w-12 h-px"
+                className="block w-14 h-px"
                 style={{ background: 'linear-gradient(to left, #c9a84c, transparent)' }}
               />
             </div>
 
-            {/* Heading — split text reveal */}
+            {/* Heading */}
             <SplitTextReveal
               text="THE SHORTS"
               tag="h2"
@@ -351,12 +458,13 @@ export default function ProductDrop() {
               duration={0.8}
               style={{
                 fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)',
-                fontSize: 'clamp(3.5rem, 9vw, 8rem)',
+                fontSize: 'clamp(3.5rem, 10vw, 9rem)',
                 color: '#f5f5f5',
                 letterSpacing: '0.06em',
-                lineHeight: 0.92,
+                lineHeight: 0.9,
                 margin: 0,
-                marginBottom: '0.15rem',
+                marginBottom: '0.1rem',
+                textShadow: '0 4px 40px rgba(0,0,0,0.3)',
               }}
             />
             <SplitTextReveal
@@ -367,36 +475,34 @@ export default function ProductDrop() {
               delay={0.15}
               style={{
                 fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)',
-                fontSize: 'clamp(3.5rem, 9vw, 8rem)',
+                fontSize: 'clamp(3.5rem, 10vw, 9rem)',
                 color: '#c9a84c',
                 letterSpacing: '0.06em',
-                lineHeight: 0.92,
+                lineHeight: 0.9,
                 margin: 0,
-                marginBottom: '2rem',
+                marginBottom: '2.5rem',
+                textShadow: '0 0 60px rgba(201,168,76,0.15)',
               }}
             />
 
             {/* Gold horizontal rule */}
             <div
               ref={stripRef}
-              className="mb-8"
+              className="mb-10"
               style={{
-                width: '100px',
+                width: '120px',
                 height: '2px',
-                background: 'linear-gradient(to right, #c9a84c, rgba(201,168,76,0.2))',
+                background: 'linear-gradient(to right, #c9a84c, rgba(201,168,76,0.15))',
                 transformOrigin: 'left center',
                 transform: 'scaleX(0)',
               }}
             />
 
-            {/* Description block */}
+            {/* Description */}
             <div
               ref={subtitleRef}
-              className="mb-8"
-              style={{
-                maxWidth: '440px',
-                opacity: 0,
-              }}
+              className="mb-10"
+              style={{ maxWidth: '460px', opacity: 0 }}
             >
               <p
                 style={{
@@ -406,7 +512,7 @@ export default function ProductDrop() {
                   letterSpacing: '0.3em',
                   textTransform: 'uppercase',
                   color: '#c9a84c',
-                  marginBottom: '1rem',
+                  marginBottom: '1.25rem',
                 }}
               >
                 Performance &nbsp;&middot;&nbsp; Comfort &nbsp;&middot;&nbsp; Style &nbsp;&middot;&nbsp; Perfected
@@ -415,94 +521,114 @@ export default function ProductDrop() {
                 style={{
                   fontFamily: 'var(--font-display, "Cormorant Garamond", serif)',
                   fontStyle: 'italic',
-                  fontSize: 'clamp(1.05rem, 1.8vw, 1.35rem)',
+                  fontSize: 'clamp(1.1rem, 2vw, 1.4rem)',
                   fontWeight: 300,
-                  lineHeight: 1.75,
-                  color: 'rgba(245,245,245,0.55)',
+                  lineHeight: 1.8,
+                  color: 'rgba(245,245,245,0.5)',
                 }}
               >
                 Crafted from premium ultra-soft stretch fabric for effortless movement, all-day comfort, and a refined luxury feel wherever the day takes you.
               </p>
             </div>
 
-            {/* Product features strip */}
+            {/* Product features */}
             <div
               ref={featuresRef}
-              className="flex flex-wrap gap-6 mb-10"
+              className="flex flex-wrap gap-8 mb-12"
             >
-              {FEATURES.map((f) => (
-                <div key={f.label} className="feature-item" style={{ opacity: 0 }}>
-                  <div className="flex items-center gap-2 mb-1">
+              {FEATURES.map((f, i) => (
+                <div key={f.label} className="feature-item flex items-start gap-3" style={{ opacity: 0 }}>
+                  {/* Vertical gold line */}
+                  <div
+                    className="mt-0.5 flex-shrink-0"
+                    style={{
+                      width: 1,
+                      height: 28,
+                      background: 'linear-gradient(to bottom, #c9a84c, rgba(201,168,76,0.15))',
+                    }}
+                  />
+                  <div>
                     <span
                       style={{
-                        width: 4,
-                        height: 4,
-                        background: '#c9a84c',
-                        transform: 'rotate(45deg)',
-                        flexShrink: 0,
-                      }}
-                    />
-                    <span
-                      style={{
+                        display: 'block',
                         fontFamily: 'var(--font-body, Inter, sans-serif)',
                         fontSize: '0.625rem',
                         fontWeight: 600,
-                        letterSpacing: '0.2em',
+                        letterSpacing: '0.22em',
                         textTransform: 'uppercase',
                         color: '#f5f5f5',
+                        marginBottom: 3,
                       }}
                     >
                       {f.label}
                     </span>
+                    <span
+                      style={{
+                        display: 'block',
+                        fontFamily: 'var(--font-display, "Cormorant Garamond", serif)',
+                        fontStyle: 'italic',
+                        fontSize: '0.75rem',
+                        color: 'rgba(201,168,76,0.5)',
+                        letterSpacing: '0.04em',
+                      }}
+                    >
+                      {f.detail}
+                    </span>
                   </div>
-                  <span
-                    style={{
-                      fontFamily: 'var(--font-body, Inter, sans-serif)',
-                      fontSize: '0.5625rem',
-                      letterSpacing: '0.08em',
-                      color: 'rgba(245,245,245,0.35)',
-                      paddingLeft: 12,
-                    }}
-                  >
-                    {f.detail}
-                  </span>
                 </div>
               ))}
             </div>
 
-            {/* Price */}
+            {/* Price block */}
             <div
               ref={priceRef}
-              className="flex items-baseline gap-4 mb-10"
+              className="mb-12"
               style={{ opacity: 0 }}
             >
-              <span
-                style={{
-                  fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)',
-                  fontSize: 'clamp(1.8rem, 3vw, 2.5rem)',
-                  letterSpacing: '0.05em',
-                  background: 'linear-gradient(135deg, #c9a84c, #e6c870, #c8aa8a)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text',
-                }}
-              >
-                $65.00
-              </span>
-              <span
-                style={{
-                  fontFamily: 'var(--font-body, Inter, sans-serif)',
-                  fontSize: '0.625rem',
-                  letterSpacing: '0.15em',
-                  textTransform: 'uppercase',
-                  color: 'rgba(245,245,245,0.3)',
-                }}
-              >
-                FREE SHIPPING ON ALL ORDERS
-              </span>
+              <div className="flex items-end gap-4">
+                <span
+                  style={{
+                    fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)',
+                    fontSize: 'clamp(2.2rem, 4vw, 3.2rem)',
+                    letterSpacing: '0.04em',
+                    lineHeight: 1,
+                    color: '#c9a84c',
+                  }}
+                >
+                  $65
+                </span>
+                <span
+                  style={{
+                    fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)',
+                    fontSize: 'clamp(1.2rem, 2vw, 1.6rem)',
+                    letterSpacing: '0.04em',
+                    lineHeight: 1,
+                    color: 'rgba(201,168,76,0.5)',
+                    marginBottom: 2,
+                  }}
+                >
+                  .00
+                </span>
+                <div
+                  className="h-px flex-shrink-0 mx-2"
+                  style={{ width: 24, background: 'rgba(201,168,76,0.3)', marginBottom: 6 }}
+                />
+                <span
+                  style={{
+                    fontFamily: 'var(--font-body, Inter, sans-serif)',
+                    fontSize: '0.5625rem',
+                    letterSpacing: '0.2em',
+                    textTransform: 'uppercase',
+                    color: 'rgba(245,245,245,0.25)',
+                    marginBottom: 3,
+                  }}
+                >
+                  FREE SHIPPING
+                </span>
+              </div>
             </div>
 
-            {/* CTA buttons */}
+            {/* CTAs */}
             <div ref={ctaRef} className="flex flex-col sm:flex-row gap-4" style={{ opacity: 0 }}>
               <MagneticElement strength={0.3} radius={180}>
                 <LuxuryButton
@@ -527,7 +653,7 @@ export default function ProductDrop() {
             {/* Stock counter */}
             <div
               ref={counterRef}
-              className="mt-8 flex items-center gap-3"
+              className="mt-10 flex items-center gap-3"
               style={{ opacity: 0 }}
             >
               <span
@@ -536,7 +662,7 @@ export default function ProductDrop() {
                   height: '8px',
                   borderRadius: '50%',
                   background: 'linear-gradient(135deg, #c9a84c, #e6c870)',
-                  boxShadow: '0 0 10px rgba(201,168,76,0.5)',
+                  boxShadow: '0 0 10px rgba(201,168,76,0.5), 0 0 20px rgba(201,168,76,0.2)',
                   animation: 'pulse-gold 1.5s ease-in-out infinite',
                   flexShrink: 0,
                 }}
@@ -545,8 +671,8 @@ export default function ProductDrop() {
                 style={{
                   fontFamily: 'var(--font-body, Inter, sans-serif)',
                   fontSize: '0.6875rem',
-                  color: 'rgba(201,168,76,0.7)',
-                  letterSpacing: '0.1em',
+                  color: 'rgba(201,168,76,0.65)',
+                  letterSpacing: '0.12em',
                   textTransform: 'uppercase',
                 }}
               >
@@ -554,18 +680,50 @@ export default function ProductDrop() {
               </span>
               <span
                 className="block h-px flex-1 max-w-[60px]"
-                style={{ background: 'linear-gradient(to right, rgba(201,168,76,0.3), transparent)' }}
+                style={{ background: 'linear-gradient(to right, rgba(201,168,76,0.25), transparent)' }}
               />
             </div>
           </div>
         </div>
       </div>
 
+      {/* Bottom marquee ticker */}
+      <div
+        ref={marqueeRef}
+        className="absolute bottom-0 left-0 right-0 overflow-hidden pointer-events-none"
+        style={{
+          height: '3rem',
+          borderTop: '1px solid rgba(201,168,76,0.08)',
+          background: 'linear-gradient(to top, rgba(5,5,5,0.95), rgba(5,5,5,0.6))',
+          opacity: 0,
+        }}
+      >
+        <div
+          className="flex items-center h-full whitespace-nowrap"
+          style={{ animation: 'sg-marquee 25s linear infinite' }}
+        >
+          {Array.from({ length: 6 }).map((_, i) => (
+            <span
+              key={i}
+              style={{
+                fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)',
+                fontSize: '0.9rem',
+                letterSpacing: '0.25em',
+                color: 'rgba(201,168,76,0.12)',
+                paddingRight: '2rem',
+              }}
+            >
+              {MARQUEE_TEXT}
+            </span>
+          ))}
+        </div>
+      </div>
+
       {/* Bottom gold accent */}
       <div
-        className="absolute bottom-0 left-0 right-0 h-px"
+        className="absolute bottom-12 left-0 right-0 h-px"
         style={{
-          background: 'linear-gradient(to right, transparent, rgba(201,168,76,0.4), transparent)',
+          background: 'linear-gradient(to right, transparent, rgba(201,168,76,0.3), transparent)',
         }}
       />
     </section>
