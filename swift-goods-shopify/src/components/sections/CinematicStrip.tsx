@@ -152,6 +152,7 @@ export default function CinematicStrip() {
             color: '#f5f5f5',
             letterSpacing: '0.08em',
             margin: 0,
+            textShadow: '0 4px 40px rgba(0,0,0,0.4)',
           }}
         >
           THE WORLD OF SWIFT GOODS
@@ -280,11 +281,22 @@ export default function CinematicStrip() {
                   textTransform: 'uppercase',
                   margin: 0,
                   lineHeight: 1.1,
+                  textShadow: '0 4px 30px rgba(0,0,0,0.4)',
                 }}
               >
                 {frame.title}
               </h3>
             </div>
+
+            {/* Film grain */}
+            <div
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                opacity: 0.02,
+                backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.8) 2px, rgba(255,255,255,0.8) 3px)',
+                backgroundSize: '100% 4px',
+              }}
+            />
 
             {/* Vertical gold accent line — left edge */}
             <div

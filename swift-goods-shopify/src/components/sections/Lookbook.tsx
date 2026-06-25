@@ -129,7 +129,28 @@ export default function Lookbook() {
       style={{ background: '#050505' }}
       className="relative py-28 overflow-hidden"
     >
+      {/* Film grain */}
+      <div
+        className="absolute inset-0 pointer-events-none z-[1]"
+        style={{
+          opacity: 0.015,
+          backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.8) 2px, rgba(255,255,255,0.8) 3px)',
+          backgroundSize: '100% 4px',
+        }}
+      />
+
       {/* Ambient gold glow */}
+      <div
+        className="absolute pointer-events-none"
+        style={{
+          bottom: '15%',
+          left: '-8%',
+          width: '35%',
+          height: '35%',
+          background: 'radial-gradient(ellipse at center, rgba(201,168,76,0.03) 0%, transparent 65%)',
+          filter: 'blur(80px)',
+        }}
+      />
       <div
         className="absolute pointer-events-none"
         style={{
@@ -256,13 +277,14 @@ export default function Lookbook() {
                   <h3
                     style={{
                       fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)',
-                      fontSize: isWide ? 'clamp(1.8rem, 3vw, 2.5rem)' : 'clamp(1.4rem, 2.5vw, 2rem)',
+                      fontSize: isWide ? 'clamp(2rem, 3.5vw, 3rem)' : 'clamp(1.5rem, 2.5vw, 2.2rem)',
                       color: '#f5f5f5',
                       letterSpacing: '0.12em',
                       textTransform: 'uppercase',
                       margin: 0,
                       marginBottom: '0.75rem',
                       lineHeight: 1.2,
+                      textShadow: '0 4px 30px rgba(0,0,0,0.4)',
                     }}
                   >
                     {slide.collection}

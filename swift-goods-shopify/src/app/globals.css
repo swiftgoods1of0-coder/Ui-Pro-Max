@@ -896,6 +896,144 @@ html.lenis body {
   transition: background-color 0.8s ease;
 }
 
+/* ============================================================
+   LUXURY BUTTON STYLES
+   ============================================================ */
+.lb-root {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  overflow: hidden;
+  cursor: pointer;
+  outline: none;
+  white-space: nowrap;
+  font-family: var(--font-impact, 'Bebas Neue', sans-serif);
+  font-weight: 400;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  text-decoration: none;
+  -webkit-font-smoothing: antialiased;
+  transition: color 400ms cubic-bezier(0.25, 0.1, 0.25, 1),
+              background-color 400ms cubic-bezier(0.25, 0.1, 0.25, 1),
+              border-color 400ms cubic-bezier(0.25, 0.1, 0.25, 1),
+              box-shadow 400ms cubic-bezier(0.25, 0.1, 0.25, 1),
+              opacity 400ms cubic-bezier(0.25, 0.1, 0.25, 1);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.lb-shimmer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, transparent 25%, rgba(201,168,76,0.35) 45%, rgba(255,235,150,0.55) 50%, rgba(201,168,76,0.35) 55%, transparent 75%);
+  background-size: 250% 100%;
+  background-position: -200% center;
+  transition: background-position 0ms;
+  pointer-events: none;
+  z-index: 1;
+}
+.lb-shimmer:hover::after,
+.lb-shimmer:focus-visible::after {
+  background-position: 200% center;
+  transition: background-position 700ms cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.lb-primary {
+  background-color: #0a0a0a;
+  border: 1px solid #c9a84c;
+  color: #c9a84c;
+}
+.lb-primary:hover,
+.lb-primary:focus-visible {
+  background-color: #c9a84c;
+  color: #0a0a0a;
+  box-shadow: 0 0 30px rgba(201,168,76,0.2), 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.lb-secondary {
+  background-color: transparent;
+  border: 1px solid #c9a84c;
+  color: #c9a84c;
+}
+.lb-secondary:hover,
+.lb-secondary:focus-visible {
+  background-color: #c9a84c;
+  color: #0a0a0a;
+  box-shadow: 0 0 30px rgba(201,168,76,0.2), 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.lb-ghost {
+  background-color: transparent;
+  border: none;
+  color: #c9a84c;
+}
+.lb-ghost-inner {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.lb-ghost-inner::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: linear-gradient(90deg, #c9a84c, #e6c870);
+  transition: width 400ms cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+.lb-ghost:hover .lb-ghost-inner::after,
+.lb-ghost:focus-visible .lb-ghost-inner::after {
+  width: 100%;
+}
+
+.lb-outline {
+  background-color: transparent;
+  border: 1px solid #e0e0e0;
+  color: #f5f5f5;
+}
+.lb-outline:hover,
+.lb-outline:focus-visible {
+  background-color: #f5f5f5;
+  color: #0a0a0a;
+  box-shadow: 0 0 20px rgba(245,245,245,0.1);
+}
+
+.lb-disabled { opacity: 0.5; cursor: not-allowed; pointer-events: none; }
+.lb-loading { pointer-events: none; }
+
+.lb-ripple {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 2;
+  transform: scale(0);
+  opacity: 0.3;
+  background: radial-gradient(circle, rgba(201,168,76,0.6) 0%, transparent 70%);
+}
+
+@keyframes lb-spin { to { transform: rotate(360deg); } }
+.lb-spinner {
+  width: 1em;
+  height: 1em;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: lb-spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+.lb-content {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 /* Urgency banner responsive text */
 .urgency-banner-full {
   display: inline-flex;

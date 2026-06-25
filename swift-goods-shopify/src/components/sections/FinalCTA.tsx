@@ -91,7 +91,7 @@ export default function FinalCTA() {
     <section
       ref={sectionRef}
       className="relative w-full overflow-hidden"
-      style={{ minHeight: '70vh' }}
+      style={{ minHeight: '85vh' }}
     >
       {/* Corner brackets */}
       <div className="absolute hidden lg:block pointer-events-none" style={{ top: '3rem', left: '3rem' }}>
@@ -137,11 +137,24 @@ export default function FinalCTA() {
         }}
       />
 
+      {/* Vertical side text — right edge */}
+      <div className="absolute z-[6] hidden lg:flex items-center justify-center pointer-events-none" style={{ right: '1.5rem', top: '50%', transform: 'translateY(-50%) rotate(90deg)', transformOrigin: 'center center' }}>
+        <span style={{ fontFamily: 'var(--font-body, Inter, sans-serif)', fontSize: '0.45rem', letterSpacing: '0.5em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.15)', whiteSpace: 'nowrap' }}>
+          SWIFT GOODS &mdash; LIMITED RELEASE &mdash; SHOP NOW
+        </span>
+      </div>
+
+      {/* Gold accent line — left side */}
+      <div className="absolute left-0 top-0 bottom-0 w-px hidden lg:block" style={{ left: '3rem', background: 'linear-gradient(to bottom, transparent, rgba(201,168,76,0.35) 20%, rgba(201,168,76,0.35) 80%, transparent)' }} />
+
+      {/* Film grain texture overlay */}
+      <div className="absolute inset-0 pointer-events-none" style={{ opacity: 0.02, backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.8) 2px, rgba(255,255,255,0.8) 3px)', backgroundSize: '100% 4px' }} />
+
       {/* Gold radial ambient glow */}
       <div className="absolute z-[3] pointer-events-none" style={{ left: '50%', top: '40%', width: '60%', height: '60%', transform: 'translate(-50%, -50%)', background: 'radial-gradient(ellipse at center, rgba(201,168,76,0.06) 0%, transparent 60%)', filter: 'blur(80px)' }} />
 
       {/* Content — left-aligned */}
-      <div className="relative z-10 flex items-center" style={{ minHeight: '70vh' }}>
+      <div className="relative z-10 flex items-center" style={{ minHeight: '85vh' }}>
         <div className="w-full max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 xl:px-24 py-24">
           <div className="max-w-xl">
             {/* Gold label */}
@@ -167,11 +180,12 @@ export default function FinalCTA() {
                 tag="h2"
                 style={{
                   fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)',
-                  fontSize: 'clamp(3rem, 7vw, 6rem)',
+                  fontSize: 'clamp(3.5rem, 8vw, 7rem)',
                   color: '#f5f5f5',
                   letterSpacing: '0.04em',
                   lineHeight: 0.95,
                   margin: 0,
+                  textShadow: '0 4px 40px rgba(0,0,0,0.3)',
                 }}
               />
               <SplitTextReveal
@@ -180,12 +194,12 @@ export default function FinalCTA() {
                 delay={0.3}
                 style={{
                   fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)',
-                  fontSize: 'clamp(3rem, 7vw, 6rem)',
+                  fontSize: 'clamp(3.5rem, 8vw, 7rem)',
                   color: '#c9a84c',
                   letterSpacing: '0.04em',
                   lineHeight: 0.95,
                   margin: 0,
-                  textShadow: '0 0 60px rgba(201,168,76,0.2)',
+                  textShadow: '0 0 80px rgba(201,168,76,0.25), 0 4px 40px rgba(0,0,0,0.3)',
                 }}
               />
             </div>
@@ -219,6 +233,14 @@ export default function FinalCTA() {
                   SHOP THE COLLECTION
                 </LuxuryButton>
               </MagneticElement>
+            </div>
+
+            {/* Urgency element */}
+            <div className="mt-10 flex items-center gap-3">
+              <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: 'linear-gradient(135deg, #c9a84c, #e6c870)', boxShadow: '0 0 10px rgba(201,168,76,0.5), 0 0 20px rgba(201,168,76,0.2)', animation: 'pulse-gold 1.5s ease-in-out infinite', flexShrink: 0 }} />
+              <span style={{ fontFamily: 'var(--font-body, Inter, sans-serif)', fontSize: '0.625rem', color: 'rgba(201,168,76,0.6)', letterSpacing: '0.15em', textTransform: 'uppercase' }}>
+                Limited quantities &mdash; Don&apos;t miss out
+              </span>
             </div>
           </div>
         </div>
