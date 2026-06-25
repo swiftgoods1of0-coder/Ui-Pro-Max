@@ -68,7 +68,7 @@ function ProductCard({ product, index }: ProductCardProps) {
       {/* Image area */}
       <div
         className="relative overflow-hidden"
-        style={{ aspectRatio: '3/4', background: '#0a0a0a' }}
+        style={{ aspectRatio: '4/5', background: '#0a0a0a' }}
       >
         {/* Product image — scales to 110% on hover, swaps to second image */}
         <Image

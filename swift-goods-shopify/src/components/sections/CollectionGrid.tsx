@@ -198,7 +198,7 @@ export default function CollectionGrid({ products }: CollectionGridProps) {
                   isLarge ? 'col-span-2 row-span-2' : 'col-span-1'
                 }`}
                 style={{
-                  minHeight: isLarge ? '520px' : '280px',
+                  minHeight: isLarge ? 'clamp(300px, 60vw, 520px)' : 'clamp(200px, 40vw, 280px)',
                   background: '#111111',
                   transition: 'box-shadow 0.5s ease',
                 }}
