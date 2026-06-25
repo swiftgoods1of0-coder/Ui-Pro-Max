@@ -718,9 +718,9 @@ export default function Navigation({ cartCount = 0 }: NavigationProps) {
           justifyContent: 'space-between',
           padding: '0 2rem',
           transform: navHidden ? 'translateY(calc(-100% - 32px))' : 'translateY(0)',
-          backgroundColor: scrolled ? 'rgba(10,10,10,0.78)' : 'transparent',
-          backdropFilter: scrolled ? 'blur(18px) saturate(180%)' : 'none',
-          WebkitBackdropFilter: scrolled ? 'blur(18px) saturate(180%)' : 'none',
+          backgroundColor: scrolled ? 'rgba(10,10,10,0.85)' : 'transparent',
+          backdropFilter: scrolled ? 'blur(24px) saturate(200%)' : 'none',
+          WebkitBackdropFilter: scrolled ? 'blur(24px) saturate(200%)' : 'none',
           borderBottom: scrolled
             ? `1px solid rgba(201,168,76,0.13)`
             : '1px solid transparent',
@@ -786,6 +786,7 @@ export default function Navigation({ cartCount = 0 }: NavigationProps) {
             pointerEvents: 'none',
             width: `${scrollProgress}%`,
             background: `linear-gradient(90deg, ${COLORS.gold}, ${COLORS.goldLight}, ${COLORS.gold})`,
+            boxShadow: scrollProgress > 0 ? '0 0 10px rgba(201,168,76,0.3)' : 'none',
             transition: 'width 80ms linear',
           }}
         />

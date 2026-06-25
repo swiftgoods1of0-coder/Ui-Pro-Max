@@ -70,6 +70,7 @@ export default function SocialProof() {
       style={{ background: '#050505' }}
     >
       <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at 50% 30%, rgba(201,168,76,0.03) 0%, transparent 60%)' }} />
+      <div className="absolute pointer-events-none" style={{ bottom: '10%', right: '-5%', width: '35%', height: '35%', background: 'radial-gradient(ellipse at center, rgba(201,168,76,0.03) 0%, transparent 65%)', filter: 'blur(80px)' }} />
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-16 py-28 md:py-36 w-full">
         {/* Label */}
         <div className="mb-6 flex items-center gap-4">
@@ -105,6 +106,7 @@ export default function SocialProof() {
               color: '#f5f5f5',
               lineHeight: 1,
               letterSpacing: '0.04em',
+              textShadow: '0 4px 40px rgba(0,0,0,0.3)',
             }}
           />
         </div>
@@ -115,29 +117,44 @@ export default function SocialProof() {
             <motion.div
               key={testimonial.name}
               custom={i}
+              className="group"
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, margin: '-40px' }}
               variants={cardVariants}
-              whileHover={{ scale: 1.02, transition: { duration: 0.3 } }}
+              whileHover={{
+                scale: 1.02,
+                borderColor: 'rgba(201,168,76,0.2)',
+                boxShadow: '0 8px 40px rgba(0,0,0,0.4), 0 0 30px rgba(201,168,76,0.06)',
+                transition: { duration: 0.3 },
+              }}
               style={{
                 background: '#111',
                 border: '1px solid rgba(255,255,255,0.06)',
-                padding: '2rem',
-                transition: 'border-color 0.3s ease',
+                padding: '2.5rem',
+                transition: 'border-color 0.5s ease, box-shadow 0.5s ease',
+                position: 'relative',
+                overflow: 'hidden',
               }}
             >
+              {/* Gold accent line — left edge */}
+              <div
+                className="absolute left-0 top-0 bottom-0 w-px opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                style={{ background: 'linear-gradient(to bottom, transparent, rgba(201,168,76,0.4), transparent)' }}
+              />
+
               {/* Opening quote mark */}
               <span
                 aria-hidden="true"
                 style={{
                   display: 'block',
-                  fontFamily: 'Georgia, serif',
-                  fontSize: '3rem',
-                  lineHeight: 1,
-                  color: 'rgba(201,168,76,0.3)',
-                  marginBottom: '0.5rem',
+                  fontFamily: 'var(--font-display, "Cormorant Garamond", serif)',
+                  fontSize: '4rem',
+                  lineHeight: 0.8,
+                  color: 'rgba(201,168,76,0.25)',
+                  marginBottom: '0.75rem',
                   userSelect: 'none',
+                  textShadow: '0 0 30px rgba(201,168,76,0.1)',
                 }}
               >
                 &ldquo;
@@ -198,8 +215,10 @@ export default function SocialProof() {
           ))}
         </div>
 
-        <div className="flex justify-center mb-16">
-          <div style={{ width: 80, height: 1, background: 'linear-gradient(to right, transparent, rgba(201,168,76,0.4), transparent)' }} />
+        <div className="flex items-center justify-center gap-4 mb-16">
+          <div style={{ width: 60, height: 1, background: 'linear-gradient(to right, transparent, rgba(201,168,76,0.3))' }} />
+          <div style={{ width: 5, height: 5, background: 'rgba(201,168,76,0.5)', transform: 'rotate(45deg)', boxShadow: '0 0 10px rgba(201,168,76,0.3)' }} />
+          <div style={{ width: 60, height: 1, background: 'linear-gradient(to left, transparent, rgba(201,168,76,0.3))' }} />
         </div>
 
         {/* Stat Counters */}

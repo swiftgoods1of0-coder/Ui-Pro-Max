@@ -169,6 +169,28 @@ export default function HeroSection() {
 
       {/* ── Gold radial ambient glow ── */}
       <div className="absolute z-[5] pointer-events-none" style={{ left: '30%', top: '30%', width: '40%', height: '40%', background: 'radial-gradient(ellipse at center, rgba(201,168,76,0.05) 0%, transparent 70%)', filter: 'blur(80px)' }} />
+      <div className="absolute z-[5] pointer-events-none" style={{ right: '20%', bottom: '25%', width: '30%', height: '30%', background: 'radial-gradient(ellipse at center, rgba(201,168,76,0.03) 0%, transparent 70%)', filter: 'blur(80px)' }} />
+
+      {/* Decorative corner brackets */}
+      <div className="absolute z-[6] pointer-events-none hidden lg:block" style={{ top: '8%', left: '4%' }}>
+        <div style={{ width: 40, height: 40, position: 'relative' }}>
+          <div style={{ position: 'absolute', top: 0, left: 0, width: 24, height: 1, background: 'rgba(201,168,76,0.25)' }} />
+          <div style={{ position: 'absolute', top: 0, left: 0, width: 1, height: 24, background: 'rgba(201,168,76,0.25)' }} />
+        </div>
+      </div>
+      <div className="absolute z-[6] pointer-events-none hidden lg:block" style={{ bottom: '15%', right: '4%' }}>
+        <div style={{ width: 40, height: 40, position: 'relative' }}>
+          <div style={{ position: 'absolute', bottom: 0, right: 0, width: 24, height: 1, background: 'rgba(201,168,76,0.25)' }} />
+          <div style={{ position: 'absolute', bottom: 0, right: 0, width: 1, height: 24, background: 'rgba(201,168,76,0.25)' }} />
+        </div>
+      </div>
+
+      {/* Vertical side text */}
+      <div className="absolute z-[6] hidden lg:flex items-center justify-center pointer-events-none" style={{ right: '1.5rem', top: '50%', transform: 'translateY(-50%) rotate(90deg)', transformOrigin: 'center center' }}>
+        <span style={{ fontFamily: 'var(--font-body, Inter, sans-serif)', fontSize: '0.45rem', letterSpacing: '0.5em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.15)', whiteSpace: 'nowrap' }}>
+          SWIFT GOODS &mdash; EST. 2025 &mdash; COMFORT IS LUXURY
+        </span>
+      </div>
 
       {/* ── Content layer ── */}
       <div className="absolute inset-0 z-10 flex flex-col items-center justify-center px-6">

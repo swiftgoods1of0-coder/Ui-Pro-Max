@@ -404,8 +404,21 @@ export default function Footer() {
           paddingBottom: '4rem',
           paddingLeft: '1.5rem',
           paddingRight: '1.5rem',
+          position: 'relative',
         }}
       >
+        {/* Ambient gold glow */}
+        <div
+          className="absolute pointer-events-none"
+          style={{
+            top: '20%',
+            left: '30%',
+            width: '40%',
+            height: '40%',
+            background: 'radial-gradient(ellipse at center, rgba(201,168,76,0.04) 0%, transparent 65%)',
+            filter: 'blur(80px)',
+          }}
+        />
         {/* Signature logo */}
         <div
           data-animate="logo"
@@ -442,6 +455,7 @@ export default function Footer() {
               color: '#f5f5f5',
               margin: 0,
               marginBottom: '1rem',
+              textShadow: '0 4px 40px rgba(0,0,0,0.3)',
             }}
           />
         </div>
@@ -584,6 +598,7 @@ export default function Footer() {
               color: '#f5f5f5',
               margin: 0,
               marginBottom: '0.5rem',
+              textShadow: '0 0 30px rgba(201,168,76,0.1)',
             }}
           >
             SWIFT GOODS
@@ -703,7 +718,7 @@ export default function Footer() {
                 gap: '0.75rem',
               }}
             >
-              <div style={{ color: '#c9a84c' }}>
+              <div style={{ color: '#c9a84c', filter: 'drop-shadow(0 0 6px rgba(201,168,76,0.3))' }}>
                 <Icon />
               </div>
               <p
@@ -756,10 +771,12 @@ export default function Footer() {
           onMouseEnter={(e) => {
             e.currentTarget.style.color = '#c9a84c';
             e.currentTarget.style.transform = 'translateY(-3px)';
+            e.currentTarget.style.filter = 'drop-shadow(0 0 10px rgba(201,168,76,0.3))';
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.color = '#555';
             e.currentTarget.style.transform = 'translateY(0)';
+            e.currentTarget.style.filter = 'none';
           }}
           aria-label="Back to top"
         >

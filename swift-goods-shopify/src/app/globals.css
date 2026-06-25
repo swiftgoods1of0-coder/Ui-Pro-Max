@@ -815,6 +815,87 @@ button:focus-visible {
   }
 }
 
+/* ============================================================
+   PREMIUM ANIMATIONS & TRANSITIONS
+   ============================================================ */
+
+/* Gold shimmer sweep — diagonal gold shimmer across elements */
+@keyframes sg-gold-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Breathing glow — ambient pulsing effect */
+@keyframes sg-breathe {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.05); }
+}
+
+/* Smooth reveal from below — section entry animation */
+@keyframes sg-reveal-up {
+  from { opacity: 0; transform: translateY(40px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Premium image hover transform */
+.sg-image-hover {
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), filter 0.8s ease;
+}
+.sg-image-hover:hover {
+  transform: scale(1.04);
+  filter: brightness(1.08);
+}
+
+/* Gold underline hover effect */
+.sg-gold-underline {
+  position: relative;
+}
+.sg-gold-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: linear-gradient(90deg, #c9a84c, #e6c870);
+  transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.sg-gold-underline:hover::after {
+  width: 100%;
+}
+
+/* Smooth section transitions — scroll-driven smoothness */
+section {
+  will-change: transform;
+}
+
+/* Premium link hover with gold glow */
+.sg-link-glow:hover {
+  text-shadow: 0 0 20px rgba(201,168,76,0.3);
+}
+
+/* Card glass effect */
+.sg-card-glass {
+  background: rgba(17, 17, 17, 0.6);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255,255,255,0.04);
+  transition: border-color 0.5s ease, box-shadow 0.5s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.sg-card-glass:hover {
+  border-color: rgba(201,168,76,0.15);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.4), 0 0 30px rgba(201,168,76,0.06);
+  transform: translateY(-2px);
+}
+
+/* Smooth body-level transitions for page feel */
+html {
+  scroll-behavior: smooth;
+}
+html.lenis body {
+  transition: background-color 0.8s ease;
+}
+
 /* Urgency banner responsive text */
 .urgency-banner-full {
   display: inline-flex;
