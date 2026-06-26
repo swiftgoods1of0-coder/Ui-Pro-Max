@@ -10,6 +10,7 @@ import CollectionGrid from '@/components/sections/CollectionGrid'
 import FinalCTA from '@/components/sections/FinalCTA'
 import SocialProof from '@/components/sections/SocialProof'
 import ProductDrop from '@/components/sections/ProductDrop'
+import BrandStatement from '@/components/sections/BrandStatement'
 import AnimatedDivider from '@/components/ui/AnimatedDivider'
 import { MOCK_PRODUCTS, type ShopifyProduct as FullShopifyProduct } from '@/lib/shopify'
 
@@ -72,6 +73,8 @@ export default function Home() {
       <ProductDrop />
       <AnimatedDivider />
       <CampaignEditorial />
+      <AnimatedDivider />
+      <BrandStatement />
       <AnimatedDivider />
       <FeaturedProducts products={featured} />
       <SignatureMoment />

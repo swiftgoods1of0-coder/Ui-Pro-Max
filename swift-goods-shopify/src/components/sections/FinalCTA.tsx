@@ -150,6 +150,27 @@ export default function FinalCTA() {
       {/* Film grain texture overlay */}
       <div className="absolute inset-0 pointer-events-none" style={{ opacity: 0.02, backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.8) 2px, rgba(255,255,255,0.8) 3px)', backgroundSize: '100% 4px' }} />
 
+      {/* SG monogram watermark */}
+      <div
+        className="absolute pointer-events-none select-none hidden lg:block"
+        aria-hidden="true"
+        style={{
+          top: '50%',
+          right: '5%',
+          transform: 'translateY(-50%)',
+          zIndex: 2,
+          fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)',
+          fontSize: 'clamp(18rem, 35vw, 35rem)',
+          letterSpacing: '-0.05em',
+          lineHeight: 0.8,
+          color: 'transparent',
+          WebkitTextStroke: '1px rgba(201,168,76,0.03)',
+          whiteSpace: 'nowrap',
+        }}
+      >
+        SG
+      </div>
+
       {/* Gold radial ambient glow */}
       <div className="absolute z-[3] pointer-events-none" style={{ left: '50%', top: '40%', width: '60%', height: '60%', transform: 'translate(-50%, -50%)', background: 'radial-gradient(ellipse at center, rgba(201,168,76,0.06) 0%, transparent 60%)', filter: 'blur(80px)' }} />
 

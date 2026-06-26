@@ -104,6 +104,26 @@ export default function CinematicStrip() {
       className="relative overflow-hidden"
       style={{ background: '#050505' }}
     >
+      {/* SG monogram watermark */}
+      <div
+        className="absolute pointer-events-none select-none"
+        aria-hidden="true"
+        style={{
+          bottom: '10%',
+          left: '60%',
+          zIndex: 1,
+          fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)',
+          fontSize: 'clamp(15rem, 25vw, 25rem)',
+          letterSpacing: '-0.05em',
+          lineHeight: 0.8,
+          color: 'transparent',
+          WebkitTextStroke: '1px rgba(201,168,76,0.025)',
+          whiteSpace: 'nowrap',
+        }}
+      >
+        SG
+      </div>
+
       {/* Ambient gold glow */}
       <div
         className="absolute pointer-events-none"

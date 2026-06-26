@@ -14,6 +14,8 @@ export default function HeroSection() {
   const ctasRef = useRef<HTMLDivElement>(null)
   const scrollIndicatorRef = useRef<HTMLDivElement>(null)
   const bgImageRef = useRef<HTMLDivElement>(null)
+  const monogramRef = useRef<HTMLDivElement>(null)
+  const taglineRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -24,6 +26,23 @@ export default function HeroSection() {
           { scale: 1.0 },
           { scale: 1.12, duration: 20, ease: 'none', repeat: -1, yoyo: true }
         )
+      }
+
+      // SG monogram: fade in + continuous subtle rotation
+      if (monogramRef.current) {
+        gsap.fromTo(
+          monogramRef.current,
+          { opacity: 0, scale: 0.95 },
+          { opacity: 1, scale: 1, duration: 2, delay: 0.8, ease: 'power2.out' }
+        )
+        gsap.to(monogramRef.current, {
+          rotation: 2,
+          yoyo: true,
+          repeat: -1,
+          duration: 12,
+          ease: 'sine.inOut',
+        })
+        gsap.set(monogramRef.current, { rotation: -2 })
       }
 
       const tl = gsap.timeline({ delay: 0.4 })
@@ -74,6 +93,14 @@ export default function HeroSection() {
         { clipPath: 'inset(100% 0 0 0)', opacity: 0 },
         { clipPath: 'inset(0% 0 0 0)', opacity: 1, duration: 0.75, ease: 'power2.out' },
         0.9
+      )
+
+      // Tagline: fade in from below
+      tl.fromTo(
+        taglineRef.current,
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' },
+        1.0
       )
 
       // Scroll indicator: fade in
@@ -170,6 +197,30 @@ export default function HeroSection() {
       {/* ── Gold radial ambient glow ── */}
       <div className="absolute z-[5] pointer-events-none" style={{ left: '30%', top: '30%', width: '40%', height: '40%', background: 'radial-gradient(ellipse at center, rgba(201,168,76,0.05) 0%, transparent 70%)', filter: 'blur(80px)' }} />
       <div className="absolute z-[5] pointer-events-none" style={{ right: '20%', bottom: '25%', width: '30%', height: '30%', background: 'radial-gradient(ellipse at center, rgba(201,168,76,0.03) 0%, transparent 70%)', filter: 'blur(80px)' }} />
+
+      {/* ── SG monogram watermark ── */}
+      <div
+        ref={monogramRef}
+        className="hero-monogram absolute pointer-events-none select-none"
+        style={{
+          fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)',
+          fontSize: 'clamp(30rem, 50vw, 55rem)',
+          color: 'transparent',
+          WebkitTextStroke: '1px rgba(201,168,76,0.04)',
+          letterSpacing: '-0.05em',
+          lineHeight: 1,
+          position: 'absolute',
+          left: '50%',
+          top: '50%',
+          transform: 'translate(-50%, -50%)',
+          zIndex: 2,
+          opacity: 0,
+          userSelect: 'none',
+          pointerEvents: 'none',
+        }}
+      >
+        SG
+      </div>
 
       {/* Decorative corner brackets */}
       <div className="absolute z-[6] pointer-events-none hidden lg:block" style={{ top: '8%', left: '4%' }}>
@@ -271,6 +322,23 @@ export default function HeroSection() {
           >
             Designed for movement. Built for presence.
           </p>
+
+          {/* Brand tagline */}
+          <div
+            ref={taglineRef}
+            style={{
+              fontFamily: 'var(--font-body, Inter, sans-serif)',
+              fontSize: '0.6rem',
+              letterSpacing: '0.5em',
+              textTransform: 'uppercase' as const,
+              color: 'rgba(201,168,76,0.3)',
+              marginTop: '1.5rem',
+              marginBottom: '2rem',
+              opacity: 0,
+            }}
+          >
+            &mdash; THE STANDARD IN STREETWEAR &mdash;
+          </div>
 
           {/* CTA buttons */}
           <div

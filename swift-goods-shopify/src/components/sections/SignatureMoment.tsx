@@ -177,11 +177,42 @@ export default function SignatureMoment() {
         />
       </div>
 
+      {/* Film grain overlay */}
+      <div
+        className="absolute inset-0 pointer-events-none z-[1]"
+        style={{
+          opacity: 0.015,
+          backgroundImage:
+            'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.8) 2px, rgba(255,255,255,0.8) 3px)',
+          backgroundSize: '100% 4px',
+        }}
+      />
+
       {/* Left content area — solid dark on desktop */}
       <div
         className="absolute inset-y-0 left-0 w-[45%] hidden lg:block"
         style={{ background: '#0a0a0a' }}
-      />
+      >
+        {/* Ghosted SG monogram watermark */}
+        <div
+          className="hidden lg:block"
+          style={{
+            position: 'absolute',
+            bottom: '-5%',
+            left: '-5%',
+            zIndex: 0,
+            fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)',
+            fontSize: 'clamp(12rem, 25vw, 20rem)',
+            WebkitTextStroke: '1px rgba(201,168,76,0.06)',
+            color: 'transparent',
+            pointerEvents: 'none',
+            userSelect: 'none',
+            lineHeight: 1,
+          }}
+        >
+          SG
+        </div>
+      </div>
 
       {/* Vertical gold divider — desktop only */}
       <div
@@ -189,6 +220,46 @@ export default function SignatureMoment() {
         style={{
           background:
             'linear-gradient(to bottom, transparent 5%, rgba(201,168,76,0.35) 30%, rgba(201,168,76,0.5) 50%, rgba(201,168,76,0.35) 70%, transparent 95%)',
+        }}
+      />
+
+      {/* Vertical text — SWIFT GOODS — right edge, desktop only */}
+      <div
+        className="absolute z-[6] hidden lg:flex items-center justify-center pointer-events-none"
+        style={{
+          left: '1.5rem',
+          top: '50%',
+          transform: 'translateY(-50%) rotate(-90deg)',
+          transformOrigin: 'center center',
+        }}
+      >
+        <span
+          style={{
+            fontFamily: '"Inter", sans-serif',
+            fontSize: '0.45rem',
+            letterSpacing: '0.5em',
+            textTransform: 'uppercase',
+            color: 'rgba(201,168,76,0.15)',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          SWIFT GOODS — DESIGNED FOR MOVEMENT
+        </span>
+      </div>
+
+      {/* Corner bracket — top-right, desktop only */}
+      <div
+        className="hidden lg:block"
+        style={{
+          position: 'absolute',
+          top: '8%',
+          right: '4%',
+          width: '24px',
+          height: '24px',
+          borderTop: '1px solid rgba(201,168,76,0.25)',
+          borderRight: '1px solid rgba(201,168,76,0.25)',
+          pointerEvents: 'none',
+          zIndex: 10,
         }}
       />
 
@@ -267,7 +338,7 @@ export default function SignatureMoment() {
               fontVariantCaps: 'small-caps',
             }}
           >
-            &mdash; SWIFT GOODS, EST. 2025
+            &mdash; SWIFT GOODS CLOTHING BRAND
           </p>
         </div>
       </div>

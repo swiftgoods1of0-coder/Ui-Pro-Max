@@ -31,8 +31,8 @@ const TESTIMONIALS: Testimonial[] = [
 ]
 
 const STATS = [
-  { value: '10K+', label: 'Members' },
-  { value: '3X', label: 'Sold Out' },
+  { value: '10K+', label: 'Community Members' },
+  { value: '3X', label: 'Sold Out Drops' },
   { value: '4.9', label: 'Average Rating' },
 ]
 
@@ -251,6 +251,21 @@ export default function SocialProof() {
               </p>
             </div>
           ))}
+        </div>
+
+        {/* Brand signature at bottom */}
+        <div className="mt-16 flex justify-center">
+          <p
+            style={{
+              fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)',
+              fontSize: '0.85rem',
+              letterSpacing: '0.4em',
+              color: 'rgba(201,168,76,0.15)',
+              textTransform: 'uppercase',
+            }}
+          >
+            SWIFT GOODS CLOTHING BRAND
+          </p>
         </div>
       </div>
     </section>

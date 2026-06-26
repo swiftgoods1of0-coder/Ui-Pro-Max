@@ -89,6 +89,26 @@ export default function CollectionGrid({ products }: CollectionGridProps) {
       className="relative pt-32 pb-16 overflow-hidden"
       style={{ background: '#0a0a0a' }}
     >
+      {/* SG monogram watermark */}
+      <div
+        className="absolute pointer-events-none select-none"
+        aria-hidden="true"
+        style={{
+          bottom: '5%',
+          right: '-5%',
+          zIndex: 0,
+          fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)',
+          fontSize: 'clamp(15rem, 30vw, 30rem)',
+          letterSpacing: '-0.05em',
+          lineHeight: 0.8,
+          color: 'transparent',
+          WebkitTextStroke: '1px rgba(201,168,76,0.025)',
+          whiteSpace: 'nowrap',
+        }}
+      >
+        SG
+      </div>
+
       {/* Ambient gold glow */}
       <div
         className="absolute pointer-events-none"
