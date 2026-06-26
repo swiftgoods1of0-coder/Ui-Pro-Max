@@ -17,7 +17,13 @@ interface LookbookSlide {
   href: string
 }
 
-const SLIDES: LookbookSlide[] = [
+export interface LookbookCollection {
+  handle: string
+  title: string
+  image: string | null
+}
+
+const FALLBACK_SLIDES: LookbookSlide[] = [
   {
     id: '01',
     src: '/brand/sg-supra-brown-black.jpeg',
@@ -55,9 +61,28 @@ const SLIDES: LookbookSlide[] = [
   },
 ]
 
-export default function Lookbook() {
+function collectionsToSlides(collections: LookbookCollection[]): LookbookSlide[] {
+  return collections.map((c, i) => ({
+    id: String(i + 1).padStart(2, '0'),
+    src: c.image || FALLBACK_SLIDES[i % FALLBACK_SLIDES.length].src,
+    alt: c.title,
+    collection: c.title.toUpperCase(),
+    href: `/collections/${c.handle}`,
+  }))
+}
+
+interface LookbookProps {
+  collections?: LookbookCollection[]
+}
+
+export default function Lookbook({ collections }: LookbookProps) {
   const sectionRef = useRef<HTMLElement>(null)
   const velocity = useScrollVelocity()
+
+  const slides =
+    collections && collections.length > 0
+      ? collectionsToSlides(collections)
+      : FALLBACK_SLIDES
 
   useEffect(() => {
     const cards = sectionRef.current?.querySelectorAll<HTMLElement>('.lb-card-img')
@@ -93,7 +118,6 @@ export default function Lookbook() {
               toggleActions: 'play none none none',
             },
           })
-          // Parallax drift
           gsap.fromTo(img,
             { y: -15 },
             {
@@ -210,15 +234,15 @@ export default function Lookbook() {
                 margin: 0,
               }}
             >
-              Five frames. One story. Explore the world of Swift Goods.
+              {slides.length} collections. One story. Explore the world of Swift Goods.
             </p>
           </div>
         </div>
 
         {/* Masonry grid — alternating large/small */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {SLIDES.map((slide, idx) => {
-            const isWide = idx === 0 || idx === 4
+          {slides.map((slide, idx) => {
+            const isWide = idx === 0 || idx === slides.length - 1
             return (
               <div
                 key={slide.id}
@@ -243,6 +267,7 @@ export default function Lookbook() {
                     fill
                     sizes={isWide ? '100vw' : '(max-width: 768px) 100vw, 50vw'}
                     className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                    unoptimized={slide.src.startsWith('http')}
                   />
                 </div>
 
@@ -301,8 +326,8 @@ export default function Lookbook() {
         {/* Section CTA */}
         <div className="mt-16 flex justify-center">
           <MagneticElement strength={0.25} radius={160}>
-            <LuxuryButton variant="secondary" href="/lookbook">
-              VIEW FULL LOOKBOOK
+            <LuxuryButton variant="secondary" href="/collections">
+              VIEW ALL COLLECTIONS
             </LuxuryButton>
           </MagneticElement>
         </div>

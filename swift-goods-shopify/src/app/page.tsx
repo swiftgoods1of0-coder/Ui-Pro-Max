@@ -14,7 +14,8 @@ import BrandStatement from '@/components/sections/BrandStatement'
 import ExclusiveAccess from '@/components/sections/ExclusiveAccess'
 import Craftsmanship from '@/components/sections/Craftsmanship'
 import AnimatedDivider from '@/components/ui/AnimatedDivider'
-import { getProducts, MOCK_PRODUCTS, type ShopifyProduct as FullShopifyProduct } from '@/lib/shopify'
+import { getProducts, getCollections, MOCK_PRODUCTS, type ShopifyProduct as FullShopifyProduct } from '@/lib/shopify'
+import type { LookbookCollection } from '@/components/sections/Lookbook'
 
 // The section components (FeaturedProducts, CollectionGrid) use a simplified
 // product shape with a flat `image` string. We adapt the full Shopify type here
@@ -71,8 +72,17 @@ export const metadata = {
 }
 
 export default async function Home() {
-  const adaptedProducts = await loadProducts()
+  const [adaptedProducts, shopifyCollections] = await Promise.all([
+    loadProducts(),
+    getCollections(10),
+  ])
   const featured = adaptedProducts.slice(0, 6)
+
+  const lookbookCollections: LookbookCollection[] = shopifyCollections.map((c) => ({
+    handle: c.handle,
+    title: c.title,
+    image: c.image?.url ?? null,
+  }))
 
   return (
     <main className="bg-sg-black min-h-screen overflow-x-hidden">
@@ -89,7 +99,7 @@ export default async function Home() {
       <SignatureMoment />
       <CinematicStrip />
       <AnimatedDivider />
-      <Lookbook />
+      <Lookbook collections={lookbookCollections} />
       <AnimatedDivider />
       <SocialProof />
       <AnimatedDivider />
