@@ -119,12 +119,19 @@ export default function FinalCTA() {
         />
       </div>
 
-      {/* Heavy dark gradient overlay from left */}
+      {/* Heavy dark gradient overlay from left — desktop directional, mobile full */}
       <div
-        className="absolute inset-0"
+        className="absolute inset-0 hidden lg:block"
         style={{
           background:
             'linear-gradient(to right, rgba(5,5,5,0.92) 0%, rgba(5,5,5,0.82) 30%, rgba(5,5,5,0.55) 55%, rgba(5,5,5,0.2) 80%, transparent 100%)',
+        }}
+      />
+      <div
+        className="absolute inset-0 lg:hidden"
+        style={{
+          background:
+            'linear-gradient(to top, rgba(5,5,5,0.95) 0%, rgba(5,5,5,0.8) 40%, rgba(5,5,5,0.5) 70%, rgba(5,5,5,0.3) 100%)',
         }}
       />
 
@@ -201,7 +208,7 @@ export default function FinalCTA() {
                 tag="h2"
                 style={{
                   fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)',
-                  fontSize: 'clamp(3.5rem, 8vw, 7rem)',
+                  fontSize: 'clamp(2.2rem, 7vw, 7rem)',
                   color: '#f5f5f5',
                   letterSpacing: '0.04em',
                   lineHeight: 0.95,
@@ -215,7 +222,7 @@ export default function FinalCTA() {
                 delay={0.3}
                 style={{
                   fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)',
-                  fontSize: 'clamp(3.5rem, 8vw, 7rem)',
+                  fontSize: 'clamp(2.8rem, 8vw, 7rem)',
                   color: '#c9a84c',
                   letterSpacing: '0.04em',
                   lineHeight: 0.95,

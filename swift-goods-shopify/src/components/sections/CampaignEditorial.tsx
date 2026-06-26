@@ -146,7 +146,7 @@ export default function CampaignEditorial() {
               className="editorial-heading mb-8 opacity-0 leading-none"
               style={{
                 fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)',
-                fontSize: 'clamp(3.5rem, 8vw, 7rem)',
+                fontSize: 'clamp(2.5rem, 7vw, 7rem)',
                 letterSpacing: '0.04em',
                 color: '#f5f5f5',
                 whiteSpace: 'pre-line',

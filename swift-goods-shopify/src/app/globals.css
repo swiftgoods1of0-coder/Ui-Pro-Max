@@ -208,26 +208,20 @@ button:focus-visible {
    CUSTOM SCROLLBAR
    ============================================================ */
 ::-webkit-scrollbar {
-  width: 4px;
-  height: 4px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: #0a0a0a;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--sg-gold);
-  border-radius: 2px;
-  transition: background 0.3s ease;
+  background: rgba(201, 168, 76, 0.3);
+  border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--sg-gold-light);
-}
-
-::-webkit-scrollbar-corner {
-  background: transparent;
+  background: rgba(201, 168, 76, 0.5);
 }
 
 /* Firefox */
@@ -240,15 +234,13 @@ button:focus-visible {
    TEXT SELECTION
    ============================================================ */
 ::selection {
-  background-color: var(--sg-gold);
-  color: var(--sg-void);
-  text-shadow: none;
+  background: rgba(201, 168, 76, 0.25);
+  color: #f5f5f5;
 }
 
 ::-moz-selection {
-  background-color: var(--sg-gold);
-  color: var(--sg-void);
-  text-shadow: none;
+  background: rgba(201, 168, 76, 0.25);
+  color: #f5f5f5;
 }
 
 /* ============================================================
@@ -1032,6 +1024,31 @@ html.lenis body {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
+}
+
+/* ============================================================
+   PREMIUM POLISH — RENDERING & INTERACTION
+   ============================================================ */
+
+/* Smoother image rendering */
+img {
+  image-rendering: -webkit-optimize-contrast;
+}
+
+/* Smoother tap interactions */
+a, button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* GPU acceleration for animated sections */
+.lb-card,
+.cs-frame,
+.editorial-panel,
+.lb-card-img,
+.cs-img {
+  will-change: transform;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 /* Urgency banner responsive text */
