@@ -286,6 +286,17 @@ export default function CollectionGrid({ products }: CollectionGridProps) {
 
                   {/* Product info */}
                   <div className="absolute bottom-0 left-0 right-0 p-5 md:p-6 z-10">
+                    <span style={{
+                      fontFamily: 'var(--font-body, Inter, sans-serif)',
+                      fontSize: '0.5rem',
+                      letterSpacing: '0.2em',
+                      color: 'rgba(201,168,76,0.35)',
+                      textTransform: 'uppercase',
+                      display: 'block',
+                      marginBottom: '0.25rem',
+                    }}>
+                      EDITION {String(index + 1).padStart(2, '0')} / 200
+                    </span>
                     {product.category && (
                       <p
                         className="mb-1 text-[10px] tracking-[0.3em] uppercase"

@@ -28,7 +28,7 @@ const NAV_LINKS: NavLink[] = [
   { label: 'SHOP', href: '/collections' },
   { label: 'NEW ARRIVALS', href: '/collections/new-arrivals' },
   { label: 'LOOKBOOK', href: '/lookbook' },
-  { label: 'BRAND', href: '/brand' },
+  { label: 'PRIVATE CLIENT', href: '/private-client' },
 ];
 
 const COLORS = {
@@ -694,11 +694,11 @@ export default function Navigation({ cartCount = 0 }: NavigationProps) {
           color: '#0a0a0a',
         }}
       >
-        <span>Free Shipping Over $150</span>
-        <span aria-hidden="true" className="announcement-hide-mobile" style={{ opacity: 0.4 }}>|</span>
-        <span className="announcement-hide-mobile">Premium Quality Guaranteed</span>
-        <span aria-hidden="true" className="announcement-hide-mobile" style={{ opacity: 0.4 }}>|</span>
-        <span className="announcement-hide-mobile">Easy Returns</span>
+        <span>Complimentary Shipping Worldwide</span>
+        <span aria-hidden="true" className="announcement-hide-mobile" style={{ opacity: 0.4 }}>&#x2726;</span>
+        <span className="announcement-hide-mobile">Limited Edition Pieces</span>
+        <span aria-hidden="true" className="announcement-hide-mobile" style={{ opacity: 0.4 }}>&#x2726;</span>
+        <span className="announcement-hide-mobile">Authenticity Guaranteed</span>
       </div>
 
       <nav

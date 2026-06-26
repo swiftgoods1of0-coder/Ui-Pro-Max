@@ -147,9 +147,22 @@ function ProductCard({ product, index }: ProductCardProps) {
                 backdropFilter: 'blur(6px)',
               }}
             >
-              FEATURED
+              EXCLUSIVE
             </span>
           )}
+        </div>
+
+        {/* Edition number */}
+        <div className="absolute top-4 right-4 z-10">
+          <span style={{
+            fontFamily: 'var(--font-body, Inter, sans-serif)',
+            fontSize: '0.5625rem',
+            letterSpacing: '0.2em',
+            color: 'rgba(201,168,76,0.5)',
+            textTransform: 'uppercase',
+          }}>
+            {String(index + 1).padStart(2, '0')} / 200
+          </span>
         </div>
       </div>
 
@@ -165,6 +178,19 @@ function ProductCard({ product, index }: ProductCardProps) {
             }}
           >
             {product.category}
+          </span>
+        )}
+
+        {/* Limited Edition indicator */}
+        {product.isFeatured && (
+          <span style={{
+            fontFamily: 'var(--font-body, Inter, sans-serif)',
+            fontSize: '0.5625rem',
+            letterSpacing: '0.25em',
+            textTransform: 'uppercase',
+            color: 'rgba(201,168,76,0.6)',
+          }}>
+            LIMITED EDITION
           </span>
         )}
 

@@ -154,8 +154,8 @@ const footerColumns: FooterColumn[] = [
     heading: 'BRAND',
     links: [
       { label: 'Our Story', href: '/pages/our-story' },
-      { label: 'Sustainability', href: '/pages/sustainability' },
-      { label: 'Careers', href: '/pages/careers' },
+      { label: 'Private Client', href: '/private-client' },
+      { label: 'Craftsmanship', href: '/pages/craftsmanship' },
       { label: 'Press', href: '/pages/press' },
     ],
   },
@@ -191,9 +191,9 @@ interface TrustSignal {
 }
 
 const trustSignals: TrustSignal[] = [
-  { Icon: ShippingIcon, title: 'FREE SHIPPING', subtitle: 'On orders over $150' },
-  { Icon: QualityIcon, title: 'PREMIUM QUALITY', subtitle: 'Luxury materials & craft' },
-  { Icon: ReturnsIcon, title: 'EASY RETURNS', subtitle: '30-day hassle-free returns' },
+  { Icon: ShippingIcon, title: 'COMPLIMENTARY SHIPPING', subtitle: 'Worldwide on all orders' },
+  { Icon: QualityIcon, title: 'AUTHENTICITY GUARANTEED', subtitle: 'Certificate of authenticity' },
+  { Icon: ReturnsIcon, title: 'CONCIERGE RETURNS', subtitle: '30-day white-glove returns' },
   { Icon: SecureIcon, title: 'SECURE CHECKOUT', subtitle: 'Encrypted & protected' },
 ];
 

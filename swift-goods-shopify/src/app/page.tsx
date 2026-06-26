@@ -11,6 +11,8 @@ import FinalCTA from '@/components/sections/FinalCTA'
 import SocialProof from '@/components/sections/SocialProof'
 import ProductDrop from '@/components/sections/ProductDrop'
 import BrandStatement from '@/components/sections/BrandStatement'
+import ExclusiveAccess from '@/components/sections/ExclusiveAccess'
+import Craftsmanship from '@/components/sections/Craftsmanship'
 import AnimatedDivider from '@/components/ui/AnimatedDivider'
 import { MOCK_PRODUCTS, type ShopifyProduct as FullShopifyProduct } from '@/lib/shopify'
 
@@ -77,12 +79,15 @@ export default function Home() {
       <BrandStatement />
       <AnimatedDivider />
       <FeaturedProducts products={featured} />
+      <Craftsmanship />
       <SignatureMoment />
       <CinematicStrip />
       <AnimatedDivider />
       <Lookbook />
       <AnimatedDivider />
       <SocialProof />
+      <AnimatedDivider />
+      <ExclusiveAccess />
       <AnimatedDivider />
       <CollectionGrid products={adaptedProducts} />
       <FinalCTA />
