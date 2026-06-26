@@ -302,7 +302,7 @@ export class StorefrontClient {
   private readonly headers: Record<string, string>
 
   constructor(config: StorefrontClientConfig) {
-    const { storeDomain, storefrontAccessToken, apiVersion = '2024-04' } = config
+    const { storeDomain, storefrontAccessToken, apiVersion = '2025-01' } = config
     this.endpoint = `https://${storeDomain}/api/${apiVersion}/graphql.json`
     this.headers = {
       'Content-Type': 'application/json',
@@ -329,6 +329,8 @@ export class StorefrontClient {
     const response = await fetch(this.endpoint, fetchOptions)
 
     if (!response.ok) {
+      const body = await response.text().catch(() => '')
+      console.error(`[Swift Goods] API ${response.status}: ${body}`)
       throw new Error(
         `Shopify Storefront API error: ${response.status} ${response.statusText}`
       )
