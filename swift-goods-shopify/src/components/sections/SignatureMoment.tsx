@@ -130,7 +130,7 @@ export default function SignatureMoment() {
       ref={sectionRef}
       id="signature"
       className="relative w-full overflow-hidden"
-      style={{ minHeight: '80vh' }}
+      style={{ minHeight: 'min(80vh, 600px)' }}
     >
       {/* Ambient gold glow */}
       <div
@@ -149,7 +149,7 @@ export default function SignatureMoment() {
 
       {/* Photo — right 55% on desktop, full-width on mobile */}
       <div className="absolute inset-0 lg:left-[45%] lg:right-0">
-        <div ref={photoRef} className="relative w-full h-[120%] -top-[10%]">
+        <div ref={photoRef} className="relative w-full h-full lg:h-[120%] lg:-top-[10%]">
           <Image
             src="/brand/sg-solo-black.jpeg"
             alt="Swift Goods — signature moment"
@@ -264,7 +264,7 @@ export default function SignatureMoment() {
       />
 
       {/* Content overlay — positioned left on desktop, centered on mobile */}
-      <div className="relative z-10 flex items-center" style={{ minHeight: '80vh' }}>
+      <div className="relative z-10 flex items-center" style={{ minHeight: 'min(80vh, 600px)' }}>
         <div className="w-full lg:w-[45%] px-8 sm:px-12 lg:px-16 xl:px-24 py-24">
           {/* Gold label */}
           <span

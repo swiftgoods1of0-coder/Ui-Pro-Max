@@ -226,7 +226,7 @@ export default function Lookbook() {
                   isWide ? 'md:col-span-2' : ''
                 }`}
                 style={{
-                  height: isWide ? 'clamp(260px, 50vw, 600px)' : 'clamp(240px, 45vw, 520px)',
+                  height: isWide ? 'clamp(220px, 45vw, 600px)' : 'clamp(200px, 40vw, 520px)',
                   transition: 'box-shadow 0.5s ease',
                 }}
                 onMouseEnter={(e) => {

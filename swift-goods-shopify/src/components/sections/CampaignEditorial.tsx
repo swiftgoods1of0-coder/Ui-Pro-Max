@@ -93,7 +93,7 @@ export default function CampaignEditorial() {
         >
           <div
             className="editorial-img relative overflow-hidden"
-            style={{ minHeight: '60vh', direction: 'ltr' }}
+            style={{ minHeight: 'min(60vh, 400px)', direction: 'ltr' }}
           >
             <Image
               src={panel.image}

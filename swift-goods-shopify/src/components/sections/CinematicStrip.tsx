@@ -233,7 +233,7 @@ export default function CinematicStrip() {
         style={{
           display: 'flex',
           gap: '1rem',
-          height: '100vh',
+          height: 'min(100vh, 500px)',
           padding: '0 1rem',
           willChange: 'transform',
         }}
