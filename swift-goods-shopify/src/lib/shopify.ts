@@ -151,8 +151,6 @@ const VARIANT_FRAGMENT = `
       ...ImageFragment
     }
   }
-  ${MONEY_FRAGMENT}
-  ${IMAGE_FRAGMENT}
 `
 
 const PRODUCT_FRAGMENT = `
@@ -199,9 +197,13 @@ const PRODUCT_FRAGMENT = `
     createdAt
     updatedAt
   }
+`
+
+const ALL_PRODUCT_FRAGMENTS = `
+  ${PRODUCT_FRAGMENT}
+  ${VARIANT_FRAGMENT}
   ${MONEY_FRAGMENT}
   ${IMAGE_FRAGMENT}
-  ${VARIANT_FRAGMENT}
 `
 
 // ============================================================
@@ -221,7 +223,7 @@ const GET_PRODUCTS_QUERY = `
       }
     }
   }
-  ${PRODUCT_FRAGMENT}
+  ${ALL_PRODUCT_FRAGMENTS}
 `
 
 const GET_PRODUCT_QUERY = `
@@ -230,7 +232,7 @@ const GET_PRODUCT_QUERY = `
       ...ProductFragment
     }
   }
-  ${PRODUCT_FRAGMENT}
+  ${ALL_PRODUCT_FRAGMENTS}
 `
 
 const GET_COLLECTIONS_QUERY = `
@@ -277,8 +279,7 @@ const GET_COLLECTION_QUERY = `
       }
     }
   }
-  ${IMAGE_FRAGMENT}
-  ${PRODUCT_FRAGMENT}
+  ${ALL_PRODUCT_FRAGMENTS}
 `
 
 // ============================================================
@@ -502,6 +503,10 @@ const CART_FRAGMENT = `
       }
     }
   }
+`
+
+const ALL_CART_FRAGMENTS = `
+  ${CART_FRAGMENT}
   ${MONEY_FRAGMENT}
   ${IMAGE_FRAGMENT}
 `
@@ -518,7 +523,7 @@ const CREATE_CART_MUTATION = `
       }
     }
   }
-  ${CART_FRAGMENT}
+  ${ALL_CART_FRAGMENTS}
 `
 
 const ADD_TO_CART_MUTATION = `
@@ -533,7 +538,7 @@ const ADD_TO_CART_MUTATION = `
       }
     }
   }
-  ${CART_FRAGMENT}
+  ${ALL_CART_FRAGMENTS}
 `
 
 const UPDATE_CART_MUTATION = `
@@ -548,7 +553,7 @@ const UPDATE_CART_MUTATION = `
       }
     }
   }
-  ${CART_FRAGMENT}
+  ${ALL_CART_FRAGMENTS}
 `
 
 const REMOVE_FROM_CART_MUTATION = `
@@ -563,7 +568,7 @@ const REMOVE_FROM_CART_MUTATION = `
       }
     }
   }
-  ${CART_FRAGMENT}
+  ${ALL_CART_FRAGMENTS}
 `
 
 const GET_CART_QUERY = `
@@ -572,7 +577,7 @@ const GET_CART_QUERY = `
       ...CartFragment
     }
   }
-  ${CART_FRAGMENT}
+  ${ALL_CART_FRAGMENTS}
 `
 
 // ============================================================
