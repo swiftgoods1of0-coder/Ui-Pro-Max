@@ -1,32 +1,59 @@
 import { NextResponse } from 'next/server'
-import { getProducts } from '@/lib/shopify'
 
 export async function GET() {
   const domain = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN || 'NOT SET'
   const token = process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN || 'NOT SET'
-  const maskedToken = token === 'NOT SET' ? 'NOT SET' : token.slice(0, 6) + '...' + token.slice(-4)
+
+  const query = `{
+    products(first: 3) {
+      nodes {
+        id handle title description descriptionHtml
+        tags vendor productType availableForSale
+        priceRange {
+          minVariantPrice { amount currencyCode }
+          maxVariantPrice { amount currencyCode }
+        }
+        featuredImage { id url altText width height }
+        images(first: 8) { nodes { id url altText width height } }
+        variants(first: 20) {
+          nodes {
+            id title availableForSale quantityAvailable
+            price { amount currencyCode }
+            compareAtPrice { amount currencyCode }
+            selectedOptions { name value }
+            image { id url altText width height }
+          }
+        }
+        options { id name values }
+        seo { title description }
+        createdAt updatedAt
+      }
+    }
+  }`
 
   try {
-    const products = await getProducts(5)
-    const isMock = products.some((p) => p.id.startsWith('mock-'))
+    const response = await fetch(
+      `https://${domain}/api/2025-01/graphql.json`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Shopify-Storefront-Access-Token': token,
+        },
+        body: JSON.stringify({ query }),
+        cache: 'no-store',
+      }
+    )
+
+    const status = response.status
+    const body = await response.text()
 
     return NextResponse.json({
-      domain,
-      token: maskedToken,
-      isMockData: isMock,
-      productCount: products.length,
-      products: products.map((p) => ({
-        id: p.id,
-        title: p.title,
-        handle: p.handle,
-        hasImage: !!p.featuredImage?.url,
-        imageUrl: p.featuredImage?.url?.slice(0, 80) || 'none',
-        price: p.priceRange.minVariantPrice.amount,
-        variantCount: p.variants.nodes.length,
-      })),
+      apiStatus: status,
+      rawResponse: body.slice(0, 2000),
     })
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : String(error)
-    return NextResponse.json({ domain, token: maskedToken, error: message })
+    return NextResponse.json({ error: message })
   }
 }
