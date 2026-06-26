@@ -27,7 +27,6 @@ export interface ShopifyVariant {
   id: string
   title: string
   availableForSale: boolean
-  quantityAvailable: number
   price: ShopifyMoneyV2
   compareAtPrice: ShopifyMoneyV2 | null
   selectedOptions: Array<{
@@ -138,7 +137,6 @@ const VARIANT_FRAGMENT = `
     id
     title
     availableForSale
-    quantityAvailable
     price {
       ...MoneyFragment
     }
@@ -738,7 +736,6 @@ const createMockVariants = (
     id: `mock-variant-${Math.random().toString(36).slice(2)}-${i}`,
     title: size,
     availableForSale: i < 4,
-    quantityAvailable: i < 4 ? Math.floor(Math.random() * 20) + 1 : 0,
     price: { amount: priceAmount, currencyCode: 'USD' },
     compareAtPrice: null,
     selectedOptions: [{ name: 'Size', value: size }],
