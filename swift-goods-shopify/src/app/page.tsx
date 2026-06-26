@@ -57,6 +57,8 @@ async function loadProducts(): Promise<SectionProduct[]> {
   return products.map(adaptProduct)
 }
 
+export const dynamic = 'force-dynamic'
+
 export const metadata = {
   title: 'Swift Goods | Comfort Is Luxury.',
   description:

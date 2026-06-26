@@ -3,6 +3,8 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import ProductPageClient from './ProductPageClient'
 
+export const dynamic = 'force-dynamic'
+
 interface PageProps {
   params: Promise<{ handle: string }>
 }
@@ -20,11 +22,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       images: product.featuredImage ? [{ url: product.featuredImage.url }] : [],
     },
   }
-}
-
-export async function generateStaticParams() {
-  const products = await getProducts(50)
-  return products.map((p) => ({ handle: p.handle }))
 }
 
 export default async function ProductPage({ params }: PageProps) {
