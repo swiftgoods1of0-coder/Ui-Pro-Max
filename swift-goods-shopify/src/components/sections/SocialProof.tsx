@@ -12,13 +12,13 @@ interface Testimonial {
 const TESTIMONIALS: Testimonial[] = [
   {
     quote:
-      "The quality is insane. I’ve bought from every luxury brand and Swift Goods hits different. The fabric, the fit — everything.",
+      "The quality is insane. I've bought from every luxury brand and Swift Goods hits different. The fabric, the fit — everything.",
     name: 'Marcus T.',
     location: 'Los Angeles, CA',
   },
   {
     quote:
-      "Wore the hoodie set to Art Basel. Got stopped six times asking where it’s from. That’s never happened with any other brand.",
+      "Wore the hoodie set to Art Basel. Got stopped six times asking where it's from. That's never happened with any other brand.",
     name: 'Jasmine K.',
     location: 'Miami, FL',
   },
@@ -67,10 +67,15 @@ export default function SocialProof() {
   return (
     <section
       className="relative overflow-hidden"
-      style={{ background: '#050505' }}
+      style={{ background: 'var(--sg-frost, #F7F6F3)' }}
     >
-      <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at 50% 30%, rgba(201,168,76,0.03) 0%, transparent 60%)' }} />
+      {/* Warm ambient glow */}
+      <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at 50% 30%, rgba(201,168,76,0.04) 0%, transparent 60%)' }} />
       <div className="absolute pointer-events-none" style={{ bottom: '10%', right: '-5%', width: '35%', height: '35%', background: 'radial-gradient(ellipse at center, rgba(201,168,76,0.03) 0%, transparent 65%)', filter: 'blur(80px)' }} />
+
+      {/* Frost texture */}
+      <div className="absolute inset-0 pointer-events-none" style={{ opacity: 0.025, backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.12) 2px, rgba(0,0,0,0.12) 3px)', backgroundSize: '100% 4px' }} />
+
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-16 py-28 md:py-36 w-full">
         {/* Label */}
         <div className="mb-6 flex items-center gap-4">
@@ -86,7 +91,7 @@ export default function SocialProof() {
               fontSize: '10px',
               letterSpacing: '0.4em',
               textTransform: 'uppercase',
-              color: '#c9a84c',
+              color: '#a08535',
               fontWeight: 500,
             }}
           >
@@ -103,15 +108,14 @@ export default function SocialProof() {
             style={{
               fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)',
               fontSize: 'clamp(2.8rem, 6vw, 5.5rem)',
-              color: '#f5f5f5',
+              color: '#1a1a1a',
               lineHeight: 1,
               letterSpacing: '0.04em',
-              textShadow: '0 4px 40px rgba(0,0,0,0.3)',
             }}
           />
         </div>
 
-        {/* Testimonial Cards */}
+        {/* Testimonial Cards — white on frost */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 mb-20">
           {TESTIMONIALS.map((testimonial, i) => (
             <motion.div
@@ -124,23 +128,24 @@ export default function SocialProof() {
               variants={cardVariants}
               whileHover={{
                 scale: 1.02,
-                borderColor: 'rgba(201,168,76,0.2)',
-                boxShadow: '0 8px 40px rgba(0,0,0,0.4), 0 0 30px rgba(201,168,76,0.06)',
+                borderColor: 'rgba(201,168,76,0.3)',
+                boxShadow: '0 12px 50px rgba(0,0,0,0.1), 0 0 30px rgba(201,168,76,0.06)',
                 transition: { duration: 0.3 },
               }}
               style={{
-                background: '#111',
-                border: '1px solid rgba(255,255,255,0.06)',
+                background: '#ffffff',
+                border: '1px solid rgba(0,0,0,0.06)',
                 padding: '2.5rem',
                 transition: 'border-color 0.5s ease, box-shadow 0.5s ease',
                 position: 'relative',
                 overflow: 'hidden',
+                boxShadow: '0 2px 16px rgba(0,0,0,0.06)',
               }}
             >
               {/* Gold accent line — left edge */}
               <div
                 className="absolute left-0 top-0 bottom-0 w-px opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                style={{ background: 'linear-gradient(to bottom, transparent, rgba(201,168,76,0.4), transparent)' }}
+                style={{ background: 'linear-gradient(to bottom, transparent, rgba(201,168,76,0.5), transparent)' }}
               />
 
               {/* Opening quote mark */}
@@ -151,10 +156,9 @@ export default function SocialProof() {
                   fontFamily: 'var(--font-display, "Cormorant Garamond", serif)',
                   fontSize: '4rem',
                   lineHeight: 0.8,
-                  color: 'rgba(201,168,76,0.25)',
+                  color: 'rgba(201,168,76,0.35)',
                   marginBottom: '0.75rem',
                   userSelect: 'none',
-                  textShadow: '0 0 30px rgba(201,168,76,0.1)',
                 }}
               >
                 &ldquo;
@@ -167,7 +171,7 @@ export default function SocialProof() {
                     'var(--font-display, "Cormorant Garamond", serif)',
                   fontSize: '1.1rem',
                   fontStyle: 'italic',
-                  color: '#ccc',
+                  color: '#555',
                   lineHeight: 1.6,
                   marginBottom: '1.5rem',
                 }}
@@ -192,7 +196,7 @@ export default function SocialProof() {
                   fontSize: '0.75rem',
                   textTransform: 'uppercase',
                   letterSpacing: '0.2em',
-                  color: '#f5f5f5',
+                  color: '#1a1a1a',
                   marginBottom: '0.25rem',
                   fontWeight: 500,
                 }}
@@ -205,7 +209,7 @@ export default function SocialProof() {
                 style={{
                   fontFamily: 'var(--font-body, Inter, sans-serif)',
                   fontSize: '0.625rem',
-                  color: '#555',
+                  color: '#9a9590',
                   letterSpacing: '0.1em',
                 }}
               >
@@ -216,9 +220,9 @@ export default function SocialProof() {
         </div>
 
         <div className="flex items-center justify-center gap-4 mb-16">
-          <div style={{ width: 60, height: 1, background: 'linear-gradient(to right, transparent, rgba(201,168,76,0.3))' }} />
-          <div style={{ width: 5, height: 5, background: 'rgba(201,168,76,0.5)', transform: 'rotate(45deg)', boxShadow: '0 0 10px rgba(201,168,76,0.3)' }} />
-          <div style={{ width: 60, height: 1, background: 'linear-gradient(to left, transparent, rgba(201,168,76,0.3))' }} />
+          <div style={{ width: 60, height: 1, background: 'linear-gradient(to right, transparent, rgba(201,168,76,0.35))' }} />
+          <div style={{ width: 5, height: 5, background: 'rgba(201,168,76,0.6)', transform: 'rotate(45deg)', boxShadow: '0 0 10px rgba(201,168,76,0.2)' }} />
+          <div style={{ width: 60, height: 1, background: 'linear-gradient(to left, transparent, rgba(201,168,76,0.35))' }} />
         </div>
 
         {/* Stat Counters */}
@@ -233,7 +237,7 @@ export default function SocialProof() {
                   color: '#c9a84c',
                   lineHeight: 1,
                   marginBottom: '0.5rem',
-                  textShadow: '0 0 40px rgba(201,168,76,0.2)',
+                  textShadow: '0 0 40px rgba(201,168,76,0.15)',
                 }}
               >
                 {stat.value}
@@ -244,7 +248,7 @@ export default function SocialProof() {
                   fontSize: '0.625rem',
                   letterSpacing: '0.2em',
                   textTransform: 'uppercase',
-                  color: '#888',
+                  color: '#9a9590',
                 }}
               >
                 {stat.label}
@@ -253,14 +257,14 @@ export default function SocialProof() {
           ))}
         </div>
 
-        {/* Brand signature at bottom */}
+        {/* Brand signature */}
         <div className="mt-16 flex justify-center">
           <p
             style={{
               fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)',
               fontSize: '0.85rem',
               letterSpacing: '0.4em',
-              color: 'rgba(201,168,76,0.15)',
+              color: 'rgba(201,168,76,0.25)',
               textTransform: 'uppercase',
             }}
           >

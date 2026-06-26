@@ -52,7 +52,6 @@ export default function CampaignEditorial() {
               scrollTrigger: { trigger: panel, start: 'top 80%', toggleActions: 'play none none none' },
             }
           )
-          // Parallax on image
           gsap.fromTo(img,
             { y: -30 },
             {
@@ -81,8 +80,14 @@ export default function CampaignEditorial() {
   }, [])
 
   return (
-    <section ref={sectionRef} className="relative overflow-hidden" style={{ background: '#050505' }}>
-      <div className="absolute pointer-events-none" style={{ top: '30%', right: '-5%', width: '40%', height: '40%', background: 'radial-gradient(ellipse at center, rgba(201,168,76,0.03) 0%, transparent 65%)', filter: 'blur(80px)' }} />
+    <section ref={sectionRef} className="relative overflow-hidden" style={{ background: 'var(--sg-frost, #F7F6F3)' }}>
+      {/* Subtle warm ambient glow */}
+      <div className="absolute pointer-events-none" style={{ top: '20%', left: '-10%', width: '50%', height: '50%', background: 'radial-gradient(ellipse at center, rgba(201,168,76,0.04) 0%, transparent 65%)', filter: 'blur(100px)' }} />
+      <div className="absolute pointer-events-none" style={{ bottom: '10%', right: '-5%', width: '35%', height: '35%', background: 'radial-gradient(ellipse at center, rgba(201,168,76,0.03) 0%, transparent 65%)', filter: 'blur(80px)' }} />
+
+      {/* Subtle noise texture for frost feel */}
+      <div className="absolute inset-0 pointer-events-none" style={{ opacity: 0.03, backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 3px)', backgroundSize: '100% 4px' }} />
+
       {PANELS.map((panel, idx) => (
         <div
           key={panel.label}
@@ -103,21 +108,21 @@ export default function CampaignEditorial() {
               className="object-cover"
               quality={90}
             />
+            {/* Gradient blends image into frost bg */}
             <div
-              className="absolute inset-0"
+              className="absolute inset-0 hidden lg:block"
               style={{
                 background: idx % 2 === 0
-                  ? 'linear-gradient(to right, transparent 60%, #050505 100%)'
-                  : 'linear-gradient(to left, transparent 60%, #050505 100%)',
+                  ? 'linear-gradient(to right, transparent 55%, var(--sg-frost, #F7F6F3) 100%)'
+                  : 'linear-gradient(to left, transparent 55%, var(--sg-frost, #F7F6F3) 100%)',
               }}
             />
             <div
               className="absolute inset-0 lg:hidden"
-              style={{ background: 'linear-gradient(to bottom, transparent 40%, #050505 100%)' }}
+              style={{ background: 'linear-gradient(to bottom, transparent 40%, var(--sg-frost, #F7F6F3) 100%)' }}
             />
-            {/* Gold border accent */}
-            <div className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ border: '1px solid rgba(201,168,76,0.2)' }} />
-            <div className="absolute inset-0 pointer-events-none" style={{ opacity: 0.02, backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.8) 2px, rgba(255,255,255,0.8) 3px)', backgroundSize: '100% 4px' }} />
+            {/* Gold border accent on hover */}
+            <div className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ border: '1px solid rgba(201,168,76,0.25)' }} />
           </div>
 
           <div
@@ -133,7 +138,7 @@ export default function CampaignEditorial() {
               <span
                 className="text-[10px] tracking-[0.4em] uppercase"
                 style={{
-                  color: '#c9a84c',
+                  color: '#a08535',
                   fontFamily: 'var(--font-body, Inter, sans-serif)',
                   fontWeight: 500,
                 }}
@@ -148,9 +153,9 @@ export default function CampaignEditorial() {
                 fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)',
                 fontSize: 'clamp(2.5rem, 7vw, 7rem)',
                 letterSpacing: '0.04em',
-                color: '#f5f5f5',
+                color: '#1a1a1a',
                 whiteSpace: 'pre-line',
-                textShadow: '0 4px 30px rgba(0,0,0,0.3)',
+                textShadow: '0 4px 30px rgba(0,0,0,0.06)',
               }}
             >
               {panel.heading}
@@ -158,7 +163,7 @@ export default function CampaignEditorial() {
 
             <div className="editorial-rule flex items-center gap-3 mb-8 opacity-0">
               <div className="h-px w-16" style={{ background: 'linear-gradient(to right, #c9a84c, rgba(201,168,76,0.2))' }} />
-              <div style={{ width: 4, height: 4, background: 'rgba(201,168,76,0.5)', transform: 'rotate(45deg)' }} />
+              <div style={{ width: 4, height: 4, background: 'rgba(201,168,76,0.6)', transform: 'rotate(45deg)' }} />
             </div>
 
             <p
@@ -167,7 +172,7 @@ export default function CampaignEditorial() {
                 fontFamily: 'var(--font-display, "Cormorant Garamond", serif)',
                 fontSize: 'clamp(1.1rem, 2vw, 1.35rem)',
                 fontStyle: 'italic',
-                color: '#888888',
+                color: '#6b6560',
                 lineHeight: 1.7,
               }}
             >

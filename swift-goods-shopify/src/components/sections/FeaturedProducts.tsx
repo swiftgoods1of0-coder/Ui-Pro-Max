@@ -7,7 +7,6 @@ import { motion } from 'framer-motion'
 import LuxuryButton from '@/components/ui/LuxuryButton'
 import MagneticElement from '@/components/ui/MagneticElement'
 import SplitTextReveal from '@/components/ui/SplitTextReveal'
-import MouseSpotlight from '@/components/ui/MouseSpotlight'
 import { use3DTilt } from '@/hooks/use3DTilt'
 
 interface ShopifyProduct {
@@ -55,12 +54,13 @@ function ProductCard({ product, index }: ProductCardProps) {
       className="group relative flex flex-col cursor-pointer"
       style={{
         background: '#111111',
-        border: '1px solid rgba(255,255,255,0.06)',
+        border: '1px solid rgba(0,0,0,0.08)',
         transition: 'border-color 0.5s ease, box-shadow 0.5s ease',
+        boxShadow: '0 4px 20px rgba(0,0,0,0.12)',
       }}
       whileHover={{
-        borderColor: 'rgba(201,168,76,0.2)',
-        boxShadow: '0 8px 40px rgba(0,0,0,0.4), 0 0 30px rgba(201,168,76,0.06)',
+        borderColor: 'rgba(201,168,76,0.3)',
+        boxShadow: '0 12px 50px rgba(0,0,0,0.25), 0 0 30px rgba(201,168,76,0.08)',
       }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
@@ -70,7 +70,6 @@ function ProductCard({ product, index }: ProductCardProps) {
         className="relative overflow-hidden"
         style={{ aspectRatio: '4/5', background: '#0a0a0a' }}
       >
-        {/* Product image — scales to 110% on hover, swaps to second image */}
         <Image
           src={product.image}
           alt={product.title}
@@ -92,13 +91,11 @@ function ProductCard({ product, index }: ProductCardProps) {
           />
         )}
 
-        {/* Dark hover overlay */}
         <div
           className="absolute inset-0 pointer-events-none transition-opacity duration-500 opacity-0 group-hover:opacity-100"
           style={{ background: 'rgba(5,5,5,0.58)' }}
         />
 
-        {/* QUICK ADD button — appears centered on hover */}
         <div
           className="absolute inset-0 flex items-center justify-center
             opacity-0 group-hover:opacity-100
@@ -122,7 +119,6 @@ function ProductCard({ product, index }: ProductCardProps) {
           </button>
         </div>
 
-        {/* Badges */}
         <div className="absolute top-4 left-4 flex flex-col gap-2 z-10">
           {product.isNew && (
             <span
@@ -152,7 +148,6 @@ function ProductCard({ product, index }: ProductCardProps) {
           )}
         </div>
 
-        {/* Edition number */}
         <div className="absolute top-4 right-4 z-10">
           <span style={{
             fontFamily: 'var(--font-body, Inter, sans-serif)',
@@ -168,7 +163,6 @@ function ProductCard({ product, index }: ProductCardProps) {
 
       {/* Product info */}
       <div className="p-6 flex flex-col gap-1 flex-1">
-        {/* Category */}
         {product.category && (
           <span
             className="text-[10px] tracking-[0.32em] uppercase"
@@ -181,7 +175,6 @@ function ProductCard({ product, index }: ProductCardProps) {
           </span>
         )}
 
-        {/* Limited Edition indicator */}
         {product.isFeatured && (
           <span style={{
             fontFamily: 'var(--font-body, Inter, sans-serif)',
@@ -194,7 +187,6 @@ function ProductCard({ product, index }: ProductCardProps) {
           </span>
         )}
 
-        {/* Title */}
         <h3
           className="mt-1 leading-snug"
           style={{
@@ -207,7 +199,6 @@ function ProductCard({ product, index }: ProductCardProps) {
           {product.title}
         </h3>
 
-        {/* Price row */}
         <div className="flex items-baseline gap-3 mt-2">
           <span
             style={{
@@ -236,7 +227,6 @@ function ProductCard({ product, index }: ProductCardProps) {
           )}
         </div>
 
-        {/* Animated arrow link */}
         <div className="mt-auto pt-5 flex items-center gap-2 overflow-hidden">
           <span
             className="text-[10px] tracking-[0.22em] uppercase transition-all duration-300 group-hover:tracking-[0.32em]"
@@ -272,23 +262,29 @@ export default function FeaturedProducts({ products }: FeaturedProductsProps) {
   const sectionRef = useRef<HTMLElement>(null)
 
   return (
-    <MouseSpotlight color="rgba(201,168,76,0.04)" size={500}>
     <section
       ref={sectionRef}
       id="collection"
       className="relative py-24 overflow-hidden"
-      style={{ background: '#111111' }}
+      style={{ background: 'var(--sg-frost, #F7F6F3)' }}
     >
+      {/* Warm ambient glow */}
+      <div className="absolute pointer-events-none" style={{ top: '5%', left: '-8%', width: '45%', height: '45%', background: 'radial-gradient(ellipse at center, rgba(201,168,76,0.04) 0%, transparent 65%)', filter: 'blur(80px)' }} />
+      <div className="absolute pointer-events-none" style={{ bottom: '10%', right: '-5%', width: '35%', height: '35%', background: 'radial-gradient(ellipse at center, rgba(201,168,76,0.03) 0%, transparent 65%)', filter: 'blur(80px)' }} />
+
+      {/* Frost texture overlay */}
+      <div className="absolute inset-0 pointer-events-none" style={{ opacity: 0.025, backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.12) 2px, rgba(0,0,0,0.12) 3px)', backgroundSize: '100% 4px' }} />
+
       {/* Top accent line */}
       <div
         className="absolute top-0 left-0 right-0 h-px"
         style={{
           background:
-            'linear-gradient(to right, transparent, rgba(201,168,76,0.35), transparent)',
+            'linear-gradient(to right, transparent, rgba(201,168,76,0.25), transparent)',
         }}
       />
 
-      <div className="max-w-7xl mx-auto px-6 lg:px-16">
+      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-16">
         {/* Section header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -305,7 +301,7 @@ export default function FeaturedProducts({ products }: FeaturedProductsProps) {
             <span
               className="text-[11px] tracking-[0.42em] uppercase"
               style={{
-                color: '#c9a84c',
+                color: '#a08535',
                 fontFamily: 'var(--font-body, Inter, sans-serif)',
                 fontWeight: 500,
               }}
@@ -322,7 +318,7 @@ export default function FeaturedProducts({ products }: FeaturedProductsProps) {
               style={{
                 fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)',
                 fontSize: 'clamp(3rem, 7vw, 6.5rem)',
-                color: '#f5f5f5',
+                color: '#1a1a1a',
               }}
             />
             <div className="max-w-xs lg:text-right">
@@ -330,7 +326,7 @@ export default function FeaturedProducts({ products }: FeaturedProductsProps) {
                 style={{
                   fontFamily: 'var(--font-body, Inter, sans-serif)',
                   fontSize: '0.9375rem',
-                  color: '#888888',
+                  color: '#6b6560',
                   lineHeight: 1.72,
                   margin: 0,
                   marginBottom: '0.75rem',
@@ -353,7 +349,7 @@ export default function FeaturedProducts({ products }: FeaturedProductsProps) {
                   style={{
                     fontFamily: 'var(--font-body, Inter, sans-serif)',
                     fontSize: '0.6875rem',
-                    color: '#555',
+                    color: '#9a9590',
                     letterSpacing: '0.08em',
                   }}
                 >
@@ -364,7 +360,7 @@ export default function FeaturedProducts({ products }: FeaturedProductsProps) {
           </div>
         </motion.div>
 
-        {/* Product grid — 3 columns */}
+        {/* Product grid — dark cards on frost bg */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-20">
           {products.map((product, index) => (
             <ProductCard key={product.id} product={product} index={index} />
@@ -396,6 +392,5 @@ export default function FeaturedProducts({ products }: FeaturedProductsProps) {
         }}
       />
     </section>
-    </MouseSpotlight>
   )
 }
