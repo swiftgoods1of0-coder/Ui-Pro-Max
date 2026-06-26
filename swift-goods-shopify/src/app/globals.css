@@ -1051,6 +1051,14 @@ a, button {
   backface-visibility: hidden;
 }
 
+/* Product page responsive grid */
+@media (min-width: 768px) {
+  .product-grid {
+    grid-template-columns: 1fr 1fr !important;
+    align-items: start;
+  }
+}
+
 /* Urgency banner responsive text */
 .urgency-banner-full {
   display: inline-flex;

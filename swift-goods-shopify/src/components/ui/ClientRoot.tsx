@@ -4,6 +4,12 @@ import React, { useState, useEffect, Component } from 'react'
 import type { ReactNode } from 'react'
 import dynamic from 'next/dynamic'
 import { SmoothScrollProvider } from '@/lib/smooth-scroll'
+import { CartProvider } from '@/context/CartContext'
+
+const CartDrawer = dynamic(
+  () => import('./CartDrawer'),
+  { ssr: false }
+)
 
 const Preloader = dynamic(
   () => import('./Preloader'),
@@ -100,16 +106,19 @@ export default function ClientRoot({ children }: { children: ReactNode }) {
   return (
     <div id="sg-app">
       <ErrorBoundary>
-        <SmoothScrollProvider>
-          {mounted && <LiquidBackground />}
-          {mounted && <CursorTrail />}
-          {mounted && <CustomCursor />}
-          {mounted && <GoldParticleField />}
-          {mounted && <ScrollProgressBar />}
-          {mounted && <UrgencyBanner />}
-          {!done && <Preloader onComplete={() => setDone(true)} />}
-          {children}
-        </SmoothScrollProvider>
+        <CartProvider>
+          <SmoothScrollProvider>
+            {mounted && <LiquidBackground />}
+            {mounted && <CursorTrail />}
+            {mounted && <CustomCursor />}
+            {mounted && <GoldParticleField />}
+            {mounted && <ScrollProgressBar />}
+            {mounted && <UrgencyBanner />}
+            {mounted && <CartDrawer />}
+            {!done && <Preloader onComplete={() => setDone(true)} />}
+            {children}
+          </SmoothScrollProvider>
+        </CartProvider>
       </ErrorBoundary>
     </div>
   )

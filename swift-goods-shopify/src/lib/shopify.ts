@@ -313,14 +313,20 @@ export class StorefrontClient {
 
   async request<T>(
     query: string,
-    variables?: Record<string, unknown>
+    variables?: Record<string, unknown>,
+    options?: { cache?: RequestCache }
   ): Promise<T> {
-    const response = await fetch(this.endpoint, {
+    const fetchOptions: RequestInit & { next?: { revalidate: number } } = {
       method: 'POST',
       headers: this.headers,
       body: JSON.stringify({ query, variables }),
-      next: { revalidate: 60 },
-    })
+    }
+    if (options?.cache === 'no-store') {
+      fetchOptions.cache = 'no-store'
+    } else {
+      fetchOptions.next = { revalidate: 60 }
+    }
+    const response = await fetch(this.endpoint, fetchOptions)
 
     if (!response.ok) {
       throw new Error(
@@ -440,6 +446,242 @@ export async function getCollection(
     return data.collectionByHandle
   } catch (error) {
     console.error('[Swift Goods] getCollection error:', error)
+    return null
+  }
+}
+
+// ============================================================
+// CART GRAPHQL FRAGMENTS & MUTATIONS
+// ============================================================
+const CART_FRAGMENT = `
+  fragment CartFragment on Cart {
+    id
+    checkoutUrl
+    totalQuantity
+    lines(first: 100) {
+      nodes {
+        id
+        quantity
+        merchandise {
+          ... on ProductVariant {
+            id
+            title
+            price {
+              ...MoneyFragment
+            }
+            product {
+              id
+              handle
+              title
+              featuredImage {
+                ...ImageFragment
+              }
+            }
+            selectedOptions {
+              name
+              value
+            }
+          }
+        }
+        cost {
+          totalAmount {
+            ...MoneyFragment
+          }
+        }
+      }
+    }
+    cost {
+      subtotalAmount {
+        ...MoneyFragment
+      }
+      totalAmount {
+        ...MoneyFragment
+      }
+      totalTaxAmount {
+        ...MoneyFragment
+      }
+    }
+  }
+  ${MONEY_FRAGMENT}
+  ${IMAGE_FRAGMENT}
+`
+
+const CREATE_CART_MUTATION = `
+  mutation CreateCart($lines: [CartLineInput!]!) {
+    cartCreate(input: { lines: $lines }) {
+      cart {
+        ...CartFragment
+      }
+      userErrors {
+        field
+        message
+      }
+    }
+  }
+  ${CART_FRAGMENT}
+`
+
+const ADD_TO_CART_MUTATION = `
+  mutation AddToCart($cartId: ID!, $lines: [CartLineInput!]!) {
+    cartLinesAdd(cartId: $cartId, lines: $lines) {
+      cart {
+        ...CartFragment
+      }
+      userErrors {
+        field
+        message
+      }
+    }
+  }
+  ${CART_FRAGMENT}
+`
+
+const UPDATE_CART_MUTATION = `
+  mutation UpdateCart($cartId: ID!, $lines: [CartLineUpdateInput!]!) {
+    cartLinesUpdate(cartId: $cartId, lines: $lines) {
+      cart {
+        ...CartFragment
+      }
+      userErrors {
+        field
+        message
+      }
+    }
+  }
+  ${CART_FRAGMENT}
+`
+
+const REMOVE_FROM_CART_MUTATION = `
+  mutation RemoveFromCart($cartId: ID!, $lineIds: [ID!]!) {
+    cartLinesRemove(cartId: $cartId, lineIds: $lineIds) {
+      cart {
+        ...CartFragment
+      }
+      userErrors {
+        field
+        message
+      }
+    }
+  }
+  ${CART_FRAGMENT}
+`
+
+const GET_CART_QUERY = `
+  query GetCart($cartId: ID!) {
+    cart(id: $cartId) {
+      ...CartFragment
+    }
+  }
+  ${CART_FRAGMENT}
+`
+
+// ============================================================
+// CART API FUNCTIONS
+// ============================================================
+export async function createCart(
+  variantId: string,
+  quantity = 1
+): Promise<ShopifyCart | null> {
+  try {
+    const client = createShopifyClient()
+    const data = await client.request<{
+      cartCreate: { cart: ShopifyCart; userErrors: Array<{ message: string }> }
+    }>(CREATE_CART_MUTATION, {
+      lines: [{ merchandiseId: variantId, quantity }],
+    }, { cache: 'no-store' })
+    if (data.cartCreate.userErrors.length > 0) {
+      console.error('[Swift Goods] Cart create errors:', data.cartCreate.userErrors)
+      return null
+    }
+    return data.cartCreate.cart
+  } catch (error) {
+    console.error('[Swift Goods] createCart error:', error)
+    return null
+  }
+}
+
+export async function addToCart(
+  cartId: string,
+  variantId: string,
+  quantity = 1
+): Promise<ShopifyCart | null> {
+  try {
+    const client = createShopifyClient()
+    const data = await client.request<{
+      cartLinesAdd: { cart: ShopifyCart; userErrors: Array<{ message: string }> }
+    }>(ADD_TO_CART_MUTATION, {
+      cartId,
+      lines: [{ merchandiseId: variantId, quantity }],
+    }, { cache: 'no-store' })
+    if (data.cartLinesAdd.userErrors.length > 0) {
+      console.error('[Swift Goods] Add to cart errors:', data.cartLinesAdd.userErrors)
+      return null
+    }
+    return data.cartLinesAdd.cart
+  } catch (error) {
+    console.error('[Swift Goods] addToCart error:', error)
+    return null
+  }
+}
+
+export async function updateCartLine(
+  cartId: string,
+  lineId: string,
+  quantity: number
+): Promise<ShopifyCart | null> {
+  try {
+    const client = createShopifyClient()
+    const data = await client.request<{
+      cartLinesUpdate: { cart: ShopifyCart; userErrors: Array<{ message: string }> }
+    }>(UPDATE_CART_MUTATION, {
+      cartId,
+      lines: [{ id: lineId, quantity }],
+    }, { cache: 'no-store' })
+    if (data.cartLinesUpdate.userErrors.length > 0) {
+      console.error('[Swift Goods] Update cart errors:', data.cartLinesUpdate.userErrors)
+      return null
+    }
+    return data.cartLinesUpdate.cart
+  } catch (error) {
+    console.error('[Swift Goods] updateCartLine error:', error)
+    return null
+  }
+}
+
+export async function removeFromCart(
+  cartId: string,
+  lineIds: string[]
+): Promise<ShopifyCart | null> {
+  try {
+    const client = createShopifyClient()
+    const data = await client.request<{
+      cartLinesRemove: { cart: ShopifyCart; userErrors: Array<{ message: string }> }
+    }>(REMOVE_FROM_CART_MUTATION, {
+      cartId,
+      lineIds,
+    }, { cache: 'no-store' })
+    if (data.cartLinesRemove.userErrors.length > 0) {
+      console.error('[Swift Goods] Remove from cart errors:', data.cartLinesRemove.userErrors)
+      return null
+    }
+    return data.cartLinesRemove.cart
+  } catch (error) {
+    console.error('[Swift Goods] removeFromCart error:', error)
+    return null
+  }
+}
+
+export async function getCart(cartId: string): Promise<ShopifyCart | null> {
+  try {
+    const client = createShopifyClient()
+    const data = await client.request<{ cart: ShopifyCart | null }>(
+      GET_CART_QUERY,
+      { cartId },
+      { cache: 'no-store' }
+    )
+    return data.cart
+  } catch (error) {
+    console.error('[Swift Goods] getCart error:', error)
     return null
   }
 }

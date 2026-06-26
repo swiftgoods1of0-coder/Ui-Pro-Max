@@ -14,7 +14,7 @@ import BrandStatement from '@/components/sections/BrandStatement'
 import ExclusiveAccess from '@/components/sections/ExclusiveAccess'
 import Craftsmanship from '@/components/sections/Craftsmanship'
 import AnimatedDivider from '@/components/ui/AnimatedDivider'
-import { MOCK_PRODUCTS, type ShopifyProduct as FullShopifyProduct } from '@/lib/shopify'
+import { getProducts, MOCK_PRODUCTS, type ShopifyProduct as FullShopifyProduct } from '@/lib/shopify'
 
 // The section components (FeaturedProducts, CollectionGrid) use a simplified
 // product shape with a flat `image` string. We adapt the full Shopify type here
@@ -52,7 +52,10 @@ function adaptProduct(p: FullShopifyProduct): SectionProduct {
   }
 }
 
-const adaptedProducts: SectionProduct[] = MOCK_PRODUCTS.map(adaptProduct)
+async function loadProducts(): Promise<SectionProduct[]> {
+  const products = await getProducts(20)
+  return products.map(adaptProduct)
+}
 
 export const metadata = {
   title: 'Swift Goods | Comfort Is Luxury.',
@@ -65,7 +68,8 @@ export const metadata = {
   },
 }
 
-export default function Home() {
+export default async function Home() {
+  const adaptedProducts = await loadProducts()
   const featured = adaptedProducts.slice(0, 6)
 
   return (

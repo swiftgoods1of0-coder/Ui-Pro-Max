@@ -2,7 +2,10 @@
 const nextConfig = {
   transpilePackages: ['three'],
   images: {
-    domains: ['cdn.shopify.com', 'images.unsplash.com'],
+    remotePatterns: [
+      { protocol: 'https', hostname: 'cdn.shopify.com' },
+      { protocol: 'https', hostname: 'images.unsplash.com' },
+    ],
     formats: ['image/avif', 'image/webp'],
   },
   experimental: {

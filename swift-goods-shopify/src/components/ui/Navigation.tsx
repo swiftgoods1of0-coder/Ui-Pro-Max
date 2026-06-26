@@ -6,6 +6,7 @@ import gsap from 'gsap';
 import Link from 'next/link';
 import Image from 'next/image';
 import TextScramble from '@/components/ui/TextScramble';
+import { useCart } from '@/context/CartContext';
 
 // ---------------------------------------------------------------------------
 // Types & Interfaces
@@ -292,12 +293,13 @@ function IconButton({ onClick, href, ariaLabel, children }: IconButtonProps) {
 // CartButton — icon button with badge overlay
 // ---------------------------------------------------------------------------
 
-function CartButton({ count }: { count: number }) {
+function CartButton({ count, onClick }: { count: number; onClick?: () => void }) {
   const [hovered, setHovered] = useState(false);
 
   return (
-    <Link
-      href="/cart"
+    <button
+      type="button"
+      onClick={onClick}
       aria-label={`Cart, ${count} item${count !== 1 ? 's' : ''}`}
       style={{
         display: 'flex',
@@ -308,9 +310,11 @@ function CartButton({ count }: { count: number }) {
         position: 'relative',
         color: hovered ? COLORS.gold : COLORS.text,
         transition: `color 400ms ${LUXURY_EASE}`,
-        textDecoration: 'none',
         flexShrink: 0,
         cursor: 'pointer',
+        background: 'none',
+        border: 'none',
+        padding: 0,
       }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
@@ -343,7 +347,7 @@ function CartButton({ count }: { count: number }) {
           {count > 99 ? '99+' : count}
         </span>
       )}
-    </Link>
+    </button>
   );
 }
 
@@ -561,24 +565,26 @@ function MobileMenu({ isOpen, onClose, cartCount }: MobileMenuProps) {
 
           {/* Cart row */}
           <motion.div variants={mobileLinkVariants}>
-            <Link
-              href="/cart"
+            <button
+              type="button"
               onClick={onClose}
               style={{
                 display: 'flex',
                 alignItems: 'center',
                 gap: '0.6rem',
                 color: COLORS.platinum,
-                textDecoration: 'none',
                 fontFamily: 'var(--font-body, Inter, sans-serif)',
                 fontSize: '0.75rem',
                 letterSpacing: '0.18em',
                 transition: `color 400ms ${LUXURY_EASE}`,
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
               }}
             >
               <CartIcon size={18} />
               <span>CART {cartCount > 0 ? `(${cartCount})` : '(0)'}</span>
-            </Link>
+            </button>
           </motion.div>
 
           {/* Brand tagline */}
@@ -606,7 +612,9 @@ function MobileMenu({ isOpen, onClose, cartCount }: MobileMenuProps) {
 // Navigation — main exported component
 // ---------------------------------------------------------------------------
 
-export default function Navigation({ cartCount = 0 }: NavigationProps) {
+export default function Navigation({ cartCount: cartCountProp }: NavigationProps) {
+  const cart = useCart();
+  const cartCount = cartCountProp ?? cart.totalQuantity;
   const navRef = useRef<HTMLElement>(null);
   const [scrolled, setScrolled] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -762,7 +770,7 @@ export default function Navigation({ cartCount = 0 }: NavigationProps) {
           </IconButton>
 
           {/* Cart with badge */}
-          <CartButton count={cartCount} />
+          <CartButton count={cartCount} onClick={cart.openCart} />
 
           {/* Hamburger — visible on mobile only */}
           <div className="hamburger-btn">
