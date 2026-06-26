@@ -130,7 +130,7 @@ export default function SignatureMoment() {
       ref={sectionRef}
       id="signature"
       className="relative w-full overflow-hidden"
-      style={{ minHeight: 'min(80vh, 600px)' }}
+      style={{ minHeight: 'clamp(400px, 55vh, 700px)' }}
     >
       {/* Ambient gold glow */}
       <div
@@ -264,7 +264,7 @@ export default function SignatureMoment() {
       />
 
       {/* Content overlay — positioned left on desktop, centered on mobile */}
-      <div className="relative z-10 flex items-center" style={{ minHeight: 'min(80vh, 600px)' }}>
+      <div className="relative z-10 flex items-center" style={{ minHeight: 'clamp(400px, 55vh, 700px)' }}>
         <div className="w-full lg:w-[45%] px-8 sm:px-12 lg:px-16 xl:px-24 py-24">
           {/* Gold label */}
           <span

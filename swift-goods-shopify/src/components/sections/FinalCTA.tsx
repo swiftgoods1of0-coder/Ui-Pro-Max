@@ -91,7 +91,7 @@ export default function FinalCTA() {
     <section
       ref={sectionRef}
       className="relative w-full overflow-hidden"
-      style={{ minHeight: '85vh' }}
+      style={{ minHeight: 'clamp(450px, 60vh, 85vh)' }}
     >
       {/* Corner brackets */}
       <div className="absolute hidden lg:block pointer-events-none" style={{ top: '3rem', left: '3rem' }}>
@@ -182,7 +182,7 @@ export default function FinalCTA() {
       <div className="absolute z-[3] pointer-events-none" style={{ left: '50%', top: '40%', width: '60%', height: '60%', transform: 'translate(-50%, -50%)', background: 'radial-gradient(ellipse at center, rgba(201,168,76,0.06) 0%, transparent 60%)', filter: 'blur(80px)' }} />
 
       {/* Content — left-aligned */}
-      <div className="relative z-10 flex items-center" style={{ minHeight: '85vh' }}>
+      <div className="relative z-10 flex items-center" style={{ minHeight: 'clamp(450px, 60vh, 85vh)' }}>
         <div className="w-full max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 xl:px-24 py-24">
           <div className="max-w-xl">
             {/* Gold label */}
