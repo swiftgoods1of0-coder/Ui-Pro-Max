@@ -42,14 +42,6 @@ function ProductCard({ product, index }: ProductCardProps) {
     <Link href={`/products/${product.handle}`} className="block">
     <motion.article
       ref={cardRef}
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-50px' }}
-      transition={{
-        duration: 0.75,
-        delay: index * 0.1,
-        ease: [0.22, 1, 0.36, 1],
-      }}
       data-cursor="product"
       className="group relative flex flex-col cursor-pointer"
       style={{
@@ -286,11 +278,7 @@ export default function FeaturedProducts({ products }: FeaturedProductsProps) {
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-16">
         {/* Section header */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-50px' }}
-          transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
+        <div
           className="mb-20"
         >
           <div className="inline-flex items-center gap-4 mb-6">
@@ -357,7 +345,7 @@ export default function FeaturedProducts({ products }: FeaturedProductsProps) {
               </div>
             </div>
           </div>
-        </motion.div>
+        </div>
 
         {/* Product grid — dark cards on frost bg */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-20">
@@ -367,19 +355,13 @@ export default function FeaturedProducts({ products }: FeaturedProductsProps) {
         </div>
 
         {/* CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
-          className="flex justify-center"
-        >
+        <div className="flex justify-center">
           <MagneticElement strength={0.25} radius={160}>
             <LuxuryButton variant="secondary" href="/collections">
               VIEW ENTIRE COLLECTION
             </LuxuryButton>
           </MagneticElement>
-        </motion.div>
+        </div>
       </div>
 
       {/* Bottom accent line */}

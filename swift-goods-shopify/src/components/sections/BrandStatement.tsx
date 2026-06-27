@@ -36,70 +36,7 @@ export default function BrandStatement() {
     gsap.registerPlugin(ScrollTrigger)
 
     const ctx = gsap.context(() => {
-      const label = sectionRef.current?.querySelector('.bs-label')
-      const quoteWords = sectionRef.current?.querySelectorAll('.bs-quote-word')
-      const rule = sectionRef.current?.querySelector('.bs-rule')
-      const pillars = sectionRef.current?.querySelectorAll('.bs-pillar')
-      const manifesto = sectionRef.current?.querySelector('.bs-manifesto')
-
-      if (label) {
-        gsap.fromTo(label,
-          { opacity: 0, y: 15 },
-          {
-            opacity: 1, y: 0, duration: 0.5, ease: 'power2.out',
-            scrollTrigger: { trigger: label, start: 'top 88%', toggleActions: 'play none none none' },
-          }
-        )
-      }
-
-      if (quoteWords && quoteWords.length > 0) {
-        gsap.fromTo(quoteWords,
-          { opacity: 0, y: 10 },
-          {
-            opacity: 1, y: 0, duration: 0.4, ease: 'power2.out', stagger: 0.03,
-            scrollTrigger: { trigger: quoteWords[0].parentElement, start: 'top 82%', toggleActions: 'play none none none' },
-          }
-        )
-      }
-
-      if (rule) {
-        gsap.fromTo(rule,
-          { scaleX: 0 },
-          {
-            scaleX: 1, duration: 0.7, ease: 'power3.inOut',
-            scrollTrigger: { trigger: rule, start: 'top 85%', toggleActions: 'play none none none' },
-          }
-        )
-      }
-
-      if (pillars && pillars.length > 0) {
-        gsap.fromTo(pillars,
-          { opacity: 0, y: 20 },
-          {
-            opacity: 1, y: 0, duration: 0.5, ease: 'power3.out', stagger: 0.1,
-            scrollTrigger: { trigger: pillars[0], start: 'top 85%', toggleActions: 'play none none none' },
-          }
-        )
-      }
-
-      if (manifesto) {
-        gsap.fromTo(manifesto,
-          { opacity: 0, y: 20 },
-          {
-            opacity: 1, y: 0, duration: 0.8, ease: 'power2.out',
-            scrollTrigger: { trigger: manifesto, start: 'top 88%', toggleActions: 'play none none none' },
-          }
-        )
-      }
-
       if (monogramRef.current) {
-        gsap.fromTo(monogramRef.current,
-          { opacity: 0, scale: 0.9 },
-          {
-            opacity: 1, scale: 1, duration: 2.5, ease: 'power1.out',
-            scrollTrigger: { trigger: sectionRef.current, start: 'top 80%', toggleActions: 'play none none none' },
-          }
-        )
         gsap.to(monogramRef.current, {
           y: 30, ease: 'none',
           scrollTrigger: { trigger: sectionRef.current, start: 'top bottom', end: 'bottom top', scrub: 0.5 },
@@ -134,7 +71,7 @@ export default function BrandStatement() {
           lineHeight: 0.8,
           color: 'transparent',
           WebkitTextStroke: '1px rgba(201,168,76,0.04)',
-          opacity: 0,
+          opacity: 1,
           whiteSpace: 'nowrap',
         }}
         aria-hidden="true"
@@ -196,7 +133,7 @@ export default function BrandStatement() {
 
         {/* Label */}
         <div className="mb-16">
-          <div className="bs-label inline-flex items-center gap-4 opacity-0">
+          <div className="bs-label inline-flex items-center gap-4">
             <span className="block w-14 h-px" style={{ background: 'linear-gradient(to right, #c9a84c, transparent)' }} />
             <span
               className="text-[11px] tracking-[0.42em] uppercase"
@@ -222,7 +159,7 @@ export default function BrandStatement() {
             {quoteWords.map((word, i) => (
               <span
                 key={i}
-                className="bs-quote-word inline-block opacity-0"
+                className="bs-quote-word inline-block"
                 style={{ marginRight: '0.26em' }}
               >
                 {word}
@@ -252,14 +189,13 @@ export default function BrandStatement() {
             maxWidth: '180px',
             height: '1px',
             background: 'linear-gradient(to right, #c9a84c, rgba(201,168,76,0.2), transparent)',
-            transform: 'scaleX(0)',
           }}
         />
 
         {/* Brand pillars — 3 columns */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-20 mb-20">
           {BRAND_PILLARS.map((pillar) => (
-            <div key={pillar.title} className="bs-pillar opacity-0 group cursor-default">
+            <div key={pillar.title} className="bs-pillar group cursor-default">
               <span
                 className="block mb-4 text-[11px] tracking-[0.35em]"
                 style={{ color: 'rgba(201,168,76,0.35)', fontFamily: 'var(--font-body, Inter, sans-serif)' }}
@@ -295,7 +231,7 @@ export default function BrandStatement() {
         </div>
 
         {/* Bottom brand mark */}
-        <div className="bs-manifesto opacity-0 flex flex-col items-center text-center pt-8">
+        <div className="bs-manifesto flex flex-col items-center text-center pt-8">
           <div className="flex items-center gap-4 mb-6">
             <div style={{ width: 60, height: 1, background: 'linear-gradient(to right, transparent, rgba(201,168,76,0.3))' }} />
             <div style={{ width: 6, height: 6, background: '#c9a84c', transform: 'rotate(45deg)', boxShadow: '0 0 10px rgba(201,168,76,0.3)' }} />

@@ -104,20 +104,8 @@ export default function Lookbook({ collections }: LookbookProps) {
 
       cards.forEach((card) => {
         const img = card.querySelector('.lb-card-img')
-        const overlay = card.querySelector('.lb-card-overlay')
 
         if (img) {
-          gsap.from(img, {
-            scale: 1.15,
-            opacity: 0,
-            duration: 1.2,
-            ease: 'power2.out',
-            scrollTrigger: {
-              trigger: card,
-              start: 'top 85%',
-              toggleActions: 'play none none none',
-            },
-          })
           gsap.fromTo(img,
             { y: -15 },
             {
@@ -125,20 +113,6 @@ export default function Lookbook({ collections }: LookbookProps) {
               scrollTrigger: { trigger: card, start: 'top bottom', end: 'bottom top', scrub: 0.3 },
             }
           )
-        }
-
-        if (overlay) {
-          gsap.from(overlay, {
-            opacity: 0,
-            y: 30,
-            duration: 0.8,
-            ease: 'power2.out',
-            scrollTrigger: {
-              trigger: card,
-              start: 'top 75%',
-              toggleActions: 'play none none none',
-            },
-          })
         }
       })
     }, sectionRef)

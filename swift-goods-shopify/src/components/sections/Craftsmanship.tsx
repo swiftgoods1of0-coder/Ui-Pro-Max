@@ -1,8 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useRef } from 'react'
 
 interface CraftPillar {
   number: string
@@ -42,70 +40,6 @@ const CRAFT_STATS: CraftStat[] = [
 
 export default function Craftsmanship() {
   const sectionRef = useRef<HTMLElement>(null)
-
-  useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger)
-
-    const ctx = gsap.context(() => {
-      const label = sectionRef.current?.querySelector('.craft-label')
-      const heading = sectionRef.current?.querySelector('.craft-heading')
-      const pillars = sectionRef.current?.querySelectorAll('.craft-pillar')
-      const stats = sectionRef.current?.querySelectorAll('.craft-stat')
-      const badge = sectionRef.current?.querySelector('.craft-badge')
-
-      if (label) {
-        gsap.fromTo(label,
-          { opacity: 0, y: 15 },
-          {
-            opacity: 1, y: 0, duration: 0.5, ease: 'power2.out',
-            scrollTrigger: { trigger: label, start: 'top 88%', toggleActions: 'play none none none' },
-          }
-        )
-      }
-
-      if (heading) {
-        gsap.fromTo(heading,
-          { opacity: 0, y: 20 },
-          {
-            opacity: 1, y: 0, duration: 0.5, ease: 'power3.out',
-            scrollTrigger: { trigger: heading, start: 'top 85%', toggleActions: 'play none none none' },
-          }
-        )
-      }
-
-      if (pillars && pillars.length > 0) {
-        gsap.fromTo(pillars,
-          { opacity: 0, y: 20 },
-          {
-            opacity: 1, y: 0, duration: 0.5, ease: 'power3.out', stagger: 0.1,
-            scrollTrigger: { trigger: pillars[0], start: 'top 85%', toggleActions: 'play none none none' },
-          }
-        )
-      }
-
-      if (stats && stats.length > 0) {
-        gsap.fromTo(stats,
-          { opacity: 0, y: 15 },
-          {
-            opacity: 1, y: 0, duration: 0.4, ease: 'power2.out', stagger: 0.06,
-            scrollTrigger: { trigger: stats[0], start: 'top 90%', toggleActions: 'play none none none' },
-          }
-        )
-      }
-
-      if (badge) {
-        gsap.fromTo(badge,
-          { opacity: 0, y: 10 },
-          {
-            opacity: 1, y: 0, duration: 0.5, ease: 'power2.out',
-            scrollTrigger: { trigger: badge, start: 'top 92%', toggleActions: 'play none none none' },
-          }
-        )
-      }
-    }, sectionRef)
-
-    return () => { ctx.revert() }
-  }, [])
 
   return (
     <section
@@ -210,7 +144,7 @@ export default function Craftsmanship() {
         {/* Header */}
         <div className="mb-20">
           {/* Gold label */}
-          <div className="craft-label inline-flex items-center gap-4 mb-8 opacity-0">
+          <div className="craft-label inline-flex items-center gap-4 mb-8">
             <span
               className="block w-14 h-px"
               style={{ background: 'linear-gradient(to right, #c9a84c, transparent)' }}
@@ -229,7 +163,7 @@ export default function Craftsmanship() {
 
           {/* Heading */}
           <h2
-            className="craft-heading opacity-0 leading-none tracking-wide"
+            className="craft-heading leading-none tracking-wide"
             style={{
               fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)',
               fontSize: 'clamp(3rem, 7vw, 6.5rem)',
@@ -244,7 +178,7 @@ export default function Craftsmanship() {
         {/* Three craftsmanship pillars */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-20 mb-28">
           {CRAFT_PILLARS.map((pillar) => (
-            <div key={pillar.title} className="craft-pillar opacity-0 group cursor-default">
+            <div key={pillar.title} className="craft-pillar group cursor-default">
               {/* Thin gold top border */}
               <div
                 className="mb-8"
@@ -307,7 +241,7 @@ export default function Craftsmanship() {
         {/* Bottom detail strip */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 lg:gap-12 mb-20">
           {CRAFT_STATS.map((stat) => (
-            <div key={stat.label} className="craft-stat opacity-0 text-center">
+            <div key={stat.label} className="craft-stat text-center">
               <span
                 className="block mb-2"
                 style={{
@@ -337,7 +271,7 @@ export default function Craftsmanship() {
         </div>
 
         {/* Authenticity badge */}
-        <div className="craft-badge opacity-0 flex flex-col items-center text-center pt-8">
+        <div className="craft-badge flex flex-col items-center text-center pt-8">
           {/* Diamond ornament */}
           <div className="flex items-center gap-4 mb-6">
             <div

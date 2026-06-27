@@ -1,9 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
 import Image from 'next/image'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import LuxuryButton from '@/components/ui/LuxuryButton'
 import MagneticElement from '@/components/ui/MagneticElement'
 
@@ -27,53 +24,8 @@ const PANELS = [
 ]
 
 export default function CampaignEditorial() {
-  const sectionRef = useRef<HTMLElement>(null)
-
-  useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger)
-
-    const ctx = gsap.context(() => {
-      const panels = sectionRef.current?.querySelectorAll<HTMLElement>('.editorial-panel')
-      if (!panels) return
-
-      panels.forEach((panel) => {
-        const img = panel.querySelector('.editorial-img')
-        const content = panel.querySelector('.editorial-content')
-        const label = panel.querySelector('.editorial-label')
-        const heading = panel.querySelector('.editorial-heading')
-        const body = panel.querySelector('.editorial-body')
-        const rule = panel.querySelector('.editorial-rule')
-
-        if (img) {
-          gsap.fromTo(img,
-            { scale: 1.08, clipPath: 'polygon(0 0, 0 0, 0 100%, 0 100%)' },
-            {
-              scale: 1, clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)', duration: 0.9, ease: 'power3.inOut',
-              scrollTrigger: { trigger: panel, start: 'top 85%', toggleActions: 'play none none none' },
-            }
-          )
-        }
-
-        if (content) {
-          const cta = panel.querySelector('.editorial-cta')
-          const elements = [label, heading, rule, body, cta].filter(Boolean) as HTMLElement[]
-          gsap.fromTo(elements,
-            { opacity: 0, y: 20 },
-            {
-              opacity: 1, y: 0, duration: 0.5, ease: 'power3.out',
-              stagger: 0.08,
-              scrollTrigger: { trigger: panel, start: 'top 75%', toggleActions: 'play none none none' },
-            }
-          )
-        }
-      })
-    }, sectionRef)
-
-    return () => ctx.revert()
-  }, [])
-
   return (
-    <section ref={sectionRef} className="relative overflow-hidden" style={{ background: 'var(--sg-frost, #F7F6F3)' }}>
+    <section className="relative overflow-hidden" style={{ background: 'var(--sg-frost, #F7F6F3)' }}>
       {/* Subtle warm ambient glow */}
       <div className="absolute pointer-events-none" style={{ top: '20%', left: '-10%', width: '50%', height: '50%', background: 'radial-gradient(ellipse at center, rgba(201,168,76,0.04) 0%, transparent 65%)', filter: 'blur(100px)' }} />
       <div className="absolute pointer-events-none" style={{ bottom: '10%', right: '-5%', width: '35%', height: '35%', background: 'radial-gradient(ellipse at center, rgba(201,168,76,0.03) 0%, transparent 65%)', filter: 'blur(80px)' }} />
@@ -122,7 +74,7 @@ export default function CampaignEditorial() {
             className="editorial-content flex flex-col justify-center px-8 lg:px-16 xl:px-24 py-16 lg:py-0"
             style={{ direction: 'ltr' }}
           >
-            <div className="editorial-label inline-flex items-center gap-3 mb-8 opacity-0">
+            <div className="editorial-label inline-flex items-center gap-3 mb-8">
               <span style={{ width: 5, height: 5, borderRadius: '50%', background: '#c9a84c', flexShrink: 0, animation: 'pulse-gold 2s ease-in-out infinite' }} />
               <span
                 className="block w-10 h-px"
@@ -141,7 +93,7 @@ export default function CampaignEditorial() {
             </div>
 
             <h2
-              className="editorial-heading mb-8 opacity-0 leading-none"
+              className="editorial-heading mb-8 leading-none"
               style={{
                 fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)',
                 fontSize: 'clamp(2.5rem, 7vw, 7rem)',
@@ -154,13 +106,13 @@ export default function CampaignEditorial() {
               {panel.heading}
             </h2>
 
-            <div className="editorial-rule flex items-center gap-3 mb-8 opacity-0">
+            <div className="editorial-rule flex items-center gap-3 mb-8">
               <div className="h-px w-16" style={{ background: 'linear-gradient(to right, #c9a84c, rgba(201,168,76,0.2))' }} />
               <div style={{ width: 4, height: 4, background: 'rgba(201,168,76,0.6)', transform: 'rotate(45deg)' }} />
             </div>
 
             <p
-              className="editorial-body max-w-md opacity-0"
+              className="editorial-body max-w-md"
               style={{
                 fontFamily: 'var(--font-display, "Cormorant Garamond", serif)',
                 fontSize: 'clamp(1.1rem, 2vw, 1.35rem)',
@@ -172,7 +124,7 @@ export default function CampaignEditorial() {
               {panel.body}
             </p>
 
-            <div className="editorial-cta mt-10 opacity-0">
+            <div className="editorial-cta mt-10">
               <MagneticElement strength={0.25} radius={140}>
                 <LuxuryButton variant="ghost" href={panel.href}>
                   {panel.cta}

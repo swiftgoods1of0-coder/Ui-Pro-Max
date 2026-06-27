@@ -15,14 +15,9 @@ export default function SignatureMoment() {
   const sectionRef = useRef<HTMLElement>(null)
   const photoRef = useRef<HTMLDivElement>(null)
   const velocity = useScrollVelocity()
-  const labelRef = useRef<HTMLSpanElement>(null)
-  const quoteRef = useRef<HTMLDivElement>(null)
-  const ruleRef = useRef<HTMLDivElement>(null)
-  const creditRef = useRef<HTMLParagraphElement>(null)
 
   useEffect(() => {
     if (photoRef.current) {
-      const skew = velocity * 2.5
       photoRef.current.style.transition = 'filter 200ms ease-out'
       photoRef.current.style.filter = `brightness(${1 - Math.abs(velocity) * 0.15})`
     }
@@ -44,77 +39,6 @@ export default function SignatureMoment() {
             start: 'top bottom',
             end: 'bottom top',
             scrub: 0.4,
-          },
-        },
-      )
-
-      // Label: clip-path reveal from left
-      gsap.fromTo(
-        labelRef.current,
-        { clipPath: 'inset(0 100% 0 0)', opacity: 0 },
-        {
-          clipPath: 'inset(0 0% 0 0)',
-          opacity: 1,
-          duration: 0.9,
-          ease: 'power3.inOut',
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top 65%',
-            toggleActions: 'play none none none',
-          },
-        },
-      )
-
-      // Quote: word-by-word stagger reveal
-      if (quoteRef.current) {
-        const words = quoteRef.current.querySelectorAll<HTMLSpanElement>('.sig-word')
-        gsap.fromTo(
-          words,
-          { opacity: 0, y: 20 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.6,
-            ease: 'power2.out',
-            stagger: 0.08,
-            scrollTrigger: {
-              trigger: sectionRef.current,
-              start: 'top 55%',
-              toggleActions: 'play none none none',
-            },
-          },
-        )
-      }
-
-      // Rule: scaleX from 0 to 1
-      gsap.fromTo(
-        ruleRef.current,
-        { scaleX: 0 },
-        {
-          scaleX: 1,
-          duration: 1.0,
-          ease: 'power3.inOut',
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top 45%',
-            toggleActions: 'play none none none',
-          },
-        },
-      )
-
-      // Credit: fade in
-      gsap.fromTo(
-        creditRef.current,
-        { opacity: 0, y: 12 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: 'power2.out',
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top 40%',
-            toggleActions: 'play none none none',
           },
         },
       )
@@ -268,8 +192,7 @@ export default function SignatureMoment() {
         <div className="w-full lg:w-[45%] px-8 sm:px-12 lg:px-16 xl:px-24 py-24">
           {/* Gold label */}
           <span
-            ref={labelRef}
-            className="inline-block opacity-0 mb-8"
+            className="inline-block mb-8"
             style={{
               fontFamily: 'var(--font-body, "Inter", sans-serif)',
               fontSize: '0.625rem',
@@ -283,7 +206,7 @@ export default function SignatureMoment() {
           </span>
 
           {/* Quote — word-by-word stagger */}
-          <div ref={quoteRef} className="mb-10">
+          <div className="mb-10">
             <p
               style={{
                 fontFamily: 'var(--font-display, "Cormorant Garamond", serif)',
@@ -300,7 +223,7 @@ export default function SignatureMoment() {
               {QUOTE_WORDS.map((word, i) => (
                 <span
                   key={i}
-                  className="sig-word inline-block opacity-0"
+                  className="sig-word inline-block"
                   style={{ marginRight: '0.3em' }}
                 >
                   {word}
@@ -312,7 +235,6 @@ export default function SignatureMoment() {
 
           {/* Thin gold horizontal rule — gradient fade */}
           <div
-            ref={ruleRef}
             className="mb-8 origin-left"
             style={{
               width: '100%',
@@ -320,14 +242,11 @@ export default function SignatureMoment() {
               height: '1px',
               background:
                 'linear-gradient(to right, #c9a84c, rgba(201,168,76,0.3), transparent)',
-              transform: 'scaleX(0)',
             }}
           />
 
           {/* Brand credit */}
           <p
-            ref={creditRef}
-            className="opacity-0"
             style={{
               fontFamily: 'var(--font-body, "Inter", sans-serif)',
               fontSize: '0.625rem',

@@ -19,18 +19,7 @@ export default function ProductDrop() {
   const sectionRef = useRef<HTMLElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
   const overlayRef = useRef<HTMLDivElement>(null)
-  const labelRef = useRef<HTMLDivElement>(null)
-  const badgeRef = useRef<HTMLDivElement>(null)
-  const subtitleRef = useRef<HTMLDivElement>(null)
-  const ctaRef = useRef<HTMLDivElement>(null)
-  const stripRef = useRef<HTMLDivElement>(null)
-  const featuresRef = useRef<HTMLDivElement>(null)
-  const priceRef = useRef<HTMLDivElement>(null)
-  const cornerTLRef = useRef<HTMLDivElement>(null)
-  const cornerBRRef = useRef<HTMLDivElement>(null)
-  const verticalTextRef = useRef<HTMLDivElement>(null)
   const editionRef = useRef<HTMLDivElement>(null)
-  const marqueeRef = useRef<HTMLDivElement>(null)
   const glowRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -62,30 +51,8 @@ export default function ProductDrop() {
         )
       }
 
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top 70%',
-          toggleActions: 'play none none none',
-        },
-      })
-
-      // Corner brackets
-      if (cornerTLRef.current && cornerBRRef.current) {
-        tl.fromTo([cornerTLRef.current, cornerBRRef.current],
-          { opacity: 0, scale: 0.7 },
-          { opacity: 1, scale: 1, duration: 1, ease: 'power2.out', stagger: 0.2 },
-          0
-        )
-      }
-
-      // Floating edition number
+      // Edition number parallax
       if (editionRef.current) {
-        tl.fromTo(editionRef.current,
-          { opacity: 0, x: 60 },
-          { opacity: 1, x: 0, duration: 1.4, ease: 'power3.out' },
-          0.2
-        )
         gsap.to(editionRef.current, {
           y: -30,
           ease: 'none',
@@ -96,88 +63,6 @@ export default function ProductDrop() {
             scrub: 0.3,
           },
         })
-      }
-
-      // Badge
-      if (badgeRef.current) {
-        tl.fromTo(badgeRef.current,
-          { scaleX: 0, opacity: 0 },
-          { scaleX: 1, opacity: 1, duration: 0.6, ease: 'power3.out', transformOrigin: 'left center' },
-          0.1
-        )
-      }
-
-      // Label
-      if (labelRef.current) {
-        tl.fromTo(labelRef.current,
-          { clipPath: 'inset(0 100% 0 0)', opacity: 0 },
-          { clipPath: 'inset(0 0% 0 0)', opacity: 1, duration: 0.8, ease: 'power3.inOut' },
-          0.25
-        )
-      }
-
-      // Gold rule
-      if (stripRef.current) {
-        tl.fromTo(stripRef.current,
-          { scaleX: 0 },
-          { scaleX: 1, duration: 1.2, ease: 'power2.inOut', transformOrigin: 'left center' },
-          0.4
-        )
-      }
-
-      // Description
-      if (subtitleRef.current) {
-        tl.fromTo(subtitleRef.current,
-          { clipPath: 'inset(100% 0 0 0)', opacity: 0 },
-          { clipPath: 'inset(0% 0 0 0)', opacity: 1, duration: 0.7, ease: 'power2.out' },
-          0.7
-        )
-      }
-
-      // Features
-      if (featuresRef.current) {
-        const items = featuresRef.current.querySelectorAll<HTMLElement>('.feature-item')
-        tl.fromTo(items,
-          { opacity: 0, x: -20 },
-          { opacity: 1, x: 0, duration: 0.6, stagger: 0.12, ease: 'power2.out' },
-          0.85
-        )
-      }
-
-      // Price
-      if (priceRef.current) {
-        tl.fromTo(priceRef.current,
-          { opacity: 0, y: 20 },
-          { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' },
-          1.0
-        )
-      }
-
-      // CTAs
-      if (ctaRef.current) {
-        tl.fromTo(ctaRef.current,
-          { y: 30, opacity: 0 },
-          { y: 0, opacity: 1, duration: 0.6, ease: 'power2.out' },
-          1.1
-        )
-      }
-
-      // Vertical text
-      if (verticalTextRef.current) {
-        tl.fromTo(verticalTextRef.current,
-          { opacity: 0, y: 40 },
-          { opacity: 1, y: 0, duration: 1, ease: 'power2.out' },
-          0.5
-        )
-      }
-
-      // Marquee
-      if (marqueeRef.current) {
-        tl.fromTo(marqueeRef.current,
-          { opacity: 0 },
-          { opacity: 1, duration: 1.2, ease: 'power2.out' },
-          0.8
-        )
       }
     }, sectionRef)
 
@@ -279,9 +164,8 @@ export default function ProductDrop() {
 
       {/* Corner brackets */}
       <div
-        ref={cornerTLRef}
         className="absolute hidden lg:block pointer-events-none"
-        style={{ top: '2rem', left: '4.5rem', opacity: 0 }}
+        style={{ top: '2rem', left: '4.5rem' }}
       >
         <div style={{ width: 50, height: 50, position: 'relative' }}>
           <div style={{ position: 'absolute', top: 0, left: 0, width: 28, height: 1, background: 'rgba(201,168,76,0.5)' }} />
@@ -289,9 +173,8 @@ export default function ProductDrop() {
         </div>
       </div>
       <div
-        ref={cornerBRRef}
         className="absolute hidden lg:block pointer-events-none"
-        style={{ bottom: '4.5rem', right: '3rem', opacity: 0 }}
+        style={{ bottom: '4.5rem', right: '3rem' }}
       >
         <div style={{ width: 50, height: 50, position: 'relative' }}>
           <div style={{ position: 'absolute', bottom: 0, right: 0, width: 28, height: 1, background: 'rgba(201,168,76,0.5)' }} />
@@ -307,7 +190,6 @@ export default function ProductDrop() {
           right: '6%',
           top: '50%',
           transform: 'translateY(-50%)',
-          opacity: 0,
         }}
       >
         <span
@@ -340,14 +222,12 @@ export default function ProductDrop() {
 
       {/* Vertical side text */}
       <div
-        ref={verticalTextRef}
         className="absolute hidden lg:flex items-center justify-center pointer-events-none"
         style={{
           right: '1.5rem',
           top: '50%',
           transform: 'translateY(-50%) rotate(90deg)',
           transformOrigin: 'center center',
-          opacity: 0,
         }}
       >
         <span
@@ -371,9 +251,7 @@ export default function ProductDrop() {
 
             {/* "NEW DROP" badge */}
             <div
-              ref={badgeRef}
               className="inline-flex items-center gap-3 mb-8"
-              style={{ opacity: 0 }}
             >
               <span
                 className="px-5 py-2"
@@ -414,9 +292,7 @@ export default function ProductDrop() {
 
             {/* Gold label */}
             <div
-              ref={labelRef}
               className="inline-flex items-center gap-3 mb-8"
-              style={{ opacity: 0 }}
             >
               <span
                 className="block w-14 h-px"
@@ -477,22 +353,18 @@ export default function ProductDrop() {
 
             {/* Gold horizontal rule */}
             <div
-              ref={stripRef}
               className="mb-10"
               style={{
                 width: '120px',
                 height: '2px',
                 background: 'linear-gradient(to right, #c9a84c, rgba(201,168,76,0.15))',
-                transformOrigin: 'left center',
-                transform: 'scaleX(0)',
               }}
             />
 
             {/* Description */}
             <div
-              ref={subtitleRef}
               className="mb-10"
-              style={{ maxWidth: '460px', opacity: 0 }}
+              style={{ maxWidth: '460px' }}
             >
               <p
                 style={{
@@ -523,11 +395,10 @@ export default function ProductDrop() {
 
             {/* Product features */}
             <div
-              ref={featuresRef}
               className="flex flex-wrap gap-8 mb-12"
             >
               {FEATURES.map((f, i) => (
-                <div key={f.label} className="feature-item flex items-start gap-3" style={{ opacity: 0 }}>
+                <div key={f.label} className="feature-item flex items-start gap-3">
                   {/* Vertical gold line */}
                   <div
                     className="mt-0.5 flex-shrink-0"
@@ -571,9 +442,7 @@ export default function ProductDrop() {
 
             {/* Complimentary shipping note */}
             <div
-              ref={priceRef}
               className="mb-12"
-              style={{ opacity: 0 }}
             >
               <div className="flex items-center gap-3">
                 <div
@@ -595,7 +464,7 @@ export default function ProductDrop() {
             </div>
 
             {/* CTAs */}
-            <div ref={ctaRef} className="flex flex-col sm:flex-row gap-4" style={{ opacity: 0 }}>
+            <div className="flex flex-col sm:flex-row gap-4">
               <MagneticElement strength={0.3} radius={180}>
                 <LuxuryButton
                   variant="primary"
@@ -622,13 +491,11 @@ export default function ProductDrop() {
 
       {/* Bottom marquee ticker */}
       <div
-        ref={marqueeRef}
         className="absolute bottom-0 left-0 right-0 overflow-hidden pointer-events-none"
         style={{
           height: '3rem',
           borderTop: '1px solid rgba(201,168,76,0.08)',
           background: 'linear-gradient(to top, rgba(5,5,5,0.95), rgba(5,5,5,0.6))',
-          opacity: 0,
         }}
       >
         <div

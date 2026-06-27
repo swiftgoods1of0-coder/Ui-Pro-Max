@@ -1,11 +1,9 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import SplitTextReveal from '@/components/ui/SplitTextReveal'
 
 interface ShopifyProduct {
@@ -45,44 +43,12 @@ function productMatchesFilter(product: ShopifyProduct, filter: FilterOption): bo
 }
 
 export default function CollectionGrid({ products }: CollectionGridProps) {
-  const sectionRef  = useRef<HTMLElement>(null)
-  const headerRef   = useRef<HTMLDivElement>(null)
   const [activeFilter, setActiveFilter] = useState<FilterOption>('ALL')
 
   const filteredProducts = products.filter((p) => productMatchesFilter(p, activeFilter))
 
-  useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger)
-
-    const ctx = gsap.context(() => {
-      if (headerRef.current) {
-        const els = headerRef.current.querySelectorAll<HTMLElement>('.header-el')
-        gsap.from(
-          els,
-          {
-            opacity: 0,
-            y: 20,
-            duration: 0.5,
-            stagger: 0.06,
-            ease: 'power2.out',
-            scrollTrigger: {
-              trigger: sectionRef.current,
-              start: 'top 85%',
-              toggleActions: 'play none none none',
-            },
-          }
-        )
-      }
-    }, sectionRef)
-
-    return () => {
-      ctx.revert()
-    }
-  }, [])
-
   return (
     <section
-      ref={sectionRef}
       id="shop"
       className="relative pt-28 pb-24 overflow-hidden"
       style={{ background: '#0a0a0a' }}
@@ -104,7 +70,6 @@ export default function CollectionGrid({ products }: CollectionGridProps) {
 
         {/* Clean header */}
         <div
-          ref={headerRef}
           className="flex flex-col md:flex-row items-start md:items-end justify-between gap-8 mb-14"
         >
           <div>

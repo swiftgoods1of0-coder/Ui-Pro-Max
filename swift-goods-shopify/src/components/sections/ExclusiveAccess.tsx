@@ -36,71 +36,9 @@ export default function ExclusiveAccess() {
     gsap.registerPlugin(ScrollTrigger)
 
     const ctx = gsap.context(() => {
-      const label = sectionRef.current?.querySelector('.ea-label')
-      if (label) {
-        gsap.fromTo(label,
-          { opacity: 0, y: 15 },
-          {
-            opacity: 1, y: 0, duration: 0.5, ease: 'power2.out',
-            scrollTrigger: { trigger: label, start: 'top 88%', toggleActions: 'play none none none' },
-          }
-        )
-      }
-
-      const heading = sectionRef.current?.querySelector('.ea-heading')
-      if (heading) {
-        gsap.fromTo(heading,
-          { opacity: 0, y: 20 },
-          {
-            opacity: 1, y: 0, duration: 0.5, ease: 'power3.out',
-            scrollTrigger: { trigger: heading, start: 'top 85%', toggleActions: 'play none none none' },
-          }
-        )
-      }
-
-      const subtitle = sectionRef.current?.querySelector('.ea-subtitle')
-      if (subtitle) {
-        gsap.fromTo(subtitle,
-          { opacity: 0, y: 15 },
-          {
-            opacity: 1, y: 0, duration: 0.5, ease: 'power2.out',
-            scrollTrigger: { trigger: subtitle, start: 'top 85%', toggleActions: 'play none none none' },
-          }
-        )
-      }
-
-      const benefits = sectionRef.current?.querySelectorAll('.ea-benefit')
-      if (benefits && benefits.length > 0) {
-        gsap.fromTo(benefits,
-          { opacity: 0, y: 20 },
-          {
-            opacity: 1, y: 0, duration: 0.5, ease: 'power3.out', stagger: 0.1,
-            scrollTrigger: { trigger: benefits[0], start: 'top 85%', toggleActions: 'play none none none' },
-          }
-        )
-      }
-
-      const cta = sectionRef.current?.querySelector('.ea-cta')
-      if (cta) {
-        gsap.fromTo(cta,
-          { opacity: 0, y: 20 },
-          {
-            opacity: 1, y: 0, duration: 0.5, ease: 'power2.out',
-            scrollTrigger: { trigger: cta, start: 'top 88%', toggleActions: 'play none none none' },
-          }
-        )
-      }
-
       // SG monogram subtle parallax
       const monogram = sectionRef.current?.querySelector('.ea-monogram')
       if (monogram) {
-        gsap.fromTo(monogram,
-          { opacity: 0, scale: 0.92 },
-          {
-            opacity: 1, scale: 1, duration: 2.5, ease: 'power1.out',
-            scrollTrigger: { trigger: sectionRef.current, start: 'top 80%', toggleActions: 'play none none none' },
-          }
-        )
         gsap.to(monogram, {
           y: 25, ease: 'none',
           scrollTrigger: { trigger: sectionRef.current, start: 'top bottom', end: 'bottom top', scrub: 0.5 },
@@ -133,7 +71,7 @@ export default function ExclusiveAccess() {
           lineHeight: 0.8,
           color: 'transparent',
           WebkitTextStroke: '1px rgba(201,168,76,0.03)',
-          opacity: 0,
+          opacity: 1,
           whiteSpace: 'nowrap',
         }}
       >
@@ -199,7 +137,7 @@ export default function ExclusiveAccess() {
 
         {/* Header area */}
         <div className="mb-6">
-          <div className="ea-label inline-flex items-center gap-4 opacity-0">
+          <div className="ea-label inline-flex items-center gap-4">
             <span className="block w-14 h-px" style={{ background: 'linear-gradient(to right, #c9a84c, transparent)' }} />
             <span
               className="text-[11px] tracking-[0.42em] uppercase"
@@ -211,7 +149,7 @@ export default function ExclusiveAccess() {
         </div>
 
         <h2
-          className="ea-heading opacity-0 mb-4"
+          className="ea-heading mb-4"
           style={{
             fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)',
             fontSize: 'clamp(3rem, 7vw, 6rem)',
@@ -225,7 +163,7 @@ export default function ExclusiveAccess() {
         </h2>
 
         <p
-          className="ea-subtitle opacity-0 mb-24 max-w-xl"
+          className="ea-subtitle mb-24 max-w-xl"
           style={{
             fontFamily: 'var(--font-display, "Cormorant Garamond", serif)',
             fontStyle: 'italic',
@@ -241,7 +179,7 @@ export default function ExclusiveAccess() {
         {/* Three benefit columns */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-20 mb-24">
           {BENEFITS.map((benefit) => (
-            <div key={benefit.title} className="ea-benefit opacity-0 group cursor-default">
+            <div key={benefit.title} className="ea-benefit group cursor-default">
               <span
                 className="block mb-4 text-[11px] tracking-[0.35em]"
                 style={{ color: 'rgba(201,168,76,0.35)', fontFamily: 'var(--font-body, Inter, sans-serif)' }}
@@ -289,7 +227,7 @@ export default function ExclusiveAccess() {
         </div>
 
         {/* CTA area */}
-        <div className="ea-cta opacity-0 flex flex-col items-center text-center">
+        <div className="ea-cta flex flex-col items-center text-center">
           <p
             className="mb-8"
             style={{

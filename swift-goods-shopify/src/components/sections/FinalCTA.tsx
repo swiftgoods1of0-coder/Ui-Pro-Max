@@ -11,10 +11,6 @@ import SplitTextReveal from '@/components/ui/SplitTextReveal'
 export default function FinalCTA() {
   const sectionRef = useRef<HTMLElement>(null)
   const bgRef = useRef<HTMLDivElement>(null)
-  const labelRef = useRef<HTMLSpanElement>(null)
-  const headingRef = useRef<HTMLHeadingElement>(null)
-  const subtitleRef = useRef<HTMLParagraphElement>(null)
-  const ctaRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger)
@@ -30,56 +26,6 @@ export default function FinalCTA() {
           }
         )
       }
-
-      gsap.from(labelRef.current, {
-        clipPath: 'inset(0 100% 0 0)',
-        opacity: 0,
-        duration: 0.9,
-        ease: 'power3.inOut',
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top 75%',
-          toggleActions: 'play none none none',
-        },
-      })
-
-      gsap.from(headingRef.current, {
-        clipPath: 'inset(100% 0 0 0)',
-        opacity: 0,
-        duration: 1.0,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top 70%',
-          toggleActions: 'play none none none',
-        },
-      })
-
-      gsap.from(subtitleRef.current, {
-        clipPath: 'inset(0 100% 0 0)',
-        opacity: 0,
-        duration: 1.0,
-        delay: 0.15,
-        ease: 'power3.inOut',
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top 65%',
-          toggleActions: 'play none none none',
-        },
-      })
-
-      gsap.from(ctaRef.current, {
-        clipPath: 'inset(0 100% 0 0)',
-        opacity: 0,
-        duration: 0.8,
-        delay: 0.25,
-        ease: 'power3.inOut',
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top 60%',
-          toggleActions: 'play none none none',
-        },
-      })
     }, sectionRef)
 
     return () => {
@@ -187,7 +133,6 @@ export default function FinalCTA() {
           <div className="max-w-xl">
             {/* Gold label */}
             <span
-              ref={labelRef}
               className="inline-block mb-6"
               style={{
                 fontFamily: 'var(--font-body, "Inter", sans-serif)',
@@ -202,7 +147,7 @@ export default function FinalCTA() {
             </span>
 
             {/* Heading — split text reveal */}
-            <div ref={headingRef} className="mb-6">
+            <div className="mb-6">
               <SplitTextReveal
                 text="DON'T JUST WEAR IT."
                 tag="h2"
@@ -234,7 +179,6 @@ export default function FinalCTA() {
 
             {/* Subtitle */}
             <p
-              ref={subtitleRef}
               className="mb-10"
               style={{
                 fontFamily: 'var(--font-display, "Cormorant Garamond", serif)',
@@ -250,7 +194,7 @@ export default function FinalCTA() {
             </p>
 
             {/* CTA button — magnetic */}
-            <div ref={ctaRef}>
+            <div>
               <MagneticElement strength={0.3} radius={180}>
                 <LuxuryButton
                   variant="primary"

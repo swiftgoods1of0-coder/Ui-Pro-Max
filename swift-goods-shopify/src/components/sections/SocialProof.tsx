@@ -1,6 +1,5 @@
 'use client'
 
-import { motion } from 'framer-motion'
 import SplitTextReveal from '@/components/ui/SplitTextReveal'
 
 interface Testimonial {
@@ -50,18 +49,6 @@ function StarIcon() {
   )
 }
 
-const cardVariants = {
-  hidden: { opacity: 0, y: 40 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: {
-      delay: i * 0.15,
-      duration: 0.7,
-      ease: [0.16, 1, 0.3, 1],
-    },
-  }),
-}
 
 export default function SocialProof() {
   return (
@@ -117,29 +104,30 @@ export default function SocialProof() {
 
         {/* Testimonial Cards — white on frost */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 mb-20">
-          {TESTIMONIALS.map((testimonial, i) => (
-            <motion.div
+          {TESTIMONIALS.map((testimonial) => (
+            <div
               key={testimonial.name}
-              custom={i}
               className="group"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: '-40px' }}
-              variants={cardVariants}
-              whileHover={{
-                scale: 1.02,
-                borderColor: 'rgba(201,168,76,0.3)',
-                boxShadow: '0 12px 50px rgba(0,0,0,0.1), 0 0 30px rgba(201,168,76,0.06)',
-                transition: { duration: 0.3 },
-              }}
               style={{
                 background: '#ffffff',
                 border: '1px solid rgba(0,0,0,0.06)',
                 padding: '2.5rem',
-                transition: 'border-color 0.5s ease, box-shadow 0.5s ease',
+                transition: 'border-color 0.5s ease, box-shadow 0.5s ease, transform 0.3s ease',
                 position: 'relative',
                 overflow: 'hidden',
                 boxShadow: '0 2px 16px rgba(0,0,0,0.06)',
+              }}
+              onMouseEnter={(e) => {
+                const el = e.currentTarget as HTMLElement
+                el.style.transform = 'scale(1.02)'
+                el.style.borderColor = 'rgba(201,168,76,0.3)'
+                el.style.boxShadow = '0 12px 50px rgba(0,0,0,0.1), 0 0 30px rgba(201,168,76,0.06)'
+              }}
+              onMouseLeave={(e) => {
+                const el = e.currentTarget as HTMLElement
+                el.style.transform = 'scale(1)'
+                el.style.borderColor = 'rgba(0,0,0,0.06)'
+                el.style.boxShadow = '0 2px 16px rgba(0,0,0,0.06)'
               }}
             >
               {/* Gold accent line — left edge */}
@@ -215,7 +203,7 @@ export default function SocialProof() {
               >
                 {testimonial.location}
               </p>
-            </motion.div>
+            </div>
           ))}
         </div>
 
