@@ -4,9 +4,21 @@ import Image from 'next/image'
 import LuxuryButton from '@/components/ui/LuxuryButton'
 import MagneticElement from '@/components/ui/MagneticElement'
 
-const PANELS = [
+interface Panel {
+  type: 'image' | 'video'
+  src: string
+  poster?: string
+  label: string
+  heading: string
+  body: string
+  cta: string
+  href: string
+}
+
+const PANELS: Panel[] = [
   {
-    image: '/brand/sg-supra-brown-black.jpeg',
+    type: 'image',
+    src: '/brand/sg-supra-brown-black.jpeg',
     label: 'THE DROP',
     heading: 'BUILT FOR\nTHE MOMENT',
     body: 'When the sun dips and the streets empty — that\'s when presence speaks loudest. Premium fabrics that move with you.',
@@ -14,7 +26,9 @@ const PANELS = [
     href: '/collections/new-arrivals',
   },
   {
-    image: '/brand/sg-fountain-night.jpeg',
+    type: 'video',
+    src: '/brand/sg-street-luxury.mov',
+    poster: '/brand/sg-fountain-night.jpeg',
     label: 'STREET LUXURY',
     heading: 'RAW\nUNCUT',
     body: 'Concrete walls. Clean lines. No filter necessary when the fit speaks for itself. This is what luxury looks like in motion.',
@@ -31,7 +45,7 @@ export default function CampaignEditorial() {
       <div className="absolute pointer-events-none" style={{ bottom: '10%', right: '-5%', width: '35%', height: '35%', background: 'radial-gradient(ellipse at center, rgba(201,168,76,0.03) 0%, transparent 65%)', filter: 'blur(80px)' }} />
 
       {/* Film grain overlay */}
-      <div className="absolute inset-0 pointer-events-none" style={{ opacity: 0.015, backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.8) 2px, rgba(255,255,255,0.8) 3px)', backgroundSize: '100% 4px' }} />
+      <div className="absolute inset-0 pointer-events-none z-[2]" style={{ opacity: 0.015, backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.8) 2px, rgba(255,255,255,0.8) 3px)', backgroundSize: '100% 4px' }} />
 
       {PANELS.map((panel, idx) => (
         <div
@@ -43,28 +57,47 @@ export default function CampaignEditorial() {
         >
           <div
             className="editorial-img relative overflow-hidden"
-            style={{ minHeight: 'clamp(280px, 40vh, 500px)', direction: 'ltr' }}
+            style={{ minHeight: 'clamp(320px, 50vh, 600px)', direction: 'ltr' }}
           >
-            <Image
-              src={panel.image}
-              alt={panel.label}
-              fill
-              sizes="(max-width: 1024px) 100vw, 50vw"
-              className="object-cover"
-              quality={90}
-            />
-            {/* Gradient blends image into dark bg */}
+            {panel.type === 'video' ? (
+              <video
+                src={panel.src}
+                poster={panel.poster}
+                muted
+                loop
+                playsInline
+                autoPlay
+                preload="metadata"
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                }}
+              />
+            ) : (
+              <Image
+                src={panel.src}
+                alt={panel.label}
+                fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover"
+                quality={90}
+              />
+            )}
+            {/* Gradient blends media into dark bg */}
             <div
               className="absolute inset-0 hidden lg:block"
               style={{
                 background: idx % 2 === 0
-                  ? 'linear-gradient(to right, transparent 55%, #0a0a0a 100%)'
-                  : 'linear-gradient(to left, transparent 55%, #0a0a0a 100%)',
+                  ? 'linear-gradient(to right, transparent 50%, #0a0a0a 100%)'
+                  : 'linear-gradient(to left, transparent 50%, #0a0a0a 100%)',
               }}
             />
             <div
               className="absolute inset-0 lg:hidden"
-              style={{ background: 'linear-gradient(to bottom, transparent 40%, #0a0a0a 100%)' }}
+              style={{ background: 'linear-gradient(to bottom, transparent 35%, #0a0a0a 100%)' }}
             />
             {/* Gold border accent on hover */}
             <div className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ border: '1px solid rgba(201,168,76,0.25)' }} />
