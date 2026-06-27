@@ -36,61 +36,56 @@ export default function ExclusiveAccess() {
     gsap.registerPlugin(ScrollTrigger)
 
     const ctx = gsap.context(() => {
-      // Label: clipPath reveal from left
       const label = sectionRef.current?.querySelector('.ea-label')
       if (label) {
         gsap.fromTo(label,
-          { clipPath: 'inset(0 100% 0 0)', opacity: 0 },
+          { opacity: 0, y: 15 },
           {
-            clipPath: 'inset(0 0% 0 0)', opacity: 1, duration: 0.9, ease: 'power3.inOut',
+            opacity: 1, y: 0, duration: 0.5, ease: 'power2.out',
             scrollTrigger: { trigger: label, start: 'top 88%', toggleActions: 'play none none none' },
           }
         )
       }
 
-      // Heading: clipPath reveal from bottom
       const heading = sectionRef.current?.querySelector('.ea-heading')
       if (heading) {
         gsap.fromTo(heading,
-          { clipPath: 'inset(100% 0 0 0)', opacity: 0 },
+          { opacity: 0, y: 20 },
           {
-            clipPath: 'inset(0 0 0 0)', opacity: 1, duration: 1.0, ease: 'power3.out',
+            opacity: 1, y: 0, duration: 0.5, ease: 'power3.out',
             scrollTrigger: { trigger: heading, start: 'top 85%', toggleActions: 'play none none none' },
           }
         )
       }
 
-      // Subtitle: fade in
       const subtitle = sectionRef.current?.querySelector('.ea-subtitle')
       if (subtitle) {
         gsap.fromTo(subtitle,
-          { clipPath: 'inset(0 100% 0 0)', opacity: 0 },
+          { opacity: 0, y: 15 },
           {
-            clipPath: 'inset(0 0% 0 0)', opacity: 1, duration: 1.0, ease: 'power3.inOut',
+            opacity: 1, y: 0, duration: 0.5, ease: 'power2.out',
             scrollTrigger: { trigger: subtitle, start: 'top 85%', toggleActions: 'play none none none' },
           }
         )
       }
 
-      // Benefits: stagger reveal from bottom (clipPath inset)
       const benefits = sectionRef.current?.querySelectorAll('.ea-benefit')
       if (benefits && benefits.length > 0) {
         gsap.fromTo(benefits,
-          { clipPath: 'inset(100% 0 0 0)', opacity: 0 },
+          { opacity: 0, y: 20 },
           {
-            clipPath: 'inset(0 0 0% 0)', opacity: 1, duration: 0.85, ease: 'power3.out', stagger: 0.2,
-            scrollTrigger: { trigger: benefits[0], start: 'top 82%', toggleActions: 'play none none none' },
+            opacity: 1, y: 0, duration: 0.5, ease: 'power3.out', stagger: 0.1,
+            scrollTrigger: { trigger: benefits[0], start: 'top 85%', toggleActions: 'play none none none' },
           }
         )
       }
 
-      // CTA area: fade in with y offset
       const cta = sectionRef.current?.querySelector('.ea-cta')
       if (cta) {
         gsap.fromTo(cta,
-          { opacity: 0, y: 30 },
+          { opacity: 0, y: 20 },
           {
-            opacity: 1, y: 0, duration: 0.9, ease: 'power2.out',
+            opacity: 1, y: 0, duration: 0.5, ease: 'power2.out',
             scrollTrigger: { trigger: cta, start: 'top 88%', toggleActions: 'play none none none' },
           }
         )

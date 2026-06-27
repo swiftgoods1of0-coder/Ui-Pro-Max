@@ -28,30 +28,22 @@ export default function HeroSection() {
         )
       }
 
-      // SG monogram: fade in + continuous subtle rotation
+      // SG monogram: fade in
       if (monogramRef.current) {
         gsap.fromTo(
           monogramRef.current,
-          { opacity: 0, scale: 0.95 },
-          { opacity: 1, scale: 1, duration: 2, delay: 0.8, ease: 'power2.out' }
+          { opacity: 0 },
+          { opacity: 1, duration: 1.5, delay: 0.3, ease: 'power2.out' }
         )
-        gsap.to(monogramRef.current, {
-          rotation: 2,
-          yoyo: true,
-          repeat: -1,
-          duration: 12,
-          ease: 'sine.inOut',
-        })
-        gsap.set(monogramRef.current, { rotation: -2 })
       }
 
-      const tl = gsap.timeline({ delay: 0.4 })
+      const tl = gsap.timeline({ delay: 0.1 })
 
       // Label: clip-path reveal from left
       tl.fromTo(
         labelRef.current,
         { clipPath: 'inset(0 100% 0 0)', opacity: 0 },
-        { clipPath: 'inset(0 0% 0 0)', opacity: 1, duration: 0.9, ease: 'power3.out' },
+        { clipPath: 'inset(0 0% 0 0)', opacity: 1, duration: 0.5, ease: 'power3.out' },
         0
       )
 
@@ -61,54 +53,54 @@ export default function HeroSection() {
         if (chars.length > 0) {
           tl.fromTo(
             chars,
-            { opacity: 0, y: '100%', rotateX: -90 },
+            { opacity: 0, y: '60%' },
             {
-              opacity: 1, y: '0%', rotateX: 0,
-              duration: 0.8, stagger: 0.025,
+              opacity: 1, y: '0%',
+              duration: 0.5, stagger: 0.02,
               ease: 'power3.out',
             },
-            0.2
+            0.1
           )
         } else {
           tl.fromTo(
             headingRef.current,
-            { clipPath: 'inset(0 100% 0 0)', opacity: 0 },
-            { clipPath: 'inset(0 0% 0 0)', opacity: 1, duration: 1.2, ease: 'power3.inOut' },
-            0.2
+            { opacity: 0, y: 30 },
+            { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' },
+            0.1
           )
         }
       }
 
-      // Subtitle: clip-path reveal from bottom
+      // Subtitle
       tl.fromTo(
         subtitleRef.current,
-        { clipPath: 'inset(100% 0 0 0)', opacity: 0 },
-        { clipPath: 'inset(0% 0 0 0)', opacity: 1, duration: 0.85, ease: 'power2.out' },
-        0.65
+        { opacity: 0, y: 15 },
+        { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' },
+        0.35
       )
 
-      // CTAs: clip-path reveal from bottom
+      // CTAs
       tl.fromTo(
         ctasRef.current,
-        { clipPath: 'inset(100% 0 0 0)', opacity: 0 },
-        { clipPath: 'inset(0% 0 0 0)', opacity: 1, duration: 0.75, ease: 'power2.out' },
-        0.9
+        { opacity: 0, y: 15 },
+        { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' },
+        0.45
       )
 
-      // Tagline: fade in from below
+      // Tagline
       tl.fromTo(
         taglineRef.current,
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' },
-        1.0
+        { opacity: 0 },
+        { opacity: 1, duration: 0.5, ease: 'power2.out' },
+        0.55
       )
 
-      // Scroll indicator: fade in
+      // Scroll indicator
       tl.fromTo(
         scrollIndicatorRef.current,
         { opacity: 0 },
-        { opacity: 1, duration: 0.6, ease: 'power2.out' },
-        1.3
+        { opacity: 1, duration: 0.4, ease: 'power2.out' },
+        0.65
       )
     }, sectionRef)
 

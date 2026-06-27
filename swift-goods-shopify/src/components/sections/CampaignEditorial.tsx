@@ -46,17 +46,10 @@ export default function CampaignEditorial() {
 
         if (img) {
           gsap.fromTo(img,
-            { scale: 1.15, clipPath: 'polygon(0 0, 0 0, 0 100%, 0 100%)' },
+            { scale: 1.08, clipPath: 'polygon(0 0, 0 0, 0 100%, 0 100%)' },
             {
-              scale: 1, clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)', duration: 1.6, ease: 'power3.inOut',
-              scrollTrigger: { trigger: panel, start: 'top 80%', toggleActions: 'play none none none' },
-            }
-          )
-          gsap.fromTo(img,
-            { y: -30 },
-            {
-              y: 30, ease: 'none',
-              scrollTrigger: { trigger: panel, start: 'top bottom', end: 'bottom top', scrub: 0.4 },
+              scale: 1, clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)', duration: 0.9, ease: 'power3.inOut',
+              scrollTrigger: { trigger: panel, start: 'top 85%', toggleActions: 'play none none none' },
             }
           )
         }
@@ -65,11 +58,11 @@ export default function CampaignEditorial() {
           const cta = panel.querySelector('.editorial-cta')
           const elements = [label, heading, rule, body, cta].filter(Boolean) as HTMLElement[]
           gsap.fromTo(elements,
-            { clipPath: 'inset(0 0 100% 0)', opacity: 0 },
+            { opacity: 0, y: 20 },
             {
-              clipPath: 'inset(0 0 0% 0)', opacity: 1, duration: 0.85, ease: 'power3.out',
-              stagger: 0.12,
-              scrollTrigger: { trigger: panel, start: 'top 70%', toggleActions: 'play none none none' },
+              opacity: 1, y: 0, duration: 0.5, ease: 'power3.out',
+              stagger: 0.08,
+              scrollTrigger: { trigger: panel, start: 'top 75%', toggleActions: 'play none none none' },
             }
           )
         }

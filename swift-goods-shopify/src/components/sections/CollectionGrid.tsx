@@ -61,9 +61,9 @@ export default function CollectionGrid({ products }: CollectionGridProps) {
           els,
           {
             opacity: 0,
-            y: 30,
-            duration: 0.8,
-            stagger: 0.1,
+            y: 20,
+            duration: 0.5,
+            stagger: 0.06,
             ease: 'power2.out',
             scrollTrigger: {
               trigger: sectionRef.current,
@@ -174,11 +174,11 @@ export default function CollectionGrid({ products }: CollectionGridProps) {
             return (
               <motion.div
                 key={`${product.id}-${activeFilter}`}
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{
-                  duration: 0.6,
-                  delay: index * 0.05,
+                  duration: 0.35,
+                  delay: index * 0.03,
                   ease: [0.22, 1, 0.36, 1],
                 }}
                 className="group relative overflow-hidden cursor-pointer"

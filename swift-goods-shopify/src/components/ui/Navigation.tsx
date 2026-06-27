@@ -659,7 +659,7 @@ export default function Navigation({ cartCount: cartCountProp }: NavigationProps
     if (!navRef.current) return;
     gsap.set(navRef.current, { opacity: 0 });
     const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
-    tl.to(navRef.current, { y: 0, opacity: 1, duration: 0.85, delay: 0.1, clearProps: 'opacity,y' });
+    tl.to(navRef.current, { y: 0, opacity: 1, duration: 0.4, delay: 0, clearProps: 'opacity,y' });
     return () => { tl.kill(); };
   }, []);
 

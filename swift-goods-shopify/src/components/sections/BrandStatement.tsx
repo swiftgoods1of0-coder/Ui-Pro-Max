@@ -44,9 +44,9 @@ export default function BrandStatement() {
 
       if (label) {
         gsap.fromTo(label,
-          { clipPath: 'inset(0 100% 0 0)', opacity: 0 },
+          { opacity: 0, y: 15 },
           {
-            clipPath: 'inset(0 0% 0 0)', opacity: 1, duration: 0.8, ease: 'power2.out',
+            opacity: 1, y: 0, duration: 0.5, ease: 'power2.out',
             scrollTrigger: { trigger: label, start: 'top 88%', toggleActions: 'play none none none' },
           }
         )
@@ -54,9 +54,9 @@ export default function BrandStatement() {
 
       if (quoteWords && quoteWords.length > 0) {
         gsap.fromTo(quoteWords,
-          { clipPath: 'inset(0 100% 0 0)', opacity: 0, y: 10 },
+          { opacity: 0, y: 10 },
           {
-            clipPath: 'inset(0 0% 0 0)', opacity: 1, y: 0, duration: 0.7, ease: 'power2.out', stagger: 0.04,
+            opacity: 1, y: 0, duration: 0.4, ease: 'power2.out', stagger: 0.03,
             scrollTrigger: { trigger: quoteWords[0].parentElement, start: 'top 82%', toggleActions: 'play none none none' },
           }
         )
@@ -66,7 +66,7 @@ export default function BrandStatement() {
         gsap.fromTo(rule,
           { scaleX: 0 },
           {
-            scaleX: 1, duration: 1.2, ease: 'power3.inOut',
+            scaleX: 1, duration: 0.7, ease: 'power3.inOut',
             scrollTrigger: { trigger: rule, start: 'top 85%', toggleActions: 'play none none none' },
           }
         )
@@ -74,10 +74,10 @@ export default function BrandStatement() {
 
       if (pillars && pillars.length > 0) {
         gsap.fromTo(pillars,
-          { clipPath: 'inset(0 0 100% 0)', opacity: 0 },
+          { opacity: 0, y: 20 },
           {
-            clipPath: 'inset(0 0 0% 0)', opacity: 1, duration: 0.85, ease: 'power3.out', stagger: 0.18,
-            scrollTrigger: { trigger: pillars[0], start: 'top 82%', toggleActions: 'play none none none' },
+            opacity: 1, y: 0, duration: 0.5, ease: 'power3.out', stagger: 0.1,
+            scrollTrigger: { trigger: pillars[0], start: 'top 85%', toggleActions: 'play none none none' },
           }
         )
       }
