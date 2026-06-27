@@ -11,8 +11,16 @@ export const metadata = {
   description: 'Explore all Swift Goods collections. Comfort is luxury.',
 }
 
+const HIDDEN_COLLECTIONS = new Set([
+  'jackets', 'women', 'womens', "women's", 'hats',
+  'swift goods athletic club', '1 of 0', '"1 of 0"',
+])
+
 export default async function CollectionsPage() {
-  const collections = await getCollections(20)
+  const allCollections = await getCollections(20)
+  const collections = allCollections.filter(
+    (c) => !HIDDEN_COLLECTIONS.has(c.title.toLowerCase()) && !HIDDEN_COLLECTIONS.has(c.handle)
+  )
 
   return (
     <main className="bg-[#050505] min-h-screen">

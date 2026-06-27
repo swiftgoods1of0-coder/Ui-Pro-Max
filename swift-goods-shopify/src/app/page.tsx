@@ -57,7 +57,6 @@ async function loadProducts(): Promise<SectionProduct[]> {
   const products = await getProducts(20)
   const adapted = products.map(adaptProduct)
 
-  // Deduplicate by handle and filter out $0 products
   const seen = new Set<string>()
   return adapted.filter((p) => {
     if (seen.has(p.handle)) return false
@@ -88,11 +87,18 @@ export default async function Home() {
   ])
   const featured = adaptedProducts.slice(0, 6)
 
-  const lookbookCollections: LookbookCollection[] = shopifyCollections.map((c) => ({
-    handle: c.handle,
-    title: c.title,
-    image: c.image?.url ?? null,
-  }))
+  const HIDDEN_COLLECTIONS = new Set([
+    'jackets', 'women', 'womens', "women's", 'hats',
+    'swift goods athletic club', '1 of 0', '"1 of 0"',
+  ])
+
+  const lookbookCollections: LookbookCollection[] = shopifyCollections
+    .filter((c) => !HIDDEN_COLLECTIONS.has(c.title.toLowerCase()) && !HIDDEN_COLLECTIONS.has(c.handle))
+    .map((c) => ({
+      handle: c.handle,
+      title: c.title,
+      image: c.image?.url ?? null,
+    }))
 
   return (
     <main className="bg-sg-black min-h-screen overflow-x-hidden">
@@ -132,7 +138,15 @@ export default async function Home() {
       <div className="w-full h-24 md:h-36" style={{ background: 'linear-gradient(to bottom, var(--sg-frost, #F7F6F3), #050505)' }} />
 
       <ExclusiveAccess />
+
+      {/* Fade: dark → frost into ProductDrop */}
+      <div className="w-full h-24 md:h-36" style={{ background: 'linear-gradient(to bottom, #050505, var(--sg-frost, #F7F6F3))' }} />
+
       <ProductDrop />
+
+      {/* Fade: frost → dark into FinalCTA */}
+      <div className="w-full h-24 md:h-36" style={{ background: 'linear-gradient(to bottom, var(--sg-frost, #F7F6F3), #050505)' }} />
+
       <FinalCTA />
       <Footer />
     </main>
