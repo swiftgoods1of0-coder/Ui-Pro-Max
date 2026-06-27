@@ -27,7 +27,7 @@ const PANELS: Panel[] = [
   },
   {
     type: 'video',
-    src: '/brand/sg-street-luxury.mov',
+    src: '/brand/sg-street-luxury.mp4',
     poster: '/brand/sg-fountain-night.jpeg',
     label: 'STREET LUXURY',
     heading: 'RAW\nUNCUT',

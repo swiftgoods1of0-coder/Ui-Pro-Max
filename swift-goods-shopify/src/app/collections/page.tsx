@@ -14,6 +14,7 @@ export const metadata = {
 const HIDDEN_COLLECTIONS = new Set([
   'jackets', 'women', 'womens', "women's", 'hats',
   'swift goods athletic club', '1 of 0', '"1 of 0"',
+  'sg diamond', '"sg diamond"', 'university',
 ])
 
 export default async function CollectionsPage() {
