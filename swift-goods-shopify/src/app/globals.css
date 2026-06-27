@@ -111,7 +111,7 @@ html.lenis body {
     --sg-duration-base: 400ms;
     --sg-duration-slow: 600ms;
     --sg-duration-slower: 900ms;
-    --sg-duration-slowest: 1200ms;
+    --sg-duration-slowest: 600ms;
 
     /* Z-Index Scale */
     --sg-z-base: 0;
@@ -868,10 +868,7 @@ button:focus-visible {
   width: 100%;
 }
 
-/* Smooth section transitions — scroll-driven smoothness */
-section {
-  will-change: transform;
-}
+/* Section base */
 
 /* Premium link hover with gold glow */
 .sg-link-glow:hover {

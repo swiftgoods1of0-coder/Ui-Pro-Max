@@ -23,6 +23,9 @@ export default function GoldParticleField() {
   const rafRef = useRef<number>(0)
 
   useEffect(() => {
+    // Skip on touch devices
+    if ('ontouchstart' in window || navigator.maxTouchPoints > 0) return
+
     const canvas = canvasRef.current
     if (!canvas) return
     const ctx = canvas.getContext('2d')
@@ -40,21 +43,24 @@ export default function GoldParticleField() {
     resize()
     window.addEventListener('resize', resize)
 
+    let mouseMoveRaf = 0
     const onMouse = (e: MouseEvent) => {
-      mouseRef.current.x = e.clientX
-      mouseRef.current.y = e.clientY
+      cancelAnimationFrame(mouseMoveRaf)
+      mouseMoveRaf = requestAnimationFrame(() => {
+        mouseRef.current.x = e.clientX
+        mouseRef.current.y = e.clientY
+      })
     }
-    window.addEventListener('mousemove', onMouse)
+    window.addEventListener('mousemove', onMouse, { passive: true })
 
     const onScroll = () => {
       const current = window.scrollY
-      const delta = current - lastScrollRef.current
-      scrollVelRef.current = delta
+      scrollVelRef.current = current - lastScrollRef.current
       lastScrollRef.current = current
     }
     window.addEventListener('scroll', onScroll, { passive: true })
 
-    const PARTICLE_COUNT = 100
+    const PARTICLE_COUNT = 50
     const particles: Particle[] = []
     for (let i = 0; i < PARTICLE_COUNT; i++) {
       particles.push({
@@ -77,6 +83,9 @@ export default function GoldParticleField() {
       [200, 170, 138],
       [255, 235, 150],
     ]
+
+    const INTERACT_RADIUS = 180
+    const INTERACT_RADIUS_SQ = INTERACT_RADIUS * INTERACT_RADIUS
 
     const draw = () => {
       ctx.clearRect(0, 0, w, h)
@@ -105,27 +114,23 @@ export default function GoldParticleField() {
           p.opacity = p.baseOpacity
         }
 
-        const shimmerMod = 0.7 + 0.3 * Math.sin(p.shimmer)
-        p.opacity *= shimmerMod
+        p.opacity *= 0.7 + 0.3 * Math.sin(p.shimmer)
 
         const dx = p.x - mx
         const dy = p.y - my
-        const dist = Math.sqrt(dx * dx + dy * dy)
-        const interactRadius = 180
+        const distSq = dx * dx + dy * dy
 
-        if (dist < interactRadius && dist > 0) {
-          const force = (1 - dist / interactRadius) * 0.6
+        if (distSq < INTERACT_RADIUS_SQ && distSq > 0) {
+          const dist = Math.sqrt(distSq)
+          const force = (1 - dist / INTERACT_RADIUS) * 0.6
           p.vx += (dx / dist) * force
           p.vy += (dy / dist) * force
           p.opacity = Math.min(p.baseOpacity + 0.35, 0.75)
         }
 
         p.vy += sv * 0.008
-        p.vx += sv * 0.002 * (Math.random() - 0.5)
-
         p.vx *= 0.97
         p.vy *= 0.97
-
         p.vx += (Math.random() - 0.5) * 0.015
         p.vy += (Math.random() - 0.5) * 0.015
 
@@ -151,22 +156,6 @@ export default function GoldParticleField() {
         }
       }
 
-      for (let i = 0; i < particles.length; i++) {
-        const p = particles[i]
-        for (let j = i + 1; j < particles.length; j++) {
-          const p2 = particles[j]
-          const d = Math.sqrt((p.x - p2.x) ** 2 + (p.y - p2.y) ** 2)
-          if (d < 120) {
-            ctx.beginPath()
-            ctx.moveTo(p.x, p.y)
-            ctx.lineTo(p2.x, p2.y)
-            ctx.strokeStyle = `rgba(201, 168, 76, ${(1 - d / 120) * 0.05})`
-            ctx.lineWidth = 0.4
-            ctx.stroke()
-          }
-        }
-      }
-
       if (mx > 0 && my > 0) {
         const gradient = ctx.createRadialGradient(mx, my, 0, mx, my, 100)
         gradient.addColorStop(0, 'rgba(201, 168, 76, 0.03)')
@@ -182,6 +171,7 @@ export default function GoldParticleField() {
 
     return () => {
       cancelAnimationFrame(rafRef.current)
+      cancelAnimationFrame(mouseMoveRaf)
       window.removeEventListener('resize', resize)
       window.removeEventListener('mousemove', onMouse)
       window.removeEventListener('scroll', onScroll)

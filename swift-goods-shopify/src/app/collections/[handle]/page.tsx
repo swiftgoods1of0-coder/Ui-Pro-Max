@@ -32,7 +32,15 @@ export default async function CollectionPage({ params }: PageProps) {
   const collection = await getCollection(handle, 50)
   if (!collection) notFound()
 
-  const products = collection.products.nodes
+  // Deduplicate by handle and filter out $0 products
+  const seen = new Set<string>()
+  const products = collection.products.nodes.filter((p) => {
+    if (seen.has(p.handle)) return false
+    seen.add(p.handle)
+    const price = parseFloat(p.priceRange.minVariantPrice.amount)
+    if (!price || price <= 0) return false
+    return true
+  })
 
   return (
     <main className="bg-[#050505] min-h-screen">

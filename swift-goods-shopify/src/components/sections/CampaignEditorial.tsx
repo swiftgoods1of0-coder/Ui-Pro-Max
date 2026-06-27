@@ -25,13 +25,13 @@ const PANELS = [
 
 export default function CampaignEditorial() {
   return (
-    <section className="relative overflow-hidden" style={{ background: 'var(--sg-frost, #F7F6F3)' }}>
+    <section className="relative overflow-hidden" style={{ background: '#0a0a0a' }}>
       {/* Subtle warm ambient glow */}
       <div className="absolute pointer-events-none" style={{ top: '20%', left: '-10%', width: '50%', height: '50%', background: 'radial-gradient(ellipse at center, rgba(201,168,76,0.04) 0%, transparent 65%)', filter: 'blur(100px)' }} />
       <div className="absolute pointer-events-none" style={{ bottom: '10%', right: '-5%', width: '35%', height: '35%', background: 'radial-gradient(ellipse at center, rgba(201,168,76,0.03) 0%, transparent 65%)', filter: 'blur(80px)' }} />
 
-      {/* Subtle noise texture for frost feel */}
-      <div className="absolute inset-0 pointer-events-none" style={{ opacity: 0.03, backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 3px)', backgroundSize: '100% 4px' }} />
+      {/* Film grain overlay */}
+      <div className="absolute inset-0 pointer-events-none" style={{ opacity: 0.015, backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.8) 2px, rgba(255,255,255,0.8) 3px)', backgroundSize: '100% 4px' }} />
 
       {PANELS.map((panel, idx) => (
         <div
@@ -53,18 +53,18 @@ export default function CampaignEditorial() {
               className="object-cover"
               quality={90}
             />
-            {/* Gradient blends image into frost bg */}
+            {/* Gradient blends image into dark bg */}
             <div
               className="absolute inset-0 hidden lg:block"
               style={{
                 background: idx % 2 === 0
-                  ? 'linear-gradient(to right, transparent 55%, var(--sg-frost, #F7F6F3) 100%)'
-                  : 'linear-gradient(to left, transparent 55%, var(--sg-frost, #F7F6F3) 100%)',
+                  ? 'linear-gradient(to right, transparent 55%, #0a0a0a 100%)'
+                  : 'linear-gradient(to left, transparent 55%, #0a0a0a 100%)',
               }}
             />
             <div
               className="absolute inset-0 lg:hidden"
-              style={{ background: 'linear-gradient(to bottom, transparent 40%, var(--sg-frost, #F7F6F3) 100%)' }}
+              style={{ background: 'linear-gradient(to bottom, transparent 40%, #0a0a0a 100%)' }}
             />
             {/* Gold border accent on hover */}
             <div className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ border: '1px solid rgba(201,168,76,0.25)' }} />
@@ -83,7 +83,7 @@ export default function CampaignEditorial() {
               <span
                 className="text-[10px] tracking-[0.4em] uppercase"
                 style={{
-                  color: '#a08535',
+                  color: '#c9a84c',
                   fontFamily: 'var(--font-body, Inter, sans-serif)',
                   fontWeight: 500,
                 }}
@@ -98,9 +98,9 @@ export default function CampaignEditorial() {
                 fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)',
                 fontSize: 'clamp(2.5rem, 7vw, 7rem)',
                 letterSpacing: '0.04em',
-                color: '#1a1a1a',
+                color: '#f5f5f5',
                 whiteSpace: 'pre-line',
-                textShadow: '0 4px 30px rgba(0,0,0,0.06)',
+                textShadow: '0 4px 30px rgba(0,0,0,0.3)',
               }}
             >
               {panel.heading}
@@ -117,7 +117,7 @@ export default function CampaignEditorial() {
                 fontFamily: 'var(--font-display, "Cormorant Garamond", serif)',
                 fontSize: 'clamp(1.1rem, 2vw, 1.35rem)',
                 fontStyle: 'italic',
-                color: '#6b6560',
+                color: 'rgba(245,245,245,0.5)',
                 lineHeight: 1.7,
               }}
             >

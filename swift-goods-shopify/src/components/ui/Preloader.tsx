@@ -35,7 +35,7 @@ export default function Preloader({ onComplete }: PreloaderProps) {
 
       // Spawn gold particles
       if (particlesRef.current) {
-        for (let i = 0; i < 30; i++) {
+        for (let i = 0; i < 15; i++) {
           const p = document.createElement('div')
           const size = Math.random() * 3 + 1
           p.style.cssText = `
@@ -58,8 +58,8 @@ export default function Preloader({ onComplete }: PreloaderProps) {
             opacity: Math.random() * 0.6 + 0.2,
             x: `+=${(Math.random() - 0.5) * 100}`,
             y: `+=${(Math.random() - 0.5) * 100}`,
-            duration: Math.random() * 2 + 1.5,
-            delay: Math.random() * 0.8,
+            duration: Math.random() * 1.5 + 1,
+            delay: Math.random() * 0.3,
             ease: 'power1.inOut',
             repeat: -1,
             yoyo: true,
@@ -74,14 +74,14 @@ export default function Preloader({ onComplete }: PreloaderProps) {
       })
 
       // Progress bar runs throughout
-      tl.to(progressRef.current, { scaleX: 1, duration: 2.8, ease: 'power1.inOut' }, 0)
+      tl.to(progressRef.current, { scaleX: 1, duration: 1.8, ease: 'power1.inOut' }, 0)
 
       // Counter
       tl.to(
         { val: 0 },
         {
           val: 100,
-          duration: 2.8,
+          duration: 1.8,
           ease: 'power1.inOut',
           onUpdate: function () {
             if (counterRef.current) {
@@ -93,51 +93,51 @@ export default function Preloader({ onComplete }: PreloaderProps) {
         0
       )
 
-      // Phase 1: Gold glow pulse appears first
+      // Phase 1: Gold glow pulse
       tl.to(glowRef.current, {
-        scale: 1.5, opacity: 0.6, duration: 0.8, ease: 'power2.out',
-      }, 0.1)
+        scale: 1.5, opacity: 0.6, duration: 0.5, ease: 'power2.out',
+      }, 0.05)
       tl.to(glowRef.current, {
-        scale: 1, opacity: 0.3, duration: 0.6, ease: 'power2.inOut',
-      }, 0.9)
+        scale: 1, opacity: 0.3, duration: 0.4, ease: 'power2.inOut',
+      }, 0.55)
 
-      // Phase 2: Winged S emblem scales in with rotation
+      // Phase 2: Winged S emblem scales in
       tl.to(emblemRef.current, {
-        scale: 1, opacity: 1, rotation: 0, duration: 1.0, ease: 'back.out(1.4)',
+        scale: 1, opacity: 1, rotation: 0, duration: 0.6, ease: 'back.out(1.4)',
+      }, 0.15)
+
+      // Phase 3: Logo image fades in
+      tl.to(logoRef.current, {
+        scale: 1, opacity: 1, duration: 0.5, ease: 'power3.out',
       }, 0.3)
 
-      // Phase 3: Logo image fades in behind
-      tl.to(logoRef.current, {
-        scale: 1, opacity: 1, duration: 0.8, ease: 'power3.out',
-      }, 0.5)
-
-      // Phase 4: Gold lines extend outward from center
-      tl.to(lineLeftRef.current, { scaleX: 1, duration: 0.6, ease: 'power3.out' }, 1.2)
-      tl.to(lineRightRef.current, { scaleX: 1, duration: 0.6, ease: 'power3.out' }, 1.2)
+      // Phase 4: Gold lines extend
+      tl.to(lineLeftRef.current, { scaleX: 1, duration: 0.4, ease: 'power3.out' }, 0.7)
+      tl.to(lineRightRef.current, { scaleX: 1, duration: 0.4, ease: 'power3.out' }, 0.7)
 
       // Phase 5: Brand name reveals
       tl.to(brandRef.current, {
-        opacity: 1, y: 0, clipPath: 'inset(0 0% 0 0)', duration: 0.7, ease: 'power3.out',
-      }, 1.5)
+        opacity: 1, y: 0, clipPath: 'inset(0 0% 0 0)', duration: 0.4, ease: 'power3.out',
+      }, 0.9)
 
       // Phase 6: Tagline fades in
       tl.to(taglineRef.current, {
-        opacity: 1, y: 0, duration: 0.5, ease: 'power2.out',
-      }, 1.9)
+        opacity: 1, y: 0, duration: 0.3, ease: 'power2.out',
+      }, 1.15)
 
-      // Phase 7: Everything pulses with gold glow
+      // Phase 7: Gold glow pulse
       tl.to(glowRef.current, {
-        scale: 2, opacity: 0.5, duration: 0.4, ease: 'power2.in',
-      }, 2.5)
+        scale: 2, opacity: 0.5, duration: 0.3, ease: 'power2.in',
+      }, 1.5)
 
-      // Phase 8: Exit — split wipe with blur
-      tl.to(glowRef.current, { opacity: 0, duration: 0.3 }, 2.9)
+      // Phase 8: Exit
+      tl.to(glowRef.current, { opacity: 0, duration: 0.2 }, 1.8)
       tl.to(containerRef.current, {
         clipPath: 'inset(0 0 100% 0)',
         filter: 'blur(4px)',
-        duration: 0.7,
+        duration: 0.5,
         ease: 'power3.inOut',
-      }, 3.0)
+      }, 1.85)
     }, containerRef)
 
     return () => ctx.revert()
