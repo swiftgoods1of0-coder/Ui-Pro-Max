@@ -263,13 +263,6 @@ export default function FinalCTA() {
               </MagneticElement>
             </div>
 
-            {/* Urgency element */}
-            <div className="mt-10 flex items-center gap-3">
-              <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: 'linear-gradient(135deg, #c9a84c, #e6c870)', boxShadow: '0 0 10px rgba(201,168,76,0.5), 0 0 20px rgba(201,168,76,0.2)', animation: 'pulse-gold 1.5s ease-in-out infinite', flexShrink: 0 }} />
-              <span style={{ fontFamily: 'var(--font-body, Inter, sans-serif)', fontSize: '0.625rem', color: 'rgba(201,168,76,0.6)', letterSpacing: '0.15em', textTransform: 'uppercase' }}>
-                Limited quantities &mdash; Don&apos;t miss out
-              </span>
-            </div>
           </div>
         </div>
       </div>

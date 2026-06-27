@@ -305,11 +305,11 @@ export default function ExclusiveAccess() {
               color: 'rgba(201,168,76,0.45)',
             }}
           >
-            LIMITED TO 500 MEMBERS
+            BY INVITATION ONLY
           </p>
 
           <a
-            href="/private-client"
+            href="#shop"
             onMouseEnter={() => setCtaHovered(true)}
             onMouseLeave={() => setCtaHovered(false)}
             style={{

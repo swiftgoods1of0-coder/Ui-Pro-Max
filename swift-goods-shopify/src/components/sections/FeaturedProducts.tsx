@@ -341,7 +341,6 @@ export default function FeaturedProducts({ products }: FeaturedProductsProps) {
                     height: '6px',
                     borderRadius: '50%',
                     backgroundColor: '#c9a84c',
-                    animation: 'pulse-gold 2s ease-in-out infinite',
                     flexShrink: 0,
                   }}
                 />
@@ -353,7 +352,7 @@ export default function FeaturedProducts({ products }: FeaturedProductsProps) {
                     letterSpacing: '0.08em',
                   }}
                 >
-                  Selling fast — limited stock
+                  New arrivals added weekly
                 </span>
               </div>
             </div>

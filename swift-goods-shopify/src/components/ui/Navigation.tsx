@@ -28,8 +28,8 @@ interface NavigationProps {
 const NAV_LINKS: NavLink[] = [
   { label: 'SHOP', href: '/collections' },
   { label: 'NEW ARRIVALS', href: '/collections/new-arrivals' },
-  { label: 'LOOKBOOK', href: '/lookbook' },
-  { label: 'PRIVATE CLIENT', href: '/private-client' },
+  { label: 'LOOKBOOK', href: '/collections' },
+  { label: 'THE BRAND', href: '#craftsmanship' },
 ];
 
 const COLORS = {

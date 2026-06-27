@@ -24,7 +24,7 @@ const CRAFT_PILLARS: CraftPillar[] = [
   {
     number: '02',
     title: 'PRECISION FIT',
-    body: 'Engineered silhouettes from 47 body measurements. No generic patterns. Every cut is intentional, every drape is deliberate.',
+    body: 'Engineered silhouettes. No generic patterns. Every cut is intentional, every drape is deliberate.',
   },
   {
     number: '03',
@@ -35,9 +35,9 @@ const CRAFT_PILLARS: CraftPillar[] = [
 
 const CRAFT_STATS: CraftStat[] = [
   { value: '400GSM', label: 'French Terry' },
-  { value: '47', label: 'Body Measurements' },
+  { value: 'PRECISION', label: 'Engineered Fit' },
   { value: '3X', label: 'Quality Tested' },
-  { value: '100%', label: 'Satisfaction Guaranteed' },
+  { value: 'PREMIUM', label: 'Materials Only' },
 ]
 
 export default function Craftsmanship() {

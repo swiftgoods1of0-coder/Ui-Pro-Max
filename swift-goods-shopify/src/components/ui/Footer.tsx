@@ -146,27 +146,22 @@ const footerColumns: FooterColumn[] = [
       { label: 'Hoodies', href: '/collections/hoodies' },
       { label: 'Joggers', href: '/collections/joggers' },
       { label: 'Sets', href: '/collections/sets' },
-      { label: 'Accessories', href: '/collections/accessories' },
-      { label: 'Sale', href: '/collections/sale' },
+      { label: 'All Collections', href: '/collections' },
     ],
   },
   {
     heading: 'BRAND',
     links: [
-      { label: 'Our Story', href: '/pages/our-story' },
-      { label: 'Private Client', href: '/private-client' },
-      { label: 'Craftsmanship', href: '/pages/craftsmanship' },
-      { label: 'Press', href: '/pages/press' },
+      { label: 'Our Story', href: '#craftsmanship' },
+      { label: 'The Inner Circle', href: '#inner-circle' },
+      { label: 'Lookbook', href: '/collections' },
     ],
   },
   {
     heading: 'SUPPORT',
     links: [
-      { label: 'FAQ', href: '/pages/faq' },
-      { label: 'Shipping & Returns', href: '/pages/shipping-returns' },
-      { label: 'Size Guide', href: '/pages/size-guide' },
-      { label: 'Contact Us', href: '/pages/contact' },
-      { label: 'Track Order', href: '/pages/track-order' },
+      { label: 'Shipping & Returns', href: 'mailto:support@swiftgoodsclothing.com' },
+      { label: 'Contact Us', href: 'mailto:support@swiftgoodsclothing.com' },
     ],
   },
 ];
@@ -178,10 +173,10 @@ interface SocialLink {
 }
 
 const socialLinks: SocialLink[] = [
-  { label: 'Instagram', href: 'https://instagram.com/swiftgoods', Icon: InstagramIcon },
-  { label: 'TikTok', href: 'https://tiktok.com/@swiftgoods', Icon: TikTokIcon },
-  { label: 'Twitter / X', href: 'https://x.com/swiftgoods', Icon: TwitterXIcon },
-  { label: 'Pinterest', href: 'https://pinterest.com/swiftgoods', Icon: PinterestIcon },
+  { label: 'Instagram', href: 'https://instagram.com/swiftgoodsclothing', Icon: InstagramIcon },
+  { label: 'TikTok', href: 'https://tiktok.com/@swiftgoodsclothing', Icon: TikTokIcon },
+  { label: 'Twitter / X', href: 'https://x.com/swiftgoodsco', Icon: TwitterXIcon },
+  { label: 'Pinterest', href: 'https://pinterest.com/swiftgoodsclothing', Icon: PinterestIcon },
 ];
 
 interface TrustSignal {
@@ -555,7 +550,7 @@ export default function Footer() {
             fontFamily: 'var(--font-body, Inter, sans-serif)',
           }}
         >
-          Join 10,000+ members. Unsubscribe anytime.
+          Unsubscribe anytime.
         </p>
       </div>
 
@@ -841,9 +836,8 @@ export default function Footer() {
             }}
           >
             {[
-              { label: 'Privacy Policy', href: '/pages/privacy-policy' },
-              { label: 'Terms of Service', href: '/pages/terms-of-service' },
-              { label: 'Cookies', href: '/pages/cookies' },
+              { label: 'Privacy Policy', href: '/policies/privacy-policy' },
+              { label: 'Terms of Service', href: '/policies/terms-of-service' },
             ].map((item, idx, arr) => (
               <li
                 key={item.label}

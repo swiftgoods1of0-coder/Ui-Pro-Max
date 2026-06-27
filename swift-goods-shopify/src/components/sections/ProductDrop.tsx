@@ -13,7 +13,7 @@ const FEATURES = [
   { label: 'QUICK-DRY', detail: 'All-Day Performance' },
 ]
 
-const MARQUEE_TEXT = 'THE SHORTS THAT MOVE — SWIFT GOODS ESSENTIALS — SS25 DROP — COMFORT IS LUXURY — '
+const MARQUEE_TEXT = 'SWIFT GOODS — COMFORT IS LUXURY — DESIGNED FOR MOVEMENT — BUILT FOR PRESENCE — '
 
 export default function ProductDrop() {
   const sectionRef = useRef<HTMLElement>(null)
@@ -24,7 +24,6 @@ export default function ProductDrop() {
   const subtitleRef = useRef<HTMLDivElement>(null)
   const ctaRef = useRef<HTMLDivElement>(null)
   const stripRef = useRef<HTMLDivElement>(null)
-  const counterRef = useRef<HTMLDivElement>(null)
   const featuresRef = useRef<HTMLDivElement>(null)
   const priceRef = useRef<HTMLDivElement>(null)
   const cornerTLRef = useRef<HTMLDivElement>(null)
@@ -160,15 +159,6 @@ export default function ProductDrop() {
           { y: 30, opacity: 0 },
           { y: 0, opacity: 1, duration: 0.6, ease: 'power2.out' },
           1.1
-        )
-      }
-
-      // Stock counter
-      if (counterRef.current) {
-        tl.fromTo(counterRef.current,
-          { opacity: 0, y: 10 },
-          { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' },
-          1.3
         )
       }
 
@@ -579,39 +569,16 @@ export default function ProductDrop() {
               ))}
             </div>
 
-            {/* Price block */}
+            {/* Complimentary shipping note */}
             <div
               ref={priceRef}
               className="mb-12"
               style={{ opacity: 0 }}
             >
-              <div className="flex items-end gap-4">
-                <span
-                  style={{
-                    fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)',
-                    fontSize: 'clamp(2.2rem, 4vw, 3.2rem)',
-                    letterSpacing: '0.04em',
-                    lineHeight: 1,
-                    color: '#c9a84c',
-                  }}
-                >
-                  $65
-                </span>
-                <span
-                  style={{
-                    fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)',
-                    fontSize: 'clamp(1.2rem, 2vw, 1.6rem)',
-                    letterSpacing: '0.04em',
-                    lineHeight: 1,
-                    color: 'rgba(201,168,76,0.5)',
-                    marginBottom: 2,
-                  }}
-                >
-                  .00
-                </span>
+              <div className="flex items-center gap-3">
                 <div
-                  className="h-px flex-shrink-0 mx-2"
-                  style={{ width: 24, background: 'rgba(201,168,76,0.3)', marginBottom: 6 }}
+                  className="h-px flex-shrink-0"
+                  style={{ width: 24, background: 'rgba(201,168,76,0.3)' }}
                 />
                 <span
                   style={{
@@ -619,11 +586,10 @@ export default function ProductDrop() {
                     fontSize: '0.5625rem',
                     letterSpacing: '0.2em',
                     textTransform: 'uppercase',
-                    color: 'rgba(245,245,245,0.25)',
-                    marginBottom: 3,
+                    color: 'rgba(201,168,76,0.5)',
                   }}
                 >
-                  FREE SHIPPING
+                  COMPLIMENTARY SHIPPING WORLDWIDE
                 </span>
               </div>
             </div>
@@ -650,39 +616,6 @@ export default function ProductDrop() {
               </MagneticElement>
             </div>
 
-            {/* Stock counter */}
-            <div
-              ref={counterRef}
-              className="mt-10 flex items-center gap-3"
-              style={{ opacity: 0 }}
-            >
-              <span
-                style={{
-                  width: '8px',
-                  height: '8px',
-                  borderRadius: '50%',
-                  background: 'linear-gradient(135deg, #c9a84c, #e6c870)',
-                  boxShadow: '0 0 10px rgba(201,168,76,0.5), 0 0 20px rgba(201,168,76,0.2)',
-                  animation: 'pulse-gold 1.5s ease-in-out infinite',
-                  flexShrink: 0,
-                }}
-              />
-              <span
-                style={{
-                  fontFamily: 'var(--font-body, Inter, sans-serif)',
-                  fontSize: '0.6875rem',
-                  color: 'rgba(201,168,76,0.65)',
-                  letterSpacing: '0.12em',
-                  textTransform: 'uppercase',
-                }}
-              >
-                Limited run &mdash; selling fast
-              </span>
-              <span
-                className="block h-px flex-1 max-w-[60px]"
-                style={{ background: 'linear-gradient(to right, rgba(201,168,76,0.25), transparent)' }}
-              />
-            </div>
           </div>
         </div>
       </div>

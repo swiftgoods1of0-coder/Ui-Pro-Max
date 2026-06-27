@@ -351,8 +351,8 @@ export default function HeroSection() {
               </LuxuryButton>
             </MagneticElement>
             <MagneticElement strength={0.25} radius={150}>
-              <LuxuryButton variant="ghost" href="#experience">
-                EXPLORE THE EXPERIENCE
+              <LuxuryButton variant="ghost" href="#shop">
+                EXPLORE THE COLLECTION
               </LuxuryButton>
             </MagneticElement>
           </div>

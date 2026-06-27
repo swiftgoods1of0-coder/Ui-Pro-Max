@@ -36,15 +36,7 @@ const GoldParticleField = dynamic(
   { ssr: false }
 )
 
-const ScrollProgressBar = dynamic(
-  () => import('./ScrollProgressBar'),
-  { ssr: false }
-)
 
-const UrgencyBanner = dynamic(
-  () => import('./UrgencyBanner'),
-  { ssr: false }
-)
 
 interface ErrorBoundaryState {
   hasError: boolean
@@ -112,8 +104,6 @@ export default function ClientRoot({ children }: { children: ReactNode }) {
             {mounted && <CursorTrail />}
             {mounted && <CustomCursor />}
             {mounted && <GoldParticleField />}
-            {mounted && <ScrollProgressBar />}
-            {mounted && <UrgencyBanner />}
             {mounted && <CartDrawer />}
             {!done && <Preloader onComplete={() => setDone(true)} />}
             {children}
