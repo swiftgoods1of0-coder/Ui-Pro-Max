@@ -88,24 +88,50 @@ export default async function Home() {
     <main className="bg-sg-black min-h-screen overflow-x-hidden">
       <Navigation />
       <HeroSection />
-      <ProductDrop />
-      <AnimatedDivider />
+
+      {/* Fade: dark → frost */}
+      <div className="w-full h-24 md:h-36" style={{ background: 'linear-gradient(to bottom, #050505, var(--sg-frost, #F7F6F3))' }} />
+
+      {/* Products FIRST — show the goods right after the hero */}
+      <FeaturedProducts products={featured} />
+
+      {/* Gold divider between two frost sections */}
+      <div className="w-full py-6" style={{ background: 'var(--sg-frost, #F7F6F3)' }}>
+        <div className="max-w-7xl mx-auto px-6 flex items-center justify-center gap-4">
+          <div className="flex-1 h-px" style={{ background: 'linear-gradient(to right, transparent, rgba(201,168,76,0.2))' }} />
+          <div style={{ width: 5, height: 5, background: 'rgba(201,168,76,0.4)', transform: 'rotate(45deg)' }} />
+          <div className="flex-1 h-px" style={{ background: 'linear-gradient(to left, transparent, rgba(201,168,76,0.2))' }} />
+        </div>
+      </div>
+
       <CampaignEditorial />
-      <AnimatedDivider />
+
+      {/* Fade: frost → dark */}
+      <div className="w-full h-24 md:h-36" style={{ background: 'linear-gradient(to bottom, var(--sg-frost, #F7F6F3), #050505)' }} />
+
       <BrandStatement />
       <AnimatedDivider />
-      <FeaturedProducts products={featured} />
+
+      {/* Full catalog — right after the brand story */}
+      <CollectionGrid products={adaptedProducts} />
+
       <Craftsmanship />
       <SignatureMoment />
       <CinematicStrip />
       <AnimatedDivider />
+
       <Lookbook collections={lookbookCollections} />
-      <AnimatedDivider />
+
+      {/* Fade: dark → frost */}
+      <div className="w-full h-24 md:h-36" style={{ background: 'linear-gradient(to bottom, #050505, var(--sg-frost, #F7F6F3))' }} />
+
       <SocialProof />
-      <AnimatedDivider />
+
+      {/* Fade: frost → dark */}
+      <div className="w-full h-24 md:h-36" style={{ background: 'linear-gradient(to bottom, var(--sg-frost, #F7F6F3), #050505)' }} />
+
       <ExclusiveAccess />
-      <AnimatedDivider />
-      <CollectionGrid products={adaptedProducts} />
+      <ProductDrop />
       <FinalCTA />
       <Footer />
     </main>

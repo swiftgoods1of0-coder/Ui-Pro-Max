@@ -7,7 +7,6 @@ import { motion } from 'framer-motion'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import SplitTextReveal from '@/components/ui/SplitTextReveal'
-import MouseSpotlight from '@/components/ui/MouseSpotlight'
 
 interface ShopifyProduct {
   id: string
@@ -33,15 +32,16 @@ const FILTERS: FilterOption[] = ['ALL', 'TOPS', 'BOTTOMS', 'SETS']
 const CATEGORY_MAP: Record<FilterOption, string[]> = {
   ALL:     [],
   TOPS:    ['Hoodie', 'Crewneck', 'T-Shirt', 'Jacket', 'hoodie', 'crewneck', 'tee', 'jacket', 'bomber'],
-  BOTTOMS: ['Pants', 'Jogger', 'pants', 'jogger', 'cargo'],
-  SETS:    ['Set', 'set'],
+  BOTTOMS: ['Pants', 'Jogger', 'pants', 'jogger', 'cargo', 'Sweatpants', 'sweatpants', 'Shorts', 'shorts'],
+  SETS:    ['Set', 'set', 'Sweatsuit', 'sweatsuit'],
 }
 
 function productMatchesFilter(product: ShopifyProduct, filter: FilterOption): boolean {
   if (filter === 'ALL') return true
   const target = CATEGORY_MAP[filter]
   const cat = (product.category ?? '').toLowerCase()
-  return target.some((t) => cat.includes(t.toLowerCase()))
+  const title = product.title.toLowerCase()
+  return target.some((t) => cat.includes(t.toLowerCase()) || title.includes(t.toLowerCase()))
 }
 
 export default function CollectionGrid({ products }: CollectionGridProps) {
@@ -55,7 +55,6 @@ export default function CollectionGrid({ products }: CollectionGridProps) {
     gsap.registerPlugin(ScrollTrigger)
 
     const ctx = gsap.context(() => {
-      // Header stagger animate on scroll
       if (headerRef.current) {
         const els = headerRef.current.querySelectorAll<HTMLElement>('.header-el')
         gsap.from(
@@ -82,34 +81,13 @@ export default function CollectionGrid({ products }: CollectionGridProps) {
   }, [])
 
   return (
-    <MouseSpotlight color="rgba(201,168,76,0.035)" size={550}>
     <section
       ref={sectionRef}
       id="shop"
-      className="relative pt-32 pb-16 overflow-hidden"
+      className="relative pt-28 pb-24 overflow-hidden"
       style={{ background: '#0a0a0a' }}
     >
-      {/* SG monogram watermark */}
-      <div
-        className="absolute pointer-events-none select-none"
-        aria-hidden="true"
-        style={{
-          bottom: '5%',
-          right: '-5%',
-          zIndex: 0,
-          fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)',
-          fontSize: 'clamp(15rem, 30vw, 30rem)',
-          letterSpacing: '-0.05em',
-          lineHeight: 0.8,
-          color: 'transparent',
-          WebkitTextStroke: '1px rgba(201,168,76,0.025)',
-          whiteSpace: 'nowrap',
-        }}
-      >
-        SG
-      </div>
-
-      {/* Ambient gold glow */}
+      {/* Subtle ambient glow */}
       <div
         className="absolute pointer-events-none"
         style={{
@@ -122,22 +100,13 @@ export default function CollectionGrid({ products }: CollectionGridProps) {
         }}
       />
 
-      {/* Top accent line */}
-      <div
-        className="absolute top-0 left-0 right-0 h-px"
-        style={{
-          background: 'linear-gradient(to right, transparent, rgba(201,168,76,0.2), transparent)',
-        }}
-      />
-
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12">
 
-        {/* Asymmetric header */}
+        {/* Clean header */}
         <div
           ref={headerRef}
-          className="flex flex-col md:flex-row items-start md:items-end justify-between gap-8 mb-16"
+          className="flex flex-col md:flex-row items-start md:items-end justify-between gap-8 mb-14"
         >
-          {/* Left: label + heading */}
           <div>
             <div className="header-el inline-flex items-center gap-4 mb-4">
               <span
@@ -152,7 +121,7 @@ export default function CollectionGrid({ products }: CollectionGridProps) {
                   fontWeight: 500,
                 }}
               >
-                ALL PRODUCTS
+                SHOP ALL
               </span>
             </div>
             <SplitTextReveal
@@ -168,7 +137,7 @@ export default function CollectionGrid({ products }: CollectionGridProps) {
             />
           </div>
 
-          {/* Right: filter chips */}
+          {/* Filter chips */}
           <div className="header-el flex flex-wrap gap-2">
             {FILTERS.map((f) => {
               const isActive = activeFilter === f
@@ -197,47 +166,40 @@ export default function CollectionGrid({ products }: CollectionGridProps) {
           </div>
         </div>
 
-        {/* Masonry-style grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+        {/* Clean 3-column grid */}
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
           {filteredProducts.map((product, index) => {
-            // Indices 0 and 5 are large (col-span-2 row-span-2)
-            const isLarge = index === 0 || index === 5
             const imageUrl = product.image
 
             return (
               <motion.div
                 key={`${product.id}-${activeFilter}`}
-                initial={{ opacity: 0, y: 40 }}
+                initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{
-                  duration: 0.65,
-                  delay: index * 0.07,
+                  duration: 0.6,
+                  delay: index * 0.05,
                   ease: [0.22, 1, 0.36, 1],
                 }}
-                className={`group relative overflow-hidden cursor-pointer ${
-                  isLarge ? 'col-span-2 row-span-2' : 'col-span-1'
-                }`}
+                className="group relative overflow-hidden cursor-pointer"
                 style={{
-                  minHeight: isLarge ? 'clamp(300px, 60vw, 520px)' : 'clamp(200px, 40vw, 280px)',
+                  aspectRatio: '3/4',
                   background: '#111111',
                   transition: 'box-shadow 0.5s ease',
                 }}
                 whileHover={{
                   boxShadow: '0 8px 40px rgba(0,0,0,0.5), 0 0 25px rgba(201,168,76,0.06)',
                 }}
-                data-cursor="product"
               >
                 <Link href={`/products/${product.handle}`} className="block w-full h-full">
-                  {/* Product image with hover swap */}
                   <div className="absolute inset-0 overflow-hidden">
                     <Image
                       src={imageUrl}
                       alt={product.title}
                       fill
-                      sizes={isLarge ? '(max-width: 1024px) 100vw, 50vw' : '(max-width: 640px) 50vw, 25vw'}
-                      className="object-cover object-center transition-all duration-700 ease-out group-hover:scale-110"
-                      style={{ opacity: product.images && product.images.length > 1 ? undefined : 1 }}
-                      loading={index < 4 ? 'eager' : 'lazy'}
+                      sizes="(max-width: 640px) 50vw, 33vw"
+                      className="object-cover object-center transition-all duration-700 ease-out group-hover:scale-105"
+                      loading={index < 6 ? 'eager' : 'lazy'}
                       unoptimized
                     />
                     {product.images && product.images.length > 1 && (
@@ -245,20 +207,20 @@ export default function CollectionGrid({ products }: CollectionGridProps) {
                         src={product.images[1]}
                         alt={`${product.title} — alternate`}
                         fill
-                        sizes={isLarge ? '(max-width: 1024px) 100vw, 50vw' : '(max-width: 640px) 50vw, 25vw'}
-                        className="object-cover object-center transition-all duration-700 ease-out opacity-0 group-hover:opacity-100 group-hover:scale-110"
+                        sizes="(max-width: 640px) 50vw, 33vw"
+                        className="object-cover object-center transition-all duration-700 ease-out opacity-0 group-hover:opacity-100 group-hover:scale-105"
                         loading="lazy"
                         unoptimized
                       />
                     )}
                   </div>
 
-                  {/* Gradient overlay */}
+                  {/* Strong gradient for text readability on any image */}
                   <div
-                    className="absolute inset-0 transition-opacity duration-500 opacity-70 group-hover:opacity-90"
+                    className="absolute inset-0 transition-opacity duration-500"
                     style={{
                       background:
-                        'linear-gradient(to top, rgba(10,10,10,0.9) 0%, rgba(10,10,10,0.2) 55%, transparent 100%)',
+                        'linear-gradient(to top, rgba(5,5,5,0.95) 0%, rgba(5,5,5,0.6) 35%, rgba(5,5,5,0.1) 60%, transparent 100%)',
                     }}
                   />
 
@@ -284,24 +246,13 @@ export default function CollectionGrid({ products }: CollectionGridProps) {
                     style={{ border: '1px solid rgba(201,168,76,0.22)' }}
                   />
 
-                  {/* Product info */}
+                  {/* Product info — clean and minimal */}
                   <div className="absolute bottom-0 left-0 right-0 p-5 md:p-6 z-10">
-                    <span style={{
-                      fontFamily: 'var(--font-body, Inter, sans-serif)',
-                      fontSize: '0.5rem',
-                      letterSpacing: '0.2em',
-                      color: 'rgba(201,168,76,0.35)',
-                      textTransform: 'uppercase',
-                      display: 'block',
-                      marginBottom: '0.25rem',
-                    }}>
-                      EDITION {String(index + 1).padStart(2, '0')} / 200
-                    </span>
                     {product.category && (
                       <p
                         className="mb-1 text-[10px] tracking-[0.3em] uppercase"
                         style={{
-                          color: 'rgba(201,168,76,0.55)',
+                          color: 'rgba(201,168,76,0.6)',
                           fontFamily: 'var(--font-body, Inter, sans-serif)',
                         }}
                       >
@@ -310,11 +261,12 @@ export default function CollectionGrid({ products }: CollectionGridProps) {
                     )}
 
                     <h3
-                      className={`leading-tight mb-2 ${isLarge ? 'text-2xl md:text-3xl' : 'text-base md:text-lg'}`}
+                      className="text-base md:text-lg leading-tight mb-2"
                       style={{
                         fontFamily: 'var(--font-display, "Cormorant Garamond", serif)',
                         fontStyle: 'italic',
                         color: '#f5f5f5',
+                        textShadow: '0 2px 10px rgba(0,0,0,0.5)',
                       }}
                     >
                       {product.title}
@@ -338,7 +290,7 @@ export default function CollectionGrid({ products }: CollectionGridProps) {
                         <span
                           className="line-through text-sm"
                           style={{
-                            color: '#444444',
+                            color: '#666',
                             fontFamily: 'var(--font-body, Inter, sans-serif)',
                           }}
                         >
@@ -346,7 +298,6 @@ export default function CollectionGrid({ products }: CollectionGridProps) {
                         </span>
                       )}
 
-                      {/* Arrow — slides in on hover */}
                       <div
                         className="ml-auto flex items-center gap-1 transition-all duration-300 opacity-0 group-hover:opacity-100 translate-x-3 group-hover:translate-x-0"
                         style={{ color: '#c9a84c' }}
@@ -380,6 +331,5 @@ export default function CollectionGrid({ products }: CollectionGridProps) {
         )}
       </div>
     </section>
-    </MouseSpotlight>
   )
 }

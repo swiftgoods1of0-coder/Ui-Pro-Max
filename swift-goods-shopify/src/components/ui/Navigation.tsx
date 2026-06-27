@@ -693,19 +693,20 @@ export default function Navigation({ cartCount: cartCountProp }: NavigationProps
           gap: '2rem',
           transform: navHidden ? 'translateY(-100%)' : 'translateY(0)',
           transition: `transform 400ms ${LUXURY_EASE}`,
-          backgroundColor: '#c9a84c',
+          backgroundColor: '#F7F6F3',
           fontFamily: 'var(--font-body, Inter, sans-serif)',
           fontSize: '0.6875rem',
           fontWeight: 500,
           letterSpacing: '0.15em',
           textTransform: 'uppercase',
-          color: '#0a0a0a',
+          color: '#6b6560',
+          borderBottom: '1px solid rgba(0,0,0,0.04)',
         }}
       >
         <span>Complimentary Shipping Worldwide</span>
-        <span aria-hidden="true" className="announcement-hide-mobile" style={{ opacity: 0.4 }}>&#x2726;</span>
+        <span aria-hidden="true" className="announcement-hide-mobile" style={{ color: '#c9a84c', opacity: 0.5 }}>&#x2726;</span>
         <span className="announcement-hide-mobile">Limited Edition Pieces</span>
-        <span aria-hidden="true" className="announcement-hide-mobile" style={{ opacity: 0.4 }}>&#x2726;</span>
+        <span aria-hidden="true" className="announcement-hide-mobile" style={{ color: '#c9a84c', opacity: 0.5 }}>&#x2726;</span>
         <span className="announcement-hide-mobile">Authenticity Guaranteed</span>
       </div>
 
