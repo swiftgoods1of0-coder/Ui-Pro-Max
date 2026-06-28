@@ -37,6 +37,7 @@ build/
 .output/
 out/
 *.tsbuildinfo
+test-results/
 
 # Cache
 .cache/
