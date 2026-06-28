@@ -139,15 +139,7 @@ export default async function Home() {
       <div className="w-full h-24 md:h-36" style={{ background: 'linear-gradient(to bottom, var(--sg-frost, #F7F6F3), #050505)' }} />
 
       <ExclusiveAccess />
-
-      {/* Fade: dark → frost into ProductDrop */}
-      <div className="w-full h-24 md:h-36" style={{ background: 'linear-gradient(to bottom, #050505, var(--sg-frost, #F7F6F3))' }} />
-
       <ProductDrop />
-
-      {/* Fade: frost → dark into FinalCTA */}
-      <div className="w-full h-24 md:h-36" style={{ background: 'linear-gradient(to bottom, var(--sg-frost, #F7F6F3), #050505)' }} />
-
       <FinalCTA />
       <Footer />
     </main>

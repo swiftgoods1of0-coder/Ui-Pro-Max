@@ -28,7 +28,7 @@ const PANELS: Panel[] = [
   {
     type: 'video',
     src: '/brand/sg-street-luxury.mp4',
-    poster: '/brand/sg-fountain-night.jpeg',
+    poster: '/brand/sg-street-luxury-poster.jpeg',
     label: 'STREET LUXURY',
     heading: 'RAW\nUNCUT',
     body: 'Concrete walls. Clean lines. No filter necessary when the fit speaks for itself. This is what luxury looks like in motion.',
@@ -67,7 +67,7 @@ export default function CampaignEditorial() {
                 loop
                 playsInline
                 autoPlay
-                preload="metadata"
+                preload="auto"
                 style={{
                   position: 'absolute',
                   inset: 0,
