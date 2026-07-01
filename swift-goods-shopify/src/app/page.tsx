@@ -83,30 +83,22 @@ export const metadata = {
 export default async function Home() {
   const [adaptedProducts, shopifyCollections] = await Promise.all([
     loadProducts(),
-    getCollections(10),
+    getCollections(30),
   ])
   const featured = adaptedProducts.slice(0, 6)
 
-  const HIDDEN_TITLES = new Set([
-    'jackets', 'women', 'womens', "women's", 'hats',
-    'swift goods athletic club', '1 of 0', 'sg diamond', 'university',
-    'featured',
+  const ALLOWED_HANDLES = new Set([
+    ‘new-arrivals’,
+    ‘hoodies’,
+    ‘sweatsuits’,
+    ‘1-of-0’,
+    ‘sweatshirts’,
+    ‘sweatpants’,
+    ‘t-shirts’,
   ])
-  const HIDDEN_HANDLES = new Set([
-    'jackets', 'women', 'womens', 'hats',
-    'swift-goods-athletic-club', '1-of-0', 'sg-diamond', 'university',
-    'featured',
-  ])
-
-  // Strip all quote characters before comparing so curly/smart quotes don't bypass the filter
-  const normalizeTitle = (s: string) =>
-    s.toLowerCase().replace(/[“”‘’"']/g, '').trim()
 
   const lookbookCollections: LookbookCollection[] = shopifyCollections
-    .filter((c) =>
-      !HIDDEN_TITLES.has(normalizeTitle(c.title)) &&
-      !HIDDEN_HANDLES.has(c.handle.toLowerCase())
-    )
+    .filter((c) => ALLOWED_HANDLES.has(c.handle.toLowerCase()))
     .slice(0, 5)
     .map((c) => ({
       handle: c.handle,
