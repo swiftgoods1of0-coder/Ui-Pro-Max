@@ -11,16 +11,26 @@ export const metadata = {
   description: 'Explore all Swift Goods collections. Comfort is luxury.',
 }
 
-const HIDDEN_COLLECTIONS = new Set([
+const HIDDEN_TITLES = new Set([
   'jackets', 'women', 'womens', "women's", 'hats',
-  'swift goods athletic club', '1 of 0', '"1 of 0"',
-  'sg diamond', '"sg diamond"', 'university',
+  'swift goods athletic club', '1 of 0', 'sg diamond', 'university',
+  'featured',
 ])
+const HIDDEN_HANDLES = new Set([
+  'jackets', 'women', 'womens', 'hats',
+  'swift-goods-athletic-club', '1-of-0', 'sg-diamond', 'university',
+  'featured',
+])
+
+const normalizeTitle = (s: string) =>
+  s.toLowerCase().replace(/[""''"']/g, '').trim()
 
 export default async function CollectionsPage() {
   const allCollections = await getCollections(20)
   const collections = allCollections.filter(
-    (c) => !HIDDEN_COLLECTIONS.has(c.title.toLowerCase()) && !HIDDEN_COLLECTIONS.has(c.handle)
+    (c) =>
+      !HIDDEN_TITLES.has(normalizeTitle(c.title)) &&
+      !HIDDEN_HANDLES.has(c.handle.toLowerCase())
   )
 
   return (

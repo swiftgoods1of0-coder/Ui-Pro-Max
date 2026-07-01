@@ -87,14 +87,27 @@ export default async function Home() {
   ])
   const featured = adaptedProducts.slice(0, 6)
 
-  const HIDDEN_COLLECTIONS = new Set([
+  const HIDDEN_TITLES = new Set([
     'jackets', 'women', 'womens', "women's", 'hats',
-    'swift goods athletic club', '1 of 0', '"1 of 0"',
-    'sg diamond', '"sg diamond"', 'university',
+    'swift goods athletic club', '1 of 0', 'sg diamond', 'university',
+    'featured',
+  ])
+  const HIDDEN_HANDLES = new Set([
+    'jackets', 'women', 'womens', 'hats',
+    'swift-goods-athletic-club', '1-of-0', 'sg-diamond', 'university',
+    'featured',
   ])
 
+  // Strip all quote characters before comparing so curly/smart quotes don't bypass the filter
+  const normalizeTitle = (s: string) =>
+    s.toLowerCase().replace(/[“”‘’"']/g, '').trim()
+
   const lookbookCollections: LookbookCollection[] = shopifyCollections
-    .filter((c) => !HIDDEN_COLLECTIONS.has(c.title.toLowerCase()) && !HIDDEN_COLLECTIONS.has(c.handle))
+    .filter((c) =>
+      !HIDDEN_TITLES.has(normalizeTitle(c.title)) &&
+      !HIDDEN_HANDLES.has(c.handle.toLowerCase())
+    )
+    .slice(0, 5)
     .map((c) => ({
       handle: c.handle,
       title: c.title,
