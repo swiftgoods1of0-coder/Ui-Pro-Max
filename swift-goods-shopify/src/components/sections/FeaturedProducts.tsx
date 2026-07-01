@@ -69,7 +69,6 @@ function ProductCard({ product, index }: ProductCardProps) {
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           className="object-cover transition-all duration-[600ms] ease-out group-hover:scale-110"
           style={{ opacity: hovered && hasSecondImage ? 0 : 1 }}
-          unoptimized
         />
         {hasSecondImage && (
           <Image
@@ -79,7 +78,6 @@ function ProductCard({ product, index }: ProductCardProps) {
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             className="object-cover transition-all duration-[600ms] ease-out group-hover:scale-110"
             style={{ opacity: hovered ? 1 : 0 }}
-            unoptimized
           />
         )}
 

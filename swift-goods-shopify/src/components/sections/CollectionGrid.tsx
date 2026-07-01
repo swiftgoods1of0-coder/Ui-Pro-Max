@@ -165,7 +165,6 @@ export default function CollectionGrid({ products }: CollectionGridProps) {
                       sizes="(max-width: 640px) 50vw, 33vw"
                       className="object-cover object-center transition-all duration-700 ease-out group-hover:scale-105"
                       loading={index < 6 ? 'eager' : 'lazy'}
-                      unoptimized
                     />
                     {product.images && product.images.length > 1 && (
                       <Image
@@ -175,7 +174,6 @@ export default function CollectionGrid({ products }: CollectionGridProps) {
                         sizes="(max-width: 640px) 50vw, 33vw"
                         className="object-cover object-center transition-all duration-700 ease-out opacity-0 group-hover:opacity-100 group-hover:scale-105"
                         loading="lazy"
-                        unoptimized
                       />
                     )}
                   </div>

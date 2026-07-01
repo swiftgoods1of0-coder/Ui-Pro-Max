@@ -257,7 +257,7 @@ export default function CinematicStrip() {
                 src={frame.src}
                 alt={frame.title}
                 fill
-                sizes="70vw"
+                sizes={idx === 0 || idx === 2 ? '70vw' : '45vw'}
                 className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                 quality={90}
               />
