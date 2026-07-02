@@ -115,8 +115,8 @@ export default function ProductPageClient({ product }: { product: ShopifyProduct
               style={{
                 position: 'relative',
                 width: '100%',
-                aspectRatio: '3 / 4',
-                background: '#111',
+                aspectRatio: '1 / 1',
+                background: '#0a0a0a',
                 marginBottom: '1rem',
                 overflow: 'hidden',
               }}
@@ -127,7 +127,7 @@ export default function ProductPageClient({ product }: { product: ShopifyProduct
                   alt={currentImage.altText || product.title}
                   fill
                   sizes="(max-width: 768px) 100vw, 50vw"
-                  style={{ objectFit: 'cover' }}
+                  style={{ objectFit: 'contain', padding: '1rem' }}
                   priority
                 />
               )}
