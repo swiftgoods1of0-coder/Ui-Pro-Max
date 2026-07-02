@@ -102,16 +102,10 @@ export default function CartDrawer() {
   const lines = cart?.lines.nodes ?? []
   const subtotal = cart?.cost.subtotalAmount
 
-  // Force checkout to always go to the native Shopify domain.
-  // If swiftgoodsclothingbrand.com is set as primary in Shopify admin,
-  // Shopify returns that domain in checkoutUrl — but the Next.js app
-  // lives there, so /cart/c/... would 404. Swap to myshopify.com.
-  const rawCheckoutUrl = cart?.checkoutUrl
-  const checkoutUrl = rawCheckoutUrl
-    ? rawCheckoutUrl.replace(
-        /^https?:\/\/[^/]+/,
-        'https://swiftgoodsclothing.myshopify.com'
-      )
+  // Route checkout through our API so the server always corrects the domain
+  // and redirects to swiftgoodsclothing.myshopify.com — never the custom domain.
+  const checkoutUrl = cart?.id
+    ? `/api/checkout?cartId=${encodeURIComponent(cart.id)}`
     : undefined
 
   return (
