@@ -8,11 +8,11 @@ import ClientRoot from '@/components/ui/ClientRoot'
 // ============================================================
 const cormorantGaramond = Cormorant_Garamond({
   subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700'],
+  weight: ['400', '600'],
   style: ['normal', 'italic'],
   variable: '--font-display',
   display: 'swap',
-  preload: true,
+  preload: false,
 })
 
 const bebasNeue = Bebas_Neue({
@@ -25,7 +25,7 @@ const bebasNeue = Bebas_Neue({
 
 const inter = Inter({
   subsets: ['latin'],
-  weight: ['300', '400', '500', '600'],
+  weight: ['400', '500', '600'],
   variable: '--font-body',
   display: 'swap',
   preload: true,

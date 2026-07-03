@@ -3,38 +3,16 @@
 import React, { useState, useEffect, Component } from 'react'
 import type { ReactNode } from 'react'
 import dynamic from 'next/dynamic'
-import { SmoothScrollProvider } from '@/lib/smooth-scroll'
 import { CartProvider } from '@/context/CartContext'
 
-const CartDrawer = dynamic(
-  () => import('./CartDrawer'),
-  { ssr: false }
-)
+const CartDrawer = dynamic(() => import('./CartDrawer'), { ssr: false })
+const Preloader  = dynamic(() => import('./Preloader'),  { ssr: false })
 
-const Preloader = dynamic(
-  () => import('./Preloader'),
-  { ssr: false }
-)
-
-const LiquidBackground = dynamic(
-  () => import('./LiquidBackground'),
-  { ssr: false }
-)
-
-const CursorTrail = dynamic(
-  () => import('./CursorTrail'),
-  { ssr: false }
-)
-
-const CustomCursor = dynamic(
-  () => import('./CustomCursor'),
-  { ssr: false }
-)
-
-const GoldParticleField = dynamic(
-  () => import('./GoldParticleField'),
-  { ssr: false }
-)
+// Heavy effects — loaded only after the page content is visible
+const LiquidBackground  = dynamic(() => import('./LiquidBackground'),  { ssr: false })
+const CursorTrail       = dynamic(() => import('./CursorTrail'),       { ssr: false })
+const CustomCursor      = dynamic(() => import('./CustomCursor'),       { ssr: false })
+const GoldParticleField = dynamic(() => import('./GoldParticleField'),  { ssr: false })
 
 interface ErrorBoundaryState {
   hasError: boolean
@@ -69,8 +47,6 @@ class ErrorBoundary extends Component<{ children: ReactNode }, ErrorBoundaryStat
             borderRadius: '4px', whiteSpace: 'pre-wrap',
           }}>
             {this.state.error?.message}
-            {'\n\n'}
-            {this.state.error?.stack}
           </pre>
         </div>
       )
@@ -80,32 +56,40 @@ class ErrorBoundary extends Component<{ children: ReactNode }, ErrorBoundaryStat
 }
 
 export default function ClientRoot({ children }: { children: ReactNode }) {
-  const [done, setDone] = useState(false)
+  const [preloaderDone, setPreloaderDone] = useState(false)
   const [mounted, setMounted] = useState(false)
+  const [effectsReady, setEffectsReady] = useState(false)
 
   useEffect(() => {
     setMounted(true)
-    const timer = setTimeout(() => {
-      import('gsap/ScrollTrigger').then(({ ScrollTrigger }) => {
-        ScrollTrigger.refresh()
-      })
-    }, 500)
-    return () => clearTimeout(timer)
   }, [])
+
+  // Mount visual effects after preloader exits so they never compete
+  // with first-paint — the page is fully visible before these start
+  useEffect(() => {
+    if (!preloaderDone) return
+    const id = setTimeout(() => setEffectsReady(true), 300)
+    return () => clearTimeout(id)
+  }, [preloaderDone])
 
   return (
     <div id="sg-app">
       <ErrorBoundary>
         <CartProvider>
-          <SmoothScrollProvider>
-            {mounted && <LiquidBackground />}
-            {mounted && <CursorTrail />}
-            {mounted && <CustomCursor />}
-            {mounted && <GoldParticleField />}
-            {mounted && <CartDrawer />}
-            {!done && <Preloader onComplete={() => setDone(true)} />}
-            {children}
-          </SmoothScrollProvider>
+          {/* Cart is critical — load it once mounted */}
+          {mounted && <CartDrawer />}
+
+          {/* Preloader — show first, then reveal page */}
+          {!preloaderDone && <Preloader onComplete={() => setPreloaderDone(true)} />}
+
+          {/* Page content renders under preloader, paints instantly after it exits */}
+          {children}
+
+          {/* Visual effects — deferred until after page is visible */}
+          {effectsReady && <LiquidBackground />}
+          {effectsReady && <CursorTrail />}
+          {effectsReady && <CustomCursor />}
+          {effectsReady && <GoldParticleField />}
         </CartProvider>
       </ErrorBoundary>
     </div>

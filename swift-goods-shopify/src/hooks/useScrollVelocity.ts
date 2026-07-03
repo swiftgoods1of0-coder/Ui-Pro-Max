@@ -1,64 +1,48 @@
 'use client';
 
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
-const SMOOTHING_FACTOR = 0.15;
-const MAX_SCROLL_SPEED = 50;
+const SMOOTHING = 0.15;
+const MAX_SPEED = 50;
+const THRESHOLD = 0.005;
 
 export function useScrollVelocity(): number {
   const [velocity, setVelocity] = useState(0);
-  const lastScrollY = useRef(0);
-  const lastTime = useRef(0);
-  const smoothedVelocity = useRef(0);
-  const rafId = useRef<number>(0);
-
-  const lerp = useCallback((current: number, target: number, factor: number): number => {
-    return current + (target - current) * factor;
-  }, []);
+  const state = useRef({ lastY: 0, lastT: 0, smoothed: 0, rafId: 0 });
 
   useEffect(() => {
-    lastScrollY.current = window.scrollY;
-    lastTime.current = performance.now();
+    const s = state.current;
+    s.lastY = window.scrollY;
+    s.lastT = performance.now();
 
-    const update = () => {
+    const tick = () => {
       const now = performance.now();
-      const dt = now - lastTime.current;
+      const dt = now - s.lastT;
 
       if (dt > 0) {
-        const currentScrollY = window.scrollY;
-        const delta = currentScrollY - lastScrollY.current;
-        const rawVelocity = (delta / dt) * 16;
+        const currentY = window.scrollY;
+        const raw = ((currentY - s.lastY) / dt) * 16 / MAX_SPEED;
+        const clamped = Math.max(-1, Math.min(1, raw));
+        s.smoothed = s.smoothed + (clamped - s.smoothed) * SMOOTHING;
 
-        const normalizedVelocity = Math.max(
-          -1,
-          Math.min(1, rawVelocity / MAX_SCROLL_SPEED)
-        );
+        if (Math.abs(s.smoothed) < THRESHOLD) s.smoothed = 0;
 
-        smoothedVelocity.current = lerp(
-          smoothedVelocity.current,
-          normalizedVelocity,
-          SMOOTHING_FACTOR
-        );
+        // Only trigger a React re-render when value meaningfully changes
+        setVelocity(prev => {
+          const next = s.smoothed;
+          return Math.abs(next - prev) > THRESHOLD ? next : prev;
+        });
 
-        if (Math.abs(smoothedVelocity.current) < 0.001) {
-          smoothedVelocity.current = 0;
-        }
-
-        setVelocity(smoothedVelocity.current);
-
-        lastScrollY.current = currentScrollY;
-        lastTime.current = now;
+        s.lastY = currentY;
+        s.lastT = now;
       }
 
-      rafId.current = requestAnimationFrame(update);
+      s.rafId = requestAnimationFrame(tick);
     };
 
-    rafId.current = requestAnimationFrame(update);
-
-    return () => {
-      cancelAnimationFrame(rafId.current);
-    };
-  }, [lerp]);
+    s.rafId = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(s.rafId);
+  }, []);
 
   return velocity;
 }

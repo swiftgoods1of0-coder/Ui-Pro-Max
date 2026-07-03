@@ -769,6 +769,11 @@ button:focus-visible {
   to { transform: rotate(360deg); }
 }
 
+@keyframes sg-progress {
+  from { transform: scaleX(0); transform-origin: left; }
+  to   { transform: scaleX(1); transform-origin: left; }
+}
+
 @keyframes sg-spin-cw {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }

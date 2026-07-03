@@ -1,6 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  transpilePackages: ['three'],
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: 'cdn.shopify.com' },
@@ -9,7 +8,7 @@ const nextConfig = {
     formats: ['image/avif', 'image/webp'],
   },
   experimental: {
-    optimizePackageImports: ['@react-three/fiber', '@react-three/drei'],
+    optimizePackageImports: ['framer-motion', 'gsap'],
   },
   // Proxy Shopify checkout paths transparently so checkout works when the
   // custom domain (swiftgoodsclothingbrand.com) is also the Shopify primary
