@@ -88,13 +88,13 @@ export default async function Home() {
   const featured = adaptedProducts.slice(0, 6)
 
   const ALLOWED_HANDLES = new Set([
-    ‘new-arrivals’,
-    ‘hoodies’,
-    ‘sweatsuits’,
-    ‘1-of-0’,
-    ‘sweatshirts’,
-    ‘sweatpants’,
-    ‘t-shirts’,
+    'new-arrivals',
+    'hoodies',
+    'sweatsuits',
+    '1-of-0',
+    'sweatshirts',
+    'sweatpants',
+    't-shirts',
   ])
 
   const lookbookCollections: LookbookCollection[] = shopifyCollections
