@@ -44,7 +44,7 @@ export default function ProductPageClient({ product }: { product: ShopifyProduct
     <main className="bg-sg-black min-h-screen">
       <Navigation cartCount={totalQuantity} />
 
-      <div style={{ paddingTop: '120px' }}>
+      <div style={{ paddingTop: '88px' }}>
         {/* Breadcrumb */}
         <div
           style={{
