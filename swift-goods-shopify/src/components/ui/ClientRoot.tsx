@@ -4,6 +4,7 @@ import React, { useState, useEffect, Component } from 'react'
 import type { ReactNode } from 'react'
 import dynamic from 'next/dynamic'
 import { CartProvider } from '@/context/CartContext'
+import { SmoothScrollProvider } from '@/lib/smooth-scroll'
 
 const CartDrawer = dynamic(() => import('./CartDrawer'), { ssr: false })
 const Preloader  = dynamic(() => import('./Preloader'),  { ssr: false })
@@ -76,20 +77,22 @@ export default function ClientRoot({ children }: { children: ReactNode }) {
     <div id="sg-app">
       <ErrorBoundary>
         <CartProvider>
-          {/* Cart is critical — load it once mounted */}
-          {mounted && <CartDrawer />}
+          <SmoothScrollProvider>
+            {/* Cart is critical — load it once mounted */}
+            {mounted && <CartDrawer />}
 
-          {/* Preloader — show first, then reveal page */}
-          {!preloaderDone && <Preloader onComplete={() => setPreloaderDone(true)} />}
+            {/* Preloader — show first, then reveal page */}
+            {!preloaderDone && <Preloader onComplete={() => setPreloaderDone(true)} />}
 
-          {/* Page content renders under preloader, paints instantly after it exits */}
-          {children}
+            {/* Page content renders under preloader, paints instantly after it exits */}
+            {children}
 
-          {/* Visual effects — deferred until after page is visible */}
-          {effectsReady && <LiquidBackground />}
-          {effectsReady && <CursorTrail />}
-          {effectsReady && <CustomCursor />}
-          {effectsReady && <GoldParticleField />}
+            {/* Visual effects — deferred until after page is visible */}
+            {effectsReady && <LiquidBackground />}
+            {effectsReady && <CursorTrail />}
+            {effectsReady && <CustomCursor />}
+            {effectsReady && <GoldParticleField />}
+          </SmoothScrollProvider>
         </CartProvider>
       </ErrorBoundary>
     </div>

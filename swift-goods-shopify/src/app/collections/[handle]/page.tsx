@@ -6,7 +6,7 @@ import Link from 'next/link'
 import Navigation from '@/components/ui/Navigation'
 import Footer from '@/components/ui/Footer'
 
-export const dynamic = 'force-dynamic'
+export const revalidate = 60
 
 interface PageProps {
   params: Promise<{ handle: string }>

@@ -19,14 +19,7 @@ export default function HeroSection() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Ken Burns slow zoom on background
-      if (bgImageRef.current) {
-        gsap.fromTo(
-          bgImageRef.current,
-          { scale: 1.0 },
-          { scale: 1.12, duration: 20, ease: 'none', repeat: -1, yoyo: true }
-        )
-      }
+      // Ken Burns handled by CSS animation — GPU compositor, no JS overhead
 
       // SG monogram: fade in
       if (monogramRef.current) {
@@ -117,7 +110,7 @@ export default function HeroSection() {
       style={{ height: '100vh', minHeight: '100vh', background: '#050505' }}
     >
       {/* ── Background: Night Supra photograph ── */}
-      <div ref={bgImageRef} className="absolute inset-0 z-0" style={{ willChange: 'transform' }}>
+      <div ref={bgImageRef} className="absolute inset-0 z-0" style={{ animation: 'sg-ken-burns 20s ease-in-out infinite alternate' }}>
         <Image
           src="/brand/sg-parking-lot-night.jpeg"
           alt="Swift Goods — night session"

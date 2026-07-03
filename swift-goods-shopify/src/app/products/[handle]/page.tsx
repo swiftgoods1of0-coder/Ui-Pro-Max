@@ -3,7 +3,7 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import ProductPageClient from './ProductPageClient'
 
-export const dynamic = 'force-dynamic'
+export const revalidate = 60
 
 interface PageProps {
   params: Promise<{ handle: string }>

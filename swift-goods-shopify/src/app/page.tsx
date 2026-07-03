@@ -1,25 +1,25 @@
+import dynamic from 'next/dynamic'
 import Navigation from '@/components/ui/Navigation'
-import Footer from '@/components/ui/Footer'
 import HeroSection from '@/components/sections/HeroSection'
-import CampaignEditorial from '@/components/sections/CampaignEditorial'
-import SignatureMoment from '@/components/sections/SignatureMoment'
-import CinematicStrip from '@/components/sections/CinematicStrip'
-import Lookbook from '@/components/sections/Lookbook'
 import FeaturedProducts from '@/components/sections/FeaturedProducts'
-import CollectionGrid from '@/components/sections/CollectionGrid'
-import FinalCTA from '@/components/sections/FinalCTA'
-import SocialProof from '@/components/sections/SocialProof'
-import ProductDrop from '@/components/sections/ProductDrop'
-import BrandStatement from '@/components/sections/BrandStatement'
-import ExclusiveAccess from '@/components/sections/ExclusiveAccess'
-import Craftsmanship from '@/components/sections/Craftsmanship'
-import AnimatedDivider from '@/components/ui/AnimatedDivider'
-import { getProducts, getCollections, MOCK_PRODUCTS, type ShopifyProduct as FullShopifyProduct } from '@/lib/shopify'
+import Footer from '@/components/ui/Footer'
+import { getProducts, getCollections, type ShopifyProduct as FullShopifyProduct } from '@/lib/shopify'
 import type { LookbookCollection } from '@/components/sections/Lookbook'
 
-// The section components (FeaturedProducts, CollectionGrid) use a simplified
-// product shape with a flat `image` string. We adapt the full Shopify type here
-// on the server — zero runtime cost.
+// Below-fold sections — lazy loaded so they don't block first paint
+const CampaignEditorial = dynamic(() => import('@/components/sections/CampaignEditorial'))
+const BrandStatement    = dynamic(() => import('@/components/sections/BrandStatement'))
+const AnimatedDivider   = dynamic(() => import('@/components/ui/AnimatedDivider'))
+const CollectionGrid    = dynamic(() => import('@/components/sections/CollectionGrid'))
+const Craftsmanship     = dynamic(() => import('@/components/sections/Craftsmanship'))
+const SignatureMoment   = dynamic(() => import('@/components/sections/SignatureMoment'))
+const CinematicStrip    = dynamic(() => import('@/components/sections/CinematicStrip'))
+const Lookbook          = dynamic(() => import('@/components/sections/Lookbook'))
+const SocialProof       = dynamic(() => import('@/components/sections/SocialProof'))
+const ExclusiveAccess   = dynamic(() => import('@/components/sections/ExclusiveAccess'))
+const ProductDrop       = dynamic(() => import('@/components/sections/ProductDrop'))
+const FinalCTA          = dynamic(() => import('@/components/sections/FinalCTA'))
+
 interface SectionProduct {
   id: string
   title: string
@@ -53,21 +53,9 @@ function adaptProduct(p: FullShopifyProduct): SectionProduct {
   }
 }
 
-async function loadProducts(): Promise<SectionProduct[]> {
-  const products = await getProducts(20)
-  const adapted = products.map(adaptProduct)
-
-  const seen = new Set<string>()
-  return adapted.filter((p) => {
-    if (seen.has(p.handle)) return false
-    seen.add(p.handle)
-    const price = parseFloat(p.price)
-    if (!price || price <= 0) return false
-    return true
-  })
-}
-
-export const dynamic = 'force-dynamic'
+// Cache pages at the edge for 60 seconds — massive speed boost vs force-dynamic
+// (which hit the Shopify API fresh on every single request)
+export const revalidate = 60
 
 export const metadata = {
   title: 'Swift Goods | Comfort Is Luxury.',
@@ -81,10 +69,16 @@ export const metadata = {
 }
 
 export default async function Home() {
-  const [adaptedProducts, shopifyCollections] = await Promise.all([
-    loadProducts(),
+  const [allProducts, shopifyCollections] = await Promise.all([
+    getProducts(20),
     getCollections(30),
   ])
+
+  const adaptedProducts = allProducts.map(adaptProduct).filter((p) => {
+    const price = parseFloat(p.price)
+    return price > 0
+  })
+
   const featured = adaptedProducts.slice(0, 6)
 
   const ALLOWED_HANDLES = new Set([
@@ -111,36 +105,26 @@ export default async function Home() {
       <Navigation />
       <HeroSection />
 
-      {/* Fade: dark → frost */}
       <div className="w-full h-24 md:h-36" style={{ background: 'linear-gradient(to bottom, #050505, var(--sg-frost, #F7F6F3))' }} />
 
-      {/* Products FIRST — show the goods right after the hero */}
       <FeaturedProducts products={featured} />
 
-      {/* Fade: frost → dark into editorial */}
       <div className="w-full h-24 md:h-36" style={{ background: 'linear-gradient(to bottom, var(--sg-frost, #F7F6F3), #0a0a0a)' }} />
 
       <CampaignEditorial />
-
       <BrandStatement />
       <AnimatedDivider />
-
-      {/* Full catalog — right after the brand story */}
       <CollectionGrid products={adaptedProducts} />
-
       <Craftsmanship />
       <SignatureMoment />
       <CinematicStrip />
       <AnimatedDivider />
-
       <Lookbook collections={lookbookCollections} />
 
-      {/* Fade: dark → frost */}
       <div className="w-full h-24 md:h-36" style={{ background: 'linear-gradient(to bottom, #050505, var(--sg-frost, #F7F6F3))' }} />
 
       <SocialProof />
 
-      {/* Fade: frost → dark */}
       <div className="w-full h-24 md:h-36" style={{ background: 'linear-gradient(to bottom, var(--sg-frost, #F7F6F3), #050505)' }} />
 
       <ExclusiveAccess />

@@ -769,6 +769,11 @@ button:focus-visible {
   to { transform: rotate(360deg); }
 }
 
+@keyframes sg-ken-burns {
+  from { transform: scale(1.0); }
+  to   { transform: scale(1.12); }
+}
+
 @keyframes sg-progress {
   from { transform: scaleX(0); transform-origin: left; }
   to   { transform: scaleX(1); transform-origin: left; }
