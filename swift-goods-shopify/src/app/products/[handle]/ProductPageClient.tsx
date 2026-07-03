@@ -127,7 +127,7 @@ export default function ProductPageClient({ product }: { product: ShopifyProduct
                   alt={currentImage.altText || product.title}
                   fill
                   sizes="(max-width: 768px) 100vw, 50vw"
-                  style={{ objectFit: 'contain', padding: '1rem' }}
+                  style={{ objectFit: 'cover' }}
                   priority
                 />
               )}
