@@ -170,7 +170,7 @@ export default async function CollectionPage({ params }: PageProps) {
                       alt={product.title}
                       fill
                       sizes="(max-width: 640px) 50vw, 33vw"
-                      className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-110"
+                      className="object-contain transition-transform duration-700 ease-out group-hover:scale-110"
                       loading={index < 6 ? 'eager' : 'lazy'}
                     />
                   )}

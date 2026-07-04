@@ -267,7 +267,7 @@ export default function CartDrawer() {
                               alt={merchandise.product.title}
                               fill
                               sizes="80px"
-                              style={{ objectFit: 'cover' }}
+                              style={{ objectFit: 'contain' }}
                             />
                           </Link>
                         )}

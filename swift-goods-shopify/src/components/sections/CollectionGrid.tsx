@@ -163,7 +163,7 @@ export default function CollectionGrid({ products }: CollectionGridProps) {
                       alt={product.title}
                       fill
                       sizes="(max-width: 640px) 50vw, 33vw"
-                      className="object-cover object-center transition-all duration-700 ease-out group-hover:scale-105"
+                      className="object-contain transition-all duration-700 ease-out group-hover:scale-105"
                       loading={index < 6 ? 'eager' : 'lazy'}
                     />
                     {product.images && product.images.length > 1 && (
@@ -172,7 +172,7 @@ export default function CollectionGrid({ products }: CollectionGridProps) {
                         alt={`${product.title} — alternate`}
                         fill
                         sizes="(max-width: 640px) 50vw, 33vw"
-                        className="object-cover object-center transition-all duration-700 ease-out opacity-0 group-hover:opacity-100 group-hover:scale-105"
+                        className="object-contain transition-all duration-700 ease-out opacity-0 group-hover:opacity-100 group-hover:scale-105"
                         loading="lazy"
                       />
                     )}
