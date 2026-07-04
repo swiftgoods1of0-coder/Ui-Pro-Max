@@ -57,7 +57,7 @@ export function SmoothScrollProvider({ children }: { children: ReactNode }) {
     import('lenis')
       .then(({ default: LenisClass }) => {
         lenis = new (LenisClass as unknown as new (opts: Record<string, unknown>) => Lenis)({
-          duration: 1.4,
+          duration: 1.1,
           easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
           orientation: 'vertical',
           gestureOrientation: 'vertical',

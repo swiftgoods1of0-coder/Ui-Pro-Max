@@ -104,6 +104,15 @@ export default function CustomCursor() {
       circleRef.current.style.transform = `translate(${lerpPos.current.x}px, ${lerpPos.current.y}px)`;
     }
 
+    // Pause the loop once the circle has converged — no GPU work when idle
+    if (
+      Math.abs(mousePos.current.x - lerpPos.current.x) < 0.15 &&
+      Math.abs(mousePos.current.y - lerpPos.current.y) < 0.15
+    ) {
+      rafHandle.current = 0;
+      return;
+    }
+
     rafHandle.current = requestAnimationFrame(animate);
   }, []);
 
@@ -144,6 +153,11 @@ export default function CustomCursor() {
         // Use elementFromPoint for accurate target even through overlapping layers
         const el = document.elementFromPoint(e.clientX, e.clientY);
         applyState(detectState(el));
+      }
+
+      // Restart the loop if it paused after convergence
+      if (!rafHandle.current) {
+        rafHandle.current = requestAnimationFrame(animate);
       }
     };
 

@@ -110,7 +110,7 @@ export default function HeroSection() {
       style={{ height: '100vh', minHeight: '100vh', background: '#050505' }}
     >
       {/* ── Background: Night Supra photograph ── */}
-      <div ref={bgImageRef} className="absolute inset-0 z-0" style={{ animation: 'sg-ken-burns 20s ease-in-out infinite alternate' }}>
+      <div ref={bgImageRef} className="absolute inset-0 z-0" style={{ animation: 'sg-ken-burns 20s ease-in-out infinite alternate', willChange: 'transform' }}>
         <Image
           src="/brand/sg-parking-lot-night.jpeg"
           alt="Swift Goods — night session"

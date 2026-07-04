@@ -77,17 +77,23 @@ export default function GoldParticleField() {
       })
     }
 
-    const GOLD_HUES = [
-      [201, 168, 76],
-      [230, 200, 112],
-      [200, 170, 138],
-      [255, 235, 150],
-    ]
+    // Pre-cached RGB strings — avoids allocating array + string on every draw call
+    const GOLD_RGB = ['201,168,76', '230,200,112', '200,170,138', '255,235,150'] as const
 
     const INTERACT_RADIUS = 180
     const INTERACT_RADIUS_SQ = INTERACT_RADIUS * INTERACT_RADIUS
 
-    const draw = () => {
+    // Cached gradient — recreated only when mouse moves >5px
+    let gradX = -1, gradY = -1, cachedGrad: CanvasGradient | null = null
+
+    let lastTs = 0
+    const draw = (ts: number) => {
+      rafRef.current = requestAnimationFrame(draw)
+
+      // ~30fps cap — halves CPU/GPU work vs 60fps with no perceptible difference
+      if (ts - lastTs < 33) return
+      lastTs = ts
+
       ctx.clearRect(0, 0, w, h)
       const mx = mouseRef.current.x
       const my = mouseRef.current.y
@@ -142,29 +148,33 @@ export default function GoldParticleField() {
         if (p.y < -10) p.y = h + 10
         if (p.y > h + 10) p.y = -10
 
-        const hue = GOLD_HUES[Math.floor(p.shimmer) % GOLD_HUES.length]
+        const rgb = GOLD_RGB[Math.floor(p.shimmer) & 3]
         ctx.beginPath()
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2)
-        ctx.fillStyle = `rgba(${hue[0]}, ${hue[1]}, ${hue[2]}, ${p.opacity})`
+        ctx.fillStyle = `rgba(${rgb},${p.opacity.toFixed(2)})`
         ctx.fill()
 
         if (p.size > 1.5 && p.opacity > 0.15) {
           ctx.beginPath()
           ctx.arc(p.x, p.y, p.size * 3, 0, Math.PI * 2)
-          ctx.fillStyle = `rgba(${hue[0]}, ${hue[1]}, ${hue[2]}, ${p.opacity * 0.08})`
+          ctx.fillStyle = `rgba(${rgb},${(p.opacity * 0.08).toFixed(3)})`
           ctx.fill()
         }
       }
 
       if (mx > 0 && my > 0) {
-        const gradient = ctx.createRadialGradient(mx, my, 0, mx, my, 100)
-        gradient.addColorStop(0, 'rgba(201, 168, 76, 0.03)')
-        gradient.addColorStop(1, 'rgba(201, 168, 76, 0)')
-        ctx.fillStyle = gradient
-        ctx.fillRect(mx - 100, my - 100, 200, 200)
+        // Recreate gradient only when mouse moved significantly
+        if (Math.abs(mx - gradX) > 5 || Math.abs(my - gradY) > 5) {
+          cachedGrad = ctx.createRadialGradient(mx, my, 0, mx, my, 100)
+          cachedGrad.addColorStop(0, 'rgba(201,168,76,0.03)')
+          cachedGrad.addColorStop(1, 'rgba(201,168,76,0)')
+          gradX = mx; gradY = my
+        }
+        if (cachedGrad) {
+          ctx.fillStyle = cachedGrad
+          ctx.fillRect(mx - 100, my - 100, 200, 200)
+        }
       }
-
-      rafRef.current = requestAnimationFrame(draw)
     }
 
     rafRef.current = requestAnimationFrame(draw)

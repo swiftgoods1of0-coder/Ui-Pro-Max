@@ -41,7 +41,6 @@ export default function CursorTrail() {
       const count = 2 + Math.floor(Math.random() * 2)
       for (let i = 0; i < count; i++) {
         if (particles.length >= 250) {
-          // Remove oldest
           particles.shift()
         }
         particles.push({
@@ -54,11 +53,12 @@ export default function CursorTrail() {
           hue: Math.floor(Math.random() * GOLD_HUES.length),
         })
       }
+      // Restart draw loop if it paused (no active particles)
+      if (!animId) animId = requestAnimationFrame(draw)
     }
     window.addEventListener('mousemove', onMouseMove, { passive: true })
 
     function draw() {
-      animId = requestAnimationFrame(draw)
       ctx!.clearRect(0, 0, canvas!.width, canvas!.height)
 
       ctx!.save()
@@ -90,8 +90,15 @@ export default function CursorTrail() {
 
       ctx!.globalAlpha = 1
       ctx!.restore()
+
+      // Only keep the loop alive while particles exist — stops wasting GPU when idle
+      if (particles.length > 0) {
+        animId = requestAnimationFrame(draw)
+      } else {
+        animId = 0
+      }
     }
-    animId = requestAnimationFrame(draw)
+    // Don't start the loop immediately — it starts on first mouse move
 
     return () => {
       cancelAnimationFrame(animId)
