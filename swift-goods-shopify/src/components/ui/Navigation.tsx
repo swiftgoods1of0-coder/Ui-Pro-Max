@@ -368,10 +368,10 @@ const overlayVariants = {
     opacity: 1,
     clipPath: 'inset(0 0 0% 0)',
     transition: {
-      duration: 0.55,
+      duration: 0.4,
       ease: [0.25, 0.46, 0.45, 0.94],
-      staggerChildren: 0.07,
-      delayChildren: 0.25,
+      staggerChildren: 0.04,
+      delayChildren: 0.1,
     },
   },
   exit: {
@@ -424,13 +424,8 @@ function MobileLinkItem({ link, onClose }: { link: NavLink; onClose: () => void 
           textDecoration: 'none',
           cursor: 'pointer',
           userSelect: 'none',
-          WebkitBackgroundClip: 'text',
-          backgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
-          background: hovered
-            ? `linear-gradient(135deg, ${COLORS.gold} 0%, ${COLORS.goldLight} 45%, ${COLORS.gold} 100%)`
-            : `linear-gradient(135deg, ${COLORS.text} 0%, ${COLORS.text} 100%)`,
-          transition: `background 400ms ${LUXURY_EASE}`,
+          color: hovered ? COLORS.gold : COLORS.text,
+          transition: `color 300ms ease`,
         }}
       >
         {link.label}
@@ -652,16 +647,7 @@ export default function Navigation({ cartCount: cartCountProp }: NavigationProps
     return () => window.removeEventListener('scroll', handleScroll);
   }, [handleScroll]);
 
-  // ---- GSAP mount reveal: slides nav down from y:-100 → y:0 ---------------
-  // Initial opacity set via gsap.set (not JSX style) so React re-renders
-  // cannot override the animated value after the tween completes.
-  useEffect(() => {
-    if (!navRef.current) return;
-    gsap.set(navRef.current, { opacity: 0 });
-    const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
-    tl.to(navRef.current, { y: 0, opacity: 1, duration: 0.4, delay: 0, clearProps: 'opacity,y' });
-    return () => { tl.kill(); };
-  }, []);
+  // Nav fades in via CSS — no GSAP dependency, works on all devices instantly
 
   // ---- Close mobile menu on desktop resize ---------------------------------
   useEffect(() => {
@@ -694,7 +680,7 @@ export default function Navigation({ cartCount: cartCountProp }: NavigationProps
           alignItems: 'center',
           justifyContent: 'space-between',
           padding: '0 2rem',
-          transform: navHidden ? 'translateY(calc(-100% - 32px))' : 'translateY(0)',
+          transform: navHidden ? 'translateY(-100%)' : 'translateY(0)',
           backgroundColor: scrolled ? 'rgba(10,10,10,0.85)' : 'transparent',
           backdropFilter: scrolled ? 'blur(24px) saturate(200%)' : 'none',
           WebkitBackdropFilter: scrolled ? 'blur(24px) saturate(200%)' : 'none',
@@ -702,6 +688,7 @@ export default function Navigation({ cartCount: cartCountProp }: NavigationProps
             ? `1px solid rgba(201,168,76,0.13)`
             : '1px solid transparent',
           transition: `background-color 400ms ${LUXURY_EASE}, backdrop-filter 400ms ${LUXURY_EASE}, border-color 400ms ${LUXURY_EASE}, transform 400ms ${LUXURY_EASE}`,
+          animation: 'sg-nav-fadein 0.4s ease both',
         }}
       >
         {/* ---- LEFT: Logo -------------------------------------------------- */}
