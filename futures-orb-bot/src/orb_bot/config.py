@@ -130,6 +130,23 @@ class LoggingConfig:
 
 
 @dataclass
+class ConfidenceConfig:
+    """Trade Confidence Engine settings."""
+
+    enabled: bool = True
+    # Analyzers to feed the engine (None = every registered analyzer).
+    analyzers: Optional[List[str]] = None
+    # Per-analyzer weight overrides (missing keys use the engine defaults).
+    weights: Dict[str, float] = field(default_factory=dict)
+    # Minimum trade-quality score required before a setup is "tradeable".
+    min_trade_confidence: float = 60.0
+    # Minimum edge (winning − opposing side) required to pick a direction.
+    min_directional_edge: float = 10.0
+    # Opposing confidence at/above which an analyzer counts as a conflict.
+    conflict_threshold: float = 45.0
+
+
+@dataclass
 class StrategyConfig:
     """One entry in the plug-and-play ``strategies`` list."""
 
@@ -164,6 +181,7 @@ class Config:
     volume_profile: VolumeProfileConfig = field(default_factory=VolumeProfileConfig)
     risk: RiskConfig = field(default_factory=RiskConfig)
     logging: LoggingConfig = field(default_factory=LoggingConfig)
+    confidence: ConfidenceConfig = field(default_factory=ConfidenceConfig)
     strategy: StrategyDefaultsConfig = field(default_factory=StrategyDefaultsConfig)
     strategies: List[StrategyConfig] = field(default_factory=list)
     paths: PathsConfig = field(default_factory=PathsConfig)

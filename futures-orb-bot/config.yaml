@@ -64,6 +64,17 @@ logging:
   decisions_file: "decisions.jsonl"
   run_log_file: "run.log"
 
+# --- Trade Confidence Engine -------------------------------------------------
+# Combines all analyzers into one 0-100 trade-quality score with long/short/
+# no-trade sub-scores, reasons, warnings, and conflict detection.
+confidence:
+  enabled: true
+  min_trade_confidence: 60.0   # minimum quality before a setup is "tradeable"
+  min_directional_edge: 10.0   # winning side must beat the other by this much
+  conflict_threshold: 45.0     # opposing confidence that counts as a conflict
+  analyzers: null              # null = use every registered analyzer
+  weights: {}                  # per-analyzer weight overrides (e.g. {delta: 1.5})
+
 # --- Strategy engine (plug-and-play) ----------------------------------------
 # Each entry runs independently on its own account. Toggle `enabled` to switch a
 # strategy on/off. `params` overrides that strategy's defaults.

@@ -20,7 +20,11 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
-from orb_bot.analysis import analyze_multi_timeframe  # noqa: E402
+from orb_bot.analysis import (  # noqa: E402
+    AnalysisContext,
+    ConfidenceEngine,
+    analyze_multi_timeframe,
+)
 from orb_bot.config import Config  # noqa: E402
 from orb_bot.data import load_market_data  # noqa: E402
 
@@ -43,6 +47,16 @@ def main(argv=None) -> int:
         print("-" * 100)
         for r in results[tf]:
             print(f"{r.name:<26}{r.direction.value:<9}{r.confidence:5.0f}   {r.explanation}")
+
+    # Combine everything into one trade-quality score on the primary timeframe.
+    engine = ConfidenceEngine.from_config(cfg)
+    ctx = AnalysisContext.from_market(market, market.primary_timeframe, config=cfg)
+    score = engine.score(ctx)
+    print("\n" + "=" * 60)
+    print("  TRADE CONFIDENCE ENGINE")
+    print("=" * 60)
+    print(score.report())
+
     print("\n(Research only — bar-based order-flow reads are approximations; "
           "see docs/ANALYZERS.md.)")
     return 0

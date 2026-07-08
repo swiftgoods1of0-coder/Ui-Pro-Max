@@ -79,6 +79,80 @@ Or from the shell:
 python scripts/analyze_orderflow.py --timeframes 1min 5min 15min
 ```
 
+## Trade Confidence Engine
+
+`ConfidenceEngine` (`orb_bot/analysis/engine.py`) combines every analyzer into
+one explainable **trade-quality score (0–100)** plus separate **long**,
+**short**, and **no-trade** scores, supporting reasons, risk warnings, and
+conflicting-signal detection.
+
+```python
+from orb_bot.analysis import ConfidenceEngine, AnalysisContext
+from orb_bot.config import Config
+
+engine = ConfidenceEngine.from_config(Config())
+score = engine.score(AnalysisContext.from_market(market, "5min", config=cfg))
+print(score.report())
+```
+
+```
+Trade Quality: 68/100   (LONG)
+Long 68 | Short 0 | No-Trade 32
+
+Reasons:
+  • Price is above VWAP
+  • POC reclaim confirmed
+  • Delta supports direction
+  • Cumulative delta confirms buying
+  • Strong relative volume
+```
+
+### How the score is built (no black box)
+
+Each analyzer contributes its 0–100 confidence, signed by direction and scaled
+by a configurable weight (`ConfidenceConfig.weights`, defaults in
+`DEFAULT_WEIGHTS`). Then:
+
+| Quantity | Definition |
+|----------|------------|
+| `long_score` / `short_score` | weighted mean confidence of the bullish / bearish analyzers (normalised by *directional* weight, so neutral reads don't dilute) |
+| `neutral_score` | weighted mean of neutral analyzers (market balance / uncertainty) |
+| `agreement` | `winner / (winner + loser)` — 1.0 means no opposition |
+| **`quality`** | `winner × agreement − 0.2 × neutral_score` |
+| `no_trade_score` | `(100 − winner) + 0.4·loser + 0.2·neutral + risk penalty` |
+
+A direction is only recommended when `quality ≥ min_trade_confidence` **and** the
+winning side beats the other by `min_directional_edge`. Every input is preserved
+in `score.raw` and `score.results`, so any recommendation is traceable to the
+underlying analyzer readings and the raw data.
+
+### Outputs
+
+- `direction` — `LONG` / `SHORT` / `NO_TRADE`
+- `quality`, `long_score`, `short_score`, `no_trade_score` — all 0–100
+- `reasons` — why the setup is strong (top supporting analyzers)
+- `weaknesses` — detracting factors (opposing analyzers, sub-threshold quality)
+- `warnings` — risk messages (elevated ATR, low RVOL, CVD divergence, absorption
+  against the bias, conflict present)
+- `conflicts` — specific analyzers reading against the dominant bias
+
+### Gating trades on confidence
+
+`ConfidenceFilter` implements the strategy `SignalFilter` protocol: it scores
+each candidate signal, attaches the full explainable score to `signal.meta`
+(so it flows into the journal and decision log), and vetoes the trade unless the
+engine agrees with the direction and quality clears `min_trade_confidence`.
+
+```python
+from orb_bot.analysis import ConfidenceFilter
+from orb_bot.strategy import ORBStrategy
+
+strat = ORBStrategy(cfg, filters=[ConfidenceFilter.from_config(cfg)])
+```
+
+Configure it under `confidence:` in `config.yaml` (`min_trade_confidence`,
+`min_directional_edge`, `conflict_threshold`, per-analyzer `weights`).
+
 ## Adding an analyzer
 
 ```python

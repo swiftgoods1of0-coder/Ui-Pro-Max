@@ -35,6 +35,8 @@ from . import order_flow          # noqa: F401
 from . import swings              # noqa: F401
 
 from .runner import analyze, analyze_market, analyze_multi_timeframe
+from .engine import ConfidenceEngine, TradeScore, TradeDirection, DEFAULT_WEIGHTS
+from .filter import ConfidenceFilter
 
 __all__ = [
     "Analyzer",
@@ -48,4 +50,9 @@ __all__ = [
     "analyze",
     "analyze_market",
     "analyze_multi_timeframe",
+    "ConfidenceEngine",
+    "TradeScore",
+    "TradeDirection",
+    "DEFAULT_WEIGHTS",
+    "ConfidenceFilter",
 ]
