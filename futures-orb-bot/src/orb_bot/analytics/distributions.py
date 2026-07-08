@@ -25,7 +25,10 @@ def trades_to_frame(trades: List[Trade]) -> pd.DataFrame:
         return pd.DataFrame()
     rows = [t.to_row() for t in trades]
     df = pd.DataFrame(rows)
-    df["exit_time"] = pd.to_datetime(df["exit_time"])
+    # Parse as UTC (trade timestamps may span a DST change → mixed offsets),
+    # then present in New-York time so day/month bucketing stays session-local.
+    df["exit_time"] = pd.to_datetime(df["exit_time"], utc=True).dt.tz_convert(
+        "America/New_York")
     return df.set_index("exit_time").sort_index()
 
 

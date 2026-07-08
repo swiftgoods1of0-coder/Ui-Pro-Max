@@ -16,6 +16,8 @@ logging, and configuration-driven everything.
 | Area | What's included |
 |------|-----------------|
 | **Analysis engine** | Independent order-flow & structure analyzers (POC, VAH/VAL, HVN/LVN, VWAP, ATR, RVOL, Delta, CVD, imbalance, absorption, swings) — each outputs bias / 0–100 confidence / explanation / levels / raw values, across timeframes ([docs](docs/ANALYZERS.md)) |
+| **Confidence engine** | Combines all analyzers into one 0–100 trade-quality score with long/short/no-trade sub-scores, reasons, risk warnings, and conflict detection — fully explainable ([docs](docs/ANALYZERS.md#trade-confidence-engine)) |
+| **Learning system** | Captures full market context per completed trade, mines winners vs losers with statistical significance, and writes a research report that only recommends when the sample supports it ([docs](docs/LEARNING.md)) |
 | **Data engine** | CSV import, multi-timeframe (1m/5m/15m…), Parquet cache, missing/corrupt-data validation |
 | **Strategy engine** | Plug-and-play registry, multiple strategies running independently, enable/disable per config |
 | **Risk management** | Adjustable account size & risk-per-trade, daily max loss, max consecutive losses, max trades/day, dynamic position sizing |

@@ -75,6 +75,16 @@ confidence:
   analyzers: null              # null = use every registered analyzer
   weights: {}                  # per-analyzer weight overrides (e.g. {delta: 1.5})
 
+# --- Completed-trade learning system -----------------------------------------
+# Captures full market context per trade, mines winners vs losers, and writes a
+# research report. Only makes recommendations with enough sample + significance.
+learning:
+  enabled: true
+  min_samples: 20              # minimum group size before a finding is "supported"
+  min_lift: 0.08               # minimum win-rate edge worth recommending
+  features_file: "learning/trade_features.csv"
+  report_file: "research_report.md"
+
 # --- Strategy engine (plug-and-play) ----------------------------------------
 # Each entry runs independently on its own account. Toggle `enabled` to switch a
 # strategy on/off. `params` overrides that strategy's defaults.

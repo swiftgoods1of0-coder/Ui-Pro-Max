@@ -32,6 +32,35 @@ from .reporting import (
 from .strategy import available_strategies
 
 
+def _run_learning(cfg, result, market, out_dir):
+    """Extract per-trade features, mine patterns, and write the research report."""
+    from .learning import FeatureExtractor, PatternMiner, TradeFeatureStore
+    from .learning.report import write_report
+
+    store = TradeFeatureStore(FeatureExtractor(cfg).extract_all(result.trades, market))
+    store.save_csv(out_dir / cfg.learning.features_file)
+    mining = PatternMiner(cfg.learning.min_samples, cfg.learning.min_lift).run(store.to_frame())
+    report_path = write_report(mining, out_dir / cfg.learning.report_file,
+                               symbol=cfg.instrument.symbol,
+                               min_samples=cfg.learning.min_samples)
+
+    print("\n" + "=" * 56)
+    print("  LEARNING SYSTEM")
+    print("=" * 56)
+    print(f"Trades analysed     : {mining.n_trades} ({mining.n_decided} decided)")
+    print(f"Baseline win rate   : {mining.baseline_win_rate*100:.1f}%")
+    if mining.recommendations:
+        print(f"Supported findings  : {len(mining.recommendations)}")
+        for rec in mining.recommendations[:3]:
+            print(f"  ✅ {rec}")
+    else:
+        print(f"Supported findings  : 0 (need >= {cfg.learning.min_samples} samples/group)")
+    if mining.speculative:
+        print(f"Speculative         : {len(mining.speculative)} (insufficient sample)")
+    print(f"Feature dataset     : {out_dir / cfg.learning.features_file}")
+    print(f"Research report     : {report_path}")
+
+
 def parse_args(argv=None) -> argparse.Namespace:
     p = argparse.ArgumentParser(prog="orb-backtest", description="Futures quant research backtester")
     p.add_argument("--config", default="config.yaml", help="Path to YAML config")
@@ -108,6 +137,13 @@ def main(argv=None) -> int:
     export_metrics_csv(metrics, out_dir / "metrics.csv")
     export_period_tables(result.trades, out_dir)
     print(f"\nJournal + metrics + period tables -> {out_dir}/")
+
+    # --- completed-trade learning system ---
+    if cfg.learning.enabled and result.trades:
+        try:
+            _run_learning(cfg, result, market, out_dir)
+        except Exception:  # pragma: no cover - learning is best-effort
+            log.exception("Learning system failed")
 
     if not args.no_dashboard:
         try:

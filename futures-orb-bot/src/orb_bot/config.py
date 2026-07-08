@@ -147,6 +147,17 @@ class ConfidenceConfig:
 
 
 @dataclass
+class LearningConfig:
+    """Completed-trade learning system settings."""
+
+    enabled: bool = True
+    min_samples: int = 20            # minimum group size for a supported finding
+    min_lift: float = 0.08           # minimum win-rate lift to recommend
+    features_file: str = "learning/trade_features.csv"
+    report_file: str = "research_report.md"
+
+
+@dataclass
 class StrategyConfig:
     """One entry in the plug-and-play ``strategies`` list."""
 
@@ -182,6 +193,7 @@ class Config:
     risk: RiskConfig = field(default_factory=RiskConfig)
     logging: LoggingConfig = field(default_factory=LoggingConfig)
     confidence: ConfidenceConfig = field(default_factory=ConfidenceConfig)
+    learning: LearningConfig = field(default_factory=LearningConfig)
     strategy: StrategyDefaultsConfig = field(default_factory=StrategyDefaultsConfig)
     strategies: List[StrategyConfig] = field(default_factory=list)
     paths: PathsConfig = field(default_factory=PathsConfig)
