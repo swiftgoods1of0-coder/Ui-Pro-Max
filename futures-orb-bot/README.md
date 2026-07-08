@@ -15,6 +15,7 @@ logging, and configuration-driven everything.
 
 | Area | What's included |
 |------|-----------------|
+| **Analysis engine** | Independent order-flow & structure analyzers (POC, VAH/VAL, HVN/LVN, VWAP, ATR, RVOL, Delta, CVD, imbalance, absorption, swings) — each outputs bias / 0–100 confidence / explanation / levels / raw values, across timeframes ([docs](docs/ANALYZERS.md)) |
 | **Data engine** | CSV import, multi-timeframe (1m/5m/15m…), Parquet cache, missing/corrupt-data validation |
 | **Strategy engine** | Plug-and-play registry, multiple strategies running independently, enable/disable per config |
 | **Risk management** | Adjustable account size & risk-per-trade, daily max loss, max consecutive losses, max trades/day, dynamic position sizing |
