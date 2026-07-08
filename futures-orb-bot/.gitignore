@@ -1,0 +1,14 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.venv/
+venv/
+
+# Backtest artifacts
+output/
+
+# Data — keep the folder, ignore the (often large) CSVs.
+data/raw/*.csv
+!data/raw/.gitkeep

@@ -1,0 +1,81 @@
+# =============================================================================
+# Futures ORB Bot — Backtest Configuration
+# =============================================================================
+# Every knob the strategy and engine expose lives here. Edit this file, not the
+# Python. Anything you omit falls back to the defaults defined in
+# src/orb_bot/config.py, so a partial file is perfectly valid.
+# =============================================================================
+
+instrument:
+  symbol: "ES"              # Contract symbol (informational / journaling)
+  point_value: 50.0         # USD per 1.0 point move (ES = $50, NQ = $20, etc.)
+  tick_size: 0.25           # Minimum price increment
+
+data:
+  # Timezone of the timestamps *inside your CSV*. The loader converts
+  # everything to the session timezone below. Use "UTC" if your data is UTC.
+  input_timezone: "UTC"
+  # All strategy logic runs in this timezone. "America/New_York" correctly
+  # handles the EST/EDT switch, so "8:00 AM" is always New York wall-clock.
+  session_timezone: "America/New_York"
+  # Optional: resample raw data to this bar size (e.g. "1min", "5min").
+  # Leave null to use the CSV's native resolution.
+  resample: null
+
+session:
+  # New-York-session trading window. Trades are only opened inside this window
+  # (after the opening range is complete). Anything still open at window_end is
+  # closed on that bar.
+  window_start: "08:00"
+  window_end: "11:00"
+
+opening_range:
+  # The 8:00–8:15 opening-range "box". End is exclusive.
+  start: "08:00"
+  end: "08:15"
+
+volume_profile:
+  enabled: true
+  bins: 50                  # Price buckets used to locate the POC
+  # What the profile is built from each day:
+  #   "opening_range" – volume during the OR box only
+  #   "session"       – volume from session start up to the entry bar
+  source: "session"
+
+strategy:
+  # Which setups to look for. Enable one or both.
+  #   breakout       – close beyond the OR high/low
+  #   sweep_reclaim  – wick beyond the OR level, then reclaim (liquidity sweep)
+  modes: ["breakout", "sweep_reclaim"]
+
+  # Require price to be on the "correct" side of the volume-profile POC
+  # (longs above POC, shorts below). Set false to ignore POC for entries.
+  require_poc_confluence: false
+
+  # Buffer (in ticks) beyond the OR level required to confirm a breakout.
+  breakout_buffer_ticks: 1
+
+  # For sweep_reclaim: how far (ticks) price must poke past the level to count
+  # as a liquidity sweep before the reclaim.
+  sweep_min_ticks: 2
+
+  max_trades_per_day: 1     # 0 or null = unlimited (still one position at a time)
+
+risk:
+  reward_multiple: 2.0      # Take-profit at 1 : reward_multiple (e.g. 2.0 => 1:2)
+  risk_per_trade_usd: 250.0 # Dollar risk budgeted per trade (drives sizing)
+  # Stop placement:
+  #   "range"  – opposite side of the OR box
+  #   "sweep"  – the sweep extreme (sweep_reclaim mode) / OR level (breakout)
+  stop_style: "range"
+  stop_buffer_ticks: 2      # Extra ticks beyond the stop reference
+  allow_fractional_contracts: false
+  min_contracts: 1
+  starting_equity_usd: 25000.0
+  # Costs, charged per contract per side.
+  commission_per_contract: 2.50
+  slippage_ticks: 1
+
+paths:
+  data_dir: "data/raw"
+  output_dir: "output"
