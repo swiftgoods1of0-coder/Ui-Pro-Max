@@ -6,6 +6,8 @@ export default function LiquidBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
+    if ('ontouchstart' in window || navigator.maxTouchPoints > 0) return
+
     const canvas = canvasRef.current
     if (!canvas) return
     const ctx = canvas.getContext('2d')

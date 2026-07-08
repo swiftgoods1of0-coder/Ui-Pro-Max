@@ -611,8 +611,8 @@ export default function Navigation({ cartCount: cartCountProp }: NavigationProps
   const cart = useCart();
   const cartCount = cartCountProp ?? cart.totalQuantity;
   const navRef = useRef<HTMLElement>(null);
+  const progressBarRef = useRef<HTMLDivElement>(null);
   const [scrolled, setScrolled] = useState(false);
-  const [scrollProgress, setScrollProgress] = useState(0);
   const [mobileOpen, setMobileOpen] = useState(false);
   const ticking = useRef(false);
 
@@ -627,7 +627,9 @@ export default function Navigation({ cartCount: cartCountProp }: NavigationProps
       const y = window.scrollY;
       const docH = document.documentElement.scrollHeight - window.innerHeight;
       setScrolled(y > 20);
-      setScrollProgress(docH > 0 ? Math.min(100, (y / docH) * 100) : 0);
+      if (progressBarRef.current) {
+        progressBarRef.current.style.width = `${docH > 0 ? Math.min(100, (y / docH) * 100) : 0}%`;
+      }
 
       // Smart hide: hide on scroll down past 200px, show on scroll up
       if (y > 200 && y > lastScrollY.current + 5) {
@@ -741,6 +743,7 @@ export default function Navigation({ cartCount: cartCountProp }: NavigationProps
 
         {/* ---- Scroll progress bar (2px gold line at bottom of nav) -------- */}
         <div
+          ref={progressBarRef}
           aria-hidden="true"
           style={{
             position: 'absolute',
@@ -748,9 +751,9 @@ export default function Navigation({ cartCount: cartCountProp }: NavigationProps
             left: 0,
             height: '2px',
             pointerEvents: 'none',
-            width: `${scrollProgress}%`,
+            width: '0%',
             background: `linear-gradient(90deg, ${COLORS.gold}, ${COLORS.goldLight}, ${COLORS.gold})`,
-            boxShadow: scrollProgress > 0 ? '0 0 10px rgba(201,168,76,0.3)' : 'none',
+            boxShadow: '0 0 10px rgba(201,168,76,0.3)',
             transition: 'width 80ms linear',
           }}
         />

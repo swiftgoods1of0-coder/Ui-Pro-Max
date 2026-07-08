@@ -67,6 +67,7 @@ function ProductCard({ product, index }: ProductCardProps) {
           alt={product.title}
           fill
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          loading={index < 3 ? 'eager' : 'lazy'}
           className="object-contain transition-all duration-[600ms] ease-out group-hover:scale-110"
           style={{ opacity: hovered && hasSecondImage ? 0 : 1 }}
         />

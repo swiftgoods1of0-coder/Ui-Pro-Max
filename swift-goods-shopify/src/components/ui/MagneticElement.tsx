@@ -107,6 +107,8 @@ export default function MagneticElement({
   // Lifecycle — attach / detach listeners
   // -----------------------------------------------------------------------
   useEffect(() => {
+    if ('ontouchstart' in window || navigator.maxTouchPoints > 0) return
+
     // Listen on `window` so we detect the cursor even before it physically
     // enters the wrapper div (the activation radius can be larger).
     window.addEventListener('mousemove', handleMouseMove);

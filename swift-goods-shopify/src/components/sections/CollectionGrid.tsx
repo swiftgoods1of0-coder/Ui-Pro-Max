@@ -140,7 +140,8 @@ export default function CollectionGrid({ products }: CollectionGridProps) {
               <motion.div
                 key={`${product.id}-${activeFilter}`}
                 initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.1 }}
                 transition={{
                   duration: 0.35,
                   delay: index * 0.03,
