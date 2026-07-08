@@ -3,9 +3,9 @@ requires = ["setuptools>=64"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "futures-orb-bot"
-version = "0.1.0"
-description = "New-York-session opening-range breakout / liquidity-sweep backtesting framework for futures (research only)."
+name = "futures-quant-platform"
+version = "0.2.0"
+description = "Modular futures quant research platform: data engine, plug-and-play strategies, risk management, analytics, dashboard, and trade journal (backtesting only)."
 readme = "README.md"
 requires-python = ">=3.9"
 license = { text = "MIT" }
@@ -14,11 +14,13 @@ dependencies = [
     "numpy>=1.24",
     "matplotlib>=3.7",
     "PyYAML>=6.0",
+    "pyarrow>=12.0",
 ]
 
 [project.optional-dependencies]
 ml = ["scikit-learn>=1.3"]
 dev = ["pytest>=7.4"]
+dashboard = ["playwright>=1.40"]
 
 [project.scripts]
 orb-backtest = "orb_bot.cli:main"

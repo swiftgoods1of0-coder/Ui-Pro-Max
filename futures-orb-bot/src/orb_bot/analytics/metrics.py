@@ -36,6 +36,8 @@ class PerformanceMetrics:
     avg_loss: float = 0.0               # $
     max_drawdown: float = 0.0           # $
     max_drawdown_pct: float = 0.0
+    sharpe_ratio: float = 0.0           # annualised, from daily returns
+    sortino_ratio: float = 0.0          # annualised, downside-only
     max_consecutive_wins: int = 0
     max_consecutive_losses: int = 0
     avg_hold_minutes: float = 0.0
@@ -62,6 +64,7 @@ class PerformanceMetrics:
             f"Avg win / loss ($)  : ${self.avg_win:,.2f} / ${self.avg_loss:,.2f}",
             f"Max drawdown        : ${self.max_drawdown:,.2f}  "
             f"({self.max_drawdown_pct:.2f}%)",
+            f"Sharpe / Sortino    : {self.sharpe_ratio:.2f} / {self.sortino_ratio:.2f}",
             f"Max consec W / L    : {self.max_consecutive_wins} / "
             f"{self.max_consecutive_losses}",
             f"Avg hold            : {self.avg_hold_minutes:.1f} min",
@@ -131,12 +134,44 @@ def compute_metrics(
         else 0.0
     )
 
+    m.sharpe_ratio, m.sortino_ratio = _risk_adjusted_ratios(equity_curve, starting_equity)
+
     tod = time_of_day_table(trades)
     if not tod.empty:
         m.best_hour = int(tod["net_pnl"].idxmax())
         m.worst_hour = int(tod["net_pnl"].idxmin())
 
     return m
+
+
+def _risk_adjusted_ratios(
+    equity_curve: pd.Series, starting_equity: float, periods_per_year: int = 252
+) -> tuple[float, float]:
+    """Annualised Sharpe and Sortino from the daily equity curve.
+
+    The per-trade equity curve is collapsed to end-of-day equity, forward-filled
+    across calendar trading days, and turned into daily returns (risk-free = 0).
+    """
+    if equity_curve is None or len(equity_curve) < 2:
+        return 0.0, 0.0
+    daily = equity_curve.copy()
+    daily.index = pd.DatetimeIndex(daily.index)
+    eod = daily.resample("1D").last().dropna()
+    if len(eod) < 2:
+        return 0.0, 0.0
+    eod = pd.concat([pd.Series([starting_equity], index=[eod.index[0]]), eod])
+    returns = eod.pct_change().dropna()
+    if returns.empty or returns.std(ddof=1) == 0:
+        return 0.0, 0.0
+
+    mean = returns.mean()
+    sharpe = mean / returns.std(ddof=1) * np.sqrt(periods_per_year)
+    downside = returns[returns < 0]
+    if len(downside) and downside.std(ddof=1) > 0:
+        sortino = mean / downside.std(ddof=1) * np.sqrt(periods_per_year)
+    else:
+        sortino = 0.0
+    return float(sharpe), float(sortino)
 
 
 def time_of_day_table(trades: List[Trade]) -> pd.DataFrame:

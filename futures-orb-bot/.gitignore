@@ -9,6 +9,7 @@ venv/
 # Backtest artifacts
 output/
 
-# Data — keep the folder, ignore the (often large) CSVs.
+# Data — keep the folder, ignore the (often large) CSVs and the cache.
 data/raw/*.csv
 !data/raw/.gitkeep
+data/cache/

@@ -1,55 +1,77 @@
 """The backtesting event loop.
 
-Responsibilities, kept deliberately separate from the *strategy*:
+Runs one or more strategies over historical bars, each on its own independent
+account with its own :class:`~orb_bot.risk.RiskManager`, and produces per-strategy
+results plus a combined portfolio view. Every meaningful decision is recorded to
+the :class:`~orb_bot.logging_utils.DecisionLog` for full explainability.
+
+Responsibilities (kept separate from the *strategies*):
 
 * Walk the data one New-York session at a time.
-* Build the day's context (opening range + volume-profile key level).
-* Ask the strategy for candidate signals.
-* Simulate fills, position sizing, costs, and stop/target exits bar-by-bar.
-* Emit an ordered list of :class:`Trade`s and an equity curve.
+* Build the shared, strategy-agnostic :class:`DayContext` (session-window bars +
+  volume-profile key level).
+* Ask each strategy for candidate signals.
+* Run every candidate through that strategy's risk manager (guardrails + sizing).
+* Simulate fills, costs, and stop/target exits bar-by-bar.
 
 Modelling choices (documented so results are interpretable):
 
-* **No look-ahead.** Entries are only considered *after* the opening range is
-  complete. The volume-profile key level is built either from today's opening
-  range or from the *previous* completed session — never from future bars.
-* **Entry fill** is the price of the bar whose close confirmed the setup, plus
-  ``slippage_ticks`` of adverse slippage.
-* **Same-bar ambiguity** (a bar touching both stop and target) is resolved
+* **No look-ahead.** Entries are only considered after the strategy's setup is
+  confirmed; the volume-profile key level uses the previous completed session or
+  today's opening-range window — never future bars.
+* **Entry fill** = the confirming bar's close plus adverse slippage.
+* **Same-bar ambiguity** (a bar touching both stop and target) resolves
   pessimistically as a stop.
-* **One position at a time**; further signals are ignored until the current
-  trade closes, capped by ``max_trades_per_day``.
-* Anything still open at ``window_end`` is closed on that bar (``session_end``).
+* **One position at a time per strategy**; further signals wait until the open
+  trade closes, subject to the risk manager's daily caps.
+* Anything open at ``window_end`` is closed on that bar (``session_end``).
 """
 
 from __future__ import annotations
 
+import logging
 from dataclasses import dataclass, field
-from datetime import time
-from math import floor
-from typing import List, Optional, Sequence
+from typing import Dict, List, Optional, Sequence, Union
 
 import pandas as pd
 
 from ..config import Config
-from ..indicators.opening_range import compute_opening_range
 from ..indicators.volume_profile import build_volume_profile
-from ..strategy.base import DayContext, Side, Signal, Strategy
+from ..logging_utils import DecisionLog
+from ..risk import RiskManager
+from ..strategy.base import DayContext, Side, Signal, StrategyBase
+from ..strategy.registry import build_strategies
 from ..utils.sessions import iter_sessions, slice_time_window
 from ..utils.timeparse import parse_hhmm
 from .trade import ExitReason, Trade
 
+logger = logging.getLogger("orb_bot.engine.backtester")
+
+
+@dataclass
+class StrategyResult:
+    """Independent result for a single strategy."""
+
+    strategy_id: str
+    strategy_name: str
+    trades: List[Trade] = field(default_factory=list)
+    equity_curve: pd.Series = field(default_factory=lambda: pd.Series(dtype=float))
+    starting_equity: float = 0.0
+    ending_equity: float = 0.0
+
 
 @dataclass
 class BacktestResult:
-    """Everything a backtest run produces."""
+    """Combined result across all strategies, plus per-strategy breakdowns."""
 
-    trades: List[Trade] = field(default_factory=list)
+    per_strategy: Dict[str, StrategyResult] = field(default_factory=dict)
+    trades: List[Trade] = field(default_factory=list)              # all, sorted by exit
     equity_curve: pd.Series = field(default_factory=lambda: pd.Series(dtype=float))
     starting_equity: float = 0.0
     config: Optional[Config] = None
     days_tested: int = 0
-    days_with_signals: int = 0
+    decision_log: Optional[DecisionLog] = None
+    symbol: str = ""
 
     @property
     def ending_equity(self) -> float:
@@ -59,137 +81,167 @@ class BacktestResult:
 
 
 class Backtester:
-    """Runs a :class:`Strategy` over historical bars and produces trades."""
+    """Runs strategies over historical data and produces trades."""
 
-    def __init__(self, config: Config, strategy: Strategy):
+    def __init__(
+        self,
+        config: Config,
+        strategies: Union[StrategyBase, Sequence[StrategyBase], None] = None,
+        decision_log: Optional[DecisionLog] = None,
+    ):
         self.config = config
-        self.strategy = strategy
+        if strategies is None:
+            strategies = build_strategies(config)
+        elif isinstance(strategies, StrategyBase):
+            strategies = [strategies]
+        self.strategies: List[StrategyBase] = list(strategies)
+        self.decision_log = decision_log
 
-    def run(self, df: pd.DataFrame) -> BacktestResult:
+    # -- public API ---------------------------------------------------------
+
+    def run(self, data) -> BacktestResult:
+        """Run the backtest. ``data`` may be a MarketData or a plain DataFrame."""
+        df, market = self._as_market(data)
         cfg = self.config
         window_start = parse_hhmm(cfg.session.window_start)
         window_end = parse_hhmm(cfg.session.window_end)
-        or_end = parse_hhmm(cfg.opening_range.end)
-        # Entries begin once the OR is complete (or later, if the window says so).
-        entry_start = max(window_start, or_end)
 
-        equity = cfg.risk.starting_equity_usd
-        trades: List[Trade] = []
-        equity_points: list[tuple[pd.Timestamp, float]] = []
+        # One independent account per strategy.
+        managers: Dict[str, RiskManager] = {
+            s.id: RiskManager(cfg.risk) for s in self.strategies
+        }
+        results: Dict[str, StrategyResult] = {
+            s.id: StrategyResult(
+                strategy_id=s.id, strategy_name=s.name,
+                starting_equity=cfg.risk.starting_equity_usd,
+            )
+            for s in self.strategies
+        }
+        equity_points: Dict[str, list] = {s.id: [] for s in self.strategies}
 
         days_tested = 0
-        days_with_signals = 0
         prev_session_df: Optional[pd.DataFrame] = None
 
         for session_date, day_df in iter_sessions(df):
             days_tested += 1
-
-            opening_range = compute_opening_range(
-                day_df, cfg.opening_range.start, cfg.opening_range.end
+            session_window = slice_time_window(
+                day_df, window_start, window_end, inclusive_end=True
             )
-            if opening_range is None:
-                prev_session_df = self._session_slice(day_df, window_start, window_end)
+            if session_window.empty:
+                prev_session_df = session_window
                 continue
 
-            entry_window = slice_time_window(
-                day_df, entry_start, window_end, inclusive_end=True
-            )
-            if entry_window.empty:
-                prev_session_df = self._session_slice(day_df, window_start, window_end)
-                continue
-
-            volume_profile = self._build_profile(
-                cfg, day_df, opening_range, prev_session_df
-            )
-
+            volume_profile = self._build_profile(cfg, day_df, prev_session_df)
             context = DayContext(
                 date=session_date,
                 day_df=day_df,
-                entry_window=entry_window,
-                opening_range=opening_range,
+                session_window=session_window,
                 volume_profile=volume_profile,
                 config=cfg,
+                market=market,
+                decision_log=self.decision_log,
             )
 
-            signals = self.strategy.generate(context)
-            if signals:
-                days_with_signals += 1
+            for strat in self.strategies:
+                mgr = managers[strat.id]
+                mgr.start_day(session_date)
+                if self.decision_log:
+                    self.decision_log.record(
+                        "session_start", timestamp=session_date, strategy=strat.id,
+                        reason="new_session", equity=round(mgr.state.equity, 2),
+                    )
+                signals = strat.generate(context)
+                day_trades = self._simulate_day(
+                    strat, signals, session_window, mgr, context
+                )
+                for tr in day_trades:
+                    results[strat.id].trades.append(tr)
+                    equity_points[strat.id].append((tr.exit_time, tr.equity_after))
 
-            equity, day_trades = self._simulate_day(signals, entry_window, equity)
-            for tr in day_trades:
-                trades.append(tr)
-                equity_points.append((tr.exit_time, tr.equity_after))
+            prev_session_df = session_window
 
-            prev_session_df = self._session_slice(day_df, window_start, window_end)
+        # Finalise per-strategy curves.
+        for sid, res in results.items():
+            pts = equity_points[sid]
+            res.equity_curve = pd.Series(
+                data=[e for _, e in pts],
+                index=pd.DatetimeIndex([t for t, _ in pts], name="exit_time"),
+                dtype=float,
+            )
+            res.ending_equity = (
+                float(res.equity_curve.iloc[-1]) if len(res.equity_curve)
+                else res.starting_equity
+            )
 
-        equity_curve = pd.Series(
-            data=[e for _, e in equity_points],
-            index=pd.DatetimeIndex([t for t, _ in equity_points], name="exit_time"),
-            dtype=float,
+        combined = self._combine(results, cfg.risk.starting_equity_usd)
+        combined.per_strategy = results
+        combined.config = cfg
+        combined.days_tested = days_tested
+        combined.decision_log = self.decision_log
+        combined.symbol = cfg.instrument.symbol
+        logger.info(
+            "Backtest complete: %d strategies, %d days, %d trades.",
+            len(self.strategies), days_tested, len(combined.trades),
         )
-
-        return BacktestResult(
-            trades=trades,
-            equity_curve=equity_curve,
-            starting_equity=cfg.risk.starting_equity_usd,
-            config=cfg,
-            days_tested=days_tested,
-            days_with_signals=days_with_signals,
-        )
+        return combined
 
     # -- per-day simulation -------------------------------------------------
 
-    def _simulate_day(
-        self, signals: Sequence[Signal], entry_window: pd.DataFrame, equity: float
-    ) -> tuple[float, List[Trade]]:
+    def _simulate_day(self, strat, signals, session_window, mgr, context) -> List[Trade]:
         trades: List[Trade] = []
-        max_trades = self.config.strategy.max_trades_per_day or 0  # 0 => unlimited
         last_exit_time: Optional[pd.Timestamp] = None
 
         for signal in signals:
-            # One position at a time: skip signals that fire before the prior
-            # trade has closed.
+            # One position at a time.
             if last_exit_time is not None and signal.timestamp <= last_exit_time:
                 continue
-            if max_trades and len(trades) >= max_trades:
-                break
 
-            trade = self._simulate_trade(signal, entry_window, equity)
-            if trade is None:
+            risk_points = abs(signal.entry - signal.stop)
+            decision = mgr.evaluate(risk_points, self.config.instrument.point_value)
+            if not decision.allowed:
+                if self.decision_log:
+                    self.decision_log.veto(
+                        strat.id, signal.timestamp, reason=decision.reason,
+                        mode=signal.mode,
+                    )
+                # Terminal daily guardrails: no point scanning further today.
+                if decision.reason in ("max_trades_per_day", "max_consecutive_losses",
+                                       "daily_max_loss"):
+                    break
                 continue
-            equity = trade.equity_after
+
+            mgr.register_fill()
+            trade = self._simulate_trade(strat, signal, session_window, decision.contracts)
+            mgr.register_result(trade.net_pnl)
+            trade.equity_after = mgr.state.equity
             last_exit_time = trade.exit_time
             trades.append(trade)
 
-        return equity, trades
+            if self.decision_log:
+                self.decision_log.opened(
+                    strat.id, signal.timestamp, reason=signal.mode,
+                    contracts=decision.contracts, entry=round(trade.entry_price, 4),
+                )
+                self.decision_log.closed(
+                    strat.id, trade.exit_time, reason=trade.exit_reason.value,
+                    net_pnl=round(trade.net_pnl, 2), r=round(trade.realized_r, 2),
+                )
+        return trades
 
-    def _simulate_trade(
-        self, signal: Signal, entry_window: pd.DataFrame, equity: float
-    ) -> Optional[Trade]:
+    def _simulate_trade(self, strat, signal, session_window, contracts) -> Trade:
         cfg = self.config
         tick = cfg.instrument.tick_size
         point_value = cfg.instrument.point_value
         slip = cfg.risk.slippage_ticks * tick
         sign = signal.side.sign
 
-        contracts = self._position_size(signal)
-        if contracts <= 0:
-            return None
-
-        # Adverse entry slippage.
         entry_fill = signal.entry + slip * sign
-
-        # Bars strictly after the signal bar are where the trade can resolve.
-        future = entry_window[entry_window.index > signal.timestamp]
-
-        exit_price, exit_time, exit_reason, mae, mfe = self._resolve_exit(
-            signal, future, slip
-        )
+        future = session_window[session_window.index > signal.timestamp]
+        exit_price, exit_time, exit_reason, mae, mfe = self._resolve_exit(signal, future, slip)
 
         gross = (exit_price - entry_fill) * sign * contracts * point_value
-        commission = cfg.risk.commission_per_contract * contracts * 2.0  # round turn
+        commission = cfg.risk.commission_per_contract * contracts * 2.0
         net = gross - commission
-        equity_after = equity + net
 
         risk_points = abs(signal.entry - signal.stop)
         realized_r = ((exit_price - entry_fill) * sign) / risk_points if risk_points else 0.0
@@ -203,6 +255,7 @@ class Backtester:
             stop_price=signal.stop,
             target_price=signal.target,
             contracts=contracts,
+            strategy_id=strat.id,
             exit_time=exit_time,
             exit_price=exit_price,
             exit_reason=exit_reason,
@@ -212,28 +265,21 @@ class Backtester:
             realized_r=realized_r,
             mae_points=mae,
             mfe_points=mfe,
-            equity_after=equity_after,
+            equity_after=0.0,  # filled by caller after register_result
             reason=signal.reason,
             meta=signal.meta,
         )
 
-    def _resolve_exit(
-        self, signal: Signal, future: pd.DataFrame, slip: float
-    ) -> tuple[float, pd.Timestamp, ExitReason, float, float]:
-        """Walk forward bar-by-bar until stop, target, or session end."""
+    def _resolve_exit(self, signal, future, slip):
         sign = signal.side.sign
         entry = signal.entry
-        mae = 0.0  # worst adverse move, in points (>= 0)
-        mfe = 0.0  # best favourable move, in points (>= 0)
+        mae = mfe = 0.0
 
         if future.empty:
-            # No bars after entry — flat exit at the entry price.
             return entry, signal.timestamp, ExitReason.SESSION_END, 0.0, 0.0
 
         for ts, bar in future.iterrows():
             high, low = bar["high"], bar["low"]
-
-            # Track excursions.
             fav = (high - entry) if sign > 0 else (entry - low)
             adv = (entry - low) if sign > 0 else (high - entry)
             mfe = max(mfe, fav)
@@ -246,52 +292,63 @@ class Backtester:
                 hit_stop = high >= signal.stop
                 hit_target = low <= signal.target
 
-            # Same-bar tie resolves as a stop (pessimistic).
-            if hit_stop:
+            if hit_stop:  # pessimistic same-bar tie -> stop
                 return signal.stop + slip * (-sign), ts, ExitReason.STOP, mae, mfe
             if hit_target:
                 return signal.target, ts, ExitReason.TARGET, mae, mfe
 
-        # Ran out of session — exit at the last bar's close with slippage.
         last_ts = future.index[-1]
         last_close = float(future.iloc[-1]["close"])
         return last_close + slip * (-sign), last_ts, ExitReason.SESSION_END, mae, mfe
 
-    def _position_size(self, signal: Signal) -> float:
-        cfg = self.config
-        risk_points = abs(signal.entry - signal.stop)
-        risk_per_contract = risk_points * cfg.instrument.point_value
-        if risk_per_contract <= 0:
-            return 0.0
+    # -- helpers ------------------------------------------------------------
 
-        raw = cfg.risk.risk_per_trade_usd / risk_per_contract
-        if cfg.risk.allow_fractional_contracts:
-            return max(raw, 0.0)
-        sized = floor(raw)
-        if sized < cfg.risk.min_contracts:
-            sized = cfg.risk.min_contracts
-        return float(sized)
+    def _combine(self, results: Dict[str, StrategyResult], starting_equity: float) -> BacktestResult:
+        """Merge all strategies' trades into one portfolio equity curve.
 
-    # -- volume profile selection ------------------------------------------
+        The portfolio is modelled as a single shared account funding every
+        strategy: equity evolves by each trade's net P&L in exit-time order.
+        """
+        all_trades: List[Trade] = []
+        for res in results.values():
+            all_trades.extend(res.trades)
+        all_trades.sort(key=lambda t: t.exit_time)
 
-    def _build_profile(self, cfg, day_df, opening_range, prev_session_df):
+        equity = starting_equity
+        times, values = [], []
+        for tr in all_trades:
+            equity += tr.net_pnl
+            times.append(tr.exit_time)
+            values.append(equity)
+
+        curve = pd.Series(
+            values, index=pd.DatetimeIndex(times, name="exit_time"), dtype=float
+        )
+        return BacktestResult(
+            trades=all_trades, equity_curve=curve, starting_equity=starting_equity
+        )
+
+    def _build_profile(self, cfg, day_df, prev_session_df):
         if not cfg.volume_profile.enabled:
             return None
         bins = cfg.volume_profile.bins
         if cfg.volume_profile.source == "opening_range":
             or_bars = slice_time_window(
-                day_df,
-                parse_hhmm(cfg.opening_range.start),
-                parse_hhmm(cfg.opening_range.end),
-                inclusive_end=False,
+                day_df, parse_hhmm(cfg.opening_range.start),
+                parse_hhmm(cfg.opening_range.end), inclusive_end=False,
             )
             return build_volume_profile(or_bars, bins=bins)
-        # "session": use the previous completed session as today's key level
-        # (fully known at the open — no look-ahead).
         if prev_session_df is not None and not prev_session_df.empty:
             return build_volume_profile(prev_session_df, bins=bins)
         return None
 
     @staticmethod
-    def _session_slice(day_df: pd.DataFrame, start: time, end: time) -> pd.DataFrame:
-        return slice_time_window(day_df, start, end, inclusive_end=True)
+    def _as_market(data):
+        """Accept a MarketData or a DataFrame; return (primary_df, market)."""
+        if hasattr(data, "primary"):  # MarketData
+            return data.primary, data
+        # Plain DataFrame — wrap in a minimal MarketData.
+        from ..data.timeframes import MarketData
+
+        market = MarketData(symbol="", primary_timeframe="primary", frames={"primary": data})
+        return data, market

@@ -31,9 +31,10 @@ class Trade:
     mode: str
     entry_time: pd.Timestamp
     entry_price: float
-    stop_price: float
-    target_price: float
+    stop_price: float               # stop loss
+    target_price: float             # take profit
     contracts: float
+    strategy_id: str                # which strategy produced the trade
     # --- outcome ---
     exit_time: pd.Timestamp
     exit_price: float
@@ -46,6 +47,8 @@ class Trade:
     mfe_points: float               # max favourable excursion (points)
     equity_after: float
     reason: str = ""
+    notes: str = ""                  # free-text journal notes (editable)
+    screenshot_path: str = ""        # placeholder for a chart screenshot
     meta: Dict[str, Any] = field(default_factory=dict)
 
     @property
@@ -61,17 +64,22 @@ class Trade:
         return (self.exit_time - self.entry_time).total_seconds() / 60.0
 
     def to_row(self) -> Dict[str, Any]:
-        """Flat, CSV-friendly representation for the trade journal."""
+        """Flat, CSV-friendly representation for the trade journal.
+
+        Column order mirrors what a trader reviews: identity, plan (entry / stop
+        / take-profit), outcome, then journal fields (notes / screenshot).
+        """
         return {
             "date": self.date.date().isoformat(),
+            "strategy": self.strategy_id,
             "side": self.side.value,
             "mode": self.mode,
             "entry_time": self.entry_time.isoformat(),
             "exit_time": self.exit_time.isoformat(),
-            "hold_minutes": round(self.hold_minutes, 2),
+            "duration_min": round(self.hold_minutes, 2),
             "entry_price": round(self.entry_price, 4),
-            "stop_price": round(self.stop_price, 4),
-            "target_price": round(self.target_price, 4),
+            "stop_loss": round(self.stop_price, 4),
+            "take_profit": round(self.target_price, 4),
             "exit_price": round(self.exit_price, 4),
             "exit_reason": self.exit_reason.value,
             "contracts": self.contracts,
@@ -84,7 +92,7 @@ class Trade:
             "mfe_points": round(self.mfe_points, 4),
             "equity_after": round(self.equity_after, 2),
             "poc": self.meta.get("poc"),
-            "orh": self.meta.get("orh"),
-            "orl": self.meta.get("orl"),
+            "screenshot": self.screenshot_path,
+            "notes": self.notes,
             "reason": self.reason,
         }

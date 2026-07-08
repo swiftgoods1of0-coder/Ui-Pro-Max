@@ -1,185 +1,149 @@
-"""The opening-range breakout / liquidity-sweep strategy.
+"""Opening-range breakout / liquidity-sweep strategy.
 
-Two setups, both traded around the 08:00–08:15 opening-range box:
+Two setups traded around a configurable opening-range box (default 08:00–08:15):
 
 **Breakout** — a bar *closes* beyond the OR high (long) or low (short) by at
-least ``breakout_buffer_ticks``. This is the momentum expression of the range.
+least ``breakout_buffer_ticks``.
 
-**Sweep / reclaim** — price first pokes beyond the OR level far enough to grab
-the liquidity resting there (``sweep_min_ticks``), then *reclaims* by closing
-back inside the range. A sweep below the low that reclaims goes long; a sweep
-above the high that reclaims goes short. This is the "stop-run reversal"
-expression of the range.
+**Sweep / reclaim** — price pokes beyond the OR level by at least
+``sweep_min_ticks`` (grabbing resting liquidity), then *reclaims* by closing
+back inside the range → fade the sweep.
 
-The volume-profile POC is available as optional confluence: with
-``require_poc_confluence`` enabled, longs must be above the POC and shorts
-below it. The POC distance is always attached to each signal's ``meta`` so
-downstream filters / analytics can use it even when confluence isn't enforced.
-
-Stops and targets come straight from the risk config, so the whole risk model
-is data-driven and easy to sweep in optimisation.
+The volume-profile POC is available as optional confluence. All knobs are read
+from ``params`` (with sensible fallbacks to the legacy config blocks), so the
+same class can be instantiated multiple times with different settings.
 """
 
 from __future__ import annotations
 
-from typing import List, Optional, Sequence
+from typing import List, Optional
 
 import pandas as pd
 
-from ..config import Config
-from .base import DayContext, Side, Signal, SignalFilter
+from ..indicators.opening_range import compute_opening_range
+from ..utils.timeparse import parse_hhmm
+from .base import DayContext, Side, Signal, StrategyBase
+from .registry import register
 
 
-class ORBStrategy:
-    """Opening-range breakout + sweep/reclaim strategy.
+@register("orb")
+class ORBStrategy(StrategyBase):
+    name = "orb"
 
-    Parameters
-    ----------
-    config:
-        The full bot configuration.
-    filters:
-        Optional confirmation gates applied to every candidate signal. Any
-        filter returning ``False`` vetoes the signal. This is the extension
-        point for delta / footprint / ML confirmation.
-    """
+    # -- resolved params ----------------------------------------------------
 
-    def __init__(self, config: Config, filters: Optional[Sequence[SignalFilter]] = None):
-        self.config = config
-        self.filters: List[SignalFilter] = list(filters or [])
+    def _cfg(self):
+        c = self.config
+        return dict(
+            or_start=self.param("opening_range_start", c.opening_range.start),
+            or_end=self.param("opening_range_end", c.opening_range.end),
+            modes=set(self.param("modes", c.strategy.modes)),
+            require_poc=self.param("require_poc_confluence", c.strategy.require_poc_confluence),
+            breakout_buf_ticks=self.param("breakout_buffer_ticks", c.strategy.breakout_buffer_ticks),
+            sweep_ticks=self.param("sweep_min_ticks", c.strategy.sweep_min_ticks),
+            reward=self.param("reward_multiple", c.risk.reward_multiple),
+            stop_style=self.param("stop_style", c.risk.stop_style),
+            stop_buf_ticks=self.param("stop_buffer_ticks", c.risk.stop_buffer_ticks),
+        )
 
-    # -- public API ---------------------------------------------------------
+    # -- signal generation --------------------------------------------------
 
     def generate(self, context: DayContext) -> List[Signal]:
-        modes = set(self.config.strategy.modes)
+        p = self._cfg()
         tick = self.config.instrument.tick_size
 
-        orh = context.opening_range.high
-        orl = context.opening_range.low
-        breakout_buf = self.config.strategy.breakout_buffer_ticks * tick
-        sweep_dist = self.config.strategy.sweep_min_ticks * tick
+        opening_range = compute_opening_range(context.day_df, p["or_start"], p["or_end"])
+        if opening_range is None:
+            return []
+
+        or_end_t = parse_hhmm(p["or_end"])
+        entry_window = context.session_window[
+            context.session_window.index.time >= or_end_t
+        ]
+        if entry_window.empty:
+            return []
+
+        orh, orl = opening_range.high, opening_range.low
+        breakout_buf = p["breakout_buf_ticks"] * tick
+        sweep_dist = p["sweep_ticks"] * tick
 
         signals: List[Signal] = []
-
-        # Sweep/reclaim needs to remember how far price extended beyond a level
-        # before reclaiming, so the stop can sit at that extreme.
         swept_below = False
         sweep_low_extreme = orl
         swept_above = False
         sweep_high_extreme = orh
 
-        for ts, bar in context.entry_window.iterrows():
+        for ts, bar in entry_window.iterrows():
             high, low, close = bar["high"], bar["low"], bar["close"]
 
-            if "breakout" in modes:
+            if "breakout" in p["modes"]:
                 if close >= orh + breakout_buf:
-                    signals.append(
-                        self._build_signal(ts, Side.LONG, close, orh, orl, "breakout",
-                                           ref_extreme=orh, context=context)
-                    )
+                    signals.append(self._plan(ts, Side.LONG, close, orh, orl, "breakout", orh, p, context))
                 elif close <= orl - breakout_buf:
-                    signals.append(
-                        self._build_signal(ts, Side.SHORT, close, orh, orl, "breakout",
-                                           ref_extreme=orl, context=context)
-                    )
+                    signals.append(self._plan(ts, Side.SHORT, close, orh, orl, "breakout", orl, p, context))
 
-            if "sweep_reclaim" in modes:
-                # --- track / fire the bullish sweep below the low ---
+            if "sweep_reclaim" in p["modes"]:
                 if low <= orl - sweep_dist:
                     swept_below = True
                     sweep_low_extreme = min(sweep_low_extreme, low)
                 elif swept_below and close > orl:
-                    signals.append(
-                        self._build_signal(ts, Side.LONG, close, orh, orl,
-                                           "sweep_reclaim", ref_extreme=sweep_low_extreme,
-                                           context=context)
-                    )
+                    signals.append(self._plan(ts, Side.LONG, close, orh, orl, "sweep_reclaim", sweep_low_extreme, p, context))
                     swept_below = False
                     sweep_low_extreme = orl
 
-                # --- track / fire the bearish sweep above the high ---
                 if high >= orh + sweep_dist:
                     swept_above = True
                     sweep_high_extreme = max(sweep_high_extreme, high)
                 elif swept_above and close < orh:
-                    signals.append(
-                        self._build_signal(ts, Side.SHORT, close, orh, orl,
-                                           "sweep_reclaim", ref_extreme=sweep_high_extreme,
-                                           context=context)
-                    )
+                    signals.append(self._plan(ts, Side.SHORT, close, orh, orl, "sweep_reclaim", sweep_high_extreme, p, context))
                     swept_above = False
                     sweep_high_extreme = orh
 
-        # Drop malformed plans and anything a filter vetoes.
         signals = [s for s in signals if s is not None and s.is_valid()]
-        signals = [s for s in signals if self._passes_filters(s, context)]
-        signals.sort(key=lambda s: s.timestamp)
-        return signals
+        kept = []
+        for s in signals:
+            if context.decision_log is not None:
+                context.decision_log.signal(
+                    self.id, s.timestamp, reason=s.mode,
+                    side=s.side.value, entry=round(s.entry, 4),
+                    stop=round(s.stop, 4), target=round(s.target, 4),
+                )
+            if self.apply_filters(s, context):
+                kept.append(s)
+        kept.sort(key=lambda s: s.timestamp)
+        return kept
 
-    # -- internals ----------------------------------------------------------
+    # -- plan construction --------------------------------------------------
 
-    def _build_signal(
-        self,
-        ts: pd.Timestamp,
-        side: Side,
-        entry: float,
-        orh: float,
-        orl: float,
-        mode: str,
-        ref_extreme: float,
-        context: DayContext,
-    ) -> Optional[Signal]:
-        risk = self.config.risk
+    def _plan(self, ts, side, entry, orh, orl, mode, ref_extreme, p, context) -> Optional[Signal]:
         tick = self.config.instrument.tick_size
-        stop_buf = risk.stop_buffer_ticks * tick
+        stop_buf = p["stop_buf_ticks"] * tick
 
-        # --- POC confluence gate (optional) ---
         poc = context.volume_profile.poc if context.volume_profile else None
-        if self.config.strategy.require_poc_confluence and poc is not None:
+        if p["require_poc"] and poc is not None:
             if side is Side.LONG and entry < poc:
                 return None
             if side is Side.SHORT and entry > poc:
                 return None
 
-        # --- stop placement ---
-        if risk.stop_style == "sweep":
-            # Tight stop just beyond the breakout level / sweep extreme.
+        if p["stop_style"] == "sweep":
             stop = (ref_extreme - stop_buf) if side is Side.LONG else (ref_extreme + stop_buf)
-        else:  # "range" — opposite side of the box
+        else:
             stop = (orl - stop_buf) if side is Side.LONG else (orh + stop_buf)
 
-        risk_points = abs(entry - stop)
-        if risk_points <= 0:
+        risk = abs(entry - stop)
+        if risk <= 0:
             return None
-
-        target = (
-            entry + risk.reward_multiple * risk_points
-            if side is Side.LONG
-            else entry - risk.reward_multiple * risk_points
-        )
+        target = entry + p["reward"] * risk if side is Side.LONG else entry - p["reward"] * risk
 
         meta = {
-            "orh": orh,
-            "orl": orl,
-            "or_mid": (orh + orl) / 2.0,
+            "orh": orh, "orl": orl, "or_mid": (orh + orl) / 2.0,
             "poc": poc,
             "poc_distance": (entry - poc) if poc is not None else None,
             "ref_extreme": ref_extreme,
         }
-        reason = f"{mode} {side.value} @ {entry:.2f} (stop {stop:.2f}, tgt {target:.2f})"
         return Signal(
-            timestamp=ts,
-            side=side,
-            entry=float(entry),
-            stop=float(stop),
-            target=float(target),
-            mode=mode,
-            reason=reason,
-            meta=meta,
+            timestamp=ts, side=side, entry=float(entry), stop=float(stop),
+            target=float(target), mode=mode, strategy_id=self.id,
+            reason=f"{mode} {side.value} @ {entry:.2f}", meta=meta,
         )
-
-    def _passes_filters(self, signal: Signal, context: DayContext) -> bool:
-        for f in self.filters:
-            if not f.accept(signal, context):
-                signal.meta.setdefault("rejected_by", []).append(f.name)
-                return False
-        return True

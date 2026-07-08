@@ -1,119 +1,125 @@
-"""Command-line interface for the backtester.
+"""Command-line interface for the quant research platform.
 
-Exposed as the ``orb-backtest`` console script (see ``pyproject.toml``) and used
-by the root-level ``run_backtest.py`` wrapper. Research / backtesting only — it
-never connects to a broker.
+Orchestrates the full pipeline:
+
+    config -> logging -> data engine -> strategies -> risk-managed backtest
+           -> analytics -> journal + period tables -> visual dashboard
+
+Exposed as the ``orb-backtest`` console script and used by the root
+``run_backtest.py`` wrapper. Research / backtesting only — never connects to a
+broker.
 """
 
 from __future__ import annotations
 
 import argparse
+import logging
 from pathlib import Path
 
 from .analytics import compute_metrics
 from .config import Config
-from .data import load_directory, load_ohlcv
+from .data import load_market_data
 from .engine import Backtester
-from .reporting import build_dashboard, export_journal, export_metrics_csv
-from .strategy import ORBStrategy
+from .logging_utils import DecisionLog, setup_logging
+from .reporting import (
+    build_dashboard,
+    build_web_dashboard,
+    export_journal,
+    export_metrics_csv,
+    export_period_tables,
+    export_per_strategy_journals,
+)
+from .strategy import available_strategies
 
 
 def parse_args(argv=None) -> argparse.Namespace:
-    p = argparse.ArgumentParser(prog="orb-backtest", description="Futures ORB backtester")
+    p = argparse.ArgumentParser(prog="orb-backtest", description="Futures quant research backtester")
     p.add_argument("--config", default="config.yaml", help="Path to YAML config")
-    p.add_argument(
-        "--data",
-        default=None,
-        help="CSV file or directory of CSVs (defaults to config paths.data_dir)",
-    )
-    p.add_argument(
-        "--output",
-        default=None,
-        help="Output directory (defaults to config paths.output_dir)",
-    )
-    p.add_argument(
-        "--no-dashboard",
-        action="store_true",
-        help="Skip chart rendering (still writes the CSV journal)",
-    )
+    p.add_argument("--data", default=None, help="CSV file or directory (default: config paths.data_dir)")
+    p.add_argument("--output", default=None, help="Output directory (default: config paths.output_dir)")
+    p.add_argument("--log-level", default=None, help="Override logging level (DEBUG/INFO/...)")
+    p.add_argument("--no-dashboard", action="store_true", help="Skip chart / HTML rendering")
+    p.add_argument("--list-strategies", action="store_true", help="List registered strategies and exit")
     return p.parse_args(argv)
 
 
 def load_config(path: str) -> Config:
     cfg_path = Path(path)
     if cfg_path.exists():
-        print(f"Loading config: {cfg_path}")
         return Config.from_yaml(cfg_path)
-    print(f"Config '{cfg_path}' not found — using built-in defaults.")
     return Config()
-
-
-def load_data(cfg: Config, data_arg: str | None):
-    kwargs = dict(
-        input_timezone=cfg.data.input_timezone,
-        session_timezone=cfg.data.session_timezone,
-        resample=cfg.data.resample,
-    )
-    target = Path(data_arg) if data_arg else Path(cfg.paths.data_dir)
-    if target.is_dir():
-        print(f"Loading all CSVs in: {target}")
-        return load_directory(target, **kwargs)
-    print(f"Loading data file: {target}")
-    return load_ohlcv(target, **kwargs)
 
 
 def main(argv=None) -> int:
     args = parse_args(argv)
+
+    # Importing .strategy (above) has registered the built-ins.
+    if args.list_strategies:
+        print("Registered strategies:", ", ".join(available_strategies()))
+        return 0
+
     cfg = load_config(args.config)
-
-    try:
-        df = load_data(cfg, args.data)
-    except FileNotFoundError as exc:
-        print(f"\nERROR: {exc}")
-        print("Tip: generate sample data with scripts/generate_sample_data.py")
-        return 1
-
-    print(
-        f"Loaded {len(df):,} bars "
-        f"({df.index[0]} -> {df.index[-1]}, tz={cfg.data.session_timezone})"
-    )
-
-    strategy = ORBStrategy(cfg)  # add filters=[...] here to plug in extensions
-    result = Backtester(cfg, strategy).run(df)
-
-    metrics = compute_metrics(result.trades, result.equity_curve, result.starting_equity)
-
-    print("\n" + "=" * 52)
-    print(f"  BACKTEST RESULTS — {cfg.instrument.symbol}")
-    print("=" * 52)
-    print(
-        f"Sessions tested     : {result.days_tested} "
-        f"({result.days_with_signals} with signals)"
-    )
-    for line in metrics.summary_lines():
-        print(line)
-    print("=" * 52)
-
     out_dir = Path(args.output) if args.output else Path(cfg.paths.output_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    journal_path = export_journal(result.trades, out_dir / "trade_journal.csv")
-    metrics_path = export_metrics_csv(metrics, out_dir / "metrics.csv")
-    print(f"\nTrade journal : {journal_path}")
-    print(f"Metrics       : {metrics_path}")
+    log_level = args.log_level or cfg.logging.level
+    setup_logging(level=log_level, log_dir=cfg.logging.log_dir, console=cfg.logging.console,
+                  run_log_file=cfg.logging.run_log_file)
+    log = logging.getLogger("orb_bot.cli")
+
+    # --- data engine ---
+    try:
+        market, report = load_market_data(cfg, args.data)
+    except FileNotFoundError as exc:
+        log.error("%s", exc)
+        print(f"\nERROR: {exc}\nTip: python scripts/generate_sample_data.py")
+        return 1
+    print(report.summary())
+
+    # --- risk-managed, multi-strategy backtest ---
+    decisions_path = Path(cfg.logging.log_dir) / cfg.logging.decisions_file
+    with DecisionLog(decisions_path) as decision_log:
+        engine = Backtester(cfg, decision_log=decision_log)
+        if not engine.strategies:
+            print("No enabled strategies. Check the 'strategies' block in config.yaml.")
+            return 1
+        result = engine.run(market)
+
+    metrics = compute_metrics(result.trades, result.equity_curve, result.starting_equity)
+
+    # --- console summary ---
+    print("\n" + "=" * 56)
+    print(f"  BACKTEST RESULTS — {cfg.instrument.symbol}")
+    print("=" * 56)
+    print(f"Sessions tested     : {result.days_tested}")
+    print(f"Strategies          : {', '.join(s.id for s in engine.strategies)}")
+    for line in metrics.summary_lines():
+        print(line)
+    print("-" * 56)
+    for sid, res in result.per_strategy.items():
+        sm = compute_metrics(res.trades, res.equity_curve, res.starting_equity)
+        print(f"  {sid:<16} trades={sm.trades:<4} win={sm.win_rate*100:4.1f}%  "
+              f"PF={sm.profit_factor:4.2f}  net=${sm.net_pnl:,.0f}")
+    print("=" * 56)
+
+    # --- exports ---
+    export_journal(result.trades, out_dir / "trade_journal.csv")
+    export_per_strategy_journals(result.trades, out_dir / "journals")
+    export_metrics_csv(metrics, out_dir / "metrics.csv")
+    export_period_tables(result.trades, out_dir)
+    print(f"\nJournal + metrics + period tables -> {out_dir}/")
 
     if not args.no_dashboard:
         try:
-            paths = build_dashboard(
-                result.trades,
-                result.equity_curve,
-                metrics,
-                out_dir,
-                title=f"Futures ORB Backtest — {cfg.instrument.symbol}",
+            dash = build_web_dashboard(
+                result, metrics, market, out_dir,
+                title=f"{cfg.instrument.symbol} Quant Research Dashboard",
             )
-            print(f"Dashboard PNG : {paths['png']}")
-            print(f"Report HTML   : {paths['html']}")
-        except Exception as exc:  # pragma: no cover - reporting is best-effort
+            build_dashboard(result.trades, result.equity_curve, metrics, out_dir,
+                            title=f"Futures ORB Backtest — {cfg.instrument.symbol}")
+            print(f"Dashboard          -> {dash}")
+        except Exception as exc:  # pragma: no cover
+            log.exception("Dashboard rendering failed")
             print(f"WARNING: dashboard rendering failed: {exc}")
 
     return 0

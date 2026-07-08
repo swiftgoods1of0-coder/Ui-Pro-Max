@@ -1,10 +1,11 @@
-# Core dependencies for the Futures ORB backtesting bot.
-# Everything here is a well-established, actively maintained package.
+# Core dependencies for the Futures Quant Research Platform.
 pandas>=2.0
 numpy>=1.24
 matplotlib>=3.7
 PyYAML>=6.0
+pyarrow>=12.0          # efficient Parquet data cache (falls back to pickle if absent)
 
-# --- Optional / future expansion (uncomment when you need them) ---
+# --- Optional / future expansion ---
 # scikit-learn>=1.3     # ML signal filters (src/orb_bot/extensions/ml_filter.py)
 # pytest>=7.4           # test runner (tests/)
+# playwright>=1.40      # only if you want to auto-screenshot the HTML dashboard

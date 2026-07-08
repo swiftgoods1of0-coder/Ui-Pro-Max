@@ -16,4 +16,4 @@ module and can be swapped or extended without touching the others:
 Nothing here talks to a broker. This is research / backtesting only.
 """
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"

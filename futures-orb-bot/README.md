@@ -1,151 +1,124 @@
-# Futures ORB Bot
+# Futures Quant Research Platform
 
-A clean, professional **signal & backtesting** framework for a New-York-session
-opening-range strategy on futures. It is intentionally **research-only** — there
-is no broker connection anywhere in the codebase.
+A modular, production-quality **signal & backtesting** platform for futures
+research. It began as a New-York-session opening-range bot and has grown into a
+full research stack: a data engine, a plug-and-play strategy engine, a risk
+manager, performance analytics, a visual dashboard, a trade journal, structured
+logging, and configuration-driven everything.
 
-> ⚠️ **Not live trading.** This is a backtesting / signal-research tool.
-> Nothing here places orders. Live execution is a deliberate future step.
+> ⚠️ **Research / backtesting only.** There is no broker connection anywhere in
+> the codebase. Everything is designed to be validated on historical data first.
+> A live/paper layer is a deliberate, additive future step (see
+> [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md)).
 
-## Strategy
+## Highlights
 
-Everything revolves around the **08:00–08:15 EST opening-range box** ("ORB"):
-
-- **Breakout** — a bar *closes* beyond the OR high (long) or low (short).
-- **Sweep / reclaim** — price pokes beyond the OR level far enough to grab the
-  resting liquidity, then *reclaims* by closing back inside → fade the sweep.
-- **Volume-profile POC** is available as a key level / confluence filter.
-- **Risk/reward** is configurable (1:2, 1:3, …) with dollar-based position
-  sizing, commissions, and slippage.
-- Trades only inside the New-York window (default 08:00–11:00); anything open at
-  the window close is flattened.
-
-Reported metrics: **win rate, profit factor, max drawdown, average R,
-expectancy, best/worst time of day**, streaks, hold time, per-setup breakdown.
+| Area | What's included |
+|------|-----------------|
+| **Data engine** | CSV import, multi-timeframe (1m/5m/15m…), Parquet cache, missing/corrupt-data validation |
+| **Strategy engine** | Plug-and-play registry, multiple strategies running independently, enable/disable per config |
+| **Risk management** | Adjustable account size & risk-per-trade, daily max loss, max consecutive losses, max trades/day, dynamic position sizing |
+| **Analytics** | Win rate, profit factor, expectancy, Sharpe/Sortino, max drawdown, avg R, equity curve, monthly & yearly tables, distributions |
+| **Dashboard** | Self-contained HTML: equity, open/closed trades, metrics, strategy status, trade log, price chart with entries/exits plotted |
+| **Trade journal** | Every trade with entry/exit, stop, target, time, duration, strategy, P&L, screenshot placeholder, notes |
+| **Configuration** | One layered `config.yaml` for strategies, risk, sessions, storage, logging, filters |
+| **Logging** | Human-readable run log **and** a machine-readable decision log ("why was/wasn't this trade taken?") |
+| **Docs & tests** | Architecture doc, module docstrings, pytest suite across every layer |
 
 ## Quick start
 
 ```bash
-# 1. Install dependencies
 pip install -r requirements.txt
 
-# 2. Generate sample data (or drop your own CSVs into data/raw/)
+# Generate sample data (or drop your own CSVs into data/raw/)
 python scripts/generate_sample_data.py --days 15
 
-# 3. Run the backtest
+# Run the full pipeline
 python run_backtest.py
+
+# List available strategies
+python run_backtest.py --list-strategies
 ```
 
-You'll get a console summary plus these files in `output/`:
+Outputs land in `output/`:
 
-| File                 | What it is                                    |
-|----------------------|-----------------------------------------------|
-| `trade_journal.csv`  | One row per trade — open in a spreadsheet      |
-| `metrics.csv`        | Summary metrics as `metric,value`              |
-| `dashboard.png`      | Six-panel results chart                        |
-| `report.html`        | Self-contained HTML report (chart embedded)    |
+| File | Contents |
+|------|----------|
+| `dashboard.html` | The full visual dashboard (open in a browser) |
+| `trade_journal.csv` | Every trade, all fields |
+| `journals/journal_<strategy>.csv` | Per-strategy journals |
+| `metrics.csv` | Summary metrics |
+| `monthly_pnl.csv`, `yearly_performance.csv` | Period tables |
+| `logs/run.log` | Human-readable run log |
+| `logs/decisions.jsonl` | Structured decision log (every signal / veto / fill) |
+| `dashboard.png` | Quick six-panel PNG summary |
 
 ## Configuration
 
-All knobs live in [`config.yaml`](config.yaml) — the opening-range window, the
-session window, which setups to trade, the RR multiple, risk per trade,
-commissions/slippage, the instrument point value, and volume-profile settings.
-Every field has a default (see `src/orb_bot/config.py`), so a partial file works.
+Everything is driven from [`config.yaml`](config.yaml). Strategies are a list —
+toggle `enabled`, tune `params`, add your own:
 
 ```yaml
-opening_range: { start: "08:00", end: "08:15" }
-strategy:      { modes: ["breakout", "sweep_reclaim"], require_poc_confluence: false }
-risk:          { reward_multiple: 2.0, risk_per_trade_usd: 250.0 }
+risk:
+  starting_equity_usd: 25000.0
+  risk_model: "fixed_fractional"   # % of equity (dynamic) or "fixed_dollar"
+  risk_per_trade_pct: 1.0
+  max_trades_per_day: 3
+  max_consecutive_losses: 4
+  daily_max_loss_pct: 3.0
+
+strategies:
+  - name: "orb"
+    id: "orb_breakout"
+    enabled: true
+    params: { modes: ["breakout", "sweep_reclaim"], reward_multiple: 2.0 }
+  - name: "vwap_reversion"
+    id: "vwap_mr"
+    enabled: true
+    params: { entry_stretch_ticks: 10, reward_multiple: 1.5 }
 ```
 
-## Project structure
-
-```
-futures-orb-bot/
-├── config.yaml               # all strategy / risk / engine settings
-├── run_backtest.py           # CLI entry point
-├── requirements.txt
-├── data/
-│   ├── raw/                  # drop your OHLCV CSVs here
-│   └── README.md             # accepted formats
-├── scripts/
-│   └── generate_sample_data.py
-├── src/orb_bot/
-│   ├── config.py             # typed config (dataclasses <- YAML)
-│   ├── data/loader.py        # OHLCV CSV loading, tz handling, resampling
-│   ├── indicators/
-│   │   ├── opening_range.py  # the 08:00–08:15 ORB box
-│   │   └── volume_profile.py # POC + value area
-│   ├── strategy/
-│   │   ├── base.py           # Signal, DayContext, Strategy + SignalFilter
-│   │   └── orb_strategy.py   # breakout + sweep/reclaim rules
-│   ├── engine/
-│   │   ├── trade.py          # the Trade record
-│   │   └── backtester.py     # event loop, sizing, fills, exits
-│   ├── analytics/metrics.py  # win rate, PF, drawdown, R, time-of-day
-│   ├── reporting/
-│   │   ├── journal.py        # CSV export
-│   │   └── dashboard.py      # charts + HTML report
-│   └── extensions/           # <- future hooks (see below)
-│       ├── delta.py
-│       ├── footprint.py
-│       └── ml_filter.py
-└── tests/                    # pytest suite
-```
-
-## Extending it later
-
-The architecture is built to grow. Each concern is behind a small interface so
-you can add capability without rewriting the core.
-
-### Signal filters (delta · footprint · ML)
-
-A `SignalFilter` is any object with a `name` and an
-`accept(signal, context) -> bool` method. Every candidate signal must be
-accepted by all filters. Ready-to-fill stubs live in `src/orb_bot/extensions/`:
+## Adding a strategy (plug-and-play)
 
 ```python
-from orb_bot.strategy import ORBStrategy
-from orb_bot.extensions import DeltaFilter, MLSignalFilter
+from orb_bot.strategy import StrategyBase, Signal
+from orb_bot.strategy.registry import register
 
-strategy = ORBStrategy(cfg, filters=[
-    DeltaFilter(min_delta=500, enabled=True),
-    MLSignalFilter(model=my_model, min_proba=0.6, enabled=True),
-])
+@register("my_strategy")
+class MyStrategy(StrategyBase):
+    def generate(self, context):
+        signals = []
+        # ...read context.day_df / context.volume_profile / context.market...
+        return signals
 ```
 
-- **`delta.py`** — gate entries on order-flow delta once you have bid/ask
-  volume.
-- **`footprint.py`** — require stacked imbalances / absorption at the level.
-- **`ml_filter.py`** — score signals with a trained classifier; includes a
-  starter feature vector (`MLSignalFilter.features_from`). scikit-learn is
-  loaded lazily, so it's not a hard dependency.
+Then add `{ name: "my_strategy", enabled: true }` to the `strategies` list. The
+engine, risk manager, analytics, journal and dashboard pick it up automatically.
 
-### Richer volume profile
+## Architecture
 
-`indicators/volume_profile.py` approximates intra-bar volume from OHLC. When you
-add tick / footprint data, swap in a tick-accurate profile — every caller uses
-the same `VolumeProfile` interface.
+See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for the full layer map, the
+backtest data flow, modelling choices (no look-ahead, fill assumptions), and the
+extension points. In brief:
 
-### New setups
-
-Add a new `Strategy` (anything with `generate(context) -> list[Signal]`) and
-hand it to the `Backtester`. The engine, analytics, and reporting are all
-strategy-agnostic.
-
-### Toward live trading (later)
-
-The seam is clean: `Backtester._simulate_trade` is the only place fills are
-modelled. A live layer would implement the same signal → order lifecycle
-against a broker API. That is intentionally **not** built here.
+```
+config → data engine → strategy engine → risk-managed backtest
+       → analytics → journal + tables → visual dashboard
+                         (decision log throughout)
+```
 
 ## Tests
 
 ```bash
 pip install pytest
-python -m pytest tests/ -q
+python -m pytest -q
 ```
+
+Covers data loading & validation, timeframes & storage, indicators, the risk
+manager, the strategy registry & multi-strategy runs, the end-to-end engine, and
+analytics.
 
 ## Requirements
 
-Python 3.9+, `pandas`, `numpy`, `matplotlib`, `PyYAML`.
+Python 3.9+, `pandas`, `numpy`, `matplotlib`, `PyYAML`, `pyarrow` (optional but
+recommended for the Parquet cache).
