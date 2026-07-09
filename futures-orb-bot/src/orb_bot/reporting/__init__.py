@@ -8,6 +8,7 @@ from .journal import (
 )
 from .dashboard import build_dashboard
 from .webdashboard import build_web_dashboard
+from .research_report import build_research_report, export_report, to_html, to_csv, to_pdf
 
 __all__ = [
     "export_journal",
@@ -16,4 +17,9 @@ __all__ = [
     "export_period_tables",
     "build_dashboard",
     "build_web_dashboard",
+    "build_research_report",
+    "export_report",
+    "to_html",
+    "to_csv",
+    "to_pdf",
 ]

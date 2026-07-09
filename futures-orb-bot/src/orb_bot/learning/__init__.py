@@ -15,7 +15,7 @@ research report that separates supported findings from speculation.
 
 from .features import FeatureExtractor, TradeFeatures
 from .store import TradeFeatureStore
-from .patterns import PatternMiner, MiningResult, Finding
+from .patterns import PatternMiner, MiningResult, Finding, Suggestion
 from .report import generate_markdown, write_report
 
 __all__ = [
@@ -25,6 +25,7 @@ __all__ = [
     "PatternMiner",
     "MiningResult",
     "Finding",
+    "Suggestion",
     "generate_markdown",
     "write_report",
 ]

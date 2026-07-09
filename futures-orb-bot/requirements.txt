@@ -8,4 +8,8 @@ pyarrow>=12.0          # efficient Parquet data cache (falls back to pickle if a
 # --- Optional / future expansion ---
 # scikit-learn>=1.3     # ML signal filters (src/orb_bot/extensions/ml_filter.py)
 # pytest>=7.4           # test runner (tests/)
-# playwright>=1.40      # only if you want to auto-screenshot the HTML dashboard
+# weasyprint>=61        # preferred PDF engine for the research report
+# playwright>=1.40      # PDF fallback (renders the styled HTML via headless
+#                       # Chromium); also used to screenshot the dashboard
+#                       # if neither is installed, PDF export falls back to a
+#                       # dependency-free Matplotlib text rendering

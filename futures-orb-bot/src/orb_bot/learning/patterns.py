@@ -62,6 +62,31 @@ class Finding:
 
 
 @dataclass
+class Suggestion:
+    """A suggested filter with its evidential strength."""
+
+    text: str
+    dimension: str
+    value: str
+    n: int
+    win_rate: float
+    baseline: float
+    lift: float
+    p_value: float
+    support: str                      # from confidence_label()
+
+    @property
+    def supported(self) -> bool:
+        return self.support == "statistically supported"
+
+    @property
+    def confidence_pct(self) -> float:
+        """A rough 0–100 confidence in the suggestion (1 − p, gated by support)."""
+        base = (1.0 - self.p_value) * 100.0
+        return round(base if self.support != "speculative" else min(base, 50.0), 1)
+
+
+@dataclass
 class MiningResult:
     n_trades: int = 0
     n_decided: int = 0
@@ -75,6 +100,7 @@ class MiningResult:
     best_conditions: List[Finding] = field(default_factory=list)
     win_reasons: List[Finding] = field(default_factory=list)
     lose_reasons: List[Finding] = field(default_factory=list)
+    suggestions: List["Suggestion"] = field(default_factory=list)
     recommendations: List[str] = field(default_factory=list)
     speculative: List[str] = field(default_factory=list)
 
@@ -120,8 +146,10 @@ class PatternMiner:
         res.win_reasons = [f for f in reasons if f.helps]
         res.lose_reasons = [f for f in reasons if not f.helps]
 
-        res.recommendations, res.speculative = self._recommendations(
-            setups + hours + conditions, reasons)
+        res.suggestions = self._suggestions(setups + hours + conditions, reasons)
+        res.recommendations = [s.text for s in res.suggestions if s.supported]
+        res.speculative = [f"{s.text} [{s.support}]"
+                           for s in res.suggestions if not s.supported][:12]
         return res
 
     # -- category mining ----------------------------------------------------
@@ -179,8 +207,8 @@ class PatternMiner:
         pool.sort(key=lambda f: (f.win_rate, f.avg_r), reverse=best)
         return pool[:k]
 
-    def _recommendations(self, cat_findings, reason_findings) -> tuple:
-        recs, spec = [], []
+    def _suggestions(self, cat_findings, reason_findings) -> List[Suggestion]:
+        suggestions: List[Suggestion] = []
         for f in cat_findings + reason_findings:
             if abs(f.lift) < self.min_lift:
                 continue
@@ -194,11 +222,11 @@ class PatternMiner:
                 phrase = f"{verb} {f.dimension}={f.value}"
                 detail = (f"win {f.win_rate*100:.0f}% vs {f.baseline_win_rate*100:.0f}% "
                           f"baseline, avg {f.avg_r:+.2f}R, n={f.n}, p={f.p_value:.3f}")
-            line = f"{phrase} — {detail}."
-            if f.supported:
-                recs.append(line)
-            else:
-                spec.append(f"{line} [{f.support}]")
-        # Strongest first.
-        recs.sort(key=lambda s: s)
-        return recs, spec[:12]
+            suggestions.append(Suggestion(
+                text=f"{phrase} — {detail}.", dimension=f.dimension, value=f.value,
+                n=f.n, win_rate=f.win_rate, baseline=f.baseline_win_rate, lift=f.lift,
+                p_value=f.p_value, support=f.support,
+            ))
+        # Supported first, then by strength of effect.
+        suggestions.sort(key=lambda s: (s.supported, abs(s.lift)), reverse=True)
+        return suggestions

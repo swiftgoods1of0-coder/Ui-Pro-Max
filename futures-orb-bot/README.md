@@ -55,6 +55,8 @@ Outputs land in `output/`:
 | `logs/run.log` | Human-readable run log |
 | `logs/decisions.jsonl` | Structured decision log (every signal / veto / fill) |
 | `dashboard.png` | Quick six-panel PNG summary |
+| `research_report.html` / `.pdf` / `.csv` / `.md` | Full research report: metrics, best/worst setups & hours, winner/loser traits, suggested filters with confidence + supported/speculative labels ([docs](docs/LEARNING.md)) |
+| `learning/trade_features.csv` | Per-trade feature dataset (market context at entry + outcome) |
 
 ## Configuration
 

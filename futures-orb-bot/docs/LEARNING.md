@@ -66,11 +66,46 @@ Example (from `output/research_report.md`):
 - ⚠️ Favor hour=9 — win 47% vs 37% baseline, n=32, p=0.185. [observed (not significant)]
 ```
 
-## Usage
+## The research report (HTML / PDF / CSV / Markdown)
 
-It runs automatically after every backtest (`run_backtest.py`) when
-`learning.enabled` is true, producing `trade_features.csv` and
-`research_report.md`. Programmatically:
+`orb_bot.reporting.research_report` turns the performance metrics plus the
+mining result into one report, exportable in four formats:
+
+| Format | What it is |
+|--------|------------|
+| **HTML** | a styled, self-contained page — KPI cards, one table per section, colour-coded evidence badges (`supported` / `not significant` / `speculative`) |
+| **PDF** | the same layout, paginated for printing/sharing |
+| **CSV** | one tidy row per metric / finding / suggestion — pivot it yourself |
+| **Markdown** | the plain-text report from `learning.report` |
+
+It covers total trades, win rate, profit factor, expectancy, average R, max
+drawdown, best/worst setups, best/worst hours, common winner/loser traits, and
+suggested filters — each suggestion carrying a **0–100 confidence** and an
+explicit **supported vs speculative** label (see the section above).
+
+PDF export tries **WeasyPrint** first, then **Playwright/headless Chromium**,
+and falls back to a dependency-free Matplotlib text rendering if neither is
+installed — so a PDF is always produced.
+
+```python
+from orb_bot.reporting import build_research_report, export_report
+
+report = build_research_report(metrics, mining, symbol="ES")
+paths = export_report(report, "output", formats=["html", "csv", "pdf", "md"])
+```
+
+It runs automatically after every backtest via the CLI:
+
+```bash
+python run_backtest.py                              # html, csv, pdf, md
+python run_backtest.py --report-formats html csv     # only these
+```
+
+## Usage (feature extraction / mining directly)
+
+The learning pipeline itself (feature extraction → mining) runs automatically
+after every backtest (`run_backtest.py`) when `learning.enabled` is true,
+producing `trade_features.csv` and the research report above. Programmatically:
 
 ```python
 from orb_bot.learning import FeatureExtractor, TradeFeatureStore, PatternMiner

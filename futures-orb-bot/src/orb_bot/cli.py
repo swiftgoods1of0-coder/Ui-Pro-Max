@@ -23,29 +23,33 @@ from .engine import Backtester
 from .logging_utils import DecisionLog, setup_logging
 from .reporting import (
     build_dashboard,
+    build_research_report,
     build_web_dashboard,
     export_journal,
     export_metrics_csv,
     export_period_tables,
     export_per_strategy_journals,
+    export_report,
 )
 from .strategy import available_strategies
 
 
-def _run_learning(cfg, result, market, out_dir):
-    """Extract per-trade features, mine patterns, and write the research report."""
+def _run_learning(cfg, result, metrics, market, out_dir, formats=None):
+    """Extract per-trade features, mine patterns, and export the research report
+    (HTML + PDF + CSV by default) plus the underlying trade-feature dataset."""
     from .learning import FeatureExtractor, PatternMiner, TradeFeatureStore
-    from .learning.report import write_report
 
     store = TradeFeatureStore(FeatureExtractor(cfg).extract_all(result.trades, market))
     store.save_csv(out_dir / cfg.learning.features_file)
     mining = PatternMiner(cfg.learning.min_samples, cfg.learning.min_lift).run(store.to_frame())
-    report_path = write_report(mining, out_dir / cfg.learning.report_file,
-                               symbol=cfg.instrument.symbol,
-                               min_samples=cfg.learning.min_samples)
+
+    report = build_research_report(metrics, mining, symbol=cfg.instrument.symbol)
+    basename = Path(cfg.learning.report_file).stem
+    written = export_report(report, out_dir, basename=basename,
+                            formats=formats or ["html", "csv", "pdf", "md"])
 
     print("\n" + "=" * 56)
-    print("  LEARNING SYSTEM")
+    print("  RESEARCH REPORT")
     print("=" * 56)
     print(f"Trades analysed     : {mining.n_trades} ({mining.n_decided} decided)")
     print(f"Baseline win rate   : {mining.baseline_win_rate*100:.1f}%")
@@ -58,7 +62,8 @@ def _run_learning(cfg, result, market, out_dir):
     if mining.speculative:
         print(f"Speculative         : {len(mining.speculative)} (insufficient sample)")
     print(f"Feature dataset     : {out_dir / cfg.learning.features_file}")
-    print(f"Research report     : {report_path}")
+    for fmt, path in written.items():
+        print(f"Report ({fmt:<4})       : {path}")
 
 
 def parse_args(argv=None) -> argparse.Namespace:
@@ -68,6 +73,9 @@ def parse_args(argv=None) -> argparse.Namespace:
     p.add_argument("--output", default=None, help="Output directory (default: config paths.output_dir)")
     p.add_argument("--log-level", default=None, help="Override logging level (DEBUG/INFO/...)")
     p.add_argument("--no-dashboard", action="store_true", help="Skip chart / HTML rendering")
+    p.add_argument("--report-formats", nargs="*", default=None,
+                   choices=["html", "csv", "pdf", "md"],
+                   help="Research report formats to export (default: html csv pdf md)")
     p.add_argument("--list-strategies", action="store_true", help="List registered strategies and exit")
     return p.parse_args(argv)
 
@@ -138,10 +146,10 @@ def main(argv=None) -> int:
     export_period_tables(result.trades, out_dir)
     print(f"\nJournal + metrics + period tables -> {out_dir}/")
 
-    # --- completed-trade learning system ---
+    # --- completed-trade learning system + research report ---
     if cfg.learning.enabled and result.trades:
         try:
-            _run_learning(cfg, result, market, out_dir)
+            _run_learning(cfg, result, metrics, market, out_dir, args.report_formats)
         except Exception:  # pragma: no cover - learning is best-effort
             log.exception("Learning system failed")
 
