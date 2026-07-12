@@ -27,6 +27,6 @@ export default defineConfig({
     assetsInlineLimit: 0,
   },
   ssr: {
-    optimizeAeps: ['@shopify/hydrogen-react'],
+    optimizeDeps: ['@shopify/hydrogen-react'],
   },
 })
