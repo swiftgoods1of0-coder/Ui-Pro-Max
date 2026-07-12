@@ -2,6 +2,7 @@
   "name": "swift-goods-hydrogen",
   "private": true,
   "version": "1.0.0",
+  "type": "module",
   "scripts": {
     "build": "shopify hydrogen build",
     "dev": "shopify hydrogen dev --codegen",
