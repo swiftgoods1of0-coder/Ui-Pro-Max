@@ -22,8 +22,8 @@
   },
   "devDependencies": {
     "@remix-run/dev": "2.13.1",
-    "@shopify/cli": "3.68.3",
-    "@shopify/mini-oxygen": "3.0.5",
+    "@shopify/cli": "^3.68.0",
+    "@shopify/mini-oxygen": "^3.0.5",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "autoprefixer": "^10.4.19",
