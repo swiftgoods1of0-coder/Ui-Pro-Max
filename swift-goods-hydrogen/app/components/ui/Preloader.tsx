@@ -1,8 +1,6 @@
 
 
 import { useEffect, useRef } from 'react'
-import Image from 'next/image'
-
 interface PreloaderProps {
   onComplete: () => void
 }
@@ -55,12 +53,11 @@ export default function Preloader({ onComplete }: PreloaderProps) {
           opacity: 0,
         }}
       >
-        <Image
+        <img
           src="/brand/sg-winged-s-transparent.png"
           alt="Swift Goods"
           width={72}
           height={72}
-          priority
           style={{ objectFit: 'contain' }}
         />
         <p

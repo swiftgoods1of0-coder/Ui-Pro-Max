@@ -1,6 +1,5 @@
 
 
-import Image from 'next/image'
 import LuxuryButton from '@/components/ui/LuxuryButton'
 import MagneticElement from '@/components/ui/MagneticElement'
 
@@ -77,13 +76,10 @@ export default function CampaignEditorial() {
                 }}
               />
             ) : (
-              <Image
+              <img
                 src={panel.src}
                 alt={panel.label}
-                fill
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                className="object-cover"
-                quality={90}
+                style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
               />
             )}
             {/* Gradient blends media into dark bg */}

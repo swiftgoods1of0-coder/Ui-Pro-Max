@@ -1,7 +1,7 @@
 ;
 
 import { useState, useEffect, useRef, useCallback } from 'react';
-import Link from 'next/link';
+import { Link } from '@remix-run/react';
 
 const INITIAL_PERCENT = 68;
 const MAX_PERCENT = 89;
@@ -163,7 +163,7 @@ export default function UrgencyBanner() {
 
         {/* Shop Now CTA */}
         <Link
-          href="/collections/shorts"
+          to="/collections/shorts"
           style={{
             color: '#c9a84c',
             fontSize: '0.6875rem',

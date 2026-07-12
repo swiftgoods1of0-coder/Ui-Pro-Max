@@ -1,7 +1,6 @@
 
 
 import { useEffect, useRef } from 'react'
-import Image from 'next/image'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import LuxuryButton from '@/components/ui/LuxuryButton'
@@ -235,12 +234,11 @@ export default function Lookbook({ collections }: LookbookProps) {
                 }}
               >
                 <div className="lb-card-img absolute inset-0">
-                  <Image
+                  <img
                     src={slide.src}
                     alt={slide.alt}
-                    fill
-                    sizes={isWide ? '100vw' : '(max-width: 768px) 100vw, 50vw'}
                     className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                    style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
                   />
                 </div>
 

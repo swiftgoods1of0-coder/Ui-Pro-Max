@@ -1,7 +1,6 @@
 
 
 import { useEffect, useRef } from 'react'
-import Image from 'next/image'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useScrollVelocity } from '@/hooks/useScrollVelocity'
@@ -74,13 +73,10 @@ export default function SignatureMoment() {
       {/* Photo — right 55% on desktop, full-width on mobile */}
       <div className="absolute inset-0 lg:left-[45%] lg:right-0">
         <div ref={photoRef} className="relative w-full h-full lg:h-[120%] lg:-top-[10%]">
-          <Image
+          <img
             src="/brand/sg-solo-black.jpeg"
             alt="Swift Goods — signature moment"
-            fill
-            sizes="(min-width: 1024px) 55vw, 100vw"
-            className="object-cover"
-            priority={false}
+            style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
           />
         </div>
         {/* Mobile overlay — heavy dark gradient so text reads */}

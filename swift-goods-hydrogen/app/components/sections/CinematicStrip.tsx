@@ -1,7 +1,6 @@
 
 
 import { useEffect, useRef } from 'react'
-import Image from 'next/image'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useScrollVelocity } from '@/hooks/useScrollVelocity'
@@ -253,13 +252,11 @@ export default function CinematicStrip() {
           >
             {/* Image */}
             <div className="cs-img absolute inset-0" style={{ willChange: 'transform' }}>
-              <Image
+              <img
                 src={frame.src}
                 alt={frame.title}
-                fill
-                sizes={idx === 0 || idx === 2 ? '70vw' : '45vw'}
                 className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                quality={90}
+                style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
               />
             </div>
 

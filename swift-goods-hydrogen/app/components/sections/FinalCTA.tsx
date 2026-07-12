@@ -1,7 +1,6 @@
 
 
 import { useEffect, useRef } from 'react'
-import Image from 'next/image'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import LuxuryButton from '@/components/ui/LuxuryButton'
@@ -55,13 +54,10 @@ export default function FinalCTA() {
 
       {/* Background image with parallax */}
       <div ref={bgRef} className="absolute inset-0" style={{ top: '-40px', bottom: '-40px', willChange: 'transform' }}>
-        <Image
+        <img
           src="/brand/sg-supra-brown-black.jpeg"
           alt="Swift Goods — limited release"
-          fill
-          sizes="100vw"
-          className="object-cover object-center"
-          priority={false}
+          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center' }}
         />
       </div>
 

@@ -1,7 +1,5 @@
-'use client'
-
 import { useEffect } from 'react'
-import Link from 'next/link'
+import { Link } from '@remix-run/react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useCart } from '@/context/CartContext'
 import { formatPrice } from '@/lib/shopify'
@@ -251,7 +249,7 @@ export default function CartDrawer() {
                         {/* Image */}
                         {imageUrl && (
                           <Link
-                            href={`/products/${merchandise.product.handle}`}
+                            to={`/products/${merchandise.product.handle}`}
                             onClick={closeCart}
                             style={{
                               width: 80,
@@ -272,7 +270,7 @@ export default function CartDrawer() {
                         {/* Details */}
                         <div style={{ flex: 1, minWidth: 0 }}>
                           <Link
-                            href={`/products/${merchandise.product.handle}`}
+                            to={`/products/${merchandise.product.handle}`}
                             onClick={closeCart}
                             style={{
                               textDecoration: 'none',
