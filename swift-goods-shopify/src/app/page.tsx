@@ -1,5 +1,6 @@
 import dynamic from 'next/dynamic'
 import Navigation from '@/components/ui/Navigation'
+import GiveawaySection from '@/components/sections/GiveawaySection'
 import HeroSection from '@/components/sections/HeroSection'
 import FeaturedProducts from '@/components/sections/FeaturedProducts'
 import Footer from '@/components/ui/Footer'
@@ -102,6 +103,7 @@ export default async function Home() {
 
   return (
     <main className="bg-sg-black min-h-screen overflow-x-hidden">
+      <GiveawaySection />
       <Navigation />
       <HeroSection />
 
