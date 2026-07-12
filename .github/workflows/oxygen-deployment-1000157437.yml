@@ -34,7 +34,7 @@ jobs:
 
       - name: Install dependencies
         working-directory: ./swift-goods-hydrogen
-        run: npm install
+        run: npm install --legacy-peer-deps
 
       - name: Build and Publish to Oxygen
         working-directory: ./swift-goods-hydrogen
