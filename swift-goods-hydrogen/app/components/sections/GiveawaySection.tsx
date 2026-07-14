@@ -74,11 +74,11 @@ export default function GiveawaySection() {
       {/* Background */}
       <div className="absolute inset-0" style={{ zIndex: 0 }}>
         <img
-          src="/brand/sg-giveaway-shorts.jpeg"
+          src="/brand/sg-brown-shorts-duo.jpeg"
           alt="Swift Goods Brown Shorts Giveaway"
           fetchPriority="high"
           decoding="async"
-          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 30%', filter: 'brightness(0.5) contrast(1.1)' }}
+          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 20%', filter: 'brightness(0.45) contrast(1.15)' }}
         />
       </div>
 
