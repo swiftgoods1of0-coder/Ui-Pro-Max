@@ -154,7 +154,7 @@ export default function CinematicStrip() {
           <span
             style={{
               fontFamily: 'var(--font-body, Inter, sans-serif)',
-              fontSize: '0.5625rem',
+              fontSize: '0.8rem',
               letterSpacing: '0.4em',
               textTransform: 'uppercase',
               color: '#c9a84c',
@@ -208,7 +208,7 @@ export default function CinematicStrip() {
         <span
           style={{
             fontFamily: 'var(--font-body, Inter, sans-serif)',
-            fontSize: '0.5rem',
+            fontSize: '0.75rem',
             letterSpacing: '0.3em',
             color: 'rgba(201,168,76,0.4)',
             textTransform: 'uppercase',
@@ -280,7 +280,7 @@ export default function CinematicStrip() {
               <span
                 style={{
                   fontFamily: 'var(--font-body, Inter, sans-serif)',
-                  fontSize: '0.5625rem',
+                  fontSize: '0.75rem',
                   letterSpacing: '0.35em',
                   color: 'rgba(201,168,76,0.5)',
                   display: 'block',

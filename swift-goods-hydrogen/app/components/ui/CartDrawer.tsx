@@ -45,7 +45,7 @@ function QuantityControl({
       <span
         style={{
           fontFamily: 'var(--font-body, Inter, sans-serif)',
-          fontSize: '0.8rem',
+          fontSize: '1rem',
           color: COLORS.text,
           minWidth: 20,
           textAlign: 'center',
@@ -214,7 +214,7 @@ export default function CartDrawer() {
                     onClick={closeCart}
                     style={{
                       fontFamily: 'var(--font-body, Inter, sans-serif)',
-                      fontSize: '0.7rem',
+                      fontSize: '0.875rem',
                       letterSpacing: '0.2em',
                       textTransform: 'uppercase',
                       color: COLORS.gold,
@@ -281,7 +281,7 @@ export default function CartDrawer() {
                             <span
                               style={{
                                 fontFamily: 'var(--font-body, Inter, sans-serif)',
-                                fontSize: '0.8rem',
+                                fontSize: '0.9rem',
                                 fontWeight: 500,
                                 color: COLORS.text,
                                 letterSpacing: '0.05em',
@@ -295,7 +295,7 @@ export default function CartDrawer() {
                             <p
                               style={{
                                 fontFamily: 'var(--font-body, Inter, sans-serif)',
-                                fontSize: '0.7rem',
+                                fontSize: '0.8rem',
                                 color: 'rgba(245,245,245,0.45)',
                                 letterSpacing: '0.1em',
                                 margin: '0 0 0.5rem',
@@ -323,7 +323,7 @@ export default function CartDrawer() {
                             <span
                               style={{
                                 fontFamily: 'var(--font-body, Inter, sans-serif)',
-                                fontSize: '0.8rem',
+                                fontSize: '0.9rem',
                                 color: COLORS.gold,
                                 fontWeight: 500,
                               }}
@@ -359,7 +359,7 @@ export default function CartDrawer() {
                   <span
                     style={{
                       fontFamily: 'var(--font-body, Inter, sans-serif)',
-                      fontSize: '0.7rem',
+                      fontSize: '0.875rem',
                       letterSpacing: '0.15em',
                       textTransform: 'uppercase',
                       color: 'rgba(245,245,245,0.6)',
@@ -382,7 +382,7 @@ export default function CartDrawer() {
                 <p
                   style={{
                     fontFamily: 'var(--font-body, Inter, sans-serif)',
-                    fontSize: '0.625rem',
+                    fontSize: '0.8rem',
                     color: 'rgba(245,245,245,0.35)',
                     textAlign: 'center',
                     marginBottom: '1rem',
@@ -400,7 +400,7 @@ export default function CartDrawer() {
                     padding: '1rem',
                     textAlign: 'center',
                     fontFamily: 'var(--font-body, Inter, sans-serif)',
-                    fontSize: '0.75rem',
+                    fontSize: '0.875rem',
                     fontWeight: 600,
                     letterSpacing: '0.2em',
                     textTransform: 'uppercase',
@@ -426,7 +426,7 @@ export default function CartDrawer() {
                     padding: '0.75rem',
                     textAlign: 'center',
                     fontFamily: 'var(--font-body, Inter, sans-serif)',
-                    fontSize: '0.65rem',
+                    fontSize: '0.8rem',
                     letterSpacing: '0.15em',
                     textTransform: 'uppercase',
                     color: 'rgba(245,245,245,0.5)',

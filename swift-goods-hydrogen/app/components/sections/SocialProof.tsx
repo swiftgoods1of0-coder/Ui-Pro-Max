@@ -75,7 +75,7 @@ export default function SocialProof() {
           <span
             style={{
               fontFamily: 'var(--font-body, Inter, sans-serif)',
-              fontSize: '10px',
+              fontSize: '13px',
               letterSpacing: '0.4em',
               textTransform: 'uppercase',
               color: '#a08535',
@@ -181,7 +181,7 @@ export default function SocialProof() {
               <p
                 style={{
                   fontFamily: 'var(--font-body, Inter, sans-serif)',
-                  fontSize: '0.75rem',
+                  fontSize: '0.9rem',
                   textTransform: 'uppercase',
                   letterSpacing: '0.2em',
                   color: '#1a1a1a',
@@ -196,7 +196,7 @@ export default function SocialProof() {
               <p
                 style={{
                   fontFamily: 'var(--font-body, Inter, sans-serif)',
-                  fontSize: '0.625rem',
+                  fontSize: '0.8rem',
                   color: '#9a9590',
                   letterSpacing: '0.1em',
                 }}
@@ -233,7 +233,7 @@ export default function SocialProof() {
               <p
                 style={{
                   fontFamily: 'var(--font-body, Inter, sans-serif)',
-                  fontSize: '0.625rem',
+                  fontSize: '0.8rem',
                   letterSpacing: '0.2em',
                   textTransform: 'uppercase',
                   color: '#9a9590',
@@ -250,7 +250,7 @@ export default function SocialProof() {
           <p
             style={{
               fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)',
-              fontSize: '0.85rem',
+              fontSize: '1rem',
               letterSpacing: '0.4em',
               color: 'rgba(201,168,76,0.25)',
               textTransform: 'uppercase',

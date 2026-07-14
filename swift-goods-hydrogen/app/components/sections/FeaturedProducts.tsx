@@ -86,7 +86,7 @@ function ProductCard({ product, index }: ProductCardProps) {
           <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 translate-y-3 group-hover:translate-y-0 transition-all duration-500 ease-out">
             <button
               type="button"
-              className="px-8 py-3 text-[11px] tracking-[0.28em] uppercase transition-all duration-300 hover:bg-[rgba(201,168,76,0.25)]"
+              className="px-8 py-3 text-[13px] tracking-[0.28em] uppercase transition-all duration-300 hover:bg-[rgba(201,168,76,0.25)]"
               style={{
                 background: 'rgba(201,168,76,0.12)',
                 border: '1px solid rgba(201,168,76,0.55)',
@@ -103,19 +103,19 @@ function ProductCard({ product, index }: ProductCardProps) {
 
           <div className="absolute top-4 left-4 flex flex-col gap-2 z-10">
             {product.isNew && (
-              <span className="px-3 py-1 text-[10px] tracking-[0.22em] uppercase font-semibold" style={{ background: '#c9a84c', color: '#050505', fontFamily: 'var(--font-body, Inter, sans-serif)' }}>
+              <span className="px-3 py-1 text-[12px] tracking-[0.22em] uppercase font-semibold" style={{ background: '#c9a84c', color: '#050505', fontFamily: 'var(--font-body, Inter, sans-serif)' }}>
                 NEW
               </span>
             )}
             {product.isFeatured && (
-              <span className="px-3 py-1 text-[10px] tracking-[0.22em] uppercase" style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.25)', color: '#e0e0e0', fontFamily: 'var(--font-body, Inter, sans-serif)', backdropFilter: 'blur(6px)' }}>
+              <span className="px-3 py-1 text-[12px] tracking-[0.22em] uppercase" style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.25)', color: '#e0e0e0', fontFamily: 'var(--font-body, Inter, sans-serif)', backdropFilter: 'blur(6px)' }}>
                 EXCLUSIVE
               </span>
             )}
           </div>
 
           <div className="absolute top-4 right-4 z-10">
-            <span style={{ fontFamily: 'var(--font-body, Inter, sans-serif)', fontSize: '0.5625rem', letterSpacing: '0.2em', color: 'rgba(201,168,76,0.5)', textTransform: 'uppercase' }}>
+            <span style={{ fontFamily: 'var(--font-body, Inter, sans-serif)', fontSize: '0.75rem', letterSpacing: '0.2em', color: 'rgba(201,168,76,0.5)', textTransform: 'uppercase' }}>
               {String(index + 1).padStart(2, '0')} / 200
             </span>
           </div>
@@ -124,12 +124,12 @@ function ProductCard({ product, index }: ProductCardProps) {
         {/* Product info */}
         <div className="p-6 flex flex-col gap-1 flex-1">
           {product.category && (
-            <span className="text-[10px] tracking-[0.32em] uppercase" style={{ color: '#555555', fontFamily: 'var(--font-body, Inter, sans-serif)' }}>
+            <span className="text-[12px] tracking-[0.32em] uppercase" style={{ color: '#555555', fontFamily: 'var(--font-body, Inter, sans-serif)' }}>
               {product.category}
             </span>
           )}
           {product.isFeatured && (
-            <span style={{ fontFamily: 'var(--font-body, Inter, sans-serif)', fontSize: '0.5625rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.6)' }}>
+            <span style={{ fontFamily: 'var(--font-body, Inter, sans-serif)', fontSize: '0.75rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.6)' }}>
               LIMITED EDITION
             </span>
           )}
@@ -147,7 +147,7 @@ function ProductCard({ product, index }: ProductCardProps) {
             )}
           </div>
           <div className="mt-auto pt-5 flex items-center gap-2 overflow-hidden">
-            <span className="text-[10px] tracking-[0.22em] uppercase transition-all duration-300 group-hover:tracking-[0.32em]" style={{ color: '#555555', fontFamily: 'var(--font-body, Inter, sans-serif)' }}>
+            <span className="text-[13px] tracking-[0.22em] uppercase transition-all duration-300 group-hover:tracking-[0.32em]" style={{ color: '#555555', fontFamily: 'var(--font-body, Inter, sans-serif)' }}>
               View Product
             </span>
             <svg className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} style={{ color: '#c9a84c' }}>
@@ -174,19 +174,19 @@ export default function FeaturedProducts({ products }: FeaturedProductsProps) {
         <div className="mb-20">
           <div className="inline-flex items-center gap-4 mb-6">
             <span className="block w-12 h-px" style={{ background: 'linear-gradient(to right, #c9a84c, transparent)' }} />
-            <span className="text-[11px] tracking-[0.42em] uppercase" style={{ color: '#a08535', fontFamily: 'var(--font-body, Inter, sans-serif)', fontWeight: 500 }}>
+            <span className="text-[13px] tracking-[0.42em] uppercase" style={{ color: '#a08535', fontFamily: 'var(--font-body, Inter, sans-serif)', fontWeight: 500 }}>
               THE COLLECTION
             </span>
           </div>
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
             <SplitTextReveal text="LATEST DROPS" tag="h2" className="leading-none tracking-widest" style={{ fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)', fontSize: 'clamp(3rem, 7vw, 6.5rem)', color: '#1a1a1a' }} />
             <div className="max-w-xs lg:text-right">
-              <p style={{ fontFamily: 'var(--font-body, Inter, sans-serif)', fontSize: '0.9375rem', color: '#6b6560', lineHeight: 1.72, margin: 0, marginBottom: '0.75rem' }}>
+              <p style={{ fontFamily: 'var(--font-body, Inter, sans-serif)', fontSize: '1rem', color: '#6b6560', lineHeight: 1.72, margin: 0, marginBottom: '0.75rem' }}>
                 Each piece is a study in quiet luxury — where comfort and presence converge at the edge of fashion.
               </p>
               <div className="flex items-center gap-2 lg:justify-end">
                 <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#c9a84c', flexShrink: 0 }} />
-                <span style={{ fontFamily: 'var(--font-body, Inter, sans-serif)', fontSize: '0.6875rem', color: '#9a9590', letterSpacing: '0.08em' }}>
+                <span style={{ fontFamily: 'var(--font-body, Inter, sans-serif)', fontSize: '0.875rem', color: '#9a9590', letterSpacing: '0.08em' }}>
                   New arrivals added weekly
                 </span>
               </div>

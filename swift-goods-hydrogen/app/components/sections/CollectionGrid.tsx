@@ -52,7 +52,7 @@ export default function CollectionGrid({ products }: CollectionGridProps) {
           <div>
             <div className="header-el inline-flex items-center gap-4 mb-4">
               <span className="block w-10 h-px" style={{ background: 'linear-gradient(to right, #c9a84c, transparent)' }} />
-              <span className="text-[11px] tracking-[0.42em] uppercase" style={{ color: '#c9a84c', fontFamily: 'var(--font-body, Inter, sans-serif)', fontWeight: 500 }}>
+              <span className="text-[13px] tracking-[0.42em] uppercase" style={{ color: '#c9a84c', fontFamily: 'var(--font-body, Inter, sans-serif)', fontWeight: 500 }}>
                 SHOP ALL
               </span>
             </div>
@@ -67,7 +67,7 @@ export default function CollectionGrid({ products }: CollectionGridProps) {
                   key={f}
                   type="button"
                   onClick={() => setActiveFilter(f)}
-                  className="px-5 py-2 text-[11px] tracking-[0.24em] uppercase transition-all duration-300"
+                  className="px-5 py-2 text-[13px] tracking-[0.24em] uppercase transition-all duration-300"
                   style={{
                     fontFamily: 'var(--font-body, Inter, sans-serif)',
                     fontWeight: 500,
@@ -123,7 +123,7 @@ export default function CollectionGrid({ products }: CollectionGridProps) {
 
                 {product.isNew && (
                   <div className="absolute top-4 left-4 z-10">
-                    <span className="px-3 py-1 text-[10px] tracking-[0.22em] uppercase font-semibold" style={{ background: '#c9a84c', color: '#050505', fontFamily: 'var(--font-body, Inter, sans-serif)' }}>
+                    <span className="px-3 py-1 text-[12px] tracking-[0.22em] uppercase font-semibold" style={{ background: '#c9a84c', color: '#050505', fontFamily: 'var(--font-body, Inter, sans-serif)' }}>
                       NEW
                     </span>
                   </div>
@@ -133,7 +133,7 @@ export default function CollectionGrid({ products }: CollectionGridProps) {
 
                 <div className="absolute bottom-0 left-0 right-0 p-5 md:p-6 z-10">
                   {product.category && (
-                    <p className="mb-1 text-[10px] tracking-[0.3em] uppercase" style={{ color: 'rgba(201,168,76,0.6)', fontFamily: 'var(--font-body, Inter, sans-serif)' }}>
+                    <p className="mb-1 text-[12px] tracking-[0.3em] uppercase" style={{ color: 'rgba(201,168,76,0.6)', fontFamily: 'var(--font-body, Inter, sans-serif)' }}>
                       {product.category}
                     </p>
                   )}
@@ -163,7 +163,7 @@ export default function CollectionGrid({ products }: CollectionGridProps) {
 
         {filteredProducts.length === 0 && (
           <div className="flex flex-col items-center justify-center py-32 gap-4">
-            <span className="text-[11px] tracking-[0.4em] uppercase" style={{ color: '#555555', fontFamily: 'var(--font-body, Inter, sans-serif)' }}>
+            <span className="text-[13px] tracking-[0.4em] uppercase" style={{ color: '#555555', fontFamily: 'var(--font-body, Inter, sans-serif)' }}>
               No products in this category
             </span>
           </div>

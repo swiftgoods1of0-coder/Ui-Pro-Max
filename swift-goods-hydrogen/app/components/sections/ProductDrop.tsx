@@ -154,7 +154,7 @@ export default function ProductDrop() {
                   background: 'linear-gradient(135deg, #c9a84c, #e6c870)',
                   color: '#050505',
                   fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)',
-                  fontSize: '0.8rem',
+                  fontSize: '0.9rem',
                   letterSpacing: '0.22em',
                   fontWeight: 600,
                 }}
@@ -180,7 +180,7 @@ export default function ProductDrop() {
               <span
                 style={{
                   fontFamily: 'var(--font-body, Inter, sans-serif)',
-                  fontSize: '0.625rem',
+                  fontSize: '0.8rem',
                   fontWeight: 500,
                   letterSpacing: '0.45em',
                   textTransform: 'uppercase',
@@ -236,7 +236,7 @@ export default function ProductDrop() {
               <p
                 style={{
                   fontFamily: 'var(--font-body, Inter, sans-serif)',
-                  fontSize: '0.6875rem',
+                  fontSize: '0.875rem',
                   fontWeight: 600,
                   letterSpacing: '0.3em',
                   textTransform: 'uppercase',
@@ -277,7 +277,7 @@ export default function ProductDrop() {
                       style={{
                         display: 'block',
                         fontFamily: 'var(--font-body, Inter, sans-serif)',
-                        fontSize: '0.625rem',
+                        fontSize: '0.8rem',
                         fontWeight: 600,
                         letterSpacing: '0.22em',
                         textTransform: 'uppercase',
@@ -292,7 +292,7 @@ export default function ProductDrop() {
                         display: 'block',
                         fontFamily: 'var(--font-display, "Cormorant Garamond", serif)',
                         fontStyle: 'italic',
-                        fontSize: '0.75rem',
+                        fontSize: '0.9rem',
                         color: 'rgba(201,168,76,0.5)',
                       }}
                     >

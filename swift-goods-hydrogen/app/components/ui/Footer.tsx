@@ -140,7 +140,7 @@ const ColumnHeading = ({ children }: { children: ReactNode }) => (
       borderLeft: '2px solid #c9a84c',
       paddingLeft: '0.625rem',
       marginBottom: '1.25rem',
-      fontSize: '0.8125rem',
+      fontSize: '0.9rem',
       textTransform: 'uppercase',
       marginTop: 0,
     }}
@@ -372,7 +372,7 @@ export default function Footer() {
           </button>
         </form>
 
-        <p style={{ fontSize: '0.6875rem', color: '#555', margin: 0, fontFamily: 'var(--font-body, Inter, sans-serif)' }}>
+        <p style={{ fontSize: '0.875rem', color: '#555', margin: 0, fontFamily: 'var(--font-body, Inter, sans-serif)' }}>
           Unsubscribe anytime.
         </p>
       </div>
@@ -464,10 +464,10 @@ export default function Footer() {
               <div style={{ color: '#c9a84c', filter: 'drop-shadow(0 0 6px rgba(201,168,76,0.3))' }}>
                 <Icon />
               </div>
-              <p style={{ fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)', fontSize: '0.8125rem', letterSpacing: '0.15em', color: '#f5f5f5', margin: 0 }}>
+              <p style={{ fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)', fontSize: '0.9rem', letterSpacing: '0.15em', color: '#f5f5f5', margin: 0 }}>
                 {title}
               </p>
-              <p style={{ fontFamily: 'var(--font-body, Inter, sans-serif)', fontSize: '0.6875rem', color: '#777', margin: 0, lineHeight: 1.4 }}>
+              <p style={{ fontFamily: 'var(--font-body, Inter, sans-serif)', fontSize: '0.875rem', color: '#777', margin: 0, lineHeight: 1.4 }}>
                 {subtitle}
               </p>
             </div>
@@ -508,7 +508,7 @@ export default function Footer() {
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
               <path d="M12 19V5M5 12l7-7 7 7" />
             </svg>
-            <span style={{ fontFamily: 'var(--font-body, Inter, sans-serif)', fontSize: '0.5625rem', letterSpacing: '0.3em', textTransform: 'uppercase' }}>
+            <span style={{ fontFamily: 'var(--font-body, Inter, sans-serif)', fontSize: '0.75rem', letterSpacing: '0.3em', textTransform: 'uppercase' }}>
               BACK TO TOP
             </span>
           </button>
@@ -531,7 +531,7 @@ export default function Footer() {
           gap: '1rem',
         }}
       >
-        <p style={{ margin: 0, fontSize: '0.75rem', color: '#555', fontFamily: 'var(--font-body, Inter, sans-serif)' }}>
+        <p style={{ margin: 0, fontSize: '0.875rem', color: '#555', fontFamily: 'var(--font-body, Inter, sans-serif)' }}>
           &copy; {new Date().getFullYear()} Swift Goods. All rights reserved.
         </p>
 
@@ -544,14 +544,14 @@ export default function Footer() {
               <li key={item.label} style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                 <Link
                   to={item.href}
-                  style={{ fontSize: '0.75rem', color: '#555', textDecoration: 'none', fontFamily: 'var(--font-body, Inter, sans-serif)', transition: 'color 300ms ease', whiteSpace: 'nowrap' }}
+                  style={{ fontSize: '0.875rem', color: '#555', textDecoration: 'none', fontFamily: 'var(--font-body, Inter, sans-serif)', transition: 'color 300ms ease', whiteSpace: 'nowrap' }}
                   onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = '#c9a84c' }}
                   onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = '#555' }}
                 >
                   {item.label}
                 </Link>
                 {idx < arr.length - 1 && (
-                  <span aria-hidden="true" style={{ color: '#333', fontSize: '0.75rem', userSelect: 'none' }}>|</span>
+                  <span aria-hidden="true" style={{ color: '#333', fontSize: '0.875rem', userSelect: 'none' }}>|</span>
                 )}
               </li>
             ))}
@@ -569,7 +569,7 @@ export default function Footer() {
                 padding: '0.25rem 0.5rem',
                 backgroundColor: '#151515',
                 borderRadius: '3px',
-                fontSize: '0.5625rem',
+                fontSize: '0.75rem',
                 color: '#666',
                 fontFamily: 'var(--font-body, Inter, sans-serif)',
                 letterSpacing: '0.05em',
