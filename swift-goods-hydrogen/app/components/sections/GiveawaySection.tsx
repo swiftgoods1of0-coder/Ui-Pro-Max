@@ -14,7 +14,7 @@ function CountdownUnit({ value, label }: { value: number; label: string }) {
       <span style={{ fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)', fontSize: 'clamp(1.8rem, 4vw, 3rem)', lineHeight: 1, color: GOLD, minWidth: '2.5ch', textAlign: 'center', textShadow: '0 0 30px rgba(201,168,76,0.4)' }}>
         {String(value).padStart(2, '0')}
       </span>
-      <span style={{ fontFamily: 'var(--font-body, Inter, sans-serif)', fontSize: '0.4rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.5)' }}>
+      <span style={{ fontFamily: 'var(--font-body, Inter, sans-serif)', fontSize: '0.7rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.5)' }}>
         {label}
       </span>
     </div>
@@ -110,7 +110,7 @@ export default function GiveawaySection() {
           <div>
             {/* Badge */}
             <div className="gw-badge inline-flex items-center gap-3 mb-7" style={{ opacity: 0 }}>
-              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0.4rem 1rem', background: 'linear-gradient(135deg, rgba(201,168,76,0.18), rgba(201,168,76,0.06))', border: '1px solid rgba(201,168,76,0.45)', fontFamily: 'var(--font-body, Inter, sans-serif)', fontSize: '0.5rem', fontWeight: 700, letterSpacing: '0.35em', textTransform: 'uppercase', color: GOLD, backdropFilter: 'blur(10px)' }}>
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0.4rem 1rem', background: 'linear-gradient(135deg, rgba(201,168,76,0.18), rgba(201,168,76,0.06))', border: '1px solid rgba(201,168,76,0.45)', fontFamily: 'var(--font-body, Inter, sans-serif)', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.35em', textTransform: 'uppercase', color: GOLD, backdropFilter: 'blur(10px)' }}>
                 <span style={{ width: 6, height: 6, borderRadius: '50%', background: GOLD, boxShadow: `0 0 10px ${GOLD}`, animation: 'gw-pulse 1.8s ease-in-out infinite' }} />
                 LIMITED TIME GIVEAWAY
               </span>
@@ -142,7 +142,7 @@ export default function GiveawaySection() {
               </div>
               <div>
                 <p style={{ margin: 0, fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)', fontSize: '1.05rem', letterSpacing: '0.12em', color: '#f5f5f5' }}>3 WINNERS ANNOUNCED</p>
-                <p style={{ margin: 0, fontFamily: 'var(--font-body, Inter, sans-serif)', fontSize: '0.55rem', letterSpacing: '0.2em', color: 'rgba(245,245,245,0.35)', textTransform: 'uppercase' }}>Selected at random · announced publicly</p>
+                <p style={{ margin: 0, fontFamily: 'var(--font-body, Inter, sans-serif)', fontSize: '0.72rem', letterSpacing: '0.2em', color: 'rgba(245,245,245,0.35)', textTransform: 'uppercase' }}>Selected at random · announced publicly</p>
               </div>
             </div>
 
@@ -154,14 +154,14 @@ export default function GiveawaySection() {
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', flexWrap: 'wrap' }}>
                   {/* Per-entry price */}
                   <div>
-                    <p style={{ margin: 0, fontFamily: 'var(--font-body, Inter, sans-serif)', fontSize: '0.45rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.5)', marginBottom: '0.15rem' }}>PER ENTRY</p>
+                    <p style={{ margin: 0, fontFamily: 'var(--font-body, Inter, sans-serif)', fontSize: '0.68rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.5)', marginBottom: '0.15rem' }}>PER ENTRY</p>
                     <span style={{ fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)', fontSize: '2.8rem', lineHeight: 1, background: `linear-gradient(135deg, ${GOLD}, ${GOLD_LIGHT})`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>$9.99</span>
                   </div>
                   <div style={{ width: 1, height: 44, background: 'rgba(201,168,76,0.15)' }} />
 
                   {/* Qty */}
                   <div>
-                    <p style={{ margin: 0, fontFamily: 'var(--font-body, Inter, sans-serif)', fontSize: '0.45rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.5)', marginBottom: '0.35rem' }}>ENTRIES</p>
+                    <p style={{ margin: 0, fontFamily: 'var(--font-body, Inter, sans-serif)', fontSize: '0.68rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.5)', marginBottom: '0.35rem' }}>ENTRIES</p>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
                       {[
                         { label: '−', fn: () => setEntries((e) => Math.max(1, e - 1)) },
@@ -182,13 +182,13 @@ export default function GiveawaySection() {
 
                   {/* Total */}
                   <div>
-                    <p style={{ margin: 0, fontFamily: 'var(--font-body, Inter, sans-serif)', fontSize: '0.45rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.5)', marginBottom: '0.15rem' }}>TOTAL</p>
+                    <p style={{ margin: 0, fontFamily: 'var(--font-body, Inter, sans-serif)', fontSize: '0.68rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.5)', marginBottom: '0.15rem' }}>TOTAL</p>
                     <span style={{ fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)', fontSize: '1.9rem', lineHeight: 1, color: '#f5f5f5' }}>${total}</span>
                   </div>
                 </div>
 
                 {entries > 1 && (
-                  <p style={{ margin: 0, fontFamily: 'var(--font-body, Inter, sans-serif)', fontSize: '0.52rem', color: 'rgba(201,168,76,0.55)', letterSpacing: '0.14em', textTransform: 'uppercase' }}>
+                  <p style={{ margin: 0, fontFamily: 'var(--font-body, Inter, sans-serif)', fontSize: '0.75rem', color: 'rgba(201,168,76,0.55)', letterSpacing: '0.14em', textTransform: 'uppercase' }}>
                     {entries}× entries = {entries}× chance of winning
                   </p>
                 )}
@@ -219,7 +219,7 @@ export default function GiveawaySection() {
                 ENTER NOW — ${total}
               </Link>
 
-              <p style={{ margin: 0, fontFamily: 'var(--font-body, Inter, sans-serif)', fontSize: '0.52rem', color: 'rgba(245,245,245,0.25)', letterSpacing: '0.12em' }}>
+              <p style={{ margin: 0, fontFamily: 'var(--font-body, Inter, sans-serif)', fontSize: '0.75rem', color: 'rgba(245,245,245,0.25)', letterSpacing: '0.12em' }}>
                 Each entry = $9.99. Max 10 entries per person. Winners announced publicly.
               </p>
             </div>
@@ -230,7 +230,7 @@ export default function GiveawaySection() {
 
             {/* Countdown */}
             <div style={{ textAlign: 'center' }}>
-              <p style={{ margin: 0, marginBottom: '1rem', fontFamily: 'var(--font-body, Inter, sans-serif)', fontSize: '0.5rem', letterSpacing: '0.4em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.4)' }}>
+              <p style={{ margin: 0, marginBottom: '1rem', fontFamily: 'var(--font-body, Inter, sans-serif)', fontSize: '0.75rem', letterSpacing: '0.4em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.4)' }}>
                 GIVEAWAY ENDS IN
               </p>
               <div style={{ display: 'inline-flex', alignItems: 'flex-end', gap: '0.75rem', padding: '1.5rem 2rem', background: 'rgba(5,5,5,0.75)', border: '1px solid rgba(201,168,76,0.14)', backdropFilter: 'blur(20px)' }}>
@@ -246,7 +246,7 @@ export default function GiveawaySection() {
 
             {/* Prize card */}
             <div style={{ padding: '2rem', background: 'rgba(5,5,5,0.75)', border: '1px solid rgba(201,168,76,0.18)', backdropFilter: 'blur(20px)', maxWidth: 360, width: '100%' }}>
-              <p style={{ margin: 0, marginBottom: '1.25rem', fontFamily: 'var(--font-body, Inter, sans-serif)', fontSize: '0.5rem', letterSpacing: '0.4em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.5)' }}>
+              <p style={{ margin: 0, marginBottom: '1.25rem', fontFamily: 'var(--font-body, Inter, sans-serif)', fontSize: '0.75rem', letterSpacing: '0.4em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.5)' }}>
                 PRIZE DETAILS
               </p>
               {[
@@ -256,13 +256,13 @@ export default function GiveawaySection() {
                 { label: 'Entry',   value: '$9.99 per entry' },
               ].map(({ label, value }) => (
                 <div key={label} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.6rem 0', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
-                  <span style={{ fontFamily: 'var(--font-body, Inter, sans-serif)', fontSize: '0.58rem', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(245,245,245,0.3)' }}>{label}</span>
-                  <span style={{ fontFamily: 'var(--font-body, Inter, sans-serif)', fontSize: '0.62rem', color: '#f5f5f5', fontWeight: 500 }}>{value}</span>
+                  <span style={{ fontFamily: 'var(--font-body, Inter, sans-serif)', fontSize: '0.8rem', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(245,245,245,0.3)' }}>{label}</span>
+                  <span style={{ fontFamily: 'var(--font-body, Inter, sans-serif)', fontSize: '0.9rem', color: '#f5f5f5', fontWeight: 500 }}>{value}</span>
                 </div>
               ))}
               <div style={{ marginTop: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                 <span style={{ width: 5, height: 5, borderRadius: '50%', background: GOLD, boxShadow: `0 0 8px ${GOLD}`, animation: 'gw-pulse 1.8s ease-in-out infinite' }} />
-                <span style={{ fontFamily: 'var(--font-body, Inter, sans-serif)', fontSize: '0.48rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.45)' }}>
+                <span style={{ fontFamily: 'var(--font-body, Inter, sans-serif)', fontSize: '0.7rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.45)' }}>
                   AVAILABLE WHILE SUPPLIES LAST
                 </span>
               </div>

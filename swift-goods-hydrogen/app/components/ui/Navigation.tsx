@@ -136,7 +136,7 @@ function LogoText() {
 
   return (
     <Link
-      href="/"
+      to="/"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       aria-label="Swift Goods — Home"
@@ -186,7 +186,7 @@ function DesktopNavLink({ link }: { link: NavLink }) {
 
   return (
     <Link
-      href={link.href}
+      to={link.href}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
@@ -263,7 +263,7 @@ function IconButton({ onClick, href, ariaLabel, children }: IconButtonProps) {
   if (href) {
     return (
       <Link
-        href={href}
+        to={href}
         aria-label={ariaLabel}
         style={{ ...sharedStyle, textDecoration: 'none' }}
         onMouseEnter={() => setHovered(true)}
@@ -409,7 +409,7 @@ function MobileLinkItem({ link, onClose }: { link: NavLink; onClose: () => void 
   return (
     <motion.div variants={mobileLinkVariants} style={{ textAlign: 'center' }}>
       <Link
-        href={link.href}
+        to={link.href}
         onClick={onClose}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
