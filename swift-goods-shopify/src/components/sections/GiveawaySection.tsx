@@ -76,7 +76,7 @@ export default function GiveawaySection() {
       {/* Background */}
       <div className="absolute inset-0" style={{ zIndex: 0 }}>
         <img
-          src="/brand/sg-brown-shorts-duo.jpeg"
+          src="/brand/sg-challenger-shorts.jpeg"
           alt="Swift Goods Brown Shorts Giveaway"
           fetchPriority="high"
           decoding="async"
