@@ -1,0 +1,283 @@
+<style>
+  #site-footer {
+    background: {{ section.settings.bg_color | default: '#080808' }};
+    padding-top: {{ section.settings.padding_top | default: 96 }}px;
+    color: {{ section.settings.text_color | default: '#a09080' }};
+  }
+  #site-footer .footer-bottom { padding-bottom: {{ section.settings.padding_bottom | default: 32 }}px; }
+  #site-footer a { color: {{ section.settings.link_color | default: '#7a7068' }}; }
+  #site-footer a:hover { color: {{ section.settings.link_hover_color | default: '#f0ebe0' }}; }
+  #site-footer .footer-top { border-bottom-color: {{ section.settings.border_color | default: '#1f1e1b' }}; }
+  #site-footer .footer-bottom { border-top-color: {{ section.settings.border_color | default: '#1f1e1b' }}; }
+</style>
+<footer class="site-footer" id="site-footer" role="contentinfo">
+
+  <!-- Footer Top -->
+  <div class="container">
+    <div class="footer-top">
+
+      <!-- Brand Column -->
+      <div class="footer-brand">
+        <a href="{{ routes.root_url }}" class="footer-brand__logo" aria-label="{{ shop.name }}">
+          {%- if settings.logo != blank -%}
+            <img src="{{ settings.logo | image_url: width: 160 }}" alt="{{ shop.name }}" width="100" height="32" loading="lazy">
+          {%- else -%}
+            {{ shop.name }}
+          {%- endif -%}
+        </a>
+
+        {%- if section.settings.tagline != blank -%}
+          <p class="footer-brand__tagline">{{ section.settings.tagline }}</p>
+        {%- endif -%}
+
+        <!-- Social Links -->
+        <div class="footer-social">
+          {%- if settings.social_instagram != blank -%}
+            <a href="{{ settings.social_instagram }}" class="footer-social__link" target="_blank" rel="noopener" aria-label="Instagram">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                <circle cx="12" cy="12" r="4"/>
+                <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/>
+              </svg>
+            </a>
+          {%- endif -%}
+          {%- if settings.social_twitter != blank -%}
+            <a href="{{ settings.social_twitter }}" class="footer-social__link" target="_blank" rel="noopener" aria-label="Twitter / X">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4 4l16 16M4 20L20 4" stroke-width="1.5"/>
+              </svg>
+            </a>
+          {%- endif -%}
+          {%- if settings.social_tiktok != blank -%}
+            <a href="{{ settings.social_tiktok }}" class="footer-social__link" target="_blank" rel="noopener" aria-label="TikTok">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/>
+              </svg>
+            </a>
+          {%- endif -%}
+          {%- if settings.social_facebook != blank -%}
+            <a href="{{ settings.social_facebook }}" class="footer-social__link" target="_blank" rel="noopener" aria-label="Facebook">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+              </svg>
+            </a>
+          {%- endif -%}
+          {%- if settings.social_youtube != blank -%}
+            <a href="{{ settings.social_youtube }}" class="footer-social__link" target="_blank" rel="noopener" aria-label="YouTube">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/>
+                <polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="currentColor" stroke="none"/>
+              </svg>
+            </a>
+          {%- endif -%}
+        </div>
+      </div>
+
+      <!-- Nav Columns (from blocks) -->
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'nav_column' -%}
+          <div class="footer-col" {{ block.shopify_attributes }}>
+            <h3 class="footer-col__heading">{{ block.settings.heading }}</h3>
+            <nav class="footer-nav" aria-label="{{ block.settings.heading }}">
+              {%- if block.settings.menu != blank -%}
+                {%- for link in linklists[block.settings.menu].links -%}
+                  <a href="{{ link.url }}" class="footer-nav__link">{{ link.title }}</a>
+                {%- endfor -%}
+              {%- endif -%}
+            </nav>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+
+    </div>
+  </div>
+
+  <!-- Footer Divider -->
+  <div class="divider--accent" style="height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,0.2),transparent);"></div>
+
+  <!-- Footer Bottom -->
+  <div class="container">
+    <div class="footer-bottom">
+      <p class="footer-copyright">
+        {{ section.settings.copyright | default: '© 2025 Swift Goods. All rights reserved.' }}
+      </p>
+
+      <nav class="footer-legal" aria-label="Legal navigation">
+        {%- if section.settings.privacy_url != blank or shop.privacy_policy.url != blank -%}
+          <a href="{{ section.settings.privacy_url | default: shop.privacy_policy.url }}">Privacy Policy</a>
+        {%- endif -%}
+        {%- if section.settings.terms_url != blank or shop.terms_of_service.url != blank -%}
+          <a href="{{ section.settings.terms_url | default: shop.terms_of_service.url }}">Terms of Service</a>
+        {%- endif -%}
+        {%- if section.settings.refund_url != blank or shop.refund_policy.url != blank -%}
+          <a href="{{ section.settings.refund_url | default: shop.refund_policy.url }}">Refund Policy</a>
+        {%- endif -%}
+      </nav>
+
+      <!-- Payment Icons -->
+      {%- if section.settings.show_payment_icons -%}
+        <div class="footer-payment">
+          {%- for type in shop.enabled_payment_types -%}
+            {{ type | payment_type_svg_tag: class: 'icon icon--payment' }}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+
+</footer>
+
+<style>
+  .icon--payment {
+    height: 22px;
+    width: auto;
+    opacity: 0.35;
+    filter: grayscale(1) brightness(3);
+    transition: opacity var(--transition);
+  }
+
+  .icon--payment:hover { opacity: 0.6; }
+</style>
+
+{% schema %}
+{
+  "name": "Footer",
+  "tag": "footer",
+  "class": "section-footer",
+  "blocks": [
+    {
+      "type": "nav_column",
+      "name": "Navigation Column",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Column heading",
+          "default": "Shop"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Navigation menu"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "header",
+      "content": "Brand"
+    },
+    {
+      "type": "textarea",
+      "id": "tagline",
+      "label": "Brand tagline",
+      "default": "Premium streetwear. Uncompromising quality. Built for those who demand more."
+    },
+    {
+      "type": "header",
+      "content": "Bottom Bar"
+    },
+    {
+      "type": "text",
+      "id": "copyright",
+      "label": "Copyright text",
+      "default": "© 2025 Swift Goods. All rights reserved."
+    },
+    {
+      "type": "url",
+      "id": "privacy_url",
+      "label": "Privacy policy URL"
+    },
+    {
+      "type": "url",
+      "id": "terms_url",
+      "label": "Terms of service URL"
+    },
+    {
+      "type": "url",
+      "id": "refund_url",
+      "label": "Refund policy URL"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_payment_icons",
+      "label": "Show payment icons",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Footer background",
+      "default": "#080808"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#a09080"
+    },
+    {
+      "type": "color",
+      "id": "link_color",
+      "label": "Link color",
+      "default": "#7a7068"
+    },
+    {
+      "type": "color",
+      "id": "link_hover_color",
+      "label": "Link hover color",
+      "default": "#f0ebe0"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Divider color",
+      "default": "#1f1e1b"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 40,
+      "max": 200,
+      "step": 8,
+      "default": 96,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 16,
+      "max": 80,
+      "step": 4,
+      "default": 32,
+      "unit": "px"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Footer",
+      "settings": {
+        "tagline": "Premium streetwear. Uncompromising quality. Built for those who demand more.",
+        "copyright": "© 2025 Swift Goods. All rights reserved.",
+        "show_payment_icons": true
+      },
+      "blocks": [
+        { "type": "nav_column", "settings": { "heading": "Shop" } },
+        { "type": "nav_column", "settings": { "heading": "About" } },
+        { "type": "nav_column", "settings": { "heading": "Support" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

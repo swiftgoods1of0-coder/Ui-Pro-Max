@@ -1,0 +1,425 @@
+<style>
+  #brand-story-{{ section.id }} .section-eyebrow { color: {{ section.settings.color_eyebrow | default: '#c9a84c' }}; }
+  #brand-story-{{ section.id }} .brand-story__heading { color: {{ section.settings.color_heading | default: '#f0ebe0' }}; }
+  #brand-story-{{ section.id }} .brand-story__body { color: {{ section.settings.color_body | default: '#a09080' }}; }
+  #brand-story-{{ section.id }} .brand-story__quote { color: {{ section.settings.color_quote | default: '#f0ebe0' }}; }
+</style>
+<section
+  class="brand-story"
+  id="brand-story-{{ section.id }}"
+  style="
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    background-color: {{ section.settings.bg_color }};
+  "
+  {%- unless section.settings.animation_enabled -%}data-no-anim{%- endunless -%}
+>
+  <div class="container">
+    <div class="brand-story__inner brand-story__inner--{{ section.settings.layout }}">
+
+      <!-- Text Side -->
+      <div class="brand-story__text">
+
+        {%- if section.settings.eyebrow != blank -%}
+          <span class="section-eyebrow brand-story__eyebrow" data-animate>{{ section.settings.eyebrow }}</span>
+        {%- endif -%}
+
+        {%- if section.settings.heading != blank -%}
+          <h2 class="brand-story__heading" data-animate data-animate-delay="1">
+            {{ section.settings.heading | newline_to_br }}
+          </h2>
+        {%- endif -%}
+
+        <div class="brand-story__accent-line" data-animate data-animate-delay="2"></div>
+
+        {%- if section.settings.body_1 != blank -%}
+          <p class="brand-story__body" data-animate data-animate-delay="2">{{ section.settings.body_1 }}</p>
+        {%- endif -%}
+
+        {%- if section.settings.body_2 != blank -%}
+          <p class="brand-story__body" data-animate data-animate-delay="3">{{ section.settings.body_2 }}</p>
+        {%- endif -%}
+
+        {%- if section.settings.pull_quote != blank -%}
+          <blockquote class="brand-story__pull-quote" data-animate data-animate-delay="3">
+            {{ section.settings.pull_quote }}
+          </blockquote>
+        {%- endif -%}
+
+        {%- if section.settings.cta_label != blank -%}
+          <a href="{{ section.settings.cta_url | default: routes.root_url }}" class="btn btn--primary" data-animate data-animate-delay="4" style="margin-top:40px;">
+            {{ section.settings.cta_label }}
+          </a>
+        {%- endif -%}
+
+      </div>
+
+      <!-- Visual Side -->
+      <div class="brand-story__visual" data-animate data-animate-delay="1">
+        {%- if section.settings.image_1 != blank -%}
+          <div class="brand-story__image brand-story__image--main">
+            {{
+              section.settings.image_1
+              | image_url: width: 900
+              | image_tag:
+                loading: 'lazy',
+                widths: '400,600,800,900',
+                sizes: '(max-width: 900px) 90vw, 50vw',
+                width: section.settings.image_1.width,
+                height: section.settings.image_1.height,
+                alt: section.settings.image_1.alt | default: shop.name
+            }}
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.image_2 != blank -%}
+          <div class="brand-story__image brand-story__image--accent">
+            {{
+              section.settings.image_2
+              | image_url: width: 500
+              | image_tag:
+                loading: 'lazy',
+                widths: '200,300,400,500',
+                sizes: '(max-width: 900px) 50vw, 30vw',
+                width: section.settings.image_2.width,
+                height: section.settings.image_2.height,
+                alt: section.settings.image_2.alt | default: shop.name
+            }}
+            {%- if section.settings.caption != blank -%}
+              <p class="brand-story__caption">{{ section.settings.caption }}</p>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.founding_year != blank -%}
+          <div class="brand-story__year">
+            <span class="brand-story__year-value">{{ section.settings.founding_year }}</span>
+            <span class="brand-story__year-label">{{ section.settings.year_label | default: 'Est.' }}</span>
+          </div>
+        {%- endif -%}
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<style>
+  .brand-story__inner {
+    display: grid;
+    gap: clamp(48px, 7vw, 120px);
+    align-items: center;
+  }
+
+  .brand-story__inner--text-left  { grid-template-columns: 1fr 1fr; }
+  .brand-story__inner--text-right { grid-template-columns: 1fr 1fr; }
+  .brand-story__inner--text-right .brand-story__text   { order: 2; }
+  .brand-story__inner--text-right .brand-story__visual { order: 1; }
+  .brand-story__inner--full-width { grid-template-columns: 1fr; max-width: 72ch; margin: 0 auto; }
+
+  .brand-story__eyebrow {
+    display: block;
+    margin-bottom: 20px;
+  }
+
+  .brand-story__heading {
+    font-family: var(--font-display);
+    font-size: clamp(36px, 5vw, 64px);
+    font-weight: 400;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    margin-bottom: 24px;
+  }
+
+  .brand-story__accent-line {
+    width: 40px;
+    height: 1px;
+    background: var(--accent);
+    margin-bottom: 32px;
+  }
+
+  .brand-story__body {
+    font-size: clamp(15px, 1.8vw, 18px);
+    color: var(--text-muted);
+    line-height: 1.8;
+    margin-bottom: 24px;
+    max-width: 58ch;
+  }
+
+  .brand-story__pull-quote {
+    font-family: var(--font-display);
+    font-size: clamp(20px, 2.5vw, 28px);
+    font-style: italic;
+    color: var(--accent);
+    line-height: 1.4;
+    padding-left: 20px;
+    border-left: 2px solid var(--accent-border);
+    margin: 32px 0;
+    max-width: 42ch;
+  }
+
+  /* Visual / Images */
+  .brand-story__visual {
+    position: relative;
+  }
+
+  .brand-story__image--main {
+    position: relative;
+    z-index: 1;
+  }
+
+  .brand-story__image--main img {
+    width: 100%;
+    aspect-ratio: 4/5;
+    object-fit: cover;
+  }
+
+  .brand-story__image--accent {
+    position: absolute;
+    bottom: -40px;
+    right: -24px;
+    width: 45%;
+    z-index: 2;
+    background: var(--bg-secondary);
+    padding: 8px;
+    box-shadow: 0 32px 64px rgba(0,0,0,0.5);
+  }
+
+  .brand-story__image--accent img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    display: block;
+  }
+
+  .brand-story__caption {
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 8px 4px 4px;
+  }
+
+  .brand-story__year {
+    position: absolute;
+    top: 32px;
+    left: -20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: var(--accent);
+    color: var(--bg);
+    padding: 20px 16px;
+    z-index: 3;
+  }
+
+  .brand-story__year-value {
+    font-family: var(--font-display);
+    font-size: 32px;
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  .brand-story__year-label {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  @media (max-width: 768px) {
+    .brand-story__inner--text-left,
+    .brand-story__inner--text-right { grid-template-columns: 1fr; }
+    .brand-story__inner--text-right .brand-story__text   { order: 0; }
+    .brand-story__inner--text-right .brand-story__visual { order: 0; }
+    .brand-story__image--accent { display: none; }
+    .brand-story__year { left: 16px; }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Brand Story",
+  "tag": "section",
+  "class": "section-brand-story",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Text"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow label",
+      "default": "The Story"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Born in the streets.\nBuilt for the bold."
+    },
+    {
+      "type": "textarea",
+      "id": "body_1",
+      "label": "First paragraph",
+      "default": "Swift Goods was founded with a singular mission: to bridge the gap between luxury fashion and the authenticity of street culture. We believe your clothes should be as deliberate as your moves."
+    },
+    {
+      "type": "textarea",
+      "id": "body_2",
+      "label": "Second paragraph",
+      "default": "Every collection is crafted in limited runs, ensuring those who wear Swift Goods are part of an exclusive circle that values quality over quantity."
+    },
+    {
+      "type": "textarea",
+      "id": "pull_quote",
+      "label": "Pull quote",
+      "default": "Luxury isn't a price point — it's a standard we refuse to compromise."
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Button label",
+      "default": "Our Story"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "Button URL"
+    },
+    {
+      "type": "header",
+      "content": "Images"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_1",
+      "label": "Primary image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_2",
+      "label": "Secondary image (accent)"
+    },
+    {
+      "type": "text",
+      "id": "caption",
+      "label": "Secondary image caption"
+    },
+    {
+      "type": "header",
+      "content": "Brand Badge"
+    },
+    {
+      "type": "text",
+      "id": "founding_year",
+      "label": "Founding year",
+      "default": "2019"
+    },
+    {
+      "type": "text",
+      "id": "year_label",
+      "label": "Year label",
+      "default": "Est."
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        { "value": "text-left",   "label": "Text left" },
+        { "value": "text-right",  "label": "Text right" },
+        { "value": "full-width",  "label": "Full width (no image)" }
+      ],
+      "default": "text-left"
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background color",
+      "default": "#080808"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 40,
+      "max": 200,
+      "step": 8,
+      "default": 120,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 40,
+      "max": 200,
+      "step": 8,
+      "default": 120,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Text Colors"
+    },
+    {
+      "type": "color",
+      "id": "color_heading",
+      "label": "Heading color",
+      "default": "#f0ebe0"
+    },
+    {
+      "type": "color",
+      "id": "color_body",
+      "label": "Body text color",
+      "default": "#a09080"
+    },
+    {
+      "type": "color",
+      "id": "color_quote",
+      "label": "Pull quote color",
+      "default": "#f0ebe0"
+    },
+    {
+      "type": "color",
+      "id": "color_eyebrow",
+      "label": "Eyebrow label color",
+      "default": "#c9a84c"
+    },
+    {
+      "type": "header",
+      "content": "Animations"
+    },
+    {
+      "type": "checkbox",
+      "id": "animation_enabled",
+      "label": "Enable scroll animations",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Brand Story",
+      "settings": {
+        "eyebrow": "The Story",
+        "heading": "Born in the streets.\nBuilt for the bold.",
+        "body_1": "Swift Goods was founded with a singular mission: to bridge the gap between luxury fashion and the authenticity of street culture.",
+        "pull_quote": "Luxury isn't a price point — it's a standard we refuse to compromise.",
+        "cta_label": "Our Story",
+        "layout": "text-left"
+      }
+    }
+  ]
+}
+{% endschema %}

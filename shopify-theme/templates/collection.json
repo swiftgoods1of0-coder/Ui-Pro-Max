@@ -1,0 +1,19 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-collection",
+      "settings": {
+        "show_header": true,
+        "show_description": true,
+        "header_overlay": 40,
+        "products_per_page": 16,
+        "columns": "3",
+        "show_sort": true,
+        "show_vendor": false
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

@@ -1,0 +1,585 @@
+{%- liquid
+  assign sort_by         = collection.sort_by | default: collection.default_sort_by
+  assign products_per    = section.settings.products_per_page | default: 12
+  assign grid_columns    = section.settings.columns | default: '3'
+  assign show_sort       = section.settings.show_sort
+-%}
+
+{%- paginate collection.products by products_per -%}
+
+<div class="main-collection" id="collection-{{ section.id }}">
+
+  <!-- ── Collection Header ────────────────────────────────────── -->
+  {%- if section.settings.show_header -%}
+    <div class="collection-header{% if collection.image %} collection-header--has-image{% endif %}">
+
+      {%- if collection.image -%}
+        <div class="collection-header__media" aria-hidden="true">
+          {{
+            collection.image
+            | image_url: width: 2000
+            | image_tag:
+              loading: 'eager',
+              fetchpriority: 'high',
+              widths: '600,900,1200,1600,2000',
+              sizes: '100vw',
+              width: collection.image.width,
+              height: collection.image.height,
+              alt: collection.image.alt | default: collection.title
+          }}
+          <div class="collection-header__overlay" style="opacity: {{ section.settings.header_overlay | divided_by: 100.0 }};"></div>
+        </div>
+      {%- endif -%}
+
+      <div class="collection-header__content container">
+        <span class="section-eyebrow" data-animate>Collection</span>
+        <h1 class="collection-header__title" data-animate data-animate-delay="1">{{ collection.title }}</h1>
+        {%- if collection.description != blank and section.settings.show_description -%}
+          <div class="collection-header__desc" data-animate data-animate-delay="2">
+            {{ collection.description }}
+          </div>
+        {%- endif -%}
+        <p class="collection-header__count" data-animate data-animate-delay="3">
+          {{ collection.products_count }} {{ collection.products_count | pluralize: 'piece', 'pieces' }}
+        </p>
+      </div>
+
+    </div>
+  {%- endif -%}
+
+  <!-- ── Toolbar ───────────────────────────────────────────────── -->
+  <div class="collection-toolbar container">
+
+    {%- if show_sort -%}
+      <form class="collection-sort" id="collection-sort-form" action="{{ collection.url }}">
+        <label class="collection-sort__label" for="sort-{{ section.id }}">
+          Sort by
+        </label>
+        <div class="collection-sort__wrap">
+          <select
+            name="sort_by"
+            id="sort-{{ section.id }}"
+            class="collection-sort__select"
+            onchange="this.form.submit()"
+            aria-label="Sort collection"
+          >
+            {%- for option in collection.sort_options -%}
+              <option
+                value="{{ option.value | escape }}"
+                {%- if collection.sort_by == option.value %} selected{%- endif -%}
+              >
+                {{ option.name }}
+              </option>
+            {%- endfor -%}
+          </select>
+          <svg class="collection-sort__chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <polyline points="6 9 12 15 18 9"/>
+          </svg>
+        </div>
+      </form>
+    {%- endif -%}
+
+    <p class="collection-count">
+      Showing {{ paginate.current_offset | plus: 1 }}–{{ paginate.current_offset | plus: paginate.page_size | at_most: collection.products_count }}
+      of {{ collection.products_count }} products
+    </p>
+
+  </div>
+
+  <!-- ── Product Grid ──────────────────────────────────────────── -->
+  <div class="container">
+    {%- if collection.products.size > 0 -%}
+      <div class="products-grid" style="--cols: {{ grid_columns }};" id="collection-grid">
+
+        {%- for product in collection.products -%}
+          {%- liquid
+            assign is_on_sale  = false
+            assign is_sold_out = false
+            if product.compare_at_price > product.price
+              assign is_on_sale = true
+            endif
+            unless product.available
+              assign is_sold_out = true
+            endunless
+            assign first_variant = product.selected_or_first_available_variant
+            assign hover_image   = product.images[1]
+          -%}
+
+          <article
+            class="product-card{% if is_sold_out %} product-card--sold-out{% endif %}{% unless hover_image %} product-card--no-hover{% endunless %}"
+            data-product-id="{{ product.id }}"
+          >
+            <!-- Media -->
+            <a href="{{ product.url | within: collection }}" class="product-card__media-link" tabindex="-1" aria-hidden="true">
+              <div class="product-card__media">
+
+                <!-- Badges -->
+                <div class="product-card__badges">
+                  {%- if is_sold_out -%}
+                    <span class="product-card__badge product-card__badge--sold-out">Sold Out</span>
+                  {%- elsif is_on_sale -%}
+                    {%- assign savings_pct = product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price -%}
+                    <span class="product-card__badge product-card__badge--sale">−{{ savings_pct }}%</span>
+                  {%- endif -%}
+                  {%- if product.tags contains 'new' or product.tags contains 'New' -%}
+                    <span class="product-card__badge product-card__badge--new">New</span>
+                  {%- endif -%}
+                </div>
+
+                <!-- Primary image -->
+                {%- if product.featured_image != blank -%}
+                  {{
+                    product.featured_image
+                    | image_url: width: 800
+                    | image_tag:
+                      loading: 'lazy',
+                      widths: '200,400,600,800,1000',
+                      sizes: '(max-width: 480px) 50vw, (max-width: 900px) 50vw, 33vw',
+                      width: product.featured_image.width,
+                      height: product.featured_image.height,
+                      alt: product.featured_image.alt | default: product.title,
+                      class: 'product-card__img--primary'
+                  }}
+                {%- else -%}
+                  <div class="product-card__img--primary" style="background:var(--bg-elevated);display:flex;align-items:center;justify-content:center;">
+                    <span style="font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-dim);">No Image</span>
+                  </div>
+                {%- endif -%}
+
+                <!-- Hover image (product.images[1]) -->
+                {%- if hover_image != blank -%}
+                  {{
+                    hover_image
+                    | image_url: width: 800
+                    | image_tag:
+                      loading: 'lazy',
+                      widths: '200,400,600,800,1000',
+                      sizes: '(max-width: 480px) 50vw, (max-width: 900px) 50vw, 33vw',
+                      width: hover_image.width,
+                      height: hover_image.height,
+                      alt: hover_image.alt | default: product.title,
+                      class: 'product-card__img--hover'
+                  }}
+                {%- endif -%}
+
+                <!-- Quick Add -->
+                {%- if product.available and first_variant != null -%}
+                  <button
+                    class="product-card__quick-add"
+                    data-add-to-cart="{{ first_variant.id }}"
+                    aria-label="Add {{ product.title }} to cart"
+                  >
+                    Quick Add
+                  </button>
+                {%- elsif is_sold_out -%}
+                  <div class="product-card__quick-add" style="cursor:default;opacity:0.5;" aria-hidden="true">Sold Out</div>
+                {%- endif -%}
+
+              </div>
+            </a>
+
+            <!-- Info -->
+            <div class="product-card__info">
+              <div class="product-card__meta">
+                {%- if section.settings.show_vendor and product.vendor != blank -%}
+                  <span class="product-card__vendor">{{ product.vendor }}</span>
+                {%- endif -%}
+                {%- if product.tags contains 'exclusive' or product.tags contains 'Exclusive' -%}
+                  <span class="product-card__tag">Exclusive</span>
+                {%- endif -%}
+              </div>
+
+              <h3 class="product-card__title">
+                <a href="{{ product.url | within: collection }}">{{ product.title }}</a>
+              </h3>
+
+              <div class="product-card__bottom">
+                <div class="product-card__price">
+                  {%- if is_on_sale -%}
+                    <span class="price price--sale">{{ product.price | money }}</span>
+                    <span class="price price--compare">{{ product.compare_at_price | money }}</span>
+                  {%- elsif is_sold_out -%}
+                    <span class="price" style="color:var(--text-dim);">{{ product.price | money }}</span>
+                  {%- else -%}
+                    <span class="price">{{ product.price | money }}</span>
+                  {%- endif -%}
+                </div>
+              </div>
+            </div>
+          </article>
+
+        {%- endfor -%}
+
+      </div>
+
+    {%- else -%}
+      <div class="collection-empty">
+        <p>No products found in this collection.</p>
+        <a href="{{ routes.collections_url }}" class="btn btn--secondary" style="margin-top:24px;">Browse All Collections</a>
+      </div>
+    {%- endif -%}
+
+    <!-- ── Pagination ─────────────────────────────────────────── -->
+    {%- if paginate.pages > 1 -%}
+      <nav class="pagination" aria-label="Collection pagination">
+        {%- if paginate.previous -%}
+          <a href="{{ paginate.previous.url }}" class="pagination__btn" aria-label="Previous page">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+              <polyline points="15 18 9 12 15 6"/>
+            </svg>
+          </a>
+        {%- else -%}
+          <span class="pagination__btn is-disabled" aria-disabled="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+              <polyline points="15 18 9 12 15 6"/>
+            </svg>
+          </span>
+        {%- endif -%}
+
+        <div class="pagination__pages">
+          {%- for part in paginate.parts -%}
+            {%- if part.is_link -%}
+              <a href="{{ part.url }}" class="pagination__page" aria-label="Page {{ part.title }}">{{ part.title }}</a>
+            {%- elsif part.title == paginate.current_page -%}
+              <span class="pagination__page is-current" aria-current="page" aria-label="Page {{ part.title }}, current">{{ part.title }}</span>
+            {%- else -%}
+              <span class="pagination__ellipsis" aria-hidden="true">…</span>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+
+        {%- if paginate.next -%}
+          <a href="{{ paginate.next.url }}" class="pagination__btn" aria-label="Next page">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+              <polyline points="9 18 15 12 9 6"/>
+            </svg>
+          </a>
+        {%- else -%}
+          <span class="pagination__btn is-disabled" aria-disabled="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+              <polyline points="9 18 15 12 9 6"/>
+            </svg>
+          </span>
+        {%- endif -%}
+      </nav>
+    {%- endif -%}
+
+  </div><!-- /container -->
+</div><!-- /main-collection -->
+
+{%- endpaginate -%}
+
+<style>
+  /* ── Collection Header ── */
+  .collection-header {
+    position: relative;
+    padding: calc(var(--nav-height) + clamp(60px, 8vw, 120px)) var(--gutter) clamp(60px, 6vw, 96px);
+    margin-bottom: clamp(40px, 6vw, 72px);
+    background: var(--bg-secondary);
+    overflow: hidden;
+  }
+
+  .collection-header--has-image { min-height: 40svh; display: flex; align-items: flex-end; }
+
+  .collection-header__media {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .collection-header__media img { width: 100%; height: 100%; object-fit: cover; }
+
+  .collection-header__overlay {
+    position: absolute;
+    inset: 0;
+    background: var(--bg);
+  }
+
+  .collection-header__content {
+    position: relative;
+    z-index: 1;
+  }
+
+  .collection-header__title {
+    font-family: var(--font-display);
+    font-size: clamp(40px, 7vw, 100px);
+    font-weight: 400;
+    line-height: 1.0;
+    letter-spacing: -0.02em;
+    margin: 12px 0 16px;
+  }
+
+  .collection-header__desc {
+    font-size: 16px;
+    color: var(--text-muted);
+    line-height: 1.7;
+    max-width: 60ch;
+    margin-bottom: 16px;
+  }
+
+  .collection-header__count {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+
+  /* ── Toolbar ── */
+  .collection-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: clamp(32px, 4vw, 56px);
+    padding-top: clamp(24px, 3vw, 40px);
+    border-top: 1px solid var(--border);
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .collection-count {
+    font-size: 12px;
+    color: var(--text-dim);
+    letter-spacing: 0.08em;
+    order: 2;
+  }
+
+  /* Sort */
+  .collection-sort {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .collection-sort__label {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+
+  .collection-sort__wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .collection-sort__select {
+    appearance: none;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-size: 12px;
+    font-family: var(--font-body);
+    letter-spacing: 0.08em;
+    padding: 8px 36px 8px 14px;
+    cursor: pointer;
+    outline: none;
+    transition: border-color var(--transition);
+  }
+
+  .collection-sort__select:hover,
+  .collection-sort__select:focus { border-color: var(--border-hover); }
+
+  .collection-sort__chevron {
+    position: absolute;
+    right: 10px;
+    pointer-events: none;
+    color: var(--text-muted);
+  }
+
+  /* ── Pagination ── */
+  .pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: clamp(48px, 6vw, 80px);
+    padding-top: clamp(32px, 4vw, 48px);
+    border-top: 1px solid var(--border);
+  }
+
+  .pagination__btn {
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    transition: border-color var(--transition), color var(--transition);
+  }
+
+  .pagination__btn:not(.is-disabled):hover {
+    border-color: var(--accent-border);
+    color: var(--text);
+  }
+
+  .pagination__btn.is-disabled {
+    opacity: 0.3;
+    cursor: default;
+  }
+
+  .pagination__pages { display: flex; align-items: center; gap: 4px; }
+
+  .pagination__page {
+    min-width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    border: 1px solid transparent;
+    transition: border-color var(--transition), color var(--transition);
+  }
+
+  .pagination__page:hover { color: var(--text); border-color: var(--border); }
+
+  .pagination__page.is-current {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .pagination__ellipsis {
+    color: var(--text-dim);
+    font-size: 13px;
+    padding: 0 4px;
+  }
+
+  /* ── Empty State ── */
+  .collection-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: clamp(60px, 10vw, 120px) 0;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 15px;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 768px) {
+    .collection-header {
+      padding-top: calc(var(--nav-height) + 40px);
+      padding-bottom: 40px;
+    }
+    .collection-header--has-image { min-height: 36svh; }
+    .collection-header__title { font-size: clamp(30px, 8vw, 56px); }
+    .collection-header__desc  { font-size: 14px; }
+
+    .collection-toolbar {
+      flex-direction: column;
+      align-items:    flex-start;
+      gap:            12px;
+    }
+    .collection-count { order: 0; }
+    .collection-sort  { width: 100%; }
+    .collection-sort__select { width: 100%; }
+
+    /* Pagination: bigger tap targets */
+    .pagination__btn  { width: 44px; height: 44px; }
+    .pagination__page { min-width: 44px; height: 44px; }
+    .pagination       { gap: 4px; flex-wrap: wrap; }
+  }
+
+  @media (max-width: 480px) {
+    .collection-header__title { font-size: clamp(26px, 9vw, 44px); }
+    .collection-sort__label   { display: none; }    /* hide "Sort by" label to save space */
+    .pagination__pages        { gap: 2px; }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Collection",
+  "tag": "section",
+  "class": "section-main-collection",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Collection Header"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_header",
+      "label": "Show collection header",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_description",
+      "label": "Show collection description",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "header_overlay",
+      "label": "Header image overlay",
+      "min": 0,
+      "max": 90,
+      "step": 5,
+      "default": 60,
+      "unit": "%"
+    },
+    {
+      "type": "header",
+      "content": "Grid"
+    },
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "label": "Products per page",
+      "min": 8,
+      "max": 48,
+      "step": 4,
+      "default": 12
+    },
+    {
+      "type": "select",
+      "id": "columns",
+      "label": "Columns (desktop)",
+      "options": [
+        { "value": "2", "label": "2 columns" },
+        { "value": "3", "label": "3 columns" },
+        { "value": "4", "label": "4 columns" }
+      ],
+      "default": "3"
+    },
+    {
+      "type": "header",
+      "content": "Toolbar"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_sort",
+      "label": "Show sort options",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Card Options"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "Show vendor",
+      "default": false
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection",
+      "settings": {
+        "show_header": true,
+        "show_description": true,
+        "products_per_page": 12,
+        "columns": "3",
+        "show_sort": true
+      }
+    }
+  ]
+}
+{% endschema %}
