@@ -55,10 +55,6 @@ function adaptProduct(p: any): SectionProduct {
   }
 }
 
-const ALLOWED_HANDLES = new Set([
-  'new-arrivals', 'hoodies', 'sweatsuits', '1-of-0',
-  'sweatshirts', 'sweatpants', 't-shirts',
-])
 
 export const meta: MetaFunction = () => [
   { title: 'Swift Goods | Comfort Is Luxury.' },
@@ -75,15 +71,16 @@ export async function loader({ context }: LoaderFunctionArgs) {
     getCollections(storefront, 30),
   ])
 
-  const adaptedProducts = allProducts.map(adaptProduct).filter((p: SectionProduct) => {
-    return parseFloat(p.price) > 0
-  })
+  const adaptedProducts = allProducts
+    .filter((p: any) => p.availableForSale)
+    .map(adaptProduct)
+    .filter((p: SectionProduct) => parseFloat(p.price) > 0)
 
   const featured = adaptedProducts.slice(0, 6)
 
   const lookbookCollections: LookbookCollection[] = shopifyCollections
-    .filter((c: any) => ALLOWED_HANDLES.has(c.handle.toLowerCase()))
-    .slice(0, 5)
+    .filter((c: any) => c.image?.url)
+    .slice(0, 6)
     .map((c: any) => ({
       handle: c.handle,
       title: c.title,

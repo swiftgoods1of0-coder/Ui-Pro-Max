@@ -138,7 +138,7 @@ export async function getProducts(
     return data.products.nodes
   } catch (error) {
     console.error('[Swift Goods] getProducts error:', error)
-    return MOCK_PRODUCTS
+    return []
   }
 }
 
@@ -156,7 +156,7 @@ export async function getProduct(
     return data.productByHandle
   } catch (error) {
     console.error('[Swift Goods] getProduct error:', error)
-    return MOCK_PRODUCTS.find((p) => p.handle === handle) ?? null
+    return null
   }
 }
 
@@ -197,5 +197,3 @@ export async function getCollection(
   }
 }
 
-// ── Mock data (fallback when Shopify is unreachable) ─────────────────────────
-import { MOCK_PRODUCTS } from './shopify'
