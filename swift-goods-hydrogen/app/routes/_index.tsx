@@ -14,6 +14,7 @@ const CampaignEditorial = lazy(() => import('@/components/sections/CampaignEdito
 const BrandStatement    = lazy(() => import('@/components/sections/BrandStatement'))
 const AnimatedDivider   = lazy(() => import('@/components/ui/AnimatedDivider'))
 const CollectionGrid    = lazy(() => import('@/components/sections/CollectionGrid'))
+const WomensSection     = lazy(() => import('@/components/sections/WomensSection'))
 const Craftsmanship     = lazy(() => import('@/components/sections/Craftsmanship'))
 const SignatureMoment   = lazy(() => import('@/components/sections/SignatureMoment'))
 const CinematicStrip    = lazy(() => import('@/components/sections/CinematicStrip'))
@@ -64,19 +65,40 @@ export const meta: MetaFunction = () => [
   { property: 'og:image', content: '/brand/sg-campaign-04.jpeg' },
 ]
 
+const EXCLUDED_TYPES = new Set(['sweatpants', 'sweatshirt', 'sweatshirts', 'crewneck', 'crewnecks'])
+
+function isExcluded(p: any): boolean {
+  const type = (p.productType ?? '').toLowerCase()
+  const handle = (p.handle ?? '').toLowerCase()
+  return (
+    EXCLUDED_TYPES.has(type) ||
+    handle.includes('sweatpant') ||
+    handle.includes('sweatshirt') ||
+    type.includes('sweatpant') ||
+    type.includes('sweatshirt')
+  )
+}
+
 export async function loader({ context }: LoaderFunctionArgs) {
   const { storefront } = context
-  const [allProducts, shopifyCollections] = await Promise.all([
-    getProducts(storefront, 20),
+  const [allProducts, womensRaw, shopifyCollections] = await Promise.all([
+    getProducts(storefront, 50),
+    getProducts(storefront, 12, { query: 'tag:women OR tag:womens OR tag:women\'s' }),
     getCollections(storefront, 30),
   ])
 
   const adaptedProducts = allProducts
-    .filter((p: any) => p.availableForSale)
+    .filter((p: any) => p.availableForSale && !isExcluded(p))
     .map(adaptProduct)
     .filter((p: SectionProduct) => parseFloat(p.price) > 0)
 
   const featured = adaptedProducts.slice(0, 6)
+
+  const womensProducts = womensRaw
+    .filter((p: any) => p.availableForSale)
+    .map(adaptProduct)
+    .filter((p: SectionProduct) => parseFloat(p.price) > 0)
+    .slice(0, 4)
 
   const lookbookCollections: LookbookCollection[] = shopifyCollections
     .filter((c: any) => c.image?.url)
@@ -87,11 +109,11 @@ export async function loader({ context }: LoaderFunctionArgs) {
       image: c.image?.url ?? null,
     }))
 
-  return json({ adaptedProducts, featured, lookbookCollections })
+  return json({ adaptedProducts, featured, womensProducts, lookbookCollections })
 }
 
 export default function Index() {
-  const { adaptedProducts, featured, lookbookCollections } = useLoaderData<typeof loader>()
+  const { adaptedProducts, featured, womensProducts, lookbookCollections } = useLoaderData<typeof loader>()
 
   return (
     <main className="bg-sg-black min-h-screen overflow-x-hidden">
@@ -110,6 +132,7 @@ export default function Index() {
         <BrandStatement />
         <AnimatedDivider />
         <CollectionGrid products={adaptedProducts as SectionProduct[]} />
+        <WomensSection products={womensProducts as SectionProduct[]} />
         <Craftsmanship />
         <SignatureMoment />
         <CinematicStrip />

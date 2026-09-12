@@ -72,8 +72,8 @@ const ALL_PRODUCT_FRAGMENTS = `
 
 // ── Queries ─────────────────────────────────────────────────────────────────
 const GET_PRODUCTS_QUERY = `#graphql
-  query GetProducts($first: Int!, $after: String, $sortKey: ProductSortKeys, $reverse: Boolean) {
-    products(first: $first, after: $after, sortKey: $sortKey, reverse: $reverse) {
+  query GetProducts($first: Int!, $after: String, $sortKey: ProductSortKeys, $reverse: Boolean, $query: String) {
+    products(first: $first, after: $after, sortKey: $sortKey, reverse: $reverse, query: $query) {
       nodes { ...ProductFragment }
       pageInfo { hasNextPage hasPreviousPage startCursor endCursor }
     }
@@ -116,11 +116,12 @@ const GET_COLLECTION_QUERY = `#graphql
 // ── API Functions (server-side only) ────────────────────────────────────────
 export async function getProducts(
   storefront: Storefront,
-  first = 12,
+  first = 50,
   options?: {
     after?: string
     sortKey?: 'TITLE' | 'PRICE' | 'BEST_SELLING' | 'CREATED_AT' | 'RELEVANCE'
     reverse?: boolean
+    query?: string
   }
 ): Promise<ShopifyProduct[]> {
   try {
@@ -132,6 +133,7 @@ export async function getProducts(
         after: options?.after,
         sortKey: options?.sortKey ?? 'CREATED_AT',
         reverse: options?.reverse ?? true,
+        query: options?.query,
       },
       cache: storefront.CacheCustom({ maxAge: 60, staleWhileRevalidate: 60 }),
     })
