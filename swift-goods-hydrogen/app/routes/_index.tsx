@@ -82,9 +82,9 @@ function isExcluded(p: any): boolean {
 export async function loader({ context }: LoaderFunctionArgs) {
   const { storefront } = context
   const [allProducts, womensRaw, shopifyCollections] = await Promise.all([
-    getProducts(storefront, 50),
-    getProducts(storefront, 12, { query: 'tag:women OR tag:womens OR tag:women\'s' }),
-    getCollections(storefront, 30),
+    getProducts(storefront, 250, { sortKey: 'CREATED_AT', reverse: true }),
+    getProducts(storefront, 20, { query: 'tag:women OR tag:womens OR tag:women\'s', sortKey: 'CREATED_AT', reverse: true }),
+    getCollections(storefront, 50),
   ])
 
   const adaptedProducts = allProducts
@@ -92,7 +92,7 @@ export async function loader({ context }: LoaderFunctionArgs) {
     .map(adaptProduct)
     .filter((p: SectionProduct) => parseFloat(p.price) > 0)
 
-  const featured = adaptedProducts.slice(0, 6)
+  const featured = adaptedProducts.slice(0, 8)
 
   const womensProducts = womensRaw
     .filter((p: any) => p.availableForSale)
