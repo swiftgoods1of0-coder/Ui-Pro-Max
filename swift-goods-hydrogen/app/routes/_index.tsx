@@ -3,26 +3,17 @@ import { json } from '@shopify/remix-oxygen'
 import { useLoaderData } from '@remix-run/react'
 import { lazy, Suspense } from 'react'
 import Navigation from '@/components/ui/Navigation'
-import GiveawaySection from '@/components/sections/GiveawaySection'
 import HeroSection from '@/components/sections/HeroSection'
 import FeaturedProducts from '@/components/sections/FeaturedProducts'
 import Footer from '@/components/ui/Footer'
 import { getProducts, getCollections } from '@/lib/shopify.server'
 import type { LookbookCollection } from '@/components/sections/Lookbook'
 
-const CampaignEditorial = lazy(() => import('@/components/sections/CampaignEditorial'))
-const BrandStatement    = lazy(() => import('@/components/sections/BrandStatement'))
-const AnimatedDivider   = lazy(() => import('@/components/ui/AnimatedDivider'))
-const CollectionGrid    = lazy(() => import('@/components/sections/CollectionGrid'))
-const WomensSection     = lazy(() => import('@/components/sections/WomensSection'))
-const Craftsmanship     = lazy(() => import('@/components/sections/Craftsmanship'))
-const SignatureMoment   = lazy(() => import('@/components/sections/SignatureMoment'))
-const CinematicStrip    = lazy(() => import('@/components/sections/CinematicStrip'))
-const Lookbook          = lazy(() => import('@/components/sections/Lookbook'))
-const SocialProof       = lazy(() => import('@/components/sections/SocialProof'))
-const ExclusiveAccess   = lazy(() => import('@/components/sections/ExclusiveAccess'))
-const ProductDrop       = lazy(() => import('@/components/sections/ProductDrop'))
-const FinalCTA          = lazy(() => import('@/components/sections/FinalCTA'))
+const CollectionGrid = lazy(() => import('@/components/sections/CollectionGrid'))
+const WomensSection  = lazy(() => import('@/components/sections/WomensSection'))
+const Lookbook       = lazy(() => import('@/components/sections/Lookbook'))
+const SocialProof    = lazy(() => import('@/components/sections/SocialProof'))
+const FinalCTA       = lazy(() => import('@/components/sections/FinalCTA'))
 
 interface SectionProduct {
   id: string
@@ -55,7 +46,6 @@ function adaptProduct(p: any): SectionProduct {
     isFeatured,
   }
 }
-
 
 export const meta: MetaFunction = () => [
   { title: 'Swift Goods | Comfort Is Luxury.' },
@@ -129,41 +119,16 @@ export default function Index() {
   const { adaptedProducts, featured, womensProducts, lookbookCollections } = useLoaderData<typeof loader>()
 
   return (
-    <main className="bg-sg-black min-h-screen overflow-x-hidden">
-      <GiveawaySection />
+    <main style={{ background: '#F8F6F1' }} className="min-h-screen overflow-x-hidden">
       <Navigation />
       <HeroSection />
 
-      <div className="w-full h-24 md:h-36" style={{ background: 'linear-gradient(to bottom, #050505, var(--sg-frost, #F7F6F3))' }} />
-
-      <FeaturedProducts products={featured as SectionProduct[]} />
-
-      <div className="w-full h-24 md:h-36" style={{ background: 'linear-gradient(to bottom, var(--sg-frost, #F7F6F3), #0a0a0a)' }} />
-
       <Suspense fallback={null}>
-        <CampaignEditorial />
-        <BrandStatement />
-        <AnimatedDivider />
+        <FeaturedProducts products={featured as SectionProduct[]} />
         <CollectionGrid products={adaptedProducts as SectionProduct[]} />
         <WomensSection products={womensProducts as SectionProduct[]} />
-        <Craftsmanship />
-        <SignatureMoment />
-        <CinematicStrip />
-        <AnimatedDivider />
         <Lookbook collections={lookbookCollections as LookbookCollection[]} />
-      </Suspense>
-
-      <div className="w-full h-24 md:h-36" style={{ background: 'linear-gradient(to bottom, #050505, var(--sg-frost, #F7F6F3))' }} />
-
-      <Suspense fallback={null}>
         <SocialProof />
-      </Suspense>
-
-      <div className="w-full h-24 md:h-36" style={{ background: 'linear-gradient(to bottom, var(--sg-frost, #F7F6F3), #050505)' }} />
-
-      <Suspense fallback={null}>
-        <ExclusiveAccess />
-        <ProductDrop />
         <FinalCTA />
       </Suspense>
 

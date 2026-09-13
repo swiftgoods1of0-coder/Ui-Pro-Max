@@ -44,8 +44,8 @@ export default function CollectionGrid({ products }: CollectionGridProps) {
   const filteredProducts = products.filter((p) => productMatchesFilter(p, activeFilter))
 
   return (
-    <section id="shop" className="relative pt-28 pb-24 overflow-hidden" style={{ background: '#0a0a0a' }}>
-      <div className="absolute pointer-events-none" style={{ top: '5%', left: '-8%', width: '45%', height: '45%', background: 'radial-gradient(ellipse at center, rgba(201,168,76,0.03) 0%, transparent 65%)', filter: 'blur(80px)' }} />
+    <section id="shop" className="relative pt-28 pb-24 overflow-hidden" style={{ background: '#F8F6F1' }}>
+      <div className="absolute pointer-events-none" style={{ top: '5%', left: '-8%', width: '45%', height: '45%', background: 'radial-gradient(ellipse at center, rgba(201,168,76,0.06) 0%, transparent 65%)', filter: 'blur(100px)' }} />
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12">
         <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-8 mb-14">
@@ -56,7 +56,7 @@ export default function CollectionGrid({ products }: CollectionGridProps) {
                 SHOP ALL
               </span>
             </div>
-            <SplitTextReveal text="THE FULL EDIT" tag="h2" className="header-el leading-none tracking-widest" style={{ fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)', fontSize: 'clamp(2.8rem, 6vw, 5.5rem)', color: '#f5f5f5', textShadow: '0 4px 40px rgba(0,0,0,0.3)' }} />
+            <SplitTextReveal text="THE FULL EDIT" tag="h2" className="header-el leading-none tracking-widest" style={{ fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)', fontSize: 'clamp(2.8rem, 6vw, 5.5rem)', color: '#1a1a1a' }} />
           </div>
 
           <div className="header-el flex flex-wrap gap-2">
@@ -72,8 +72,8 @@ export default function CollectionGrid({ products }: CollectionGridProps) {
                     fontFamily: 'var(--font-body, Inter, sans-serif)',
                     fontWeight: 500,
                     background: isActive ? 'rgba(201,168,76,0.06)' : 'transparent',
-                    border: isActive ? '1px solid rgba(201,168,76,0.7)' : '1px solid rgba(255,255,255,0.08)',
-                    color: isActive ? '#c9a84c' : '#555555',
+                    border: isActive ? '1px solid rgba(201,168,76,0.7)' : '1px solid rgba(0,0,0,0.12)',
+                    color: isActive ? '#c9a84c' : '#777777',
                     boxShadow: isActive ? '0 0 20px rgba(201,168,76,0.08)' : 'none',
                   }}
                   aria-pressed={isActive}
@@ -94,7 +94,7 @@ export default function CollectionGrid({ products }: CollectionGridProps) {
               viewport={{ once: true, amount: 0.1 }}
               transition={{ duration: 0.35, delay: index * 0.03, ease: [0.22, 1, 0.36, 1] }}
               className="group relative overflow-hidden cursor-pointer"
-              style={{ aspectRatio: '3/4', background: '#111111', transition: 'box-shadow 0.5s ease' }}
+              style={{ aspectRatio: '3/4', background: '#EDEBE6', transition: 'box-shadow 0.5s ease' }}
               whileHover={{ boxShadow: '0 8px 40px rgba(0,0,0,0.5), 0 0 25px rgba(201,168,76,0.06)' }}
             >
               <Link to={`/products/${product.handle}`} style={{ display: 'block', width: '100%', height: '100%' }}>

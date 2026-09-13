@@ -66,11 +66,10 @@ export default function WomensSection({ products = [] }: WomensSectionProps) {
     <section
       ref={sectionRef}
       id="womens"
-      style={{ background: '#060606', position: 'relative', overflow: 'hidden', paddingTop: '6rem', paddingBottom: '6rem' }}
+      style={{ background: '#FAFAF8', position: 'relative', overflow: 'hidden', paddingTop: '6rem', paddingBottom: '6rem' }}
     >
-      {/* Subtle gold ambient top */}
-      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 1, background: 'linear-gradient(to right, transparent, rgba(201,168,76,0.2), transparent)', pointerEvents: 'none' }} />
-      <div style={{ position: 'absolute', top: '10%', right: '-5%', width: '40%', height: '50%', background: 'radial-gradient(ellipse at center, rgba(201,168,76,0.04) 0%, transparent 65%)', filter: 'blur(80px)', pointerEvents: 'none' }} />
+      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 1, background: 'linear-gradient(to right, transparent, rgba(0,0,0,0.06), transparent)', pointerEvents: 'none' }} />
+      <div style={{ position: 'absolute', top: '10%', right: '-5%', width: '40%', height: '50%', background: 'radial-gradient(ellipse at center, rgba(201,168,76,0.07) 0%, transparent 65%)', filter: 'blur(80px)', pointerEvents: 'none' }} />
 
       <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 1.5rem' }}>
 
@@ -83,7 +82,7 @@ export default function WomensSection({ products = [] }: WomensSectionProps) {
                 FOR HER
               </span>
             </div>
-            <h2 className="ws-headline" style={{ fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)', fontSize: 'clamp(3rem, 7vw, 6rem)', lineHeight: 0.92, letterSpacing: '0.04em', color: '#f5f5f5', margin: 0, opacity: 0 }}>
+            <h2 className="ws-headline" style={{ fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)', fontSize: 'clamp(3rem, 7vw, 6rem)', lineHeight: 0.92, letterSpacing: '0.04em', color: '#1a1a1a', margin: 0, opacity: 0 }}>
               WOMEN'S
               <br />
               <span style={{ background: `linear-gradient(135deg, ${GOLD}, ${GOLD_LIGHT}, #c8aa8a)`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
@@ -93,7 +92,7 @@ export default function WomensSection({ products = [] }: WomensSectionProps) {
           </div>
 
           <div className="ws-body" style={{ maxWidth: 340, opacity: 0 }}>
-            <p style={{ fontFamily: 'var(--font-display, "Cormorant Garamond", serif)', fontStyle: 'italic', fontSize: 'clamp(1rem, 1.5vw, 1.2rem)', color: 'rgba(245,245,245,0.45)', lineHeight: 1.75, margin: '0 0 1.5rem 0' }}>
+            <p style={{ fontFamily: 'var(--font-display, "Cormorant Garamond", serif)', fontStyle: 'italic', fontSize: 'clamp(1rem, 1.5vw, 1.2rem)', color: 'rgba(20,20,20,0.58)', lineHeight: 1.75, margin: '0 0 1.5rem 0' }}>
               Designed for movement. Built for presence. Pieces that carry the same luxury DNA — now crafted for women.
             </p>
             <Link
@@ -165,13 +164,13 @@ export default function WomensSection({ products = [] }: WomensSectionProps) {
               />
               <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(6,6,6,0.65) 0%, transparent 55%)' }} />
             </div>
-            <div style={{ position: 'relative', padding: '2rem', background: '#0d0d0d', border: '1px solid rgba(201,168,76,0.1)', display: 'flex', flexDirection: 'column', justifyContent: 'center', minHeight: 180 }}>
+            <div style={{ position: 'relative', padding: '2rem', background: '#EDEBE6', border: '1px solid rgba(201,168,76,0.2)', display: 'flex', flexDirection: 'column', justifyContent: 'center', minHeight: 180 }}>
               <div style={{ position: 'absolute', top: 16, left: 16, width: 20, height: 20, borderTop: `1px solid rgba(201,168,76,0.3)`, borderLeft: `1px solid rgba(201,168,76,0.3)` }} />
               <div style={{ position: 'absolute', bottom: 16, right: 16, width: 20, height: 20, borderBottom: `1px solid rgba(201,168,76,0.3)`, borderRight: `1px solid rgba(201,168,76,0.3)` }} />
               <p style={{ fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)', fontSize: '0.75rem', letterSpacing: '0.4em', color: GOLD, textTransform: 'uppercase', margin: '0 0 0.75rem 0' }}>
                 Swift Goods Women's
               </p>
-              <p style={{ fontFamily: 'var(--font-display, "Cormorant Garamond", serif)', fontStyle: 'italic', fontSize: 'clamp(1.1rem, 2vw, 1.5rem)', color: '#f5f5f5', lineHeight: 1.4, margin: 0 }}>
+              <p style={{ fontFamily: 'var(--font-display, "Cormorant Garamond", serif)', fontStyle: 'italic', fontSize: 'clamp(1.1rem, 2vw, 1.5rem)', color: '#1a1a1a', lineHeight: 1.4, margin: 0 }}>
                 "Comfort is a luxury — and you deserve both."
               </p>
             </div>
@@ -188,7 +187,7 @@ export default function WomensSection({ products = [] }: WomensSectionProps) {
                 className="ws-card group"
                 style={{ display: 'block', textDecoration: 'none', opacity: 0 }}
               >
-                <div style={{ position: 'relative', aspectRatio: '3/4', overflow: 'hidden', background: '#111', marginBottom: '1rem' }}>
+                <div style={{ position: 'relative', aspectRatio: '3/4', overflow: 'hidden', background: '#E8E5DF', marginBottom: '1rem' }}>
                   {product.image ? (
                     <img
                       src={product.image}
@@ -218,7 +217,7 @@ export default function WomensSection({ products = [] }: WomensSectionProps) {
                     {product.category}
                   </p>
                 )}
-                <p style={{ fontFamily: 'var(--font-display, "Cormorant Garamond", serif)', fontStyle: 'italic', fontSize: '1.2rem', color: '#f5f5f5', margin: '0 0 0.5rem 0', lineHeight: 1.2 }}>
+                <p style={{ fontFamily: 'var(--font-display, "Cormorant Garamond", serif)', fontStyle: 'italic', fontSize: '1.2rem', color: '#1a1a1a', margin: '0 0 0.5rem 0', lineHeight: 1.2 }}>
                   {product.title}
                 </p>
                 <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.75rem' }}>
@@ -226,7 +225,7 @@ export default function WomensSection({ products = [] }: WomensSectionProps) {
                     ${product.price}
                   </span>
                   {product.compareAtPrice && (
-                    <span style={{ fontFamily: 'var(--font-body, Inter, sans-serif)', fontSize: '0.875rem', color: '#444', textDecoration: 'line-through' }}>
+                    <span style={{ fontFamily: 'var(--font-body, Inter, sans-serif)', fontSize: '0.875rem', color: '#999', textDecoration: 'line-through' }}>
                       ${product.compareAtPrice}
                     </span>
                   )}
@@ -236,7 +235,7 @@ export default function WomensSection({ products = [] }: WomensSectionProps) {
           </div>
         ) : (
           /* CTA when no women's products tagged yet */
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '3rem 1.5rem', border: '1px solid rgba(201,168,76,0.1)', background: '#0d0d0d', textAlign: 'center' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '3rem 1.5rem', border: '1px solid rgba(201,168,76,0.2)', background: '#EDEBE6', textAlign: 'center' }}>
             <div style={{ width: 40, height: 40, position: 'relative', marginBottom: '2rem' }}>
               <div style={{ position: 'absolute', top: 0, left: 0, width: 18, height: 1, background: `rgba(201,168,76,0.4)` }} />
               <div style={{ position: 'absolute', top: 0, left: 0, width: 1, height: 18, background: `rgba(201,168,76,0.4)` }} />
@@ -246,7 +245,7 @@ export default function WomensSection({ products = [] }: WomensSectionProps) {
             <p style={{ fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)', fontSize: '0.75rem', letterSpacing: '0.4em', color: GOLD, textTransform: 'uppercase', margin: '0 0 0.75rem 0' }}>
               Coming Soon
             </p>
-            <p style={{ fontFamily: 'var(--font-display, "Cormorant Garamond", serif)', fontStyle: 'italic', fontSize: 'clamp(1.25rem, 2.5vw, 1.75rem)', color: '#f5f5f5', margin: '0 0 2rem 0', maxWidth: 460, lineHeight: 1.5 }}>
+            <p style={{ fontFamily: 'var(--font-display, "Cormorant Garamond", serif)', fontStyle: 'italic', fontSize: 'clamp(1.25rem, 2.5vw, 1.75rem)', color: '#1a1a1a', margin: '0 0 2rem 0', maxWidth: 460, lineHeight: 1.5 }}>
               The Women's Collection is dropping soon. Be the first to know.
             </p>
             <Link
@@ -282,8 +281,7 @@ export default function WomensSection({ products = [] }: WomensSectionProps) {
         )}
       </div>
 
-      {/* Bottom gold accent */}
-      <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 1, background: 'linear-gradient(to right, transparent, rgba(201,168,76,0.15), transparent)', pointerEvents: 'none' }} />
+      <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 1, background: 'linear-gradient(to right, transparent, rgba(0,0,0,0.06), transparent)', pointerEvents: 'none' }} />
     </section>
   )
 }
