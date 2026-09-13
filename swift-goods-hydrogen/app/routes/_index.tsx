@@ -100,8 +100,21 @@ export async function loader({ context }: LoaderFunctionArgs) {
     .filter((p: SectionProduct) => parseFloat(p.price) > 0)
     .slice(0, 4)
 
+  const EXCLUDED_COLLECTION_HANDLES = new Set([
+    'sweatpants', 'sweatshirts', 'sweatshirt', 'sweat-pants', 'sweat-shirts',
+    'crewnecks', 'crewneck',
+  ])
+
   const lookbookCollections: LookbookCollection[] = shopifyCollections
-    .filter((c: any) => c.image?.url)
+    .filter((c: any) => {
+      const h = c.handle.toLowerCase()
+      return (
+        c.image?.url &&
+        !EXCLUDED_COLLECTION_HANDLES.has(h) &&
+        !h.includes('sweatpant') &&
+        !h.includes('sweatshirt')
+      )
+    })
     .slice(0, 6)
     .map((c: any) => ({
       handle: c.handle,
