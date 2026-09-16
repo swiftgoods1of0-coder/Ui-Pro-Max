@@ -74,13 +74,23 @@ interface LookbookProps {
   collections?: LookbookCollection[]
 }
 
+const BLOCKED = ['sweatpant', 'sweatshirt', 'sweat pant', 'sweat shirt', 'crewneck']
+
+function isBlocked(c: LookbookCollection) {
+  const t = c.title.toLowerCase()
+  const h = c.handle.toLowerCase()
+  return BLOCKED.some((w) => t.includes(w) || h.includes(w))
+}
+
 export default function Lookbook({ collections }: LookbookProps) {
   const sectionRef = useRef<HTMLElement>(null)
   const velocity = useScrollVelocity()
 
+  const filtered = (collections ?? []).filter((c) => !isBlocked(c))
+
   const slides =
-    collections && collections.length > 0
-      ? collectionsToSlides(collections)
+    filtered.length > 0
+      ? collectionsToSlides(filtered)
       : FALLBACK_SLIDES
 
   useEffect(() => {
