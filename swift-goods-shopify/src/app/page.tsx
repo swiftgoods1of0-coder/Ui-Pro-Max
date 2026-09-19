@@ -1,25 +1,15 @@
 import dynamic from 'next/dynamic'
 import Navigation from '@/components/ui/Navigation'
-import GiveawaySection from '@/components/sections/GiveawaySection'
 import HeroSection from '@/components/sections/HeroSection'
 import FeaturedProducts from '@/components/sections/FeaturedProducts'
 import Footer from '@/components/ui/Footer'
 import { getProducts, getCollections, type ShopifyProduct as FullShopifyProduct } from '@/lib/shopify'
 import type { LookbookCollection } from '@/components/sections/Lookbook'
 
-// Below-fold sections — lazy loaded so they don't block first paint
-const CampaignEditorial = dynamic(() => import('@/components/sections/CampaignEditorial'))
-const BrandStatement    = dynamic(() => import('@/components/sections/BrandStatement'))
-const AnimatedDivider   = dynamic(() => import('@/components/ui/AnimatedDivider'))
-const CollectionGrid    = dynamic(() => import('@/components/sections/CollectionGrid'))
-const Craftsmanship     = dynamic(() => import('@/components/sections/Craftsmanship'))
-const SignatureMoment   = dynamic(() => import('@/components/sections/SignatureMoment'))
-const CinematicStrip    = dynamic(() => import('@/components/sections/CinematicStrip'))
-const Lookbook          = dynamic(() => import('@/components/sections/Lookbook'))
-const SocialProof       = dynamic(() => import('@/components/sections/SocialProof'))
-const ExclusiveAccess   = dynamic(() => import('@/components/sections/ExclusiveAccess'))
-const ProductDrop       = dynamic(() => import('@/components/sections/ProductDrop'))
-const FinalCTA          = dynamic(() => import('@/components/sections/FinalCTA'))
+const CollectionGrid = dynamic(() => import('@/components/sections/CollectionGrid'))
+const Lookbook       = dynamic(() => import('@/components/sections/Lookbook'))
+const SocialProof    = dynamic(() => import('@/components/sections/SocialProof'))
+const FinalCTA       = dynamic(() => import('@/components/sections/FinalCTA'))
 
 interface SectionProduct {
   id: string
@@ -54,14 +44,11 @@ function adaptProduct(p: FullShopifyProduct): SectionProduct {
   }
 }
 
-// Cache pages at the edge for 60 seconds — massive speed boost vs force-dynamic
-// (which hit the Shopify API fresh on every single request)
 export const revalidate = 60
 
 export const metadata = {
   title: 'Swift Goods | Comfort Is Luxury.',
-  description:
-    'Ultra-premium luxury streetwear. Designed for movement. Built for presence. Swift Goods Clothing Brand.',
+  description: 'Ultra-premium luxury streetwear. Designed for movement. Built for presence. Swift Goods Clothing Brand.',
   openGraph: {
     title: 'Swift Goods | Comfort Is Luxury.',
     description: 'Ultra-premium luxury streetwear.',
@@ -69,32 +56,49 @@ export const metadata = {
   },
 }
 
+const EXCLUDED_TYPES = new Set(['sweatpants', 'sweatshirt', 'sweatshirts', 'crewneck', 'crewnecks'])
+
+function isExcluded(p: FullShopifyProduct): boolean {
+  const type   = (p.productType ?? '').toLowerCase()
+  const handle = (p.handle ?? '').toLowerCase()
+  return (
+    EXCLUDED_TYPES.has(type) ||
+    handle.includes('sweatpant') ||
+    handle.includes('sweatshirt') ||
+    type.includes('sweatpant') ||
+    type.includes('sweatshirt')
+  )
+}
+
+const EXCLUDED_COLLECTION_HANDLES = new Set([
+  'sweatpants', 'sweatshirts', 'sweatshirt', 'sweat-pants', 'sweat-shirts',
+  'crewnecks', 'crewneck',
+])
+
 export default async function Home() {
   const [allProducts, shopifyCollections] = await Promise.all([
-    getProducts(20),
-    getCollections(30),
+    getProducts(250, { sortKey: 'CREATED_AT', reverse: true }),
+    getCollections(50),
   ])
 
-  const adaptedProducts = allProducts.map(adaptProduct).filter((p) => {
-    const price = parseFloat(p.price)
-    return price > 0
-  })
+  const adaptedProducts = allProducts
+    .filter((p) => p.availableForSale && !isExcluded(p))
+    .map(adaptProduct)
+    .filter((p) => parseFloat(p.price) > 0)
 
-  const featured = adaptedProducts.slice(0, 6)
-
-  const ALLOWED_HANDLES = new Set([
-    'new-arrivals',
-    'hoodies',
-    'sweatsuits',
-    '1-of-0',
-    'sweatshirts',
-    'sweatpants',
-    't-shirts',
-  ])
+  const featured = adaptedProducts.slice(0, 8)
 
   const lookbookCollections: LookbookCollection[] = shopifyCollections
-    .filter((c) => ALLOWED_HANDLES.has(c.handle.toLowerCase()))
-    .slice(0, 5)
+    .filter((c) => {
+      const h = c.handle.toLowerCase()
+      return (
+        c.image?.url &&
+        !EXCLUDED_COLLECTION_HANDLES.has(h) &&
+        !h.includes('sweatpant') &&
+        !h.includes('sweatshirt')
+      )
+    })
+    .slice(0, 6)
     .map((c) => ({
       handle: c.handle,
       title: c.title,
@@ -102,36 +106,16 @@ export default async function Home() {
     }))
 
   return (
-    <main className="bg-sg-black min-h-screen overflow-x-hidden">
-      <GiveawaySection />
+    <main style={{ background: '#F8F6F1' }} className="min-h-screen overflow-x-hidden">
       <Navigation />
       <HeroSection />
 
-      <div className="w-full h-24 md:h-36" style={{ background: 'linear-gradient(to bottom, #050505, var(--sg-frost, #F7F6F3))' }} />
-
       <FeaturedProducts products={featured} />
-
-      <div className="w-full h-24 md:h-36" style={{ background: 'linear-gradient(to bottom, var(--sg-frost, #F7F6F3), #0a0a0a)' }} />
-
-      <CampaignEditorial />
-      <BrandStatement />
-      <AnimatedDivider />
       <CollectionGrid products={adaptedProducts} />
-      <Craftsmanship />
-      <SignatureMoment />
-      <CinematicStrip />
-      <AnimatedDivider />
       <Lookbook collections={lookbookCollections} />
-
-      <div className="w-full h-24 md:h-36" style={{ background: 'linear-gradient(to bottom, #050505, var(--sg-frost, #F7F6F3))' }} />
-
       <SocialProof />
-
-      <div className="w-full h-24 md:h-36" style={{ background: 'linear-gradient(to bottom, var(--sg-frost, #F7F6F3), #050505)' }} />
-
-      <ExclusiveAccess />
-      <ProductDrop />
       <FinalCTA />
+
       <Footer />
     </main>
   )
