@@ -61,12 +61,15 @@ const EXCLUDED_TYPES = new Set(['sweatpants', 'sweatshirt', 'sweatshirts', 'crew
 function isExcluded(p: FullShopifyProduct): boolean {
   const type   = (p.productType ?? '').toLowerCase()
   const handle = (p.handle ?? '').toLowerCase()
+  const title  = (p.title ?? '').toLowerCase()
   return (
     EXCLUDED_TYPES.has(type) ||
     handle.includes('sweatpant') ||
     handle.includes('sweatshirt') ||
     type.includes('sweatpant') ||
-    type.includes('sweatshirt')
+    type.includes('sweatshirt') ||
+    handle.includes('giveaway') ||
+    title.includes('giveaway')
   )
 }
 
