@@ -1,4 +1,5 @@
-import { getCollection, getCollections, formatPrice } from '@/lib/shopify'
+import { getCollection, getCollections, getProducts, formatPrice } from '@/lib/shopify'
+import type { ShopifyProduct } from '@/lib/shopify'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Image from 'next/image'
@@ -27,20 +28,33 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 }
 
-export default async function CollectionPage({ params }: PageProps) {
-  const { handle } = await params
-  const collection = await getCollection(handle, 50)
-  if (!collection) notFound()
-
-  // Deduplicate by handle and filter out $0 products
+function filterProducts(nodes: ShopifyProduct[]): ShopifyProduct[] {
   const seen = new Set<string>()
-  const products = collection.products.nodes.filter((p) => {
+  return nodes.filter((p) => {
     if (seen.has(p.handle)) return false
     seen.add(p.handle)
+    if (!p.availableForSale) return false
     const price = parseFloat(p.priceRange.minVariantPrice.amount)
-    if (!price || price <= 0) return false
-    return true
+    return price > 0
   })
+}
+
+export default async function CollectionPage({ params }: PageProps) {
+  const { handle } = await params
+  const collection = await getCollection(handle, 250)
+  if (!collection) notFound()
+
+  let products = filterProducts(collection.products.nodes)
+
+  // If Shopify collection has no products assigned, fall back to product type search
+  if (products.length === 0) {
+    const fallback = await getProducts(250, {
+      query: `product_type:${collection.title}`,
+      sortKey: 'CREATED_AT',
+      reverse: true,
+    })
+    products = filterProducts(fallback)
+  }
 
   return (
     <main className="bg-[#050505] min-h-screen">
