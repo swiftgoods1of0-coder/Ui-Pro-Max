@@ -33,7 +33,6 @@ function filterProducts(nodes: ShopifyProduct[]): ShopifyProduct[] {
   return nodes.filter((p) => {
     if (seen.has(p.handle)) return false
     seen.add(p.handle)
-    if (!p.availableForSale) return false
     const price = parseFloat(p.priceRange.minVariantPrice.amount)
     return price > 0
   })

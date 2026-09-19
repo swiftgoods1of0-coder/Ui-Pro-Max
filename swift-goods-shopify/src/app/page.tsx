@@ -85,7 +85,7 @@ export default async function Home() {
   ])
 
   const adaptedProducts = allProducts
-    .filter((p) => p.availableForSale && !isExcluded(p))
+    .filter((p) => !isExcluded(p))
     .map(adaptProduct)
     .filter((p) => parseFloat(p.price) > 0)
 
