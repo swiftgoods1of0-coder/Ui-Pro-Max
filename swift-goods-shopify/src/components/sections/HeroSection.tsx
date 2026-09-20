@@ -109,18 +109,18 @@ export default function HeroSection() {
       className="relative w-full overflow-hidden"
       style={{ height: '100vh', minHeight: '100vh', background: '#050505' }}
     >
-      {/* ── Background: Night Supra photograph ── */}
+      {/* ── Background: Fall Collection brand shot ── */}
       <div ref={bgImageRef} className="absolute inset-0 z-0" style={{ animation: 'sg-ken-burns 20s ease-in-out infinite alternate', willChange: 'transform' }}>
         <Image
-          src="/brand/sg-parking-lot-night.jpeg"
-          alt="Swift Goods — night session"
+          src="/brand/sg-fall-collection.png"
+          alt="Swift Goods — Fall Collection"
           fill
           priority
           quality={90}
           sizes="100vw"
-          className="object-cover"
+          className="object-cover object-center"
           style={{
-            filter: 'brightness(0.7) contrast(1.15) saturate(1.1)',
+            filter: 'brightness(0.85) contrast(1.05)',
           }}
         />
       </div>
@@ -278,7 +278,7 @@ export default function HeroSection() {
               perspective: '800px',
             }}
           >
-            {'COMFORT IS LUXURY.'.split('').map((char, i) => (
+            {'THE FALL COLLECTION.'.split('').map((char, i) => (
               <span
                 key={i}
                 className="hero-char"
@@ -305,7 +305,7 @@ export default function HeroSection() {
               letterSpacing: '0.04em',
             }}
           >
-            Designed for movement. Built for presence.
+            New season. New standards. Shop the Fall Collection — available now.
           </p>
 
           {/* Brand tagline */}
@@ -331,13 +331,13 @@ export default function HeroSection() {
             className="opacity-0 flex flex-col sm:flex-row items-center justify-center gap-4"
           >
             <MagneticElement strength={0.25} radius={150}>
-              <LuxuryButton variant="primary" href="/collections">
-                SHOP COLLECTION
+              <LuxuryButton variant="primary" href="/collections/fall-collection">
+                SHOP THE FALL COLLECTION
               </LuxuryButton>
             </MagneticElement>
             <MagneticElement strength={0.25} radius={150}>
-              <LuxuryButton variant="ghost" href="#shop">
-                EXPLORE THE COLLECTION
+              <LuxuryButton variant="ghost" href="/collections">
+                VIEW ALL COLLECTIONS
               </LuxuryButton>
             </MagneticElement>
           </div>
