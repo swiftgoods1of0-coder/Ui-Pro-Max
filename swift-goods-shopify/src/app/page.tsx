@@ -47,12 +47,12 @@ function adaptProduct(p: FullShopifyProduct): SectionProduct {
 export const revalidate = 60
 
 export const metadata = {
-  title: 'Swift Goods | Comfort Is Luxury.',
-  description: 'Ultra-premium luxury streetwear. Designed for movement. Built for presence. Swift Goods Clothing Brand.',
+  title: 'Swift Goods | The Fall Collection — Shop Now',
+  description: 'New season. New standards. Shop The Fall Collection from Swift Goods — ultra-premium luxury streetwear designed for movement.',
   openGraph: {
-    title: 'Swift Goods | Comfort Is Luxury.',
-    description: 'Ultra-premium luxury streetwear.',
-    images: ['/brand/sg-campaign-04.jpeg'],
+    title: 'Swift Goods | The Fall Collection',
+    description: 'New season. New standards. Shop The Fall Collection from Swift Goods.',
+    images: ['/brand/sg-fall-collection.png'],
   },
 }
 
