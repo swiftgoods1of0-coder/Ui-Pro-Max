@@ -89,7 +89,15 @@ export default async function Home() {
     .map(adaptProduct)
     .filter((p) => parseFloat(p.price) > 0)
 
-  const featured = adaptedProducts.slice(0, 8)
+  // Pin Oversized Hoodie to top of Latest Drops
+  const oversizedHoodie = adaptedProducts.find(
+    (p) => p.handle.includes('oversized-hoodie') || p.title.toLowerCase().includes('oversized hoodie')
+  )
+  const restProducts = adaptedProducts.filter(
+    (p) => !(p.handle.includes('oversized-hoodie') || p.title.toLowerCase().includes('oversized hoodie'))
+  )
+  const prioritized = oversizedHoodie ? [oversizedHoodie, ...restProducts] : adaptedProducts
+  const featured = prioritized.slice(0, 8)
 
   const lookbookCollections: LookbookCollection[] = shopifyCollections
     .filter((c) => {
