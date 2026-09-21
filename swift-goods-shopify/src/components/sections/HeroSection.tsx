@@ -271,27 +271,30 @@ export default function HeroSection() {
             className="leading-none uppercase select-none mb-8"
             style={{
               fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)',
-              fontSize: 'clamp(2.6rem, 11vw, 10rem)',
+              fontSize: 'clamp(3rem, 12vw, 10rem)',
               color: '#ffffff',
-              letterSpacing: '0.08em',
+              letterSpacing: '0.04em',
               textShadow: '0 4px 60px rgba(0,0,0,0.5), 0 0 120px rgba(0,0,0,0.3), 0 0 80px rgba(201,168,76,0.08)',
               perspective: '800px',
             }}
           >
-            {'THE FALL COLLECTION.'.split('').map((char, i) => (
-              <span
-                key={i}
-                className="hero-char"
-                style={{
-                  display: char === ' ' ? 'inline' : 'inline-block',
-                  opacity: 0,
-                  transformOrigin: 'bottom center',
-                }}
-              >
-                {char === ' ' ? ' ' : char}
+            {['THE FALL', 'COLLECTION.'].map((line, li) => (
+              <span key={li} style={{ display: 'block' }}>
+                {line.split('').map((char, ci) => (
+                  <span
+                    key={`${li}-${ci}`}
+                    className="hero-char"
+                    style={{
+                      display: char === ' ' ? 'inline' : 'inline-block',
+                      opacity: 0,
+                      transformOrigin: 'bottom center',
+                    }}
+                  >
+                    {char === ' ' ? '\u00A0' : char}
+                  </span>
+                ))}
               </span>
-            ))}
-          </h1>
+            ))}          </h1>
 
           {/* Subtitle */}
           <p
@@ -331,7 +334,7 @@ export default function HeroSection() {
             className="opacity-0 flex flex-col sm:flex-row items-center justify-center gap-4"
           >
             <MagneticElement strength={0.25} radius={150}>
-              <LuxuryButton variant="primary" href="/collections/fall-collection">
+              <LuxuryButton variant="primary" href="/collections/the-fall-collection">
                 SHOP THE FALL COLLECTION
               </LuxuryButton>
             </MagneticElement>
