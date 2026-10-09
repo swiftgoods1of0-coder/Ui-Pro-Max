@@ -26,8 +26,6 @@ from logging.handlers import RotatingFileHandler
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-_CONFIGURED = False
-
 
 def setup_logging(
     level: str = "INFO",
@@ -35,11 +33,17 @@ def setup_logging(
     console: bool = True,
     run_log_file: str = "run.log",
 ) -> logging.Logger:
-    """Configure root logging once. Safe to call multiple times."""
-    global _CONFIGURED
+    """Configure root logging. Safe to call multiple times — each call fully
+    reconfigures the logger (clearing prior handlers) rather than silently
+    no-op'ing after the first call, so a second call with a different
+    ``log_dir``/``level``/``console`` actually takes effect. This matters for
+    any programmatic use beyond a single CLI invocation — e.g. running
+    several backtests with different configs in one process/notebook.
+    """
     root = logging.getLogger("orb_bot")
-    if _CONFIGURED:
-        return root
+    for h in list(root.handlers):
+        root.removeHandler(h)
+        h.close()
 
     root.setLevel(getattr(logging, level.upper(), logging.INFO))
     fmt = logging.Formatter(
@@ -61,7 +65,6 @@ def setup_logging(
     root.addHandler(fh)
 
     root.propagate = False
-    _CONFIGURED = True
     return root
 
 

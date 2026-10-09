@@ -99,8 +99,17 @@ def main(argv=None) -> int:
     out_dir = Path(args.output) if args.output else Path(cfg.paths.output_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
 
+    # When --output relocates this run's results, its logs move with it —
+    # otherwise parameterized runs (e.g. several --output dirs for a sweep)
+    # would all write to the same shared cfg.logging.log_dir and silently
+    # overwrite each other's decision log, disconnected from the journal it's
+    # supposed to explain. Without --output, cfg.logging.log_dir is honoured
+    # as configured (so a user can still centralize logs across same-output
+    # runs if they want).
+    log_dir = (out_dir / "logs") if args.output else Path(cfg.logging.log_dir)
+
     log_level = args.log_level or cfg.logging.level
-    setup_logging(level=log_level, log_dir=cfg.logging.log_dir, console=cfg.logging.console,
+    setup_logging(level=log_level, log_dir=log_dir, console=cfg.logging.console,
                   run_log_file=cfg.logging.run_log_file)
     log = logging.getLogger("orb_bot.cli")
 
@@ -114,7 +123,7 @@ def main(argv=None) -> int:
     print(report.summary())
 
     # --- risk-managed, multi-strategy backtest ---
-    decisions_path = Path(cfg.logging.log_dir) / cfg.logging.decisions_file
+    decisions_path = log_dir / cfg.logging.decisions_file
     with DecisionLog(decisions_path) as decision_log:
         engine = Backtester(cfg, decision_log=decision_log)
         if not engine.strategies:
