@@ -88,16 +88,28 @@ def _sequence_confidence(values: List[float]) -> tuple[Bias, float, int]:
 
 @register_analyzer("swing_high")
 class SwingHighAnalyzer(Analyzer):
-    """Reads the sequence of swing highs (higher highs = bullish)."""
+    """Reads the sequence of swing highs (higher highs = bullish).
+
+    Swing detection only looks at the most recent ``window_bars`` of history,
+    not the full backtest-to-date series. Structure reads are inherently a
+    recent-history concept (a swing from months ago says nothing about current
+    structure), and bounding the window keeps the Python-loop pivot scan cheap
+    and roughly constant-time instead of growing with the length of the
+    backtest.
+    """
 
     label = "Swing Highs"
 
-    def __init__(self, left: int = 2, right: int = 2, lookback: int = 3):
+    def __init__(self, left: int = 2, right: int = 2, lookback: int = 3,
+                window_bars: int = 300):
         self.left, self.right, self.lookback = left, right, lookback
+        self.window_bars = window_bars
 
     def analyze(self, ctx: AnalysisContext) -> AnalyzerResult:
-        swings = swings_of(detect_swings(ctx.df, self.left, self.right), "high")
-        lows = swings_of(detect_swings(ctx.df, self.left, self.right), "low")
+        window = ctx.df.tail(self.window_bars)
+        all_swings = detect_swings(window, self.left, self.right)
+        swings = swings_of(all_swings, "high")
+        lows = swings_of(all_swings, "low")
         if len(swings) < 2:
             return AnalyzerResult(self.label, Bias.NEUTRAL, 0.0,
                                   "Not enough swing highs to read structure.",
@@ -124,15 +136,22 @@ class SwingHighAnalyzer(Analyzer):
 
 @register_analyzer("swing_low")
 class SwingLowAnalyzer(Analyzer):
-    """Reads the sequence of swing lows (higher lows = bullish)."""
+    """Reads the sequence of swing lows (higher lows = bullish).
+
+    See :class:`SwingHighAnalyzer` for why detection is bounded to the most
+    recent ``window_bars`` rather than the full history.
+    """
 
     label = "Swing Lows"
 
-    def __init__(self, left: int = 2, right: int = 2, lookback: int = 3):
+    def __init__(self, left: int = 2, right: int = 2, lookback: int = 3,
+                window_bars: int = 300):
         self.left, self.right, self.lookback = left, right, lookback
+        self.window_bars = window_bars
 
     def analyze(self, ctx: AnalysisContext) -> AnalyzerResult:
-        all_swings = detect_swings(ctx.df, self.left, self.right)
+        window = ctx.df.tail(self.window_bars)
+        all_swings = detect_swings(window, self.left, self.right)
         lows = swings_of(all_swings, "low")
         highs = swings_of(all_swings, "high")
         if len(lows) < 2:

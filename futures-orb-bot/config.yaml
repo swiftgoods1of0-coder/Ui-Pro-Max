@@ -105,6 +105,13 @@ strategies:
   - name: "vwap_reversion"
     id: "vwap_mr"
     enabled: true
+    # The confidence engine's analyzers are trend-confirmation reads (e.g.
+    # "price below VWAP" scores bearish). This strategy deliberately buys into
+    # that exact condition expecting reversion, so applying the same filter
+    # would reject its whole premise, not just its weak trades. Opt out here;
+    # trend/breakout strategies should generally leave this unset (inherits
+    # confidence.enabled above).
+    use_confidence_filter: false
     params:
       entry_stretch_ticks: 10
       warmup_bars: 15

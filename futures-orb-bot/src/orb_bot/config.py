@@ -165,6 +165,14 @@ class StrategyConfig:
     enabled: bool = True
     id: Optional[str] = None                 # unique label (defaults to name)
     params: Dict[str, Any] = field(default_factory=dict)
+    # Whether the shared Trade Confidence Engine filter gates this strategy's
+    # signals. None = inherit ``confidence.enabled``. The engine's analyzers
+    # (VWAP side, structure, POC, ...) are trend-confirmation reads: "price
+    # below VWAP" scores bearish. A counter-trend / mean-reversion strategy's
+    # best setups are exactly the ones that look "wrong" to those reads, so
+    # forcing the same filter onto it can reject its entire edge rather than
+    # just its weak trades. Set this to false for such strategies.
+    use_confidence_filter: Optional[bool] = None
 
     @property
     def label(self) -> str:

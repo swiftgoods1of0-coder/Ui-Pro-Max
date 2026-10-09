@@ -58,19 +58,46 @@ def build_strategies(
 
     ``filters_by_id`` optionally attaches signal filters to specific strategy
     ids (e.g. plug an ML filter onto just one strategy).
+
+    When a strategy's effective confidence setting is enabled — its own
+    ``use_confidence_filter``, or ``config.confidence.enabled`` when that field
+    is left unset — a shared :class:`~orb_bot.analysis.ConfidenceFilter` is
+    appended to its filter chain, so the Trade Confidence Engine's
+    ``min_trade_confidence`` / ``min_directional_edge`` actually gate trades
+    (not just advisory scoring in the learning pipeline). One engine instance
+    is shared across strategies that use it — analyzers are stateless per
+    call, so this is safe and avoids rebuilding the full analyzer set
+    repeatedly. Strategies that opt out (``use_confidence_filter: false``) are
+    simply never given the filter — typically counter-trend strategies, whose
+    best setups look "wrong" to the engine's trend-confirmation analyzers.
     """
     filters_by_id = filters_by_id or {}
+
+    confidence_filter = None
+    if config.confidence.enabled:
+        from ..analysis import ConfidenceFilter  # lazy: avoid import-order coupling
+
+        confidence_filter = ConfidenceFilter.from_config(config)
+
     strategies: List[StrategyBase] = []
     for sc in config.effective_strategies():
         cls = get_strategy_class(sc.name)
+        filters = list(filters_by_id.get(sc.label) or [])
+        wants_confidence = (
+            sc.use_confidence_filter if sc.use_confidence_filter is not None
+            else config.confidence.enabled
+        )
+        if confidence_filter is not None and wants_confidence:
+            filters.append(confidence_filter)
         strat = cls(
             config,
             params=sc.params,
             strategy_id=sc.label,
-            filters=filters_by_id.get(sc.label),
+            filters=filters,
         )
         strategies.append(strat)
-        logger.info("Loaded strategy '%s' (%s).", sc.label, sc.name)
+        tag = " + confidence filter" if (confidence_filter is not None and wants_confidence) else ""
+        logger.info("Loaded strategy '%s' (%s)%s.", sc.label, sc.name, tag)
     if not strategies:
         logger.warning("No enabled strategies configured.")
     return strategies

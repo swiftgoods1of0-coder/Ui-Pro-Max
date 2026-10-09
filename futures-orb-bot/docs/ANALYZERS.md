@@ -143,6 +143,13 @@ each candidate signal, attaches the full explainable score to `signal.meta`
 (so it flows into the journal and decision log), and vetoes the trade unless the
 engine agrees with the direction and quality clears `min_trade_confidence`.
 
+**It is wired in automatically.** `build_strategies()` attaches a shared
+`ConfidenceFilter` to every strategy whose effective confidence setting is
+enabled — each strategy's own `use_confidence_filter`, or the global
+`confidence.enabled` when that's left unset. You don't need to attach it by
+hand unless you're constructing a strategy directly (bypassing the registry),
+as in the snippet below.
+
 ```python
 from orb_bot.analysis import ConfidenceFilter
 from orb_bot.strategy import ORBStrategy
@@ -152,6 +159,37 @@ strat = ORBStrategy(cfg, filters=[ConfidenceFilter.from_config(cfg)])
 
 Configure it under `confidence:` in `config.yaml` (`min_trade_confidence`,
 `min_directional_edge`, `conflict_threshold`, per-analyzer `weights`).
+
+**Opt out per strategy — this matters for counter-trend strategies.** The
+engine's analyzers are trend-confirmation reads: "price below VWAP" scores
+bearish, a lower swing low scores bearish, and so on. That's the right read for
+a breakout strategy, but a mean-reversion strategy's best setups are exactly
+the ones that look "wrong" by those reads — it buys *because* price is
+stretched below VWAP, expecting a bounce. Force the same filter onto it and it
+can reject the strategy's entire premise, not just its weak trades (empirically:
+100% of a mean-reversion strategy's candidates vetoed in one test run — not
+useful quality control, just a structural lockout).
+
+Set `use_confidence_filter: false` on that strategy's entry in `config.yaml`:
+
+```yaml
+strategies:
+  - name: "orb"
+    id: "orb_breakout"
+    enabled: true
+    # use_confidence_filter unset -> inherits confidence.enabled (trend-
+    # confirmation reads are appropriate for a breakout strategy)
+
+  - name: "vwap_reversion"
+    id: "vwap_mr"
+    enabled: true
+    use_confidence_filter: false   # counter-trend: opt out
+```
+
+A strategy that opts out still gets every other benefit of the platform
+(risk management, the learning system, the research report) — the learning
+system in particular will independently discover if it's a loser, with proper
+statistical evidence, rather than having it silently erased upstream.
 
 ## Adding an analyzer
 

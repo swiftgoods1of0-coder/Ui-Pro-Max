@@ -138,3 +138,58 @@ def test_analyzer_isolation_on_error():
                           price=float("nan"))
     results = analyze(ctx, ORDER_FLOW_KEYS)
     assert len(results) == len(ORDER_FLOW_KEYS)  # all returned, none raised
+
+
+def test_swing_detection_is_bounded_to_recent_window_not_full_history():
+    """Regression test: swing_high/swing_low used to scan the *entire*
+    backtest-to-date history on every call (an unvectorized O(n) Python loop),
+    getting slower every session as the backtest progressed. They must only
+    look at a bounded recent window, so the read — and the cost — doesn't
+    depend on how much history precedes it."""
+    from orb_bot.analysis.swings import SwingHighAnalyzer, SwingLowAnalyzer
+
+    recent = _uptrend(300)
+    # Prepend a long, differently-shaped history before the recent window.
+    old_idx = pd.date_range(recent.index[0] - pd.Timedelta(days=5), periods=2000,
+                            freq="1min", tz="America/New_York")
+    old = pd.DataFrame({"open": 50.0, "high": 50.5, "low": 49.5, "close": 50.0,
+                        "volume": 500.0}, index=old_idx)
+    long_history = pd.concat([old, recent])
+
+    analyzer_high = SwingHighAnalyzer(window_bars=300)
+    analyzer_low = SwingLowAnalyzer(window_bars=300)
+
+    ctx_long = AnalysisContext.from_history(long_history)
+    ctx_tail = AnalysisContext.from_history(recent)
+
+    result_long = analyzer_high.analyze(ctx_long)
+    result_tail = analyzer_high.analyze(ctx_tail)
+    assert result_long.raw.get("n_swings") == result_tail.raw.get("n_swings")
+    assert result_long.confidence == result_tail.confidence
+    assert result_long.direction == result_tail.direction
+
+    result_long_lo = analyzer_low.analyze(ctx_long)
+    result_tail_lo = analyzer_low.analyze(ctx_tail)
+    assert result_long_lo.raw.get("n_swings") == result_tail_lo.raw.get("n_swings")
+
+
+def test_swing_high_analyzer_does_not_recompute_detection_twice():
+    """Regression test: SwingHighAnalyzer used to call detect_swings() twice
+    per invocation (once filtering for highs, once for lows) instead of once,
+    doubling its cost for no reason."""
+    from orb_bot.analysis import swings as swings_mod
+
+    calls = {"n": 0}
+    original = swings_mod.detect_swings
+
+    def counting_detect_swings(*args, **kwargs):
+        calls["n"] += 1
+        return original(*args, **kwargs)
+
+    swings_mod.detect_swings = counting_detect_swings
+    try:
+        ctx = AnalysisContext.from_history(_uptrend(80))
+        swings_mod.SwingHighAnalyzer().analyze(ctx)
+    finally:
+        swings_mod.detect_swings = original
+    assert calls["n"] == 1

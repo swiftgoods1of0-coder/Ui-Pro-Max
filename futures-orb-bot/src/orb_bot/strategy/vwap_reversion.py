@@ -53,6 +53,7 @@ class VWAPReversionStrategy(StrategyBase):
         stop_buf = p["stop_buf_ticks"] * tick
 
         signals: List[Signal] = []
+        attempts = 0
         for i, (ts, bar) in enumerate(window.iterrows()):
             if i < p["warmup_bars"]:
                 continue
@@ -84,6 +85,7 @@ class VWAPReversionStrategy(StrategyBase):
             )
             if not sig.is_valid():
                 continue
+            attempts += 1
             if context.decision_log is not None:
                 context.decision_log.signal(
                     self.id, ts, reason="vwap_reversion", side=side.value,
@@ -91,7 +93,10 @@ class VWAPReversionStrategy(StrategyBase):
                 )
             if self.apply_filters(sig, context):
                 signals.append(sig)
-            if len(signals) >= p["max_signals"]:
+            # Cap on attempts tried today, not just accepted ones — otherwise a
+            # strict filter that rejects every candidate defeats the cap and the
+            # strategy scans the entire session on every bar.
+            if attempts >= p["max_signals"]:
                 break
         return signals
 

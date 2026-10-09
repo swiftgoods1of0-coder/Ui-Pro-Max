@@ -72,15 +72,23 @@ class ORBStrategy(StrategyBase):
         sweep_low_extreme = orl
         swept_above = False
         sweep_high_extreme = orh
+        # Breakout is an edge-triggered event, not a continuous state: once
+        # price has confirmed a breakout on one side, don't re-fire on every
+        # subsequent bar it stays extended (that's the same trade opportunity,
+        # not a new one — and it's wasted work for any confirmation filter).
+        broke_out_long = False
+        broke_out_short = False
 
         for ts, bar in entry_window.iterrows():
             high, low, close = bar["high"], bar["low"], bar["close"]
 
             if "breakout" in p["modes"]:
-                if close >= orh + breakout_buf:
+                if not broke_out_long and close >= orh + breakout_buf:
                     signals.append(self._plan(ts, Side.LONG, close, orh, orl, "breakout", orh, p, context))
-                elif close <= orl - breakout_buf:
+                    broke_out_long = True
+                elif not broke_out_short and close <= orl - breakout_buf:
                     signals.append(self._plan(ts, Side.SHORT, close, orh, orl, "breakout", orl, p, context))
+                    broke_out_short = True
 
             if "sweep_reclaim" in p["modes"]:
                 if low <= orl - sweep_dist:
