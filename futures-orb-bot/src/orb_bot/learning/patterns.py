@@ -171,7 +171,12 @@ class PatternMiner:
                 baseline_win_rate=base_wins / base_n,
                 lift=wr - (rest_w / rest_n),
                 p_value=test.p_value, ci=wilson_interval(gw, gn),
-                support=confidence_label(gn, test.significant, self.min_samples),
+                # Both sides of the comparison need an adequate sample, not just
+                # this group — a 25-trade group tested against a 3-trade "rest"
+                # isn't a reliable z-test regardless of how large the group
+                # itself is. Matches the min(tn, fn) pattern _by_flags already
+                # uses for exactly the same reason.
+                support=confidence_label(min(gn, rest_n), test.significant, self.min_samples),
                 helps=wr >= (rest_w / rest_n),
             ))
         return findings

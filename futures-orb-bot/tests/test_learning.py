@@ -118,6 +118,35 @@ def test_pattern_miner_finds_supported_edge():
     assert any("VWAP" in f.value for f in result.win_reasons)
 
 
+def test_category_finding_requires_both_groups_adequately_sized():
+    """Regression test: a category finding (best/worst setup, hour, condition)
+    used to check only the *group's own* sample size against min_samples, not
+    the comparison ("rest") group's — so a 25-trade group compared against a
+    5-trade "rest" could be labelled statistically supported even though a
+    two-proportion z-test against a 5-sample group isn't reliable. Must now
+    require both sides to meet min_samples, matching the sibling _by_flags
+    comparison which already did this correctly."""
+    rows = []
+    # 25 trades at setup A, 90% win rate -> large, lopsided group.
+    for i in range(25):
+        rows.append({"result": "win" if i < 23 else "loss", "realized_r": 1.0,
+                     "net_pnl": 100.0, "setup": "A", "hour": 9})
+    # Only 5 trades at setup B, 0% win rate -> comparison group too small.
+    for i in range(5):
+        rows.append({"result": "loss", "realized_r": -1.0,
+                     "net_pnl": -100.0, "setup": "B", "hour": 9})
+    df = pd.DataFrame(rows)
+
+    result = PatternMiner(min_samples=20, min_lift=0.08).run(df)
+    setup_a = next(f for f in result.best_setups + result.worst_setups if f.value == "A")
+    assert setup_a.n == 25  # the group itself clears min_samples...
+    assert setup_a.support != "statistically supported", (
+        "a 25-trade group compared against a 5-trade 'rest' must not be "
+        "labelled statistically supported — the comparison group is too small"
+    )
+    assert not any("setup=A" in rec for rec in result.recommendations)
+
+
 def test_pattern_miner_gates_small_samples():
     df = _synthetic_features(6)   # only 6 per group -> under min_samples
     result = PatternMiner(min_samples=20).run(df)
