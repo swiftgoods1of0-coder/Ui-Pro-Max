@@ -95,7 +95,29 @@ class Backtester:
         elif isinstance(strategies, StrategyBase):
             strategies = [strategies]
         self.strategies: List[StrategyBase] = list(strategies)
+        self._check_unique_ids(self.strategies)
         self.decision_log = decision_log
+
+    @staticmethod
+    def _check_unique_ids(strategies: List[StrategyBase]) -> None:
+        """Guard against a silent-data-loss footgun: the engine keys its
+        per-strategy accounts and results by ``strategy.id`` in a plain dict,
+        so two strategies sharing an id would collapse into one — the second
+        one's results simply overwrite and discard the first's, with no error.
+        This is easy to hit by accident (an unset ``id`` in config defaults to
+        the strategy ``name``, so two unlabeled entries of the same strategy
+        type collide)."""
+        seen: Dict[str, int] = {}
+        for s in strategies:
+            seen[s.id] = seen.get(s.id, 0) + 1
+        dupes = [sid for sid, n in seen.items() if n > 1]
+        if dupes:
+            raise ValueError(
+                f"Duplicate strategy id(s) {dupes}: each strategy must have a "
+                f"unique 'id' in config.yaml (or strategy_id when constructing "
+                f"directly) — otherwise one strategy's results silently "
+                f"overwrite another's."
+            )
 
     # -- public API ---------------------------------------------------------
 

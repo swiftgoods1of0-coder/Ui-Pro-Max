@@ -185,3 +185,21 @@ def test_vwap_reversion_caps_attempts_even_when_every_signal_is_rejected():
     assert reject_all.calls <= max_signals, (
         f"expected at most {max_signals} candidates evaluated, got {reject_all.calls}"
     )
+
+
+def test_duplicate_strategy_ids_raise_instead_of_silently_dropping_results():
+    """Regression test: Backtester keyed per-strategy accounts/results by
+    strategy.id in a plain dict, so two strategies sharing an id silently
+    collapsed into one — the second's results overwrote the first's with no
+    error. An unset `id` defaults to `name`, so two unlabeled entries of the
+    same strategy type used to collide silently; now it must raise."""
+    import pytest
+
+    cfg = Config.from_dict({
+        "strategies": [
+            {"name": "orb", "enabled": True},   # id defaults to "orb"
+            {"name": "orb", "enabled": True},   # id also defaults to "orb" -> collision
+        ],
+    })
+    with pytest.raises(ValueError, match="[Dd]uplicate"):
+        Backtester(cfg)

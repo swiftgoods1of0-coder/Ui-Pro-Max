@@ -76,3 +76,32 @@ def test_max_contracts_cap():
                max_trades_per_day=None, max_consecutive_losses=None)
     d = mgr.evaluate(1.0, 50.0)
     assert d.contracts == 3  # capped
+
+
+def test_min_contracts_floor_applies_in_fractional_mode():
+    """Regression test: min_contracts used to only be enforced when
+    allow_fractional_contracts=False, so a fractional-sizing account could
+    size a trade below the configured floor with no warning."""
+    mgr = _mgr(starting_equity_usd=10_000, risk_model="fixed_fractional",
+               risk_per_trade_pct=0.1, allow_fractional_contracts=True,
+               min_contracts=1, max_trades_per_day=None, max_consecutive_losses=None)
+    # 0.1% of 10k = $10 risk; risk/contract = 2 * $50 = $100 -> raw 0.1 contracts,
+    # which must still be floored up to min_contracts=1.
+    d = mgr.evaluate(risk_points=2.0, point_value=50.0)
+    assert d.allowed
+    assert d.contracts == 1.0
+
+
+def test_max_trades_per_day_zero_means_no_trades_not_unlimited():
+    """Regression test: `cfg.max_trades_per_day and ...` treated 0 and None
+    identically (both falsy in Python), silently letting an explicit "zero
+    trades allowed" setting behave as unlimited."""
+    mgr = _mgr(max_trades_per_day=0, max_consecutive_losses=None)
+    d = mgr.evaluate(2.0, 50.0)
+    assert not d.allowed and d.reason == "max_trades_per_day"
+
+
+def test_max_consecutive_losses_zero_means_no_trades_not_unlimited():
+    mgr = _mgr(max_consecutive_losses=0, max_trades_per_day=None)
+    d = mgr.evaluate(2.0, 50.0)
+    assert not d.allowed and d.reason == "max_consecutive_losses"

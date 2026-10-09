@@ -74,11 +74,16 @@ class RiskManager:
         cfg = self.cfg
 
         # --- guardrails (checked before sizing) ---
-        if cfg.max_trades_per_day and self.state.trades_today >= cfg.max_trades_per_day:
+        # `is not None` (not truthiness): 0 must mean "zero trades allowed",
+        # distinct from None meaning "no limit" — both are falsy in Python, so
+        # a bare truthiness check would silently treat an explicit 0 as
+        # unlimited.
+        if (cfg.max_trades_per_day is not None
+                and self.state.trades_today >= cfg.max_trades_per_day):
             return RiskDecision(False, "max_trades_per_day")
 
         if (
-            cfg.max_consecutive_losses
+            cfg.max_consecutive_losses is not None
             and self.state.consecutive_losses >= cfg.max_consecutive_losses
         ):
             return RiskDecision(False, "max_consecutive_losses")
@@ -95,7 +100,11 @@ class RiskManager:
 
         raw = risk_dollars / risk_per_contract
         contracts = raw if cfg.allow_fractional_contracts else float(floor(raw))
-        if not cfg.allow_fractional_contracts and contracts < cfg.min_contracts:
+        # min_contracts is a size floor regardless of sizing mode: fractional
+        # sizing can legitimately compute e.g. 0.3 contracts, and the floor
+        # should still apply rather than silently permitting a smaller size
+        # than configured.
+        if contracts < cfg.min_contracts:
             contracts = float(cfg.min_contracts)
         if cfg.max_contracts is not None:
             contracts = min(contracts, float(cfg.max_contracts))
