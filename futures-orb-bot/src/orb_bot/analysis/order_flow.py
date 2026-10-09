@@ -137,7 +137,12 @@ class AbsorptionAnalyzer(Analyzer):
                                   "Zero-range bar.", timeframe=ctx.timeframe)
         body = abs(float(last["close"] - last["open"]))
         rvol = relative_volume(ctx.df)
-        clv = float(close_location_value(ctx.df).iloc[-1])   # aggressor side
+        # close_location_value is purely elementwise (no rolling/cumulative
+        # dependency), so computing it on just the last bar gives the exact
+        # same value as computing it over the full history and taking the
+        # last entry — but without the wasted O(n) pass over unbounded
+        # backtest-to-date history on every call.
+        clv = float(close_location_value(ctx.df.tail(1)).iloc[-1])   # aggressor side
         body_frac = body / rng
 
         absorbing = rvol >= self.rvol_threshold and body_frac <= self.body_ratio

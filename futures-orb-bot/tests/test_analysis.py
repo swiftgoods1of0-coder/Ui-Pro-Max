@@ -193,3 +193,28 @@ def test_swing_high_analyzer_does_not_recompute_detection_twice():
     finally:
         swings_mod.detect_swings = original
     assert calls["n"] == 1
+
+
+def test_atr_and_vwap_bounded_to_recent_window_not_full_history():
+    """Regression test: ATRAnalyzer/VWAPAnalyzer used to compute ATR's EWM
+    over the *entire* backtest-to-date history on every call. Vectorized, so
+    not as catastrophic as the swing-detection bug, but the same anti-pattern
+    (cost grows with backtest length for no accuracy benefit — a 14-period EWM
+    has long since converged within a few hundred bars). Must be bounded, and
+    the bounded read must match what you'd get analysing the tail alone."""
+    from orb_bot.analysis.indicators_flow import ATRAnalyzer, VWAPAnalyzer
+
+    recent = _uptrend(300)
+    old_idx = pd.date_range(recent.index[0] - pd.Timedelta(days=5), periods=3000,
+                            freq="1min", tz="America/New_York")
+    old = pd.DataFrame({"open": 50.0, "high": 50.5, "low": 49.5, "close": 50.0,
+                        "volume": 500.0}, index=old_idx)
+    long_history = pd.concat([old, recent])
+
+    atr_analyzer = ATRAnalyzer(window_bars=300)
+    ctx_long = AnalysisContext.from_history(long_history)
+    ctx_tail = AnalysisContext.from_history(recent)
+    r_long = atr_analyzer.analyze(ctx_long)
+    r_tail = atr_analyzer.analyze(ctx_tail)
+    assert r_long.raw["atr"] == r_tail.raw["atr"]
+    assert r_long.raw["ratio"] == r_tail.raw["ratio"]

@@ -17,6 +17,12 @@ from .common import atr, level_bias, relative_volume, session_vwap
 class VWAPAnalyzer(Analyzer):
     label = "VWAP"
 
+    def __init__(self, atr_window_bars: int = 300):
+        # ATR here is only used to normalise "distance from VWAP", so it only
+        # needs a bounded recent window — see ATRAnalyzer for why this matters
+        # (unbounded history makes the cost grow with backtest length).
+        self.atr_window_bars = atr_window_bars
+
     def analyze(self, ctx: AnalysisContext) -> AnalyzerResult:
         src = ctx.session if ctx.session is not None and len(ctx.session) else ctx.df
         if len(src) < 2:
@@ -25,7 +31,8 @@ class VWAPAnalyzer(Analyzer):
         vwap = session_vwap(src)
         vw = float(vwap.iloc[-1])
         # Distance normalised by ATR so "far from VWAP" adapts to volatility.
-        a = float(atr(ctx.df, 14).iloc[-1]) or (src["high"].iloc[-1] - src["low"].iloc[-1])
+        atr_window = ctx.df.tail(self.atr_window_bars)
+        a = float(atr(atr_window, 14).iloc[-1]) or (src["high"].iloc[-1] - src["low"].iloc[-1])
         width = a * 3 if a else abs(ctx.price - vw) or 1.0
         bias, conf = level_bias(ctx.price, vw, width)
         side = "above" if ctx.price >= vw else "below"
@@ -39,18 +46,27 @@ class VWAPAnalyzer(Analyzer):
 @register_analyzer("atr")
 class ATRAnalyzer(Analyzer):
     """Volatility regime. ATR is not directional, so direction is NEUTRAL;
-    confidence reflects how *expanded* volatility is versus its own baseline."""
+    confidence reflects how *expanded* volatility is versus its own baseline.
+
+    Computed over a bounded recent window (``window_bars``), not the full
+    backtest-to-date history: ATR's EWM is a vectorized pandas op (not the
+    unvectorized Python loop that made swing detection a real bottleneck), but
+    it's still O(n) per call, so its cost would otherwise grow throughout a
+    long backtest for no accuracy benefit — a 14-period EWM has long since
+    converged well within a few hundred bars.
+    """
 
     label = "ATR"
 
-    def __init__(self, period: int = 14, baseline: int = 50):
-        self.period, self.baseline = period, baseline
+    def __init__(self, period: int = 14, baseline: int = 50, window_bars: int = 300):
+        self.period, self.baseline, self.window_bars = period, baseline, window_bars
 
     def analyze(self, ctx: AnalysisContext) -> AnalyzerResult:
         if len(ctx.df) < self.period + 2:
             return AnalyzerResult(self.label, Bias.NEUTRAL, 0.0,
                                   "Not enough data for ATR.", timeframe=ctx.timeframe)
-        a = atr(ctx.df, self.period)
+        window = ctx.df.tail(self.window_bars)
+        a = atr(window, self.period)
         cur = float(a.iloc[-1])
         base = float(a.tail(self.baseline).mean())
         ratio = cur / base if base else 1.0
