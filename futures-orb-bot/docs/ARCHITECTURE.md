@@ -63,15 +63,36 @@ src/orb_bot/
 │   ├── metrics.py       Win rate, PF, expectancy, Sharpe/Sortino, drawdown, R
 │   └── distributions.py Monthly / yearly tables, per-strategy breakdown
 │
+├── analysis/            ORDER-FLOW / MARKET-STRUCTURE ANALYZERS
+│   ├── base.py          AnalyzerResult contract, AnalysisContext, registry
+│   ├── common.py        Shared math (ATR, VWAP, close-location-value proxy)
+│   ├── swings.py        Swing highs/lows (market structure)
+│   ├── volume_profile.py POC / VAH / VAL / HVN / LVN analyzers
+│   ├── indicators_flow.py VWAP / ATR / Relative Volume analyzers
+│   ├── order_flow.py    Delta / CVD / imbalance / absorption analyzers
+│   ├── engine.py        ConfidenceEngine: combines analyzers into one
+│   │                    0-100 trade-quality score with reasons/warnings
+│   └── filter.py        ConfidenceFilter: gates strategy signals on that
+│                        score (wired in by default — see docs/ANALYZERS.md)
+│
+├── learning/             COMPLETED-TRADE LEARNING SYSTEM
+│   ├── features.py      Per-trade market-context snapshot at entry
+│   ├── store.py         TradeFeatureStore (CSV/Parquet dataset)
+│   ├── stats.py         Two-proportion z-test + Wilson intervals
+│   ├── patterns.py      PatternMiner: winners-vs-losers, stats-gated
+│   └── report.py        Markdown research report
+│
 ├── reporting/           OUTPUTS
 │   ├── journal.py       Trade-journal + period-table CSV export
 │   ├── charts.py        Matplotlib chart builders (base64 PNG)
 │   ├── webdashboard.py  Self-contained HTML desktop dashboard
-│   └── dashboard.py     Six-panel PNG summary (legacy/quick view)
+│   ├── dashboard.py     Six-panel PNG summary (legacy/quick view)
+│   └── research_report.py  HTML/PDF/CSV/Markdown export of metrics +
+│                        learning findings (see docs/LEARNING.md)
 │
-├── extensions/          FUTURE HOOKS (delta, footprint, ML signal filters)
-├── utils/               Time parsing, session slicing
-└── cli.py               Orchestration entry point (orb-backtest)
+├── extensions/          FUTURE HOOKS (machine-learning signal filter)
+└── utils/               Time parsing, session slicing
+cli.py                   Orchestration entry point (orb-backtest)
 ```
 
 ---
@@ -96,6 +117,10 @@ src/orb_bot/
         │     build DayContext (session bars + POC)       │
         │     for each STRATEGY:                          │
         │        signals = strategy.generate(context)     │
+        │          (each candidate runs through that      │
+        │           strategy's filters — by default        │
+        │           including ConfidenceFilter, unless     │
+        │           use_confidence_filter: false)          │
         │        for each signal (1 position at a time):  │
         │            RiskManager.evaluate() ── veto? ─────┼─▶ DecisionLog
         │            simulate fill + stop/target exit     │
@@ -125,7 +150,19 @@ src/orb_bot/
 - **Independent accounts.** Each strategy trades its own account seeded at
   `starting_equity`, so strategies are directly comparable. The dashboard also
   shows a combined portfolio equity curve (a single shared account funding all
-  strategies, evolving by each trade's P&L in exit-time order).
+  strategies, evolving by each trade's P&L in exit-time order). **Caveat:**
+  because each strategy sizes its own positions as if it alone had the full
+  `starting_equity` (they don't share a capital pool during the run), the
+  combined curve effectively sums two fully-capitalized accounts rather than
+  modelling one account split between them — treat it as "these strategies
+  stacked" P&L, not a capital-constrained portfolio simulation.
+- **Confidence-gated by default.** Every strategy's candidate signals run
+  through that strategy's filters as part of `generate()` — by default
+  including the shared `ConfidenceFilter`, unless `confidence.enabled: false`
+  globally or `use_confidence_filter: false` on that strategy. See
+  `docs/ANALYZERS.md` for the analyzer layer and the Trade Confidence Engine,
+  and `docs/LEARNING.md` for the completed-trade learning system and research
+  report that run after the backtest.
 
 ---
 
@@ -135,7 +172,8 @@ src/orb_bot/
 |-----------------------------------|----------------------------------------------------------------|
 | Add a strategy                    | Subclass `StrategyBase`, `@register("name")`, add to config     |
 | Add a confirmation rule           | Implement `SignalFilter.accept()`, attach via `filters=[...]`   |
-| Use order-flow (delta/footprint)  | Fill in `extensions/delta.py` / `footprint.py` + feed the data  |
+| Add an order-flow analyzer        | Subclass `Analyzer` in `analysis/`, `@register_analyzer("key")` (see `docs/ANALYZERS.md`) |
+| Tune the Trade Confidence Engine  | Edit the `confidence` block in `config.yaml` (thresholds, per-analyzer weights, per-strategy `use_confidence_filter` opt-out) |
 | Add an ML gate                    | Fill in `extensions/ml_filter.py` (`features_from` is provided) |
 | Change risk / sizing              | Edit the `risk` block in `config.yaml`                          |
 | Add a metric                      | Extend `analytics/metrics.py` or `distributions.py`             |
