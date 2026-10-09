@@ -46,9 +46,25 @@ class MarketData:
 
         This is the look-ahead-safe way for a strategy to read a higher
         timeframe: it never returns a bar that hasn't finished forming yet.
+
+        Bars are labelled by their **start** time (see :func:`resample_ohlcv`,
+        ``label="left"``), so a bar is only closed once a full period has
+        elapsed from its start — e.g. a 15-minute bar starting at 09:30 isn't
+        closed until 09:45, even though its timestamp (09:30) is `<= ts` for
+        any ``ts`` in between. The one exception is the primary timeframe
+        itself: by this codebase's convention (see ``AnalysisContext``, the
+        backtest engine), the bar *at* ``ts`` is treated as fully known once
+        reached — that's the granularity the engine walks bar-by-bar on, and
+        every other look-ahead-safety check in the platform relies on that
+        same convention.
         """
         frame = self.timeframe(tf)
-        closed = frame[frame.index <= ts]
+        if tf == self.primary_timeframe:
+            closed = frame[frame.index <= ts]
+        else:
+            offset = pd.tseries.frequencies.to_offset(tf)
+            bar_end = frame.index + offset
+            closed = frame[bar_end <= ts]
         if closed.empty:
             return None
         return closed.iloc[-1]

@@ -12,8 +12,12 @@ Design goals:
 * **Correct time** — timestamps are localized from the CSV's timezone and
   converted to the session timezone, so "8:00 AM" always means New York
   wall-clock regardless of how the file was stored.
-* **Deterministic output** — sorted, de-duplicated, and validated, so every
-  downstream module can assume a well-formed frame.
+* **Deterministic output** — numeric, sorted, and de-duplicated, so every
+  downstream module gets a structurally well-formed frame. OHLC-consistency
+  checking (high >= low, etc.) is **not** done here — that's
+  :mod:`orb_bot.data.validation`'s job, which reports what it finds instead of
+  silently dropping it. Use :func:`orb_bot.data.feed.load_market_data` (or call
+  ``validate_ohlcv``/``clean_ohlcv`` yourself) to get OHLC-validated data.
 """
 
 from __future__ import annotations
@@ -169,17 +173,18 @@ def _parse_timestamp(
 
 
 def _coerce_and_validate(df: pd.DataFrame) -> pd.DataFrame:
+    """Numeric coercion, sort, and de-duplication only.
+
+    Deliberately does **not** drop OHLC-inconsistent rows (e.g. high < low) —
+    that's the validation layer's job (:func:`orb_bot.data.validation.clean_ohlcv`),
+    which reports what it removes. Doing it silently here, before validation
+    ever sees the raw frame, would defeat the "nothing is silently swallowed"
+    guarantee that module promises.
+    """
     df = df[OHLCV_COLUMNS].apply(pd.to_numeric, errors="coerce")
     df = df.dropna(subset=["open", "high", "low", "close"])
     df["volume"] = df["volume"].fillna(0.0)
 
     df = df.sort_index()
     df = df[~df.index.duplicated(keep="last")]
-
-    # Basic sanity: high must be the bar's max, low the min.
-    bad = (df["high"] < df[["open", "close"]].max(axis=1)) | (
-        df["low"] > df[["open", "close"]].min(axis=1)
-    )
-    if bad.any():
-        df = df[~bad]
     return df

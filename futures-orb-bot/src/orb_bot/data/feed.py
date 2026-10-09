@@ -7,9 +7,9 @@ using the on-disk cache when possible.
 Pipeline:
 
     raw CSV(s)
-      -> load & timezone-normalise          (loader)
-      -> validate + (optionally) clean       (validation)
-      -> cache the clean primary frame       (store)
+      -> load & timezone-normalise          (loader; cached on disk)
+      -> validate + (optionally) clean       (validation; always re-run, even
+                                               on a cache hit — see below)
       -> build every configured timeframe    (timeframes)
 """
 
@@ -60,30 +60,29 @@ def load_market_data(
         resample=config.data.resample,
     )
 
-    def _build_primary() -> pd.DataFrame:
+    def _load_raw() -> pd.DataFrame:
         if target.is_dir():
             logger.info("Loading all CSVs in %s", target)
-            raw = load_directory(target, **load_kwargs)
-        else:
-            logger.info("Loading data file %s", target)
-            raw = load_ohlcv(target, **load_kwargs)
+            return load_directory(target, **load_kwargs)
+        logger.info("Loading data file %s", target)
+        return load_ohlcv(target, **load_kwargs)
 
-        report = validate_ohlcv(raw, expected_freq=primary)
-        if not report.ok and auto_clean:
-            logger.warning("Cleaning data: %d error(s) found.", report.n_errors)
-            raw = clean_ohlcv(raw)
-        _build_primary.report = report  # type: ignore[attr-defined]
-        return raw
-
-    # Storage cache (keyed on the freshness of the newest source file).
+    # Storage cache (keyed on the freshness of the newest source file) only
+    # covers the expensive CSV parse + timezone work. Validation always runs
+    # against whatever frame we end up with — cached or freshly parsed — so a
+    # cache hit can never silently report a stale/fabricated "no issues"
+    # result instead of the data's real state.
     if config.storage.enabled:
         store = DataStore(config.storage.cache_dir, config.storage.format)
         freshness_src = _newest_source(target)
-        primary_df = store.load_or_build(symbol, primary, freshness_src, _build_primary)
-        report = getattr(_build_primary, "report", ValidationReport(rows=len(primary_df)))
+        primary_df = store.load_or_build(symbol, primary, freshness_src, _load_raw)
     else:
-        primary_df = _build_primary()
-        report = getattr(_build_primary, "report", ValidationReport(rows=len(primary_df)))
+        primary_df = _load_raw()
+
+    report = validate_ohlcv(primary_df, expected_freq=primary)
+    if not report.ok and auto_clean:
+        logger.warning("Cleaning data: %d error(s) found.", report.n_errors)
+        primary_df = clean_ohlcv(primary_df)
 
     market = build_market_data(
         primary_df,

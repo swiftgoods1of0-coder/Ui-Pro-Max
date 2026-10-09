@@ -70,3 +70,23 @@ def test_dedup_and_sort(tmp_path):
     assert len(df) == 2
     assert df.index.is_monotonic_increasing
     assert df["close"].iloc[-1] == 102  # last duplicate kept
+
+
+def test_loader_does_not_silently_drop_ohlc_inconsistent_rows(tmp_path):
+    """Regression test: the loader used to silently filter out rows where
+    high < low (etc.) with no logging or reporting, before
+    orb_bot.data.validation ever got a chance to see — let alone report —
+    them. OHLC-consistency enforcement belongs solely to the validation layer,
+    which is explicit and auditable; the loader must pass such rows through
+    unchanged so validate_ohlcv can actually find them."""
+    path = _write_csv(
+        tmp_path,
+        [
+            "2024-01-02 13:00:00,100,101,99,100.5,1000",
+            "2024-01-02 13:01:00,100,90,99,100.5,1000",   # high < low: corrupt
+            "2024-01-02 13:02:00,100,101,99,100.5,1000",
+        ],
+        "timestamp,open,high,low,close,volume",
+    )
+    df = load_ohlcv(path)
+    assert len(df) == 3, "loader must not silently drop OHLC-inconsistent rows"
