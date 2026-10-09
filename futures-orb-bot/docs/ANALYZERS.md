@@ -34,21 +34,31 @@ than true bid/ask data (see below).
 | `vwap` | VWAP | above session VWAP bullish, below bearish (distance in ATR) |
 | `atr` | ATR | volatility regime (non-directional → NEUTRAL; confidence = expansion) |
 | `relative_volume` | Relative Volume | RVOL × current bar direction = conviction |
-| `delta` | Delta | net aggressive delta over recent bars |
-| `cvd` | Cumulative Volume Delta | session CVD slope + price/CVD divergence |
-| `imbalance` | Bid/Ask Imbalance | aggressive buy vs sell split on recent bars |
-| `absorption` | Absorption | heavy volume + little progress → the absorbing side |
+| `delta` | Delta | net aggressive delta over recent bars (OHLCV approximation) |
+| `cvd` | Cumulative Volume Delta | session CVD slope + price/CVD divergence (OHLCV approximation) |
+| `imbalance` | Bid/Ask Imbalance | aggressive buy vs sell split on recent bars (OHLCV approximation) |
+| `absorption` | Absorption | heavy volume + little progress → the absorbing side (OHLCV approximation) |
+| `footprint_absorption` | **Footprint Absorption** | real per-price absorption from tick data — see `docs/ORDER_FLOW.md` |
+| `footprint_imbalance` | **Stacked Imbalance** | real consecutive-level imbalance from tick data — see `docs/ORDER_FLOW.md` |
+| `footprint_delta` | **Footprint Delta** | real net aggressor volume from tick data — see `docs/ORDER_FLOW.md` |
 | `swing_high` | Swing Highs | higher highs bullish / lower highs bearish |
 | `swing_low` | Swing Lows | higher lows bullish / lower lows bearish |
 
-## Order-flow approximation
+## Order-flow approximation vs. the real thing
 
 True delta, bid/ask imbalance, and absorption require **bid/ask (footprint)**
-data, which OHLCV bars don't carry. Those analyzers approximate the aggressor
-split using the **close-location value** — where a bar closes within its range —
-in `orb_bot/analysis/common.py`. This is a standard, transparent proxy. Because
-every analyzer is modular and shares that one helper, a tick-accurate
-implementation can replace the proxy with no change to callers.
+data, which OHLCV bars don't carry. `delta`/`cvd`/`imbalance`/`absorption`
+approximate the aggressor split using the **close-location value** — where a
+bar closes within its range — in `orb_bot/analysis/common.py`. This is a
+standard, transparent proxy, clearly flagged (`raw["approximation"] = True`).
+
+**If you have tick data, use it.** `footprint_absorption`, `footprint_imbalance`,
+and `footprint_delta` read real per-price-level bid/ask volume built from
+actual trades — not estimated from candle shape — and automatically take over
+from their approximated counterparts when real data is available for a given
+call. See **`docs/ORDER_FLOW.md`** for the full picture: the tick data format,
+how to point the platform at a tick feed (`--ticks`), the synthetic tick
+generator for trying it today, and exactly how the suppression works.
 
 ## Usage
 

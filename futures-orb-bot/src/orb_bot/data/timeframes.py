@@ -13,7 +13,7 @@ from __future__ import annotations
 
 import logging
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
 import pandas as pd
 
@@ -24,15 +24,30 @@ logger = logging.getLogger("orb_bot.data.timeframes")
 
 @dataclass
 class MarketData:
-    """A symbol's bars across one or more aligned timeframes."""
+    """A symbol's bars across one or more aligned timeframes.
+
+    ``footprint``, when present, holds one
+    :class:`~orb_bot.footprint.FootprintBar` per **primary-timeframe** bar —
+    real per-price-level bid/ask volume built from tick data (see
+    :func:`orb_bot.footprint.build_footprint_series` and
+    :mod:`orb_bot.data.ticks`). It's optional: most data you'll have is
+    OHLCV-only, and everything works without it — the order-flow analyzers
+    fall back to an OHLCV approximation. When it is present, the platform
+    prefers it, since it's the real thing instead of an estimate.
+    """
 
     symbol: str
     primary_timeframe: str
     frames: Dict[str, pd.DataFrame] = field(default_factory=dict)
+    footprint: Optional[Dict[pd.Timestamp, Any]] = None
 
     @property
     def primary(self) -> pd.DataFrame:
         return self.frames[self.primary_timeframe]
+
+    @property
+    def has_footprint(self) -> bool:
+        return bool(self.footprint)
 
     def timeframe(self, tf: str) -> pd.DataFrame:
         if tf not in self.frames:
@@ -75,12 +90,20 @@ def build_market_data(
     symbol: str,
     primary_timeframe: str = "1min",
     timeframes: Optional[List[str]] = None,
+    ticks: Optional[pd.DataFrame] = None,
+    tick_size: Optional[float] = None,
 ) -> MarketData:
     """Build a :class:`MarketData` from a base (finest) OHLCV frame.
 
     The base frame is assumed to already be at ``primary_timeframe`` (or finer).
     Every requested timeframe is produced by resampling; the primary itself is
     stored as-is.
+
+    Pass ``ticks`` (from :func:`orb_bot.data.ticks.load_ticks`) and
+    ``tick_size`` to also build real per-price-level footprint bars — one per
+    primary-timeframe bar — attached as ``MarketData.footprint``. Without
+    ticks, ``footprint`` stays ``None`` and the platform falls back to the
+    OHLCV-approximation order-flow analyzers.
     """
     timeframes = timeframes or [primary_timeframe]
     frames: Dict[str, pd.DataFrame] = {}
@@ -90,4 +113,15 @@ def build_market_data(
         else:
             frames[tf] = resample_ohlcv(df, tf)
         logger.debug("Built timeframe %s: %d bars", tf, len(frames[tf]))
-    return MarketData(symbol=symbol, primary_timeframe=primary_timeframe, frames=frames)
+
+    footprint = None
+    if ticks is not None and not ticks.empty:
+        if tick_size is None:
+            raise ValueError("tick_size is required when ticks are provided")
+        from ..footprint import build_footprint_series
+
+        footprint = build_footprint_series(ticks, primary_timeframe, tick_size)
+        logger.info("Built %d footprint bars from %d ticks.", len(footprint), len(ticks))
+
+    return MarketData(symbol=symbol, primary_timeframe=primary_timeframe,
+                      frames=frames, footprint=footprint)

@@ -183,6 +183,11 @@ class StrategyConfig:
 class PathsConfig:
     data_dir: str = "data/raw"
     output_dir: str = "output"
+    # Optional: a directory (or single file) of tick/trade CSVs (see
+    # orb_bot.data.ticks). When set, the platform builds real per-price-level
+    # footprint data and the order-flow analyzers use it instead of the
+    # OHLCV approximation. Leave unset to run OHLCV-only, as always.
+    ticks_dir: Optional[str] = None
 
 
 # --------------------------------------------------------------------------- #

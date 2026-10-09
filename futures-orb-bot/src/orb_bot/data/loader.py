@@ -155,7 +155,11 @@ def _parse_timestamp(
     input_timezone: str,
     session_timezone: str,
 ) -> pd.DataFrame:
-    ts = pd.to_datetime(df["timestamp"], utc=False, errors="coerce")
+    # format="mixed": avoids a real pandas footgun where whole-column format
+    # inference locks onto the first row's shape and silently mis-parses (as
+    # NaT) any row with a differently-shaped but perfectly valid timestamp
+    # string (e.g. one row missing fractional seconds that the rest have).
+    ts = pd.to_datetime(df["timestamp"], utc=False, errors="coerce", format="mixed")
     if ts.isna().any():
         bad = int(ts.isna().sum())
         raise ValueError(f"{bad} timestamp(s) could not be parsed.")

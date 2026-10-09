@@ -24,6 +24,7 @@ import pandas as pd
 from ..config import Config
 from .loader import load_directory, load_ohlcv
 from .store import DataStore
+from .ticks import load_tick_directory, load_ticks
 from .timeframes import MarketData, build_market_data
 from .validation import ValidationReport, clean_ohlcv, validate_ohlcv
 
@@ -34,6 +35,7 @@ def load_market_data(
     config: Config,
     source: Optional[str | Path] = None,
     auto_clean: bool = True,
+    ticks_source: Optional[str | Path] = None,
 ) -> Tuple[MarketData, ValidationReport]:
     """Load, validate and package market data according to ``config``.
 
@@ -45,6 +47,14 @@ def load_market_data(
         If validation finds repairable issues, drop the offending rows and
         continue (the report still records what happened). If ``False`` the
         raw frame is used as-is.
+    ticks_source:
+        Optional tick/trade CSV file or directory (see
+        :mod:`orb_bot.data.ticks`). Defaults to ``config.paths.ticks_dir``.
+        When available, real per-price-level footprint data is built and
+        attached as ``MarketData.footprint`` — the order-flow analyzers use it
+        in place of the OHLCV approximation. A problem loading ticks is logged
+        as a warning and the run continues OHLCV-only rather than failing the
+        whole backtest over optional, enhancement-only data.
 
     Returns
     -------
@@ -84,17 +94,42 @@ def load_market_data(
         logger.warning("Cleaning data: %d error(s) found.", report.n_errors)
         primary_df = clean_ohlcv(primary_df)
 
+    ticks = _load_ticks_if_available(config, ticks_source, load_kwargs)
+
     market = build_market_data(
         primary_df,
         symbol=symbol,
         primary_timeframe=primary,
         timeframes=config.data.timeframes,
+        ticks=ticks,
+        tick_size=config.instrument.tick_size if ticks is not None else None,
     )
     logger.info(
-        "MarketData ready: %s @ %s (%d bars), timeframes=%s",
-        symbol, primary, len(primary_df), sorted(market.frames),
+        "MarketData ready: %s @ %s (%d bars), timeframes=%s, footprint=%s",
+        symbol, primary, len(primary_df), sorted(market.frames), market.has_footprint,
     )
     return market, report
+
+
+def _load_ticks_if_available(config: Config, ticks_source, load_kwargs) -> Optional[pd.DataFrame]:
+    tick_target = Path(ticks_source) if ticks_source else (
+        Path(config.paths.ticks_dir) if config.paths.ticks_dir else None
+    )
+    if tick_target is None:
+        return None
+    if not tick_target.exists():
+        logger.warning("Configured ticks_dir %s does not exist — running OHLCV-only.", tick_target)
+        return None
+
+    tick_kwargs = dict(input_timezone=load_kwargs["input_timezone"],
+                       session_timezone=load_kwargs["session_timezone"])
+    try:
+        if tick_target.is_dir():
+            return load_tick_directory(tick_target, **tick_kwargs)
+        return load_ticks(tick_target, **tick_kwargs)
+    except Exception:
+        logger.exception("Failed to load tick data from %s — running OHLCV-only.", tick_target)
+        return None
 
 
 def _newest_source(target: Path) -> Path:

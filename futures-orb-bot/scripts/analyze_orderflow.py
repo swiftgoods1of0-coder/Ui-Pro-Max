@@ -7,6 +7,13 @@ A quick way to see the order-flow / market-structure analysis engine in action:
     python scripts/analyze_orderflow.py --timeframes 1min 5min 15min
     python scripts/analyze_orderflow.py --data data/raw/ES_1min.csv
 
+With real tick data, the footprint analyzers (real absorption, stacked
+imbalance, real delta) take over from the OHLCV approximation:
+
+    python scripts/generate_sample_ticks.py --days 10
+    python scripts/analyze_orderflow.py \\
+        --data data/raw/SAMPLE_ES_1min_ticks.csv --ticks data/raw/SAMPLE_ES_ticks.csv
+
 Each line shows: analyzer, bias, confidence (0–100), and the explanation. This is
 research output only — it never places orders.
 """
@@ -33,12 +40,18 @@ def main(argv=None) -> int:
     p = argparse.ArgumentParser(description="Order-flow / market-structure analysis")
     p.add_argument("--config", default="config.yaml")
     p.add_argument("--data", default=None)
+    p.add_argument("--ticks", default=None, help="Tick/trade CSV or directory for real order flow")
     p.add_argument("--timeframes", nargs="*", default=None)
     args = p.parse_args(argv)
 
     cfg = Config.from_yaml(args.config) if Path(args.config).exists() else Config()
-    market, _ = load_market_data(cfg, args.data)
+    market, _ = load_market_data(cfg, args.data, ticks_source=args.ticks)
     tfs = args.timeframes or sorted(market.frames)
+
+    if market.has_footprint:
+        print(f"Real order flow: {len(market.footprint)} footprint bars from tick data.")
+    else:
+        print("No tick data — order-flow analyzers are reading the OHLCV approximation.")
 
     results = analyze_multi_timeframe(market, timeframes=tfs, config=cfg)
     for tf in tfs:
@@ -57,8 +70,9 @@ def main(argv=None) -> int:
     print("=" * 60)
     print(score.report())
 
-    print("\n(Research only — bar-based order-flow reads are approximations; "
-          "see docs/ANALYZERS.md.)")
+    note = ("real footprint data was used for order flow" if market.has_footprint
+            else "order-flow reads are OHLCV approximations — pass --ticks for the real thing")
+    print(f"\n(Research only — {note}; see docs/ANALYZERS.md.)")
     return 0
 
 

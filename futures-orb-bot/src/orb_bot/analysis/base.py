@@ -31,6 +31,8 @@ from typing import Any, Dict, List, Optional
 
 import pandas as pd
 
+_UNSET = object()   # sentinel distinguishing "not specified" from an explicit None
+
 
 class Bias(str, Enum):
     BULLISH = "bullish"
@@ -105,6 +107,7 @@ class AnalysisContext:
     config: Any = None                      # orb_bot.config.Config
     market: Any = None                      # MarketData (all timeframes)
     session_df: Optional[pd.DataFrame] = None
+    footprint_bars: Optional[Dict[pd.Timestamp, Any]] = None  # {bar_start: FootprintBar}
     extras: Dict[str, Any] = field(default_factory=dict)
 
     def recent(self, n: int) -> pd.DataFrame:
@@ -114,6 +117,22 @@ class AnalysisContext:
     def session(self) -> pd.DataFrame:
         return self.session_df if self.session_df is not None else self.df
 
+    @property
+    def current_footprint(self) -> Optional[Any]:
+        """The real per-price-level :class:`~orb_bot.footprint.FootprintBar` for
+        the bar at ``now``, if tick data was available to build one.
+
+        ``footprint_bars`` is keyed by the same bar-start timestamps as the
+        primary OHLCV series it was built alongside, so ``now`` — always one of
+        those timestamps here — is a direct key, not a lookup requiring an
+        as-of search. ``None`` means no tick data was supplied for this run;
+        callers (the footprint analyzers) must treat that as "no real
+        order-flow data," not as "flat/neutral order flow."
+        """
+        if not self.footprint_bars:
+            return None
+        return self.footprint_bars.get(self.now)
+
     # -- construction -------------------------------------------------------
 
     @classmethod
@@ -121,6 +140,7 @@ class AnalysisContext:
         cls, df: pd.DataFrame, now: Optional[pd.Timestamp] = None, *,
         timeframe: Optional[str] = None, config=None, market=None,
         session_df: Optional[pd.DataFrame] = None,
+        footprint_bars: Any = _UNSET,
     ) -> "AnalysisContext":
         if now is None:
             now = df.index[-1]
@@ -129,18 +149,37 @@ class AnalysisContext:
         if session_df is None and len(hist):
             day = now.normalize()
             session_df = hist[hist.index.normalize() == day]
+        # `footprint_bars` left unspecified (the common case: callers just
+        # pass `market`) auto-pulls market.footprint. An *explicit* None (as
+        # from_market passes for a non-primary timeframe, where footprint
+        # bars don't correspond to that timeframe's bar boundaries) must be
+        # honoured as "no footprint for this context" — not silently
+        # overridden by falling back to the market's footprint anyway, which
+        # a plain `is None` check can't distinguish from "not provided".
+        if footprint_bars is _UNSET:
+            footprint_bars = getattr(market, "footprint", None) if market is not None else None
         return cls(df=hist, now=now, price=price, timeframe=timeframe,
-                   config=config, market=market, session_df=session_df)
+                   config=config, market=market, session_df=session_df,
+                   footprint_bars=footprint_bars)
 
     @classmethod
     def from_market(
         cls, market, timeframe: str, now: Optional[pd.Timestamp] = None,
         *, config=None,
     ) -> "AnalysisContext":
-        """Build a context on a specific timeframe of a MarketData object."""
+        """Build a context on a specific timeframe of a MarketData object.
+
+        Footprint data (``market.footprint``, if present) is only attached
+        when ``timeframe`` is the market's primary timeframe — footprint bars
+        are built one-per-primary-bar, so they don't correspond to any
+        resampled higher timeframe's bar boundaries.
+        """
         frame = market.timeframe(timeframe)
+        footprint_bars = None
+        if timeframe == getattr(market, "primary_timeframe", None):
+            footprint_bars = getattr(market, "footprint", None)
         return cls.from_history(frame, now, timeframe=timeframe, config=config,
-                                market=market)
+                                market=market, footprint_bars=footprint_bars)
 
 
 class Analyzer(ABC):

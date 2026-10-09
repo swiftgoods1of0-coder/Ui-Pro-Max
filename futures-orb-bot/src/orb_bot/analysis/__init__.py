@@ -8,7 +8,9 @@ analyzers, so they are immediately discoverable via the registry.
 Order-flow analyzers (this module set):
     volume_profile, poc, vah, val, hvn, lvn,   (volume profile family)
     vwap, atr, relative_volume,                (indicator family)
-    delta, cvd, imbalance, absorption          (order-flow family)
+    delta, cvd, imbalance, absorption          (OHLCV-approximated order flow)
+    footprint_absorption, footprint_imbalance  (REAL order flow — needs tick
+                                                 data; see orb_bot.footprint)
 
 Market-structure analyzers:
     swing_high, swing_low                      (more can be layered on this base)
@@ -33,6 +35,7 @@ from . import volume_profile      # noqa: F401
 from . import indicators_flow     # noqa: F401
 from . import order_flow          # noqa: F401
 from . import swings              # noqa: F401
+from . import footprint_flow      # noqa: F401
 
 from .runner import analyze, analyze_market, analyze_multi_timeframe
 from .engine import ConfidenceEngine, TradeScore, TradeDirection, DEFAULT_WEIGHTS

@@ -34,6 +34,9 @@ from .base import Analyzer, AnalysisContext, AnalyzerResult, Bias, build_analyze
 
 # Default per-analyzer weights. Directional-quality reads (structure, VWAP,
 # POC, delta, CVD) carry more; ATR is non-directional (0) and feeds warnings.
+# Real footprint analyzers (built from actual tick data) outweigh their
+# OHLCV-approximated counterparts, since they're reading real orders instead
+# of estimating from candle shape — see APPROXIMATION_SUPPRESSED_BY below.
 DEFAULT_WEIGHTS: Dict[str, float] = {
     "swing_high": 1.2, "swing_low": 1.2,
     "poc": 1.2, "vwap": 1.2, "delta": 1.1, "cvd": 1.1,
@@ -41,7 +44,22 @@ DEFAULT_WEIGHTS: Dict[str, float] = {
     "vah": 0.8, "val": 0.8, "relative_volume": 0.8,
     "hvn": 0.6, "lvn": 0.6,
     "atr": 0.0,
+    "footprint_absorption": 1.8, "footprint_imbalance": 1.6, "footprint_delta": 1.5,
 }
+
+# When a real footprint analyzer has actual tick data for this call
+# (raw["has_data"] is True), it supersedes its OHLCV-approximated counterpart
+# for that call — the approximation's weight is zeroed out rather than left to
+# dilute or double-count a signal the real data already answered. Suppression
+# only kicks in when the footprint analyzer genuinely has data; with no tick
+# feed, the approximations are exactly as active as before.
+APPROXIMATION_SUPPRESSED_BY: Dict[str, str] = {
+    "absorption": "footprint_absorption",
+    "imbalance": "footprint_imbalance",
+    "delta": "footprint_delta",
+    "cvd": "footprint_delta",
+}
+
 
 # Short human phrases for supporting reasons, keyed by analyzer label.
 # (bullish phrase, bearish phrase)
@@ -57,6 +75,9 @@ _REASON_PHRASES: Dict[str, tuple] = {
     "Cumulative Volume Delta": ("Cumulative delta confirms buying", "Cumulative delta confirms selling"),
     "Bid/Ask Imbalance": ("Aggressive buyers dominate", "Aggressive sellers dominate"),
     "Absorption": ("Absorption favors longs", "Absorption favors shorts"),
+    "Footprint Absorption": ("Buyers absorbed selling at a key level", "Sellers absorbed buying at a key level"),
+    "Stacked Imbalance": ("Stacked buy imbalance in the footprint", "Stacked sell imbalance in the footprint"),
+    "Footprint Delta": ("Real order flow confirms buying", "Real order flow confirms selling"),
     "Relative Volume": ("Strong relative volume", "Strong relative volume"),
     "Swing Highs": ("Higher highs — clean structure", "Lower highs — bearish structure"),
     "Swing Lows": ("Higher lows — clean structure", "Lower lows — bearish structure"),
@@ -168,10 +189,17 @@ class ConfidenceEngine:
         return self._aggregate(results)
 
     def _aggregate(self, results: List[AnalyzerResult]) -> TradeScore:
+        suppressed = self._suppressed_keys(results)
         wsum = dir_weight = bull = bear = neutral = 0.0
         for r in results:
-            w = self.weights.get(r.raw.get("_key", ""), 1.0)
-            if w <= 0:
+            w = self._w(r, suppressed)
+            # An explicit "no data" result (e.g. a footprint analyzer with no
+            # tick feed for this run) carries zero information — it must not
+            # count toward the weighted total at all, not even as a neutral
+            # contribution. Letting it in would dilute neutral_score's
+            # denominator and systematically nudge quality scores whenever a
+            # not-currently-applicable analyzer merely exists in the registry.
+            if w <= 0 or r.raw.get("has_data") is False:
                 continue
             wsum += w
             if r.direction is Bias.BULLISH:
@@ -198,8 +226,8 @@ class ConfidenceEngine:
         dominant = Bias.BULLISH if long_score >= short_score else Bias.BEARISH
         edge = winner - loser
 
-        reasons, weaknesses = self._reasons(results, dominant)
-        conflicts = self._conflicts(results, dominant)
+        reasons, weaknesses = self._reasons(results, dominant, suppressed)
+        conflicts = self._conflicts(results, dominant, suppressed)
         warnings, risk_penalty = self._warnings(results, dominant, loser)
 
         no_trade_score = clamp(
@@ -235,27 +263,27 @@ class ConfidenceEngine:
 
     # -- explanation helpers -----------------------------------------------
 
-    def _reasons(self, results, dominant) -> tuple:
+    def _reasons(self, results, dominant, suppressed=frozenset()) -> tuple:
         reasons, weaknesses = [], []
         supporting = [r for r in results
-                      if r.direction is dominant and self._w(r) > 0 and r.confidence >= 40]
-        supporting.sort(key=lambda r: self._w(r) * r.confidence, reverse=True)
+                      if r.direction is dominant and self._w(r, suppressed) > 0 and r.confidence >= 40]
+        supporting.sort(key=lambda r: self._w(r, suppressed) * r.confidence, reverse=True)
         for r in supporting:
             reasons.append(self._phrase(r, dominant))
 
         opposing = Bias.BEARISH if dominant is Bias.BULLISH else Bias.BULLISH
         detractors = [r for r in results
-                      if r.direction is opposing and self._w(r) > 0 and r.confidence >= 40]
-        detractors.sort(key=lambda r: self._w(r) * r.confidence, reverse=True)
+                      if r.direction is opposing and self._w(r, suppressed) > 0 and r.confidence >= 40]
+        detractors.sort(key=lambda r: self._w(r, suppressed) * r.confidence, reverse=True)
         for r in detractors:
             weaknesses.append(f"{r.name} disagrees ({r.confidence:.0f}%): {r.explanation}")
         return reasons, weaknesses
 
-    def _conflicts(self, results, dominant) -> List[str]:
+    def _conflicts(self, results, dominant, suppressed=frozenset()) -> List[str]:
         opposing = Bias.BEARISH if dominant is Bias.BULLISH else Bias.BULLISH
         conflicts = []
         for r in results:
-            if (r.direction is opposing and self._w(r) > 0
+            if (r.direction is opposing and self._w(r, suppressed) > 0
                     and r.confidence >= self.conflict_threshold):
                 conflicts.append(f"{r.name} reads {r.direction.value} "
                                  f"({r.confidence:.0f}%) against a {dominant.value} bias")
@@ -280,10 +308,14 @@ class ConfidenceEngine:
         if cvd and cvd.raw.get("divergence"):
             warnings.append("CVD diverging from price — momentum may be fading")
             penalty += 6
-        absorp = by_key.get("absorption")
-        if absorp and absorp.raw.get("absorbing") and absorp.direction is not dominant \
-                and absorp.direction is not Bias.NEUTRAL:
-            warnings.append(f"Absorption against the {dominant.value} bias detected")
+        # Prefer the real footprint absorption read over the OHLCV
+        # approximation when tick data made one available for this call.
+        absorp = by_key.get("footprint_absorption")
+        if not (absorp and absorp.raw.get("has_data")):
+            absorp = by_key.get("absorption")
+        if absorp and absorp.direction is not dominant and absorp.direction is not Bias.NEUTRAL:
+            source = "Footprint absorption" if absorp.raw.get("_key") == "footprint_absorption" else "Absorption"
+            warnings.append(f"{source} against the {dominant.value} bias detected")
             penalty += 8
         if loser >= self.conflict_threshold:
             warnings.append(f"Conflicting signals present (opposing score {loser:.0f})")
@@ -296,5 +328,20 @@ class ConfidenceEngine:
             return phrases[0] if dominant is Bias.BULLISH else phrases[1]
         return f"{r.name} confirms {dominant.value} ({r.confidence:.0f}%)"
 
-    def _w(self, r: AnalyzerResult) -> float:
-        return self.weights.get(r.raw.get("_key", ""), 1.0)
+    def _suppressed_keys(self, results: List[AnalyzerResult]) -> frozenset:
+        """Approximation analyzer keys to zero out for this call, because a
+        real footprint analyzer with actual tick data already answered the
+        same question more precisely. See APPROXIMATION_SUPPRESSED_BY."""
+        by_key = {r.raw.get("_key"): r for r in results}
+        suppressed = set()
+        for approx_key, real_key in APPROXIMATION_SUPPRESSED_BY.items():
+            real = by_key.get(real_key)
+            if real is not None and real.raw.get("has_data"):
+                suppressed.add(approx_key)
+        return frozenset(suppressed)
+
+    def _w(self, r: AnalyzerResult, suppressed: frozenset = frozenset()) -> float:
+        key = r.raw.get("_key", "")
+        if key in suppressed:
+            return 0.0
+        return self.weights.get(key, 1.0)

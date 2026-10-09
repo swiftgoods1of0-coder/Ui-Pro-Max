@@ -39,8 +39,16 @@ src/orb_bot/
 │   ├── validation.py    Missing / corrupt / gap detection + repair
 │   ├── timeframes.py    MarketData: multi-timeframe resample + as-of lookups
 │   ├── store.py         DataStore: Parquet (or pickle) content cache
+│   ├── ticks.py         Tick/trade CSV loading (price, size, aggressor side)
+│   ├── synth_ticks.py   Synthetic tick generator (incl. engineered absorption
+│   │                    / stacked-imbalance scenarios) for demo/testing
 │   └── feed.py          load_market_data(): the one entry point that ties
-│                        load -> validate -> cache -> multi-timeframe together
+│                        load -> validate -> cache -> multi-timeframe (+ ticks)
+│                        together
+│
+├── footprint/            REAL ORDER FLOW (from tick data — see docs/ORDER_FLOW.md)
+│   ├── bar.py            FootprintBar: real per-price-level bid/ask volume
+│   └── signals.py        detect_absorption / detect_stacked_imbalance
 │
 ├── indicators/          Reusable indicators
 │   ├── opening_range.py Opening-range ("ORB") box
@@ -69,7 +77,10 @@ src/orb_bot/
 │   ├── swings.py        Swing highs/lows (market structure)
 │   ├── volume_profile.py POC / VAH / VAL / HVN / LVN analyzers
 │   ├── indicators_flow.py VWAP / ATR / Relative Volume analyzers
-│   ├── order_flow.py    Delta / CVD / imbalance / absorption analyzers
+│   ├── order_flow.py    Delta / CVD / imbalance / absorption (OHLCV approximation)
+│   ├── footprint_flow.py REAL absorption / stacked imbalance / delta (from
+│   │                    orb_bot.footprint; supersedes order_flow.py's reads
+│   │                    whenever tick data is available — docs/ORDER_FLOW.md)
 │   ├── engine.py        ConfidenceEngine: combines analyzers into one
 │   │                    0-100 trade-quality score with reasons/warnings
 │   └── filter.py        ConfidenceFilter: gates strategy signals on that

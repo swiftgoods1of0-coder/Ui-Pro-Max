@@ -70,6 +70,9 @@ def parse_args(argv=None) -> argparse.Namespace:
     p = argparse.ArgumentParser(prog="orb-backtest", description="Futures quant research backtester")
     p.add_argument("--config", default="config.yaml", help="Path to YAML config")
     p.add_argument("--data", default=None, help="CSV file or directory (default: config paths.data_dir)")
+    p.add_argument("--ticks", default=None,
+                   help="Tick/trade CSV file or directory for real order-flow "
+                       "(default: config paths.ticks_dir, if set)")
     p.add_argument("--output", default=None, help="Output directory (default: config paths.output_dir)")
     p.add_argument("--log-level", default=None, help="Override logging level (DEBUG/INFO/...)")
     p.add_argument("--no-dashboard", action="store_true", help="Skip chart / HTML rendering")
@@ -115,12 +118,17 @@ def main(argv=None) -> int:
 
     # --- data engine ---
     try:
-        market, report = load_market_data(cfg, args.data)
+        market, report = load_market_data(cfg, args.data, ticks_source=args.ticks)
     except FileNotFoundError as exc:
         log.error("%s", exc)
         print(f"\nERROR: {exc}\nTip: python scripts/generate_sample_data.py")
         return 1
     print(report.summary())
+    if market.has_footprint:
+        print(f"Order flow     : REAL — {len(market.footprint)} footprint bars from tick data "
+              f"(absorption, stacked imbalance, delta are reading actual orders)")
+    else:
+        print("Order flow     : approximated from OHLCV (pass --ticks for real order flow)")
 
     # --- risk-managed, multi-strategy backtest ---
     decisions_path = log_dir / cfg.logging.decisions_file
