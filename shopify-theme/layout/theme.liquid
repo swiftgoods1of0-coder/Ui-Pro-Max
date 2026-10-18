@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#080808">
+
+  {%- if page_description -%}
+    <meta name="description" content="{{ page_description | escape }}">
+  {%- endif -%}
+
+  <title>
+    {{ page_title }}{% unless page_title contains shop.name %} — {{ shop.name }}{% endunless %}
+  </title>
+
+  {%- if settings.favicon != blank -%}
+    <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32 }}">
+  {%- endif -%}
+
+  <!-- Preconnect / DNS prefetch -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+
+  <!-- Google Fonts: async non-blocking load (reduced to essential weights) -->
+  <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'"
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&display=swap">
+  <noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&display=swap">
+  </noscript>
+
+  <!-- Theme CSS -->
+  {{ 'theme.css' | asset_url | stylesheet_tag }}
+
+  <!-- Font faces from Shopify font_picker -->
+  {%- liquid
+    assign font_display_fam = settings.font_display.family | default: 'Cormorant Garamond'
+    assign font_body_fam    = settings.font_body.family    | default: 'Inter'
+    assign hscale           = settings.type_heading_scale  | default: 100
+  -%}
+  <style>
+    {{ settings.font_display | font_face: font_display: 'swap' }}
+    {{ settings.font_body    | font_face: font_display: 'swap' }}
+
+    /* ── Global design-token overrides from Shopify Customizer ── */
+    :root {
+      --bg:                  {{ settings.color_background           | default: '#080808' }};
+      --bg-secondary:        {{ settings.color_background_secondary | default: '#0f0f0f' }};
+      --bg-card:             {{ settings.color_background_card      | default: '#141414' }};
+      --text:                {{ settings.color_text                 | default: '#f0ebe0' }};
+      --text-muted:          {{ settings.color_text_muted           | default: '#a09080' }};
+      --text-dim:            {{ settings.color_text_dim             | default: '#4a4540' }};
+      --accent:              {{ settings.color_accent               | default: '#c9a84c' }};
+      --border:              {{ settings.color_border               | default: '#1f1e1b' }};
+      --btn-primary-bg:      {{ settings.color_btn_primary_bg       | default: '#f0ebe0' }};
+      --btn-primary-text:    {{ settings.color_btn_primary_text     | default: '#080808' }};
+      --btn-secondary-border:{{ settings.color_btn_secondary_border | default: '#f0ebe0' }};
+      --btn-secondary-text:  {{ settings.color_btn_secondary_text   | default: '#f0ebe0' }};
+      --badge-sale-bg:       {{ settings.color_badge_sale_bg        | default: '#c9a84c' }};
+      --badge-sale-text:     {{ settings.color_badge_sale_text      | default: '#080808' }};
+      --badge-new-bg:        {{ settings.color_badge_new_bg         | default: '#f0ebe0' }};
+      --badge-new-text:      {{ settings.color_badge_new_text       | default: '#080808' }};
+      --badge-sold-bg:       {{ settings.color_badge_sold_bg        | default: '#4a4540' }};
+      --badge-sold-text:     {{ settings.color_badge_sold_text      | default: '#f0ebe0' }};
+      --font-display:        '{{ font_display_fam }}', Georgia, serif;
+      --font-body:           '{{ font_body_fam }}', -apple-system, sans-serif;
+      --font-base-size:      {{ settings.type_base_size             | default: 15 }}px;
+      --eyebrow-spacing:     {{ settings.type_eyebrow_spacing       | default: '0.2em' }};
+      --max-width:           {{ settings.layout_max_width           | default: '1400px' }};
+      --gutter:              {{ settings.layout_gutter              | default: '40px' }};
+      --btn-radius:          {{ settings.layout_btn_radius          | default: '2px' }};
+      --card-radius:         {{ settings.layout_card_radius         | default: '0px' }};
+      --anim-speed:          {{ settings.animations_speed           | default: '0.7' }}s;
+    }
+
+    /* Header colours */
+    .site-header { background: {{ settings.header_bg | default: '#080808' }}; }
+    .site-header.is-scrolled { background: {{ settings.header_scrolled_bg | default: '#080808' }}; }
+    .header-nav__link, .header-btn, .header-logo { color: {{ settings.header_text | default: '#f0ebe0' }}; }
+
+    /* Base font size */
+    html { font-size: {{ settings.type_base_size | default: 15 }}px; }
+
+    /* Heading scale (only emitted when merchant deviates from 100%) */
+    {%- unless hscale == 100 -%}
+    .section-title { font-size: calc(clamp(28px, 4.5vw, 60px) * {{ hscale | times: 0.01 }}); }
+    .hero__title   { font-size: calc(clamp(44px, 7.5vw, 110px) * {{ hscale | times: 0.01 }}); }
+    .brand-statement__quote { font-size: calc(clamp(28px, 4.5vw, 68px) * {{ hscale | times: 0.01 }}); }
+    {%- endunless -%}
+
+    /* CSS transition speed from settings (images + buttons only; GSAP owns [data-animate]) */
+    .product-card__img--hover,
+    .product-card__img--primary,
+    .btn { transition-duration: var(--anim-speed); }
+
+    /* Button colours from Customizer */
+    .btn--primary {
+      background: var(--btn-primary-bg);
+      color: var(--btn-primary-text);
+      border-radius: var(--btn-radius);
+    }
+    .btn--secondary {
+      border-color: var(--btn-secondary-border);
+      color: var(--btn-secondary-text);
+      border-radius: var(--btn-radius);
+    }
+    .btn--primary:hover { opacity: 0.9; }
+
+    /* Badge colours */
+    .product-card__badge--sale { background: var(--badge-sale-bg); color: var(--badge-sale-text); }
+    .product-card__badge--new  { background: var(--badge-new-bg);  color: var(--badge-new-text); }
+    .product-card__badge--sold { background: var(--badge-sold-bg); color: var(--badge-sold-text); }
+
+    /* Card radius applied globally */
+    .product-card__media,
+    .collection-grid__media,
+    .best-sellers__featured-media,
+    .lifestyle-image__media { border-radius: var(--card-radius); overflow: hidden; }
+
+    /* Per-section animation disable: hide opacity/transform initialisation */
+    [data-no-anim] [data-animate] {
+      opacity: 1 !important;
+      transform: none !important;
+      visibility: visible !important;
+    }
+  </style>
+
+  <!-- GSAP + ScrollTrigger (only when animations enabled) -->
+  {%- if settings.animations_enabled != false -%}
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
+    <script src="{{ 'animations.js' | asset_url }}" defer></script>
+  {%- endif -%}
+
+  <!-- Canonical -->
+  <link rel="canonical" href="{{ canonical_url }}">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="{{ page_title | escape }}">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="{{ canonical_url }}">
+  {%- if page_image -%}
+    <meta property="og:image" content="{{ page_image | image_url: width: 1200 }}">
+  {%- elsif settings.og_image != blank -%}
+    <meta property="og:image" content="{{ settings.og_image | image_url: width: 1200 }}">
+  {%- endif -%}
+  <meta property="og:site_name" content="{{ shop.name }}">
+
+  <!-- Shopify Head Content -->
+  {{ content_for_header }}
+
+  <!-- Custom Cursor CSS (injected inline to avoid flash) -->
+  <style>
+    .custom-cursor { position: fixed; pointer-events: none; z-index: 99999; top: 0; left: 0; mix-blend-mode: exclusion; }
+    .custom-cursor__dot { position: absolute; width: 6px; height: 6px; background: #f0ebe0; border-radius: 50%; transform: translate(-50%, -50%); transition: transform 0.15s ease; will-change: transform; }
+    .custom-cursor__ring { position: absolute; width: 36px; height: 36px; border: 1px solid rgba(240,235,224,0.5); border-radius: 50%; transform: translate(-50%, -50%); transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease; will-change: transform; }
+    .custom-cursor.is-hovering .custom-cursor__dot { transform: translate(-50%, -50%) scale(2.5); background: #c9a84c; }
+    .custom-cursor.is-hovering .custom-cursor__ring { width: 54px; height: 54px; border-color: rgba(201,168,76,0.4); }
+    @media (pointer: coarse) { .custom-cursor { display: none; } }
+  </style>
+
+  <script>document.documentElement.classList.remove('no-js'); document.documentElement.classList.add('js');</script>
+</head>
+
+<body class="template-{{ template | split: '.' | first | handle }}{% unless settings.animations_enabled %} no-animations{% endunless %}{% unless settings.enable_custom_cursor %} no-cursor{% endunless %}">
+
+  <!-- Skip Link -->
+  <a href="#main-content" class="skip-link">Skip to content</a>
+
+  <!-- Announcement Bar -->
+  {%- if settings.announcement_enabled and settings.announcement_text != blank -%}
+    <div class="announce-bar" id="announce-bar" role="complementary" style="background:{{ settings.announcement_bg | default: '#c9a84c' }};color:{{ settings.announcement_text_color | default: '#080808' }};">
+      <div class="container">
+        {%- if settings.announcement_link != blank -%}
+          <a href="{{ settings.announcement_link }}">{{ settings.announcement_text }}</a>
+        {%- else -%}
+          {{ settings.announcement_text }}
+        {%- endif -%}
+        {%- if settings.announcement_dismissible -%}
+          <button id="announce-close" aria-label="Dismiss announcement" style="margin-left:16px;opacity:0.6;font-size:16px;line-height:1;">&times;</button>
+        {%- endif -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  <!-- Site Header -->
+  <header class="site-header" id="site-header" role="banner">
+    <div class="container header-inner">
+
+      <!-- Logo -->
+      <a href="{{ routes.root_url }}" class="header-logo" aria-label="{{ shop.name }}">
+        {%- if settings.logo != blank -%}
+          <img src="{{ settings.logo | image_url: width: settings.logo_width }}"
+               alt="{{ shop.name }}"
+               width="{{ settings.logo_width | default: 120 }}"
+               height="36"
+               loading="eager">
+        {%- else -%}
+          {{ shop.name }}
+        {%- endif -%}
+      </a>
+
+      <!-- Desktop Navigation -->
+      <nav class="header-nav" role="navigation" aria-label="Main navigation">
+        {%- for link in linklists[settings.nav_menu].links -%}
+          <a href="{{ link.url }}" class="header-nav__link"{% if link.active %} aria-current="page"{% endif %}>
+            {{ link.title }}
+          </a>
+        {%- endfor -%}
+      </nav>
+
+      <!-- Header Actions -->
+      <div class="header-actions">
+
+        <!-- Search -->
+        <a href="{{ routes.search_url }}" class="header-btn" aria-label="Search">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="11" cy="11" r="8"/>
+            <path d="m21 21-4.35-4.35"/>
+          </svg>
+        </a>
+
+        <!-- Account -->
+        <a href="{{ routes.account_url }}" class="header-btn" aria-label="Account">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+        </a>
+
+        <!-- Cart -->
+        <button class="header-btn" data-cart-toggle aria-label="Open cart" id="cart-toggle">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <path d="M16 10a4 4 0 0 1-8 0"/>
+          </svg>
+          <span class="cart-count" aria-live="polite" aria-label="Cart items">0</span>
+        </button>
+
+        <!-- Hamburger (mobile) -->
+        <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobile-menu" role="dialog" aria-label="Mobile navigation" aria-modal="true">
+    <button id="mobile-menu-close" style="position:absolute;top:24px;right:var(--gutter);font-size:28px;color:var(--text-muted);line-height:1;" aria-label="Close menu">&times;</button>
+
+    <nav class="mobile-menu__nav" aria-label="Mobile navigation">
+      {%- for link in linklists[settings.nav_menu].links -%}
+        <a href="{{ link.url }}" class="mobile-menu__link">{{ link.title }}</a>
+      {%- endfor -%}
+    </nav>
+
+    <div class="mobile-menu__footer">
+      <div class="mobile-menu__social">
+        {%- if settings.social_instagram != blank -%}
+          <a href="{{ settings.social_instagram }}" target="_blank" rel="noopener">Instagram</a>
+        {%- endif -%}
+        {%- if settings.social_twitter != blank -%}
+          <a href="{{ settings.social_twitter }}" target="_blank" rel="noopener">Twitter</a>
+        {%- endif -%}
+        {%- if settings.social_tiktok != blank -%}
+          <a href="{{ settings.social_tiktok }}" target="_blank" rel="noopener">TikTok</a>
+        {%- endif -%}
+      </div>
+      <span style="font-size:11px;color:var(--text-dim);letter-spacing:0.15em;text-transform:uppercase;">{{ shop.name }}</span>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <main id="main-content" role="main" tabindex="-1">
+    {{ content_for_layout }}
+  </main>
+
+  <!-- Footer Section -->
+  {% section 'footer' %}
+
+  <!-- Cart Overlay -->
+  <div class="cart-overlay" id="cart-overlay" aria-hidden="true"></div>
+
+  <!-- Cart Drawer -->
+  <aside class="cart-drawer" id="cart-drawer" role="dialog" aria-label="Shopping cart" aria-modal="true">
+    <div class="cart-drawer__header">
+      <h2 class="cart-drawer__title">{{ settings.cart_title | default: 'Your Bag' }}</h2>
+      <button class="cart-close" id="cart-close" aria-label="Close cart">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="cart-drawer__body">
+      <div id="cart-empty" class="cart-empty" style="display:none;">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" style="color:var(--text-dim)">
+          <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <path d="M16 10a4 4 0 0 1-8 0"/>
+        </svg>
+        <p>{{ settings.cart_empty_text | default: 'Your bag is empty.' }}</p>
+        <a href="{{ routes.collections_url }}" class="btn btn--secondary" style="height:44px;padding:0 24px;font-size:10px;">Shop Now</a>
+      </div>
+      <div id="cart-items"></div>
+    </div>
+
+    <div class="cart-drawer__footer">
+      <div class="cart-subtotal">
+        <span>Subtotal</span>
+        <span class="amount" id="cart-subtotal-amount">—</span>
+      </div>
+      <a href="/checkout" class="btn btn--primary btn--full btn--lg">{{ settings.cart_checkout_label | default: 'Checkout' }}</a>
+      <p style="text-align:center;font-size:11px;color:var(--text-dim);margin-top:14px;letter-spacing:0.08em;">
+        {{ settings.cart_footer_note | default: 'Taxes and shipping calculated at checkout' }}
+      </p>
+    </div>
+  </aside>
+
+  <!-- Theme config available to all scripts -->
+  <script>
+    window.SwiftGoodsConfig = {
+      animSpeed:          {{ settings.animations_speed | default: '0.7' }},
+      animationsEnabled:  {{ settings.animations_enabled | default: true | json }},
+      currency:           {{ shop.currency | json }},
+      moneyFormat:        {{ shop.money_format | json }}
+    };
+  </script>
+
+  <!-- Theme JS -->
+  <script src="{{ 'theme.js' | asset_url }}" defer></script>
+
+</body>
+</html>
