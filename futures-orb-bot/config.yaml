@@ -1,0 +1,123 @@
+# =============================================================================
+# Futures Quant Research Platform — Configuration
+# =============================================================================
+# All behaviour is driven from this file. Strategies, risk, sessions and filters
+# can be changed here without touching Python. Any omitted key falls back to the
+# defaults in src/orb_bot/config.py, so a partial file is valid.
+# =============================================================================
+
+instrument:
+  symbol: "ES"
+  point_value: 50.0            # USD per 1.0 point (ES=$50, NQ=$20, ...)
+  tick_size: 0.25
+
+data:
+  input_timezone: "UTC"        # timezone of the timestamps in your CSV
+  session_timezone: "America/New_York"
+  primary_timeframe: "1min"    # the finest resolution the engine iterates on
+  timeframes: ["1min", "5min", "15min"]   # also built for higher-timeframe bias
+  resample: null
+
+storage:
+  enabled: true
+  format: "parquet"            # "parquet" (needs pyarrow) or "csv"; falls back to pickle
+  cache_dir: "data/cache"
+
+session:
+  window_start: "08:00"        # New-York tradable window
+  window_end: "11:00"
+
+opening_range:                 # default ORB box (also usable per-strategy)
+  start: "08:00"
+  end: "08:15"
+
+volume_profile:
+  enabled: true
+  bins: 50
+  source: "session"            # "session" (prior session POC) | "opening_range"
+
+# --- Risk management ---------------------------------------------------------
+risk:
+  starting_equity_usd: 25000.0
+  risk_model: "fixed_fractional"   # "fixed_fractional" (%% of equity) | "fixed_dollar"
+  risk_per_trade_pct: 1.0          # used by fixed_fractional
+  risk_per_trade_usd: 250.0        # used by fixed_dollar
+  reward_multiple: 2.0             # default target = 1 : reward_multiple
+  stop_style: "range"              # "range" | "sweep"
+  stop_buffer_ticks: 2.0
+  allow_fractional_contracts: false
+  min_contracts: 1
+  max_contracts: 10
+  # guardrails
+  max_trades_per_day: 3
+  max_consecutive_losses: 4
+  daily_max_loss_pct: 3.0          # halt for the day after losing this %% of day-start equity
+  daily_max_loss_usd: null         # or an absolute dollar cap (takes precedence)
+  # costs
+  commission_per_contract: 2.50
+  slippage_ticks: 1.0
+
+logging:
+  level: "INFO"                # DEBUG | INFO | WARNING | ERROR
+  console: true
+  log_dir: "output/logs"
+  decisions_file: "decisions.jsonl"
+  run_log_file: "run.log"
+
+# --- Trade Confidence Engine -------------------------------------------------
+# Combines all analyzers into one 0-100 trade-quality score with long/short/
+# no-trade sub-scores, reasons, warnings, and conflict detection.
+confidence:
+  enabled: true
+  min_trade_confidence: 60.0   # minimum quality before a setup is "tradeable"
+  min_directional_edge: 10.0   # winning side must beat the other by this much
+  conflict_threshold: 45.0     # opposing confidence that counts as a conflict
+  analyzers: null              # null = use every registered analyzer
+  weights: {}                  # per-analyzer weight overrides (e.g. {delta: 1.5})
+
+# --- Completed-trade learning system -----------------------------------------
+# Captures full market context per trade, mines winners vs losers, and writes a
+# research report. Only makes recommendations with enough sample + significance.
+learning:
+  enabled: true
+  min_samples: 20              # minimum group size before a finding is "supported"
+  min_lift: 0.08               # minimum win-rate edge worth recommending
+  features_file: "learning/trade_features.csv"
+  report_file: "research_report.md"
+
+# --- Strategy engine (plug-and-play) ----------------------------------------
+# Each entry runs independently on its own account. Toggle `enabled` to switch a
+# strategy on/off. `params` overrides that strategy's defaults.
+strategies:
+  - name: "orb"
+    id: "orb_breakout"
+    enabled: true
+    params:
+      modes: ["breakout", "sweep_reclaim"]
+      opening_range_start: "08:00"
+      opening_range_end: "08:15"
+      require_poc_confluence: false
+      breakout_buffer_ticks: 1
+      sweep_min_ticks: 2
+      reward_multiple: 2.0
+      stop_style: "range"
+
+  - name: "vwap_reversion"
+    id: "vwap_mr"
+    enabled: true
+    # The confidence engine's analyzers are trend-confirmation reads (e.g.
+    # "price below VWAP" scores bearish). This strategy deliberately buys into
+    # that exact condition expecting reversion, so applying the same filter
+    # would reject its whole premise, not just its weak trades. Opt out here;
+    # trend/breakout strategies should generally leave this unset (inherits
+    # confidence.enabled above).
+    use_confidence_filter: false
+    params:
+      entry_stretch_ticks: 10
+      warmup_bars: 15
+      reward_multiple: 1.5
+      max_signals_per_day: 2
+
+paths:
+  data_dir: "data/raw"
+  output_dir: "output"
