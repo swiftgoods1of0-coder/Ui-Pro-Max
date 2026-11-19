@@ -2,6 +2,7 @@ import dynamic from 'next/dynamic'
 import Navigation from '@/components/ui/Navigation'
 import HeroSection from '@/components/sections/HeroSection'
 import FeaturedProducts from '@/components/sections/FeaturedProducts'
+import AnnouncementBar from '@/components/ui/AnnouncementBar'
 import Footer from '@/components/ui/Footer'
 import { getProducts, getCollections, type ShopifyProduct as FullShopifyProduct } from '@/lib/shopify'
 import type { LookbookCollection } from '@/components/sections/Lookbook'
@@ -47,11 +48,11 @@ function adaptProduct(p: FullShopifyProduct): SectionProduct {
 export const revalidate = 60
 
 export const metadata = {
-  title: 'Swift Goods | The Fall Collection — Shop Now',
-  description: 'New season. New standards. Shop The Fall Collection from Swift Goods — ultra-premium luxury streetwear designed for movement.',
+  title: 'Swift Goods | Holiday Collection — Shop Now',
+  description: 'Gift the standard. The Holiday Collection from Swift Goods — ultra-premium luxury streetwear. New arrivals available now.',
   openGraph: {
-    title: 'Swift Goods | The Fall Collection',
-    description: 'New season. New standards. Shop The Fall Collection from Swift Goods.',
+    title: 'Swift Goods | Holiday Collection',
+    description: 'Gift the standard. The Holiday Collection from Swift Goods.',
     images: ['/brand/sg-fall-collection.png'],
   },
 }
@@ -118,6 +119,7 @@ export default async function Home() {
 
   return (
     <main style={{ background: '#F8F6F1' }} className="min-h-screen overflow-x-hidden">
+      <AnnouncementBar />
       <Navigation />
       <HeroSection />
 

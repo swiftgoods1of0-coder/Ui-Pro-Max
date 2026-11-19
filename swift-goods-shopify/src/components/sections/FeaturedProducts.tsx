@@ -115,9 +115,10 @@ function ProductCard({ product, index }: ProductCardProps) {
             <span
               className="px-3 py-1 text-[10px] tracking-[0.22em] uppercase font-semibold"
               style={{
-                background: '#c9a84c',
-                color: '#050505',
+                background: 'linear-gradient(135deg, #8C1A1A 0%, #A82424 100%)',
+                color: '#F5EDD5',
                 fontFamily: 'var(--font-body, Inter, sans-serif)',
+                boxShadow: '0 2px 12px rgba(140,26,26,0.4)',
               }}
             >
               NEW
@@ -266,14 +267,16 @@ export default function FeaturedProducts({ products }: FeaturedProductsProps) {
       {/* Frost texture overlay */}
       <div className="absolute inset-0 pointer-events-none" style={{ opacity: 0.025, backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.12) 2px, rgba(0,0,0,0.12) 3px)', backgroundSize: '100% 4px' }} />
 
-      {/* Top accent line */}
+      {/* Top accent line — holiday crimson-gold */}
       <div
         className="absolute top-0 left-0 right-0 h-px"
         style={{
           background:
-            'linear-gradient(to right, transparent, rgba(201,168,76,0.25), transparent)',
+            'linear-gradient(to right, transparent, rgba(140,26,26,0.4), rgba(201,168,76,0.5), rgba(140,26,26,0.4), transparent)',
         }}
       />
+      {/* Holiday crimson ambient glow */}
+      <div className="absolute pointer-events-none" style={{ top: '0%', right: '5%', width: '35%', height: '40%', background: 'radial-gradient(ellipse at center, rgba(140,26,26,0.05) 0%, transparent 70%)', filter: 'blur(60px)' }} />
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-16">
         {/* Section header */}
@@ -288,12 +291,13 @@ export default function FeaturedProducts({ products }: FeaturedProductsProps) {
             <span
               className="text-[11px] tracking-[0.42em] uppercase"
               style={{
-                color: '#a08535',
+                color: '#8C1A1A',
                 fontFamily: 'var(--font-body, Inter, sans-serif)',
-                fontWeight: 500,
+                fontWeight: 600,
+                letterSpacing: '0.42em',
               }}
             >
-              THE COLLECTION
+              HOLIDAY COLLECTION
             </span>
           </div>
 

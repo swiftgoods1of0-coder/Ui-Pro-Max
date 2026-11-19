@@ -109,28 +109,47 @@ export default function HeroSection() {
       className="relative w-full overflow-hidden"
       style={{ height: '100vh', minHeight: '100vh', background: '#050505' }}
     >
-      {/* ── Background: Fall Collection brand shot ── */}
+      {/* ── Background: Holiday brand shot ── */}
       <div ref={bgImageRef} className="absolute inset-0 z-0" style={{ animation: 'sg-ken-burns 20s ease-in-out infinite alternate', willChange: 'transform' }}>
         <Image
           src="/brand/sg-fall-collection.png"
-          alt="Swift Goods — Fall Collection"
+          alt="Swift Goods — Holiday Collection"
           fill
           priority
           quality={90}
           sizes="100vw"
           className="object-cover object-center"
-          style={{
-            filter: 'brightness(0.85) contrast(1.05)',
-          }}
+          style={{ filter: 'brightness(0.78) contrast(1.08) saturate(0.9)' }}
         />
       </div>
 
-      {/* ── Radial dark vignette ── */}
+      {/* ── Deep vignette ── */}
       <div
         className="absolute inset-0 z-[1] pointer-events-none"
         style={{
           background:
-            'radial-gradient(ellipse at 50% 40%, transparent 0%, rgba(5,5,5,0.25) 30%, rgba(5,5,5,0.6) 55%, rgba(5,5,5,0.92) 85%, #050505 100%)',
+            'radial-gradient(ellipse at 50% 40%, transparent 0%, rgba(5,5,5,0.3) 35%, rgba(5,5,5,0.7) 60%, rgba(5,5,5,0.95) 88%, #050505 100%)',
+        }}
+      />
+
+      {/* ── Crimson ambient glow — left ── */}
+      <div
+        className="absolute z-[2] pointer-events-none"
+        style={{
+          left: '-10%', top: '15%', width: '55%', height: '60%',
+          background: 'radial-gradient(ellipse at center, rgba(140,26,26,0.18) 0%, transparent 70%)',
+          filter: 'blur(60px)',
+          animation: 'sg-crimson-pulse 6s ease-in-out infinite',
+        }}
+      />
+      {/* ── Crimson ambient glow — right ── */}
+      <div
+        className="absolute z-[2] pointer-events-none"
+        style={{
+          right: '-8%', bottom: '20%', width: '45%', height: '50%',
+          background: 'radial-gradient(ellipse at center, rgba(140,26,26,0.12) 0%, transparent 70%)',
+          filter: 'blur(80px)',
+          animation: 'sg-crimson-pulse 8s ease-in-out infinite 2s',
         }}
       />
 
@@ -139,18 +158,42 @@ export default function HeroSection() {
         className="absolute top-0 left-0 right-0 z-[2] pointer-events-none"
         style={{
           height: '25vh',
-          background: 'linear-gradient(to bottom, rgba(5,5,5,0.6), transparent)',
+          background: 'linear-gradient(to bottom, rgba(5,5,5,0.65), transparent)',
         }}
       />
 
-      {/* ── Bottom fade to page background ── */}
+      {/* ── Bottom fade ── */}
       <div
         className="absolute bottom-0 left-0 right-0 z-[2] pointer-events-none"
         style={{
-          height: '35vh',
-          background: 'linear-gradient(to bottom, transparent 0%, rgba(5,5,5,0.6) 40%, #050505 100%)',
+          height: '38vh',
+          background: 'linear-gradient(to bottom, transparent 0%, rgba(5,5,5,0.65) 40%, #050505 100%)',
         }}
       />
+
+      {/* ── Ember particles ── */}
+      {Array.from({ length: 18 }).map((_, i) => {
+        const size   = 2 + (i % 3)
+        const left   = `${5 + (i * 5.3) % 90}%`
+        const delay  = `${(i * 0.7) % 7}s`
+        const dur    = `${6 + (i * 0.4) % 6}s`
+        const drift  = `${(i % 2 === 0 ? 1 : -1) * (8 + (i * 3) % 24)}px`
+        const color  = i % 3 === 0 ? 'rgba(201,168,76,0.7)' : i % 3 === 1 ? 'rgba(140,26,26,0.65)' : 'rgba(245,237,213,0.5)'
+        return (
+          <div
+            key={i}
+            className="absolute z-[3] pointer-events-none rounded-full"
+            style={{
+              width: size, height: size,
+              left, bottom: '-4px',
+              background: color,
+              boxShadow: `0 0 ${size * 2}px ${color}`,
+              '--drift': drift,
+              animation: `sg-ember-rise ${dur} ease-out ${delay} infinite`,
+            } as React.CSSProperties}
+          />
+        )
+      })}
 
       {/* ── Subtle film grain texture ── */}
       <div
@@ -254,7 +297,7 @@ export default function HeroSection() {
                 textShadow: '0 0 30px rgba(201,168,76,0.15)',
               }}
             >
-              Swift Goods Clothing Brand&nbsp;&nbsp;&middot;&nbsp;&nbsp;Est. 2025
+              Holiday Collection&nbsp;&nbsp;&middot;&nbsp;&nbsp;Swift Goods 2025
             </span>
             <span
               className="block h-px flex-shrink-0"
@@ -278,7 +321,7 @@ export default function HeroSection() {
               perspective: '800px',
             }}
           >
-            {['THE FALL', 'COLLECTION.'].map((line, li) => (
+            {['THE HOLIDAY', 'COLLECTION.'].map((line, li) => (
               <span key={li} style={{ display: 'block' }}>
                 {line.split('').map((char, ci) => (
                   <span
@@ -308,7 +351,7 @@ export default function HeroSection() {
               letterSpacing: '0.04em',
             }}
           >
-            New season. New standards. Shop the Fall Collection — available now.
+            Refined for the season. Gift the standard. The Holiday Collection is here.
           </p>
 
           {/* Brand tagline */}
@@ -335,7 +378,7 @@ export default function HeroSection() {
           >
             <MagneticElement strength={0.25} radius={150}>
               <LuxuryButton variant="primary" href="/collections/the-fall-collection">
-                SHOP THE FALL COLLECTION
+                SHOP HOLIDAY COLLECTION
               </LuxuryButton>
             </MagneticElement>
             <MagneticElement strength={0.25} radius={150}>
