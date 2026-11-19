@@ -2,6 +2,7 @@ import type { LoaderFunctionArgs, MetaFunction } from '@shopify/remix-oxygen'
 import { json } from '@shopify/remix-oxygen'
 import { useLoaderData } from '@remix-run/react'
 import { lazy, Suspense } from 'react'
+import AnnouncementBar from '@/components/ui/AnnouncementBar'
 import Navigation from '@/components/ui/Navigation'
 import HeroSection from '@/components/sections/HeroSection'
 import FeaturedProducts from '@/components/sections/FeaturedProducts'
@@ -48,11 +49,11 @@ function adaptProduct(p: any): SectionProduct {
 }
 
 export const meta: MetaFunction = () => [
-  { title: 'Swift Goods | Comfort Is Luxury.' },
-  { name: 'description', content: 'Ultra-premium luxury streetwear. Designed for movement. Built for presence. Swift Goods Clothing Brand.' },
-  { property: 'og:title', content: 'Swift Goods | Comfort Is Luxury.' },
-  { property: 'og:description', content: 'Ultra-premium luxury streetwear.' },
-  { property: 'og:image', content: '/brand/sg-campaign-04.jpeg' },
+  { title: 'Swift Goods | Holiday Collection — Shop Now' },
+  { name: 'description', content: 'Gift the standard. The Holiday Collection from Swift Goods — ultra-premium luxury streetwear. New arrivals available now.' },
+  { property: 'og:title', content: 'Swift Goods | Holiday Collection' },
+  { property: 'og:description', content: 'Gift the standard. The Holiday Collection from Swift Goods.' },
+  { property: 'og:image', content: '/brand/sg-fall-collection.png' },
 ]
 
 const EXCLUDED_TYPES = new Set(['sweatpants', 'sweatshirt', 'sweatshirts', 'crewneck', 'crewnecks'])
@@ -120,6 +121,7 @@ export default function Index() {
 
   return (
     <main style={{ background: '#F8F6F1' }} className="min-h-screen overflow-x-hidden">
+      <AnnouncementBar />
       <Navigation />
       <HeroSection />
 

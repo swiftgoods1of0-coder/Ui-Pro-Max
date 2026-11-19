@@ -103,7 +103,7 @@ function ProductCard({ product, index }: ProductCardProps) {
 
           <div className="absolute top-4 left-4 flex flex-col gap-2 z-10">
             {product.isNew && (
-              <span className="px-3 py-1 text-[12px] tracking-[0.22em] uppercase font-semibold" style={{ background: '#c9a84c', color: '#050505', fontFamily: 'var(--font-body, Inter, sans-serif)' }}>
+              <span className="px-3 py-1 text-[10px] tracking-[0.22em] uppercase font-semibold" style={{ background: 'linear-gradient(135deg, #8C1A1A 0%, #A82424 100%)', color: '#F5EDD5', fontFamily: 'var(--font-body, Inter, sans-serif)', boxShadow: '0 2px 12px rgba(140,26,26,0.4)' }}>
                 NEW
               </span>
             )}
@@ -168,14 +168,17 @@ export default function FeaturedProducts({ products }: FeaturedProductsProps) {
       <div className="absolute pointer-events-none" style={{ top: '5%', left: '-8%', width: '45%', height: '45%', background: 'radial-gradient(ellipse at center, rgba(201,168,76,0.04) 0%, transparent 65%)', filter: 'blur(80px)' }} />
       <div className="absolute pointer-events-none" style={{ bottom: '10%', right: '-5%', width: '35%', height: '35%', background: 'radial-gradient(ellipse at center, rgba(201,168,76,0.03) 0%, transparent 65%)', filter: 'blur(80px)' }} />
       <div className="absolute inset-0 pointer-events-none" style={{ opacity: 0.025, backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.12) 2px, rgba(0,0,0,0.12) 3px)', backgroundSize: '100% 4px' }} />
-      <div className="absolute top-0 left-0 right-0 h-px" style={{ background: 'linear-gradient(to right, transparent, rgba(201,168,76,0.25), transparent)' }} />
+      {/* Top accent line — holiday crimson-gold */}
+      <div className="absolute top-0 left-0 right-0 h-px" style={{ background: 'linear-gradient(to right, transparent, rgba(140,26,26,0.4), rgba(201,168,76,0.5), rgba(140,26,26,0.4), transparent)' }} />
+      {/* Holiday crimson ambient glow */}
+      <div className="absolute pointer-events-none" style={{ top: '0%', right: '5%', width: '35%', height: '40%', background: 'radial-gradient(ellipse at center, rgba(140,26,26,0.05) 0%, transparent 70%)', filter: 'blur(60px)' }} />
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-16">
         <div className="mb-20">
           <div className="inline-flex items-center gap-4 mb-6">
             <span className="block w-12 h-px" style={{ background: 'linear-gradient(to right, #c9a84c, transparent)' }} />
-            <span className="text-[13px] tracking-[0.42em] uppercase" style={{ color: '#a08535', fontFamily: 'var(--font-body, Inter, sans-serif)', fontWeight: 500 }}>
-              THE COLLECTION
+            <span className="text-[11px] tracking-[0.42em] uppercase" style={{ color: '#8C1A1A', fontFamily: 'var(--font-body, Inter, sans-serif)', fontWeight: 600 }}>
+              HOLIDAY COLLECTION
             </span>
           </div>
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
