@@ -112,8 +112,8 @@ export default function HeroSection() {
       {/* ── Background: Night Supra photograph ── */}
       <div ref={bgImageRef} className="absolute inset-0 z-0" style={{ animation: 'sg-ken-burns 20s ease-in-out infinite alternate', willChange: 'transform' }}>
         <img
-          src="/brand/sg-parking-lot-night.jpeg"
-          alt="Swift Goods — night session"
+          src="/brand/sg-fall-collection.png"
+          alt="Swift Goods — Holiday Collection"
           fetchPriority="high"
           decoding="async"
           style={{
@@ -182,6 +182,48 @@ export default function HeroSection() {
       <div className="absolute z-[5] pointer-events-none" style={{ left: '30%', top: '30%', width: '40%', height: '40%', background: 'radial-gradient(ellipse at center, rgba(201,168,76,0.05) 0%, transparent 70%)', filter: 'blur(80px)' }} />
       <div className="absolute z-[5] pointer-events-none" style={{ right: '20%', bottom: '25%', width: '30%', height: '30%', background: 'radial-gradient(ellipse at center, rgba(201,168,76,0.03) 0%, transparent 70%)', filter: 'blur(80px)' }} />
 
+      {/* ── Holiday crimson ambient glows ── */}
+      <div className="absolute z-[5] pointer-events-none" style={{ left: '-10%', top: '20%', width: '50%', height: '60%', background: 'radial-gradient(ellipse at center, rgba(140,26,26,0.1) 0%, transparent 65%)', filter: 'blur(100px)', animation: 'sg-crimson-pulse 6s ease-in-out infinite' }} />
+      <div className="absolute z-[5] pointer-events-none" style={{ right: '-5%', bottom: '10%', width: '45%', height: '50%', background: 'radial-gradient(ellipse at center, rgba(140,26,26,0.07) 0%, transparent 65%)', filter: 'blur(90px)', animation: 'sg-crimson-pulse 8s ease-in-out infinite 2s' }} />
+
+      {/* ── Ember particles ── */}
+      {[
+        { left: '8%',  size: 3, delay: '0s',   dur: '7s',  drift: '15px',  color: '#c9a84c' },
+        { left: '14%', size: 2, delay: '1.2s',  dur: '6s',  drift: '-20px', color: '#8C1A1A' },
+        { left: '22%', size: 2, delay: '0.4s',  dur: '8s',  drift: '25px',  color: '#F5EDD5' },
+        { left: '31%', size: 3, delay: '2.1s',  dur: '6.5s',drift: '-15px', color: '#c9a84c' },
+        { left: '38%', size: 2, delay: '0.8s',  dur: '7.5s',drift: '30px',  color: '#8C1A1A' },
+        { left: '44%', size: 2, delay: '3.0s',  dur: '5.5s',drift: '-10px', color: '#F5EDD5' },
+        { left: '51%', size: 3, delay: '1.5s',  dur: '8s',  drift: '20px',  color: '#c9a84c' },
+        { left: '57%', size: 2, delay: '0.2s',  dur: '6.5s',drift: '-25px', color: '#8C1A1A' },
+        { left: '63%', size: 2, delay: '2.5s',  dur: '7s',  drift: '10px',  color: '#c9a84c' },
+        { left: '69%', size: 3, delay: '1.0s',  dur: '5.5s',drift: '-30px', color: '#F5EDD5' },
+        { left: '74%', size: 2, delay: '3.3s',  dur: '7.5s',drift: '25px',  color: '#8C1A1A' },
+        { left: '79%', size: 2, delay: '0.6s',  dur: '6s',  drift: '-15px', color: '#c9a84c' },
+        { left: '84%', size: 3, delay: '1.8s',  dur: '8s',  drift: '20px',  color: '#F5EDD5' },
+        { left: '88%', size: 2, delay: '2.8s',  dur: '6.5s',drift: '-20px', color: '#8C1A1A' },
+        { left: '17%', size: 2, delay: '4.0s',  dur: '7s',  drift: '30px',  color: '#c9a84c' },
+        { left: '46%', size: 2, delay: '3.6s',  dur: '5.5s',drift: '-10px', color: '#8C1A1A' },
+        { left: '72%', size: 3, delay: '0.9s',  dur: '7.5s',drift: '15px',  color: '#c9a84c' },
+        { left: '93%', size: 2, delay: '2.2s',  dur: '6s',  drift: '-25px', color: '#F5EDD5' },
+      ].map((e, i) => (
+        <div
+          key={i}
+          className="absolute z-[6] pointer-events-none rounded-full"
+          style={{
+            left: e.left,
+            bottom: '-4px',
+            width: e.size,
+            height: e.size,
+            background: e.color,
+            boxShadow: `0 0 ${e.size * 3}px ${e.color}`,
+            opacity: 0,
+            '--drift': e.drift,
+            animation: `sg-ember-rise ${e.dur} ease-out infinite ${e.delay}`,
+          } as React.CSSProperties}
+        />
+      ))}
+
       {/* ── SG monogram watermark ── */}
       <div
         ref={monogramRef}
@@ -246,14 +288,14 @@ export default function HeroSection() {
             <span
               className="text-[10px] sm:text-[11px] tracking-[0.35em] sm:tracking-[0.42em] uppercase whitespace-nowrap"
               style={{
-                color: '#c9a84c',
+                color: 'rgba(201,168,76,0.9)',
                 fontFamily: 'var(--font-body, Inter, sans-serif)',
                 fontWeight: 500,
                 letterSpacing: '0.35em',
-                textShadow: '0 0 30px rgba(201,168,76,0.15)',
+                textShadow: '0 0 30px rgba(201,168,76,0.2), 0 0 60px rgba(140,26,26,0.1)',
               }}
             >
-              Swift Goods Clothing Brand&nbsp;&nbsp;&middot;&nbsp;&nbsp;Est. 2025
+              Holiday Collection&nbsp;&nbsp;&middot;&nbsp;&nbsp;Swift Goods 2025
             </span>
             <span
               className="block h-px flex-shrink-0"
@@ -271,25 +313,40 @@ export default function HeroSection() {
             style={{
               fontFamily: 'var(--font-impact, "Bebas Neue", sans-serif)',
               fontSize: 'clamp(2.6rem, 11vw, 10rem)',
-              color: '#ffffff',
               letterSpacing: '0.08em',
-              textShadow: '0 4px 60px rgba(0,0,0,0.5), 0 0 120px rgba(0,0,0,0.3), 0 0 80px rgba(201,168,76,0.08)',
               perspective: '800px',
             }}
           >
-            {'COMFORT IS LUXURY.'.split('').map((char, i) => (
-              <span
-                key={i}
-                className="hero-char"
-                style={{
-                  display: char === ' ' ? 'inline' : 'inline-block',
-                  opacity: 0,
-                  transformOrigin: 'bottom center',
-                }}
-              >
-                {char === ' ' ? ' ' : char}
-              </span>
-            ))}
+            <div className="block" style={{ color: '#ffffff', textShadow: '0 4px 60px rgba(0,0,0,0.5), 0 0 120px rgba(0,0,0,0.3)' }}>
+              {'THE HOLIDAY'.split('').map((char, i) => (
+                <span
+                  key={i}
+                  className="hero-char"
+                  style={{
+                    display: char === ' ' ? 'inline' : 'inline-block',
+                    opacity: 0,
+                    transformOrigin: 'bottom center',
+                  }}
+                >
+                  {char === ' ' ? '\u00A0' : char}
+                </span>
+              ))}
+            </div>
+            <div className="block" style={{ color: '#8C1A1A', textShadow: '0 4px 60px rgba(140,26,26,0.4), 0 0 120px rgba(140,26,26,0.2), 0 0 200px rgba(140,26,26,0.1)' }}>
+              {'COLLECTION.'.split('').map((char, i) => (
+                <span
+                  key={i}
+                  className="hero-char"
+                  style={{
+                    display: 'inline-block',
+                    opacity: 0,
+                    transformOrigin: 'bottom center',
+                  }}
+                >
+                  {char}
+                </span>
+              ))}
+            </div>
           </h1>
 
           {/* Subtitle */}
@@ -304,7 +361,7 @@ export default function HeroSection() {
               letterSpacing: '0.04em',
             }}
           >
-            Designed for movement. Built for presence.
+            Refined for the season. Gift the standard. The Holiday Collection is here.
           </p>
 
           {/* Brand tagline */}
@@ -321,7 +378,7 @@ export default function HeroSection() {
               opacity: 0,
             }}
           >
-            &mdash; THE STANDARD IN STREETWEAR &mdash;
+            &mdash; GIFT THE SEASON IN STYLE &mdash;
           </div>
 
           {/* CTA buttons */}
@@ -330,12 +387,12 @@ export default function HeroSection() {
             className="opacity-0 flex flex-col sm:flex-row items-center justify-center gap-4"
           >
             <MagneticElement strength={0.25} radius={150}>
-              <LuxuryButton variant="primary" href="/collections">
-                SHOP COLLECTION
+              <LuxuryButton variant="primary" href="/collections/the-fall-collection">
+                SHOP HOLIDAY COLLECTION
               </LuxuryButton>
             </MagneticElement>
             <MagneticElement strength={0.25} radius={150}>
-              <LuxuryButton variant="ghost" href="#shop">
+              <LuxuryButton variant="ghost" href="#collection">
                 EXPLORE THE COLLECTION
               </LuxuryButton>
             </MagneticElement>
